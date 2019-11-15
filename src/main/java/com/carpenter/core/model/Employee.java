@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+import javax.management.relation.Role;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -16,7 +17,7 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(
-        name = "USERS",
+        name = "EMPLOYERS",
         uniqueConstraints = {@UniqueConstraint(name = "UNIQUE_EMAIL", columnNames = {"EMAIL"})
         })
 @Access(AccessType.FIELD)
@@ -36,7 +37,10 @@ public class Employee extends NamedEntity {
     @Column(name = "PASSWORD")
     private String password;
 
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "EMPLOYERS_ROLES", joinColumns = @JoinColumn(name = "EMPLOYERS_ID"))
     @Column(name = "ROLES")
+    @Enumerated(EnumType.STRING)
     private Set<Roles> roles;
 
     @Basic
