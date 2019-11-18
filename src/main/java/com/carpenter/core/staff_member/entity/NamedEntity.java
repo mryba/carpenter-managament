@@ -1,9 +1,9 @@
-package com.carpenter.core.model;
+package com.carpenter.core.staff_member.entity;
 
+import com.carpenter.utils.entity.DomainObject;
 import com.carpenter.utils.MobilPhoneNumberAdapter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -22,10 +22,10 @@ import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "NAMED_ENTITIES")
+@Table(name = "NAMED_ENTITIESS")
 @XmlRootElement(name = "named-entity")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class NamedEntity extends DomainObject {
+class NamedEntity extends DomainObject {
 
     private static final long serialVersionUID = 403093192728157127L;
 

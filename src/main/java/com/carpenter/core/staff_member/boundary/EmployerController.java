@@ -1,7 +1,6 @@
-package com.carpenter.core.controller;
+package com.carpenter.core.staff_member.boundary;
 
-import com.carpenter.core.model.Employee;
-import org.jboss.resteasy.annotations.Body;
+import com.carpenter.core.staff_member.entity.Employee;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,6 +19,4 @@ public class EmployerController {
         entityManager.persist(employee);
         return Response.accepted().build();
     }
-
-
 }

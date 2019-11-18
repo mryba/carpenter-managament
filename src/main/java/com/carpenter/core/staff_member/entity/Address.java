@@ -1,8 +1,8 @@
-package com.carpenter.core.model;
+package com.carpenter.core.staff_member.entity;
 
+import com.carpenter.utils.entity.DomainObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,9 +14,14 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "ADDRESSES")
 @Access(AccessType.FIELD)
-public class Address extends DomainObject {
+class Address extends DomainObject {
 
     private static final long serialVersionUID = 987709282478686584L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Long id;
 
     @Basic
     @NotNull
@@ -53,6 +58,4 @@ public class Address extends DomainObject {
     @Size(max = 64)
     @Column(name = "COUNTRY")
     private String country;
-
-
 }

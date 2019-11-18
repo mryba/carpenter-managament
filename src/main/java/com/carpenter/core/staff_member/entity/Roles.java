@@ -1,4 +1,4 @@
-package com.carpenter.core.model;
+package com.carpenter.core.staff_member.entity;
 
 public enum Roles {
     ADMINISTRATOR,

@@ -1,4 +1,4 @@
-package com.carpenter.core.model;
+package com.carpenter.utils.entity;
 
 import lombok.Data;
 

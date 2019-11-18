@@ -1,9 +1,8 @@
-package com.carpenter.core.model;
+package com.carpenter.core.staff_member.entity;
 
 import com.carpenter.utils.ConstantsRegex;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 
 import javax.management.relation.Role;
 import javax.persistence.*;
@@ -56,5 +55,4 @@ public class Employee extends NamedEntity {
     @Basic
     @Column(name = "BANK_ACCOUNT_NUMBER")
     private String bankAccountNumber;
-
 }
