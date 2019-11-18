@@ -19,6 +19,12 @@ import java.util.Set;
         name = "EMPLOYERS",
         uniqueConstraints = {@UniqueConstraint(name = "UNIQUE_EMAIL", columnNames = {"EMAIL"})
         })
+@NamedQueries(
+        @NamedQuery(
+                name = "Employee.findEmployerByEmail",
+                query = "SELECT e FROM Employee e WHERE e.email=:email"
+        )
+)
 @Access(AccessType.FIELD)
 @XmlRootElement(name = "user")
 @XmlAccessorType(XmlAccessType.PROPERTY)
@@ -36,7 +42,7 @@ public class Employee extends NamedEntity {
     @Column(name = "PASSWORD")
     private String password;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "EMPLOYERS_ROLES", joinColumns = @JoinColumn(name = "EMPLOYERS_ID"))
     @Column(name = "ROLES")
     @Enumerated(EnumType.STRING)

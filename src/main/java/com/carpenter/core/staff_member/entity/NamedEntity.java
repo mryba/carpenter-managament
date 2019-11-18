@@ -32,7 +32,7 @@ class NamedEntity extends DomainObject {
     @NotNull
     @Size(max = 256)
     @Column(name = "NAME")
-    private String name;
+    private String firstName;
 
     @Basic
     @NotNull
@@ -45,7 +45,6 @@ class NamedEntity extends DomainObject {
     @XmlTransient
     private Gender gender;
 
-    @Basic
     @NotNull
     @Size(max = 256)
     @OneToMany(

@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Data
 @MappedSuperclass
-@Access(AccessType.PROPERTY)
+@Access(AccessType.FIELD)
 public class DomainObject implements Serializable {
 
     private static final long serialVersionUID = 7537366168761136L;
@@ -38,7 +38,7 @@ public class DomainObject implements Serializable {
     @XmlTransient
     @Past
     @Column(name = "DELETE_DATE")
-    private LocalDate deleteDate;
+    private Date deleteDate;
 
     @Basic
     @XmlTransient

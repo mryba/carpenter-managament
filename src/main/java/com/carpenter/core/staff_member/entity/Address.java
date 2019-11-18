@@ -8,20 +8,21 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "ADDRESSES")
+@Table(name = "ADRESSES")
 @Access(AccessType.FIELD)
 class Address extends DomainObject {
 
     private static final long serialVersionUID = 987709282478686584L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    private Long id;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @NotNull
+    @XmlTransient
+    private NamedEntity namedEntity;
 
     @Basic
     @NotNull
