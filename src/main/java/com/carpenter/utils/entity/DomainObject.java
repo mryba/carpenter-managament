@@ -32,7 +32,7 @@ public class DomainObject implements Serializable {
     @Basic
     @XmlTransient
     @Column(name = "CREATE_BY")
-    private Date createBy;
+    private String createBy;
 
     @Temporal(TemporalType.TIMESTAMP)
     @XmlTransient

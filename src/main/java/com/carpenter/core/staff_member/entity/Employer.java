@@ -4,7 +4,6 @@ import com.carpenter.utils.ConstantsRegex;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.management.relation.Role;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -44,7 +43,7 @@ public class Employer extends NamedEntity {
 
     @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "EMPLOYERS_ROLES", joinColumns = @JoinColumn(name = "EMPLOYERS_ID"))
-    @Column(name = "ROLES")
+    @Column(name = "ROLE")
     @Enumerated(EnumType.STRING)
     private Set<Roles> roles;
 

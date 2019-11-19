@@ -1,12 +1,49 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
 
-<head>
-    <title>Dzienny resultat</title>
-</head>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+>
 
-<body>
+    <ui:param name="pageTitle" value="Kalendarz"/>
+    <ui:param name="refreshId" value="calendarForm"/>
 
-<p>Witaj zalogowany</p>
-</body>
+    <ui:define name="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h:link outcome="/secure/dashboard-day" styleClass="calendarType"><span
+                            class="glyphicon glyphicon-th-list"></span> Dzień </h:link>
+                    <h:link outcome="/secure/dashboard-week" styleClass="calendarType"><span
+                            class="glyphicon glyphicon-th-large"></span> Tydzień </h:link>
+                    <h:link outcome="/secure/dashboard-month" styleClass="calendarType"><span
+                            class="glyphicon glyphicon-th"></span> Miesiąc </h:link>
+                    <h:link outcome="/secure/dashboard-list" styleClass="calendarType"><span
+                            class="glyphicon glyphicon-list-alt"></span> Lista </h:link>
+                    <div class="col-md-3">
+                        <h:form id="dateForm" prependId="false">
+                            <h2 class="pull-right">
 
-</html>
+                                <h:outputFormat value="{0,date,EEE',' d.MM.yyyy}">
+                                    <f:param value="#{dayCalendarBean.startDateLegacy}"/>
+                                </h:outputFormat>
+
+                                <small>
+                                    <a jsf:action="#{dayCalendarBean.moveBackward()}">
+                                        <span class="glyphicon glyphicon-chevron-left"/>
+                                        <f:ajax execute="@this" render="@form calendarForm :showSubordinateFilter"/>
+                                    </a>
+                                    <a jsf:action="#{dayCalendarBean.moveForward()}"><span
+                                            class="glyphicon glyphicon-chevron-right"/>
+                                        <f:ajax execute="@this" render="@form calendarForm :showSubordinateFilter"/>
+                                    </a>
+                                </small>
+
+                            </h2>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
