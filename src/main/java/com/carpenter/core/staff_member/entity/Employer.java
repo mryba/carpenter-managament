@@ -22,13 +22,13 @@ import java.util.Set;
 @NamedQueries(
         @NamedQuery(
                 name = "Employee.findEmployerByEmail",
-                query = "SELECT e FROM Employee e WHERE e.email=:email"
+                query = "SELECT e FROM Employer e WHERE e.email=:email"
         )
 )
 @Access(AccessType.FIELD)
 @XmlRootElement(name = "user")
 @XmlAccessorType(XmlAccessType.PROPERTY)
-public class Employee extends NamedEntity {
+public class Employer extends NamedEntity {
 
     private static final long serialVersionUID = -3270776706987062366L;
 

@@ -4,4 +4,5 @@ public enum Roles {
     ADMINISTRATOR,
     MANAGER,
     EMPLOYER,
+    GUEST
 }

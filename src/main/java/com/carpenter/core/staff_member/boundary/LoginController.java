@@ -1,8 +1,7 @@
 package com.carpenter.core.staff_member.boundary;
 
-import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.common.util.impl.LoggerFactory;
-import org.jboss.logging.Logger;
+import com.carpenter.core.staff_member.control.EmployerBean;
+import com.carpenter.core.staff_member.entity.Employer;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.ConfigurableNavigationHandler;
@@ -11,11 +10,13 @@ import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -33,6 +34,9 @@ public class LoginController implements Serializable {
     @NotNull
     private String password;
     private String originalUrl;
+
+    @Inject
+    private EmployerBean employerBean;
 
     private transient UIInput errorComponent;
 
@@ -63,13 +67,14 @@ public class LoginController implements Serializable {
     @PostConstruct
     public void computeOriginalUrl() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        originalUrl = (String) externalContext.getRequestMap().get(RequestDispatcher.FORWARD_SERVLET_PATH);
+        this.originalUrl = (String) externalContext.getRequestMap().get(RequestDispatcher.FORWARD_REQUEST_URI);
 
-        if (originalUrl == null || originalUrl.isEmpty() || (originalUrl.length() == 1)) {
+        if (this.originalUrl == null || originalUrl.isEmpty() || (originalUrl.length() == 1)) {
+            //test
             originalUrl = "/secure/dashboard-day.xhtml";
         }
 
-        String originalQuery = externalContext.getRequestMap().get(RequestDispatcher.FORWARD_QUERY_STRING).toString();
+        String originalQuery = (String) externalContext.getRequestMap().get(RequestDispatcher.FORWARD_QUERY_STRING);
         if (originalQuery != null) {
             originalUrl += "?" + originalQuery + "&faces-redirect=true";
         } else {
@@ -91,11 +96,14 @@ public class LoginController implements Serializable {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
 
-        HttpServletRequest request = (HttpServletRequest) externalContext.getContext();
+        HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
 
         try {
             request.login(email, password);
             request.changeSessionId();
+            Employer employer = employerBean.getEmployerByEmail(email);
+
+            externalContext.getSessionMap().put("employer", employer);
 
             Map<String, Object> httpOnlyProperty = Collections.singletonMap("httpOnly", Boolean.TRUE);
             Map<String, Object> pathProperty = Collections.singletonMap("path", "/");
@@ -110,7 +118,6 @@ public class LoginController implements Serializable {
 
             return originalUrl;
 
-
         } catch (ServletException e) {
             e.printStackTrace();
             errorComponent.setValid(false);
@@ -121,5 +128,12 @@ public class LoginController implements Serializable {
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, login_error, login_error));
         }
         return null;
+    }
+
+    public void logout() throws IOException {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+
+        externalContext.invalidateSession();
+        externalContext.redirect("/secure/dashboard-day?faces-redirect=true");
     }
 }

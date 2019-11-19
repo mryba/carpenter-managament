@@ -1,6 +1,6 @@
 package com.carpenter.core.staff_member.control;
 
-import com.carpenter.core.staff_member.entity.Employee;
+import com.carpenter.core.staff_member.entity.Employer;
 
 import javax.inject.Named;
 
@@ -9,7 +9,7 @@ public class EmployerBean {
 
     private EmployerRepository employerRepository;
 
-    public Employee getEmployerByEmail(String email) {
+    public Employer getEmployerByEmail(String email) {
         return employerRepository.getEmployerByEmail(email);
     }
 }

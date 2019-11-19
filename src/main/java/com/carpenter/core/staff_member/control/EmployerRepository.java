@@ -1,6 +1,6 @@
 package com.carpenter.core.staff_member.control;
 
-import com.carpenter.core.staff_member.entity.Employee;
+import com.carpenter.core.staff_member.entity.Employer;
 
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
@@ -16,8 +16,8 @@ import java.io.Serializable;
     @PersistenceContext
     private transient EntityManager entityManager;
 
-    public Employee getEmployerByEmail(String email) {
-        return entityManager.createNamedQuery("Employee.findEmployerByEmail", Employee.class)
+    public Employer getEmployerByEmail(String email) {
+        return entityManager.createNamedQuery("Employee.findEmployerByEmail", Employer.class)
                 .setParameter("email", email).getSingleResult();
 
     }
