@@ -4,6 +4,7 @@ import com.carpenter.utils.entity.DomainObject;
 import com.carpenter.utils.MobilPhoneNumberAdapter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.apache.deltaspike.data.api.audit.CreatedOn;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -22,7 +23,9 @@ import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "NAMED_ENTITIESS")
+@Table(name = "NAMED_ENTITIES")
+@Access(value = AccessType.FIELD)
+@Inheritance(strategy = InheritanceType.JOINED)
 @XmlRootElement(name = "named-entity")
 @XmlAccessorType(XmlAccessType.FIELD)
 class NamedEntity extends DomainObject {
@@ -59,5 +62,6 @@ class NamedEntity extends DomainObject {
     @Pattern(regexp = MSISDN_PATTERN)
     @Size(max = 16)
     @XmlJavaTypeAdapter(MobilPhoneNumberAdapter.class)
+    @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
 }

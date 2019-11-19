@@ -27,7 +27,7 @@ import java.util.Set;
 )
 @Access(AccessType.FIELD)
 @XmlRootElement(name = "user")
-@XmlAccessorType(XmlAccessType.PROPERTY)
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Employer extends NamedEntity {
 
     private static final long serialVersionUID = -3270776706987062366L;
