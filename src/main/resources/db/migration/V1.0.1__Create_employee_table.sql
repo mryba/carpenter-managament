@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS EMPLOYERS
+(
+    ID                  BIGINT AUTO_INCREMENT,
+    CREATE_DATE         DATETIME,
+    CREATE_BY           VARCHAR(128),
+    DELETE_DATE         DATETIME,
+    DELETE_BY           VARCHAR(128),
+    EMAIL               VARCHAR(256),
+    PASSWORD            VARCHAR(256),
+    NIP_NUMBER          VARCHAR(128),
+    SELF_EMPLOYMENT     BIT(1),
+    BANK_ACCOUNT_NUMBER VARCHAR(256),
+    NAME                VARCHAR(128),
+    LAST_NAME           VARCHAR(128),
+    GENDER              VARCHAR(128),
+    PHONE_NUMBER VARCHAR(24),
+
+    PRIMARY KEY (ID)
+);
+

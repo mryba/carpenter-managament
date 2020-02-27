@@ -1,7 +1,7 @@
-package com.carpenter.core.staff_member.boundary;
+package com.carpenter.core.control.service.login;
 
-import com.carpenter.core.staff_member.control.EmployerBean;
-import com.carpenter.core.staff_member.entity.Employer;
+import com.carpenter.core.control.service.employee.EmployerBean;
+import com.carpenter.core.entity.employee.Employer;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.ConfigurableNavigationHandler;
@@ -71,7 +71,7 @@ public class LoginController implements Serializable {
 
         if (this.originalUrl == null || originalUrl.isEmpty() || (originalUrl.length() == 1)) {
             //test
-            originalUrl = "/secure/dashboard-day.xhtml";
+            originalUrl = "/secure/main.xhtml";
         }
 
         String originalQuery = (String) externalContext.getRequestMap().get(RequestDispatcher.FORWARD_QUERY_STRING);
@@ -88,7 +88,7 @@ public class LoginController implements Serializable {
 
         if (remoteUser != null) {
             ConfigurableNavigationHandler navigationHandler = (ConfigurableNavigationHandler) facesContext.getApplication().getNavigationHandler();
-            navigationHandler.performNavigation("/secure/dashboard-day.xhtml");
+            navigationHandler.performNavigation("/secure/main.xhtml");
         }
     }
 
@@ -130,10 +130,10 @@ public class LoginController implements Serializable {
         return null;
     }
 
-    public void logout() throws IOException {
+    public String logout() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 
         externalContext.invalidateSession();
-        externalContext.redirect("/secure/dashboard-day?faces-redirect=true");
+        return "/secure/main?faces-redirect=true";
     }
 }

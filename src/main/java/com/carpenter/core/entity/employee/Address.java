@@ -1,6 +1,6 @@
-package com.carpenter.core.staff_member.entity;
+package com.carpenter.core.entity.employee;
 
-import com.carpenter.utils.entity.DomainObject;
+import com.carpenter.core.entity.DomainObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,16 +13,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "ADRESSES")
+@Table(name = "ADDRESSES")
 @Access(AccessType.FIELD)
 class Address extends DomainObject {
 
     private static final long serialVersionUID = 987709282478686584L;
-
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @NotNull
-    @XmlTransient
-    private NamedEntity namedEntity;
 
     @Basic
     @NotNull
@@ -59,4 +54,11 @@ class Address extends DomainObject {
     @Size(max = 64)
     @Column(name = "COUNTRY")
     private String country;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "EMPLOYER_ID")
+    @NotNull
+    @XmlTransient
+    private Employer employer;
+
 }

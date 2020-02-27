@@ -1,6 +1,7 @@
-package com.carpenter.core.staff_member.control;
+package com.carpenter.core.control.service.employee;
 
-import com.carpenter.core.staff_member.entity.Employer;
+import com.carpenter.core.entity.employee.Employer;
+import com.carpenter.core.control.repository.EmployerRepository;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;

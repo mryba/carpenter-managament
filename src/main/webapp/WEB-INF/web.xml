@@ -22,29 +22,31 @@
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>secure/dashboard-day.xhtml</welcome-file>
+        <welcome-file>secure/main.xhtml</welcome-file>
     </welcome-file-list>
 
     <error-page>
         <exception-type>javax.faces.application.ViewExpiredException</exception-type>
-        <location>/login.xhtml</location>
+        <location>/error.xhtml</location>
     </error-page>
+
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Carpenter</web-resource-name>
+            <web-resource-name>Carpenter CRM</web-resource-name>
             <url-pattern>/login.xhtml</url-pattern>
         </web-resource-collection>
     </security-constraint>
 
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Suzuki CRM</web-resource-name>
+            <web-resource-name>Carpenter CRM</web-resource-name>
             <url-pattern>/secure/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>ADMINISTRATOR</role-name>
             <role-name>MANAGER</role-name>
+            <role-name>EMPLOYER</role-name>
         </auth-constraint>
     </security-constraint>
 
@@ -52,9 +54,10 @@
         <auth-method>FORM</auth-method>
         <form-login-config>
             <form-login-page>/login.xhtml</form-login-page>
-            <form-error-page>/login.xhtml</form-error-page>
+            <form-error-page>/error.xhtml</form-error-page>
         </form-login-config>
     </login-config>
+
 
     <security-role>
         <role-name>ADMINISTRATOR</role-name>
@@ -68,7 +71,5 @@
         <role-name>EMPLOYER</role-name>
     </security-role>
 
-    <security-role>
-        <role-name>GUEST</role-name>
-    </security-role>
+
 </web-app>

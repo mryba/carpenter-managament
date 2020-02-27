@@ -2,5 +2,5 @@
 
 <jboss-web>
     <context-root>/carpenter-management</context-root>
-    <security-domain>carpenter</security-domain>
+    <security-domain>carpenter-management</security-domain>
 </jboss-web>

@@ -1,4 +1,4 @@
-package com.carpenter.core.calendar;
+package com.carpenter.core.entity.dictionaries;
 
 public enum Mode {
     DAY,

@@ -1,4 +1,4 @@
-package com.carpenter.utils.entity;
+package com.carpenter.core.entity;
 
 import lombok.Data;
 
@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Data

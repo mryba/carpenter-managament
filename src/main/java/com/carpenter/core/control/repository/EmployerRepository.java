@@ -1,6 +1,6 @@
-package com.carpenter.core.staff_member.control;
+package com.carpenter.core.control.repository;
 
-import com.carpenter.core.staff_member.entity.Employer;
+import com.carpenter.core.entity.employee.Employer;
 
 import javax.ejb.Stateful;
 import javax.enterprise.context.SessionScoped;
@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @SessionScoped
 @Stateful
- class EmployerRepository implements Serializable {
+public class EmployerRepository implements Serializable {
 
     private static final long serialVersionUID = -5269304361401704028L;
     @PersistenceContext

@@ -1,79 +1,49 @@
 <!DOCTYPE html>
 <html xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:o="http://omnifaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core">
-
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xml:lang="pl">
 
 <h:head>
-    <h:outputStylesheet library="carpanter" name="css/bootstrap.min.css"/>
+    <title>Login</title>
 </h:head>
 <f:metadata>
     <f:event listener="#{loginController.isLogged}" type="preRenderView"/>
 </f:metadata>
 <h:body>
 
-    <div class="headLogin">
-        <img src="#{resource['carpanter:img/carpenter-logo.jpg']}"
-             alt="Carpenter Company" width="640" height="380"/>
+    <div>
+        <div>
+            <h:form>
+                <div>
+                    <o:outputLabel for="email" value="#{login_msg.email}"/>
+                    <h:inputText id="email" binding="#{usernameBinding}"  value="#{loginController.email}"
+                                 p:autofocus="autofocus"/>
+                </div>
+
+                <div>
+                    <o:outputLabel for="password" value="#{login_msg.password}"/>
+                    <h:inputSecret id="password" binding="#{passwordBinding}" value="#{loginController.password}"/>
+                </div>
+
+                <div jsf:rendered="#{(not loginController.errorComponent.valid)
+                or (!usernameBinding.valid) or (!passwordBinding.valid)}">
+                    <h:message for="email"/>
+                    <h:message for="password"/>
+                    <h:message for="loginError"/>
+                </div>
+
+                <h:inputHidden id="loginError" binding="#{loginController.errorComponent}"/>
+
+                <button type="submit" jsf:action="#{loginController.login}"><i
+                        class=""></i> Zaloguj
+                </button>
+            </h:form>
+
+        </div>
     </div>
 
-    <h:form styleClass="col-md-4 col-md-offset-4 form-horizontal loginform">
-
-        <h:panelGroup layout="block" styleClass="form-group">
-            <o:outputLabel for="email"
-                           value="#{login_msg.email}"
-                           styleClass="col-md-3 control-label"/>
-
-            <div class="col-md-9">
-                <h:inputText id="email" styleClass="form-control"
-                             value="#{loginController.email}"
-                             p:autofocus="autofocus"/>
-            </div>
-
-        </h:panelGroup>
-
-        <h:message for="email"
-                   errorClass="help-block alert alert-danger text-center"/>
-
-        <h:panelGroup layout="block" styleClass="form-group">
-            <o:outputLabel for="password" styleClass="col-md-3 control-label"
-                           value="#{login_msg.password}"/>
-
-            <div class="col-md-9">
-                <h:inputSecret id="password" styleClass="form-control"
-                               value="#{loginController.password}"/>
-            </div>
-        </h:panelGroup>
-
-        <h:message for="password"
-                   errorClass="help-block alert alert-danger text-center"/>
-
-        <h:inputHidden for="password"
-                       errorClass="help-block alert alert-danger text-center"/>
-
-        <h:panelGroup layout="block" styleClass="form-group">
-            <h:commandButton
-                    styleClass="btn btn-primary col-md-4 pull-right"
-                    action="#{loginController.login}">
-            </h:commandButton>
-        </h:panelGroup>
-    </h:form>
-
 </h:body>
-<h:outputScript target="head">
-    (function (i, s, o, g, r, a, m) {
-        i['GoogleAnalyticsObject'] = r;
-        i[r] = i[r] || function () {
-            (i[r].q = i[r].q || []).push(arguments)
-        }, i[r].l = 1 * new Date();
-        a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0];
-        a.async = 1;
-        a.src = g;
-        m.parentNode.insertBefore(a, m)
-    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
-    ga('create', 'UA-56712985-1', 'auto');
-    ga('send', 'pageview');
-</h:outputScript>
 </html>
