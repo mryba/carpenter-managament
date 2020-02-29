@@ -4,7 +4,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-@Named
+@Named(value = "dayCalendarBean")
 @ViewScoped
 public class DayCalendarBean extends CalendarBean {
 
@@ -14,7 +14,5 @@ public class DayCalendarBean extends CalendarBean {
     public void init(){
         setMode(Mode.DAY);
     }
-
-
 
 }

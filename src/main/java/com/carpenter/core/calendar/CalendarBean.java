@@ -37,6 +37,8 @@ public abstract class CalendarBean implements Serializable {
                 startDate = now.with(TemporalAdjusters.firstDayOfMonth()).truncatedTo(ChronoUnit.DAYS);
                 endDate = now.with(TemporalAdjusters.firstDayOfNextMonth()).truncatedTo(ChronoUnit.DAYS);
                 break;
+            default:
+                break;
         }
     }
 
@@ -57,11 +59,12 @@ public abstract class CalendarBean implements Serializable {
                 startDate = startDate.plusMonths(1);
                 endDate = endDate.plusMonths(1);
                 break;
+            default:
+                break;
         }
     }
 
     public void moveBackward() {
-
         switch (mode) {
             case DAY:
                 startDate = startDate.minusDays(1);
@@ -76,6 +79,8 @@ public abstract class CalendarBean implements Serializable {
             case MONTH:
                 startDate = startDate.minusMonths(1);
                 endDate = endDate.minusMonths(1);
+                break;
+            default:
                 break;
         }
     }
