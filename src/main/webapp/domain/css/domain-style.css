@@ -1,5 +1,5 @@
 body{
-    background-color: #404040;
+    background-color: #191d21;
     color: #ffffff;
     font-family: 'Lato', sans-serif;
     margin: 0em !important;
@@ -24,26 +24,29 @@ body{
 }
 
 .nav{
-    width: 100%;
+    width: 80em;
+    margin-left: auto;
+    margin-right: auto;
     padding: 10px, 0;
-    background-color: #c34f4f;
+    background-color: #b36630;
     text-align: center;
-    border-top: 1px solid #751b1b;
-    border-bottom: 1px solid #751b1b ;
+    border-top: 1px solid #54390a;
+    border-bottom: 1px solid #54390a ;
 }
 
 .content{
-    width: 1000px;
+    width: 80em;
     margin-left: auto;
     margin-right: auto;
     text-align: justify;
 
 }
 
-.socials{
+/* .socials{
     width: 100%;
     text-align: center;
     background-color: #404040;;
+    height: 10em;
 }
 
 .socialdivs{
@@ -61,12 +64,14 @@ body{
 
 .fb:hover{
     background-color: #4668b3;
-}
+} */
 
 .footer{
     text-align: center;
     background-color: #404040;;
-    padding: 30px;
+    padding: 0.1em 0;
+    padding-bottom: 0.1em;
+    height: 1em;
 }
 
 .sticky{
@@ -78,10 +83,10 @@ body{
 }
 
 .select{
-    width: 200px;
+    width: 18.5em;
     display: inline-block;
-    padding: 10px;
-    border-right: 1px dashed #751b1b;
+    padding: 0.6em;
+    border-right: 0.1em dashed #54390a;
 }
  a{
      color: #ffffff;
@@ -90,5 +95,15 @@ body{
 }
 
 .select:first-child{
-    border-left:  1px dashed #751b1b;
+    border-left:  none;
+}
+
+
+.select:last-child{
+    border-right:  none;
+}
+
+.select:hover{
+    background-color: #188f28;
+    border-right: #188f28 ;
 }
