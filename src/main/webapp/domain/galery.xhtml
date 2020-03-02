@@ -1,0 +1,92 @@
+<html>
+    <head>
+
+        <link href="css/domain-style.css" rel="stylesheet" type="text/css"/>
+
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,900&display=swap&subset=latin-ext" rel="stylesheet">
+        <link href="../fonts/css/fontello.css" rel="stylesheet" type="text/css"/>
+
+</head>
+<body>
+    <div class="wrapper">
+        <div class="header">
+
+            <div class="logo">
+                <img src="../images/saw.png"/>
+
+                <span style="color: #39a5f1;">Podkarpaccy</span><span style="color: #b36630;">Cieśle</span>
+                
+
+                <img src="../images/hammer.png"/>
+                
+            </div>
+        </div>
+        <div class="nav">
+
+         <div class="select">
+             <a href="../domain/main-page.html"><i class="icon-home"></i>Strona główna</a>
+        
+         </div>
+
+
+         <div class="select">
+            <a href="#"><i class="icon-picture"></i> Galeria</a>
+        </div>
+
+
+        <div class="select">
+            <a href="#"> <i class="icon-phone-1"></i> Kontakt</a>
+        </div>
+
+
+        <div class="select">
+            <a href="#"><i class="icon-login"></i> CRM</a>
+         </div>
+
+        </div>
+
+        <div class="content">
+           
+            <p> Galeria</p>
+           </div>
+
+           <div class="socials">
+               
+            <div class="socialdivs">
+                <div class="fb"> <i class="icon-facebook-official"></i></div>
+                <div class="yt"></div>
+                <div class="tw"></div>
+
+                <div style="clear: both;"></div>
+            </div>
+           </div>
+           <div class="footer">Podkarpaccy Cieśla &copy; 2020r</div>
+    </div>
+
+    <script src="../resources/jquery-3.4.1.min.js"></script>
+
+    <script>
+
+        $(document).ready(function() {
+        var NavY = $('.nav').offset().top;
+         
+        var stickyNav = function(){
+        var ScrollY = $(window).scrollTop();
+              
+        if (ScrollY > NavY) { 
+            $('.nav').addClass('sticky');
+        } else {
+            $('.nav').removeClass('sticky'); 
+        }
+        };
+         
+        stickyNav();
+         
+        $(window).scroll(function() {
+            stickyNav();
+        });
+        });
+        
+    </script>
+</body>
+</html>

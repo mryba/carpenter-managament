@@ -23,11 +23,12 @@ body{
     padding: 10px;
 }
 
+
 .nav{
-    width: 80em;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
-    padding: 10px, 0;
+    padding: 10em, 0;
     background-color: #b36630;
     text-align: center;
     border-top: 1px solid #54390a;
@@ -83,27 +84,24 @@ body{
 }
 
 .select{
-    width: 18.5em;
+    font-size: 1.2em;
+    width: 15em;
     display: inline-block;
-    padding: 0.6em;
-    border-right: 0.1em dashed #54390a;
+    padding: 1.3em 0.7em;
 }
  a{
-     color: #ffffff;
-     text-decoration: none;
+    color: #ffffff;
+    text-decoration: none;
     display: block;
 }
 
-.select:first-child{
-    border-left:  none;
-}
-
-
-.select:last-child{
-    border-right:  none;
-}
-
 .select:hover{
-    background-color: #188f28;
-    border-right: #188f28 ;
+    width: 19em;
+    background-color: #472704;
+    transition: 0.8s;
+
+}
+
+.select > a:hover{
+    color: #39a5f1;
 }
