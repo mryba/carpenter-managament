@@ -1,5 +1,4 @@
 body {
-    /*background-image: url("/resources/carpenter/images/background.png");*/
     background-color: #B7B7B7;
     color: #191d21;
     font-family: 'Lato', sans-serif;
@@ -25,9 +24,6 @@ body {
 
 .nav {
     width: auto;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 10px;
     background-color: #b36630;
     text-align: center;
     border-top: 1px solid #54390a;
@@ -44,6 +40,49 @@ body {
     padding: 0.2em;
     border-radius: 1em;
     border: groove;
+}
+
+.footer {
+    margin-top: 0.8em;
+    color: #B7B7B7;
+    text-align: center;
+    background-color: #404040;;
+    padding: 0.2em;
+    height: 1em;
+}
+
+.sticky {
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 100;
+}
+
+ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0.2em;
+    display: inline-block;
+}
+
+ul a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 0.5em 2em;
+    text-decoration: none;
+}
+
+ul > li{
+    float: left;
+    margin-right: 4em;
+    margin-left: 4em;
+}
+
+li a:hover{
+    background-color: #191d21;
+    border-radius: 2em;
 }
 
 /* .socials{
@@ -69,50 +108,3 @@ body {
 .fb:hover{
     background-color: #4668b3;
 } */
-
-.footer {
-    margin-top: 0.8em;
-    color: #B7B7B7;
-    text-align: center;
-    background-color: #404040;;
-    padding: 0.2em;
-    height: 1em;
-}
-
-.sticky {
-    width: 100%;
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 100;
-}
-
-.select {
-    width: 18.5em;
-    display: inline-block;
-    padding: 0.6em;
-}
-
-a {
-    color: #ffffff;
-    text-decoration: none;
-    display: block;
-}
-
-.select:first-child {
-    border-left: none;
-}
-
-
-.select:last-child {
-    border-right: none;
-}
-
-.select:hover {
-    background-color: #54390a;
-}
-
-.select:active{
-    background-color: #54390a;
-
-}
