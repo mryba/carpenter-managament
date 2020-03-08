@@ -16,7 +16,6 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -134,6 +133,6 @@ public class LoginController implements Serializable {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 
         externalContext.invalidateSession();
-        return "/secure/main?faces-redirect=true";
+        return "/domain/login?faces-redirect=true";
     }
 }

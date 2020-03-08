@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+>
+
+<h:head>
+    <h:outputStylesheet library="carpenter" name="css/domain-style.css"/>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,900&#38;;display=swap&#38;;subset=latin-ext"
+          rel="stylesheet"/>
+    <h:outputScript library="carpenter" name="jquery-3.4.1.min.js"/>
+</h:head>
+
+<f:metadata>
+    <f:event listener="#{loginController.isLogged}" type="preRenderView"/>
+</f:metadata>
+<body>
+
+<ui:composition template="template/domain-template.xhtml">
+
+    <ui:define name="content">
+        <div class="container">
+            <h:form>
+                <div>
+                    <o:outputLabel styleClass="login-output" for="email" value="#{login_msg.email}"/>
+                    <h:inputText styleClass="login-input" id="email" binding="#{usernameBinding}"
+                                 value="#{loginController.email}"
+                                 p:autofocus="autofocus"/>
+                </div>
+
+                <div>
+                    <o:outputLabel styleClass="login-output" for="password" value="#{login_msg.password}"/>
+                    <h:inputSecret styleClass="login-input" id="password" binding="#{passwordBinding}"
+                                   value="#{loginController.password}"/>
+                </div>
+
+                <div jsf:rendered="#{(not loginController.errorComponent.valid)
+                or (!usernameBinding.valid) or (!passwordBinding.valid)}">
+                    <h:message for="email"/>
+                    <h:message for="password"/>
+                    <h:message for="loginError"/>
+                </div>
+
+                <h:inputHidden id="loginError" binding="#{loginController.errorComponent}"/>
+
+                <div class="center-button">
+                    <button class="login-button" type="submit"
+                            jsf:action="#{loginController.login}">
+                        Zaloguj <i class="fa fa-key"></i>
+                    </button>
+                </div>
+            </h:form>
+
+
+        </div>
+    </ui:define>
+</ui:composition>
+
+</body>
+
+</html>

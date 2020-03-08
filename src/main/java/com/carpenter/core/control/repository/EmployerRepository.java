@@ -13,6 +13,7 @@ import java.io.Serializable;
 public class EmployerRepository implements Serializable {
 
     private static final long serialVersionUID = -5269304361401704028L;
+
     @PersistenceContext
     private transient EntityManager entityManager;
 
