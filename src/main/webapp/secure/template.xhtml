@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <h:outputStylesheet library="carpenter" name="secure/style.css"/>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"/>
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,900&#38;;display=swap&#38;;subset=latin-ext"
+              rel="stylesheet"/>
+        <h:outputScript library="carpenter" name="jquery-3.4.1.min.js"/>
+
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <div class="crm-header">
+
+                <div class="main-menu">
+                    <h:commandLink>
+                        <i class="fas fa-calendar-check"></i>Kalendarz
+                    </h:commandLink>
+
+                    <h:commandLink>
+                        <i class="fas fa-users"></i>Pracownicy
+                    </h:commandLink>
+
+                    <h:commandLink>
+                        <i class="fas fa-user-tie"></i>Klienci
+                    </h:commandLink>
+
+                    <h:commandLink>
+                        <i class="fas fa-file-invoice-dollar"></i>Faktury
+                    </h:commandLink>
+                </div>
+
+                <h:commandLink action="#{loginController.logout}">
+                    <span class="glyphicon glyphicon-log-out"/>Wyloguj
+                </h:commandLink>
+            </div>
+
+        </h:form>
+
+    </h:body>
+
+</ui:composition>

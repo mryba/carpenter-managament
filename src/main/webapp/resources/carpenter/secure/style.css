@@ -1,0 +1,65 @@
+body{
+    font-family: 'Lato', sans-serif;
+}
+.crm-header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    background-color: #ffffff;
+    height: 80px;
+    padding: 0;
+    display: flex;
+}
+
+.crm-header .main-menu {
+    display: flex;
+    align-content: stretch;
+}
+
+.crm-header .main-menu > a{
+    border-right: 1px solid #d1d1d1;
+    color: #36b03c;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 140px;
+    text-transform: uppercase;
+    font-size: 0.8em;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-sizing: border-box;
+    font-weight: bold;
+}
+.crm-header .main-menu > a i {
+    font-size: 1.5em;
+    margin-bottom: 0.6em;
+    display: block;
+    color: #36b03c;
+    transition: all 0.3s ease;
+}
+/*.crm-header .main-menu > a:first-child {*/
+/*    border-left: 1px solid #d1d1d1;*/
+/*}*/
+
+.crm-header .main-menu > a:hover {
+    background-color: #f1f1f1;
+}
+
+.crm-header .main-menu > a:hover > i{
+    color: #045223
+}
+
+.crm-header .main-menu >a:active{
+    color: #104fb5;;
+    background-color: #cee0f1;
+    border-bottom: 1px solid #d1d1d1;
+}
+
+.crm-header .main-menu > a:active > i {
+    color: #104fb5;
+}
+
