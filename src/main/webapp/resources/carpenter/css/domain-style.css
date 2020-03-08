@@ -1,45 +1,49 @@
-body{
-    background-color: #191d21;
-    color: #ffffff;
+body {
+    /*background-image: url("/resources/carpenter/images/background.png");*/
+    background-color: #B7B7B7;
+    color: #191d21;
     font-family: 'Lato', sans-serif;
-    margin: 0em !important;
+    margin: 0 !important;
 }
 
-.wrapper{
+.wrapper {
     width: 100%;
 }
 
-.header{
+.header {
+    background-color: #191d21;
     width: 100%;
-    padding: 2em 0;
-    
 }
 
-.logo{
-    width: 11em;
+.logo {
+    padding: 0.2em;
     font-size: 4em;
     margin-left: auto;
     margin-right: auto;
-    padding: 10px;
+    text-align: center;
 }
 
-.nav{
-    width: 80em;
+.nav {
+    width: auto;
     margin-left: auto;
     margin-right: auto;
-    padding: 10px, 0;
+    padding: 10px;
     background-color: #b36630;
     text-align: center;
     border-top: 1px solid #54390a;
-    border-bottom: 1px solid #54390a ;
+    border-bottom: 1px solid #54390a;
 }
 
-.content{
-    width: 80em;
+.content {
+    margin-top: 0.8em;
+    background-color: #ffffff;
+    width: 90em;
+    text-align: justify;
     margin-left: auto;
     margin-right: auto;
-    text-align: justify;
-
+    padding: 0.2em;
+    border-radius: 1em;
+    border: groove;
 }
 
 /* .socials{
@@ -66,44 +70,49 @@ body{
     background-color: #4668b3;
 } */
 
-.footer{
+.footer {
+    margin-top: 0.8em;
+    color: #B7B7B7;
     text-align: center;
     background-color: #404040;;
-    padding: 0.1em 0;
-    padding-bottom: 0.1em;
+    padding: 0.2em;
     height: 1em;
 }
 
-.sticky{
+.sticky {
     width: 100%;
-    position:fixed;
+    position: fixed;
     left: 0;
     top: 0;
     z-index: 100;
 }
 
-.select{
+.select {
     width: 18.5em;
     display: inline-block;
     padding: 0.6em;
-    border-right: 0.1em dashed #54390a;
 }
- a{
-     color: #ffffff;
-     text-decoration: none;
+
+a {
+    color: #ffffff;
+    text-decoration: none;
     display: block;
 }
 
-.select:first-child{
-    border-left:  none;
+.select:first-child {
+    border-left: none;
 }
 
 
-.select:last-child{
-    border-right:  none;
+.select:last-child {
+    border-right: none;
 }
 
-.select:hover{
-    background-color: #188f28;
-    border-right: #188f28 ;
+.select:hover {
+    background-color: #54390a;
+}
+
+.select:active{
+    background-color: #54390a;
+
 }
