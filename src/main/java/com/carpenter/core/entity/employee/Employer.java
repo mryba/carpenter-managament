@@ -48,7 +48,7 @@ public class Employer extends DomainObject {
     @Column(name = "PASSWORD")
     private String password;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @ElementCollection
     @CollectionTable(name = "EMPLOYERS_ROLES", joinColumns = @JoinColumn(name = "ID"))
     @Column(name = "ROLE")
     @Enumerated(EnumType.STRING)

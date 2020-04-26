@@ -20,7 +20,7 @@ body{
 
 .crm-header .main-menu > a{
     border-right: 1px solid #d1d1d1;
-    color: #36b03c;
+    color: #39a5f1;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -38,7 +38,7 @@ body{
     font-size: 1.5em;
     margin-bottom: 0.6em;
     display: block;
-    color: #36b03c;
+    color: #39a5f1;
     transition: all 0.3s ease;
 }
 /*.crm-header .main-menu > a:first-child {*/
@@ -50,7 +50,7 @@ body{
 }
 
 .crm-header .main-menu > a:hover > i{
-    color: #045223
+    color: #104fb5
 }
 
 .crm-header .main-menu >a:active{
