@@ -745,8 +745,213 @@ button {
 }
 
 /**
+FORM
+ */
+
+input[type=text], input[type=number], input[type=time], input[type=password], input[type=email], select, .ms-choice {
+    border: 1px solid #d1d1d1;
+    border-radius: 0.6em;
+    line-height: 2.5em;
+    padding: 0 1em;
+    font-size: 0.95em;
+    width: 100%;
+    outline: none !important;
+    display: inline-block;
+    box-sizing: border-box;
+    background: -webkit-gradient(linear, left bottom, left top, from(#f1f1f1), to(#fff));
+    background: linear-gradient(to top, #f1f1f1, #fff);
+}
+input[type=text].form-error, input[type=text].error, input[type=number].form-error, input[type=number].error, input[type=time].form-error, input[type=time].error, input[type=password].form-error, input[type=password].error, input[type=email].form-error, input[type=email].error, select.form-error, select.error, .ms-choice.form-error, .ms-choice.error {
+    border-color: #b50031;
+    color: #b50031;
+}
+input[type=text].disabled, input[type=text]:disabled, input[type=number].disabled, input[type=number]:disabled, input[type=time].disabled, input[type=time]:disabled, input[type=password].disabled, input[type=password]:disabled, input[type=email].disabled, input[type=email]:disabled, select.disabled, select:disabled, .ms-choice.disabled, .ms-choice:disabled {
+    background: #d1d1d1;
+    opacity: 0.7;
+}
+
+textarea, textarea.ckeditor {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    height: 250px;
+    border-radius: 0.9em;
+    resize: none;
+    border: 1px solid #d1d1d1;
+    padding: 8px;
+    background: -webkit-gradient(linear, left bottom, left top, from(#f1f1f1), to(#fff));
+    background: linear-gradient(to top, #f1f1f1, #fff);
+}
+textarea:focus, textarea.ckeditor:focus {
+    background: #fff;
+}
+
+.form-error input[type=text], .form-error input[type=password], .form-error input[type=email], .form-error input[type=number], .form-error textarea, .form-error select {
+    border-color: #b50031;
+    color: #b50031;
+}
+
+select {
+    height: 2.5em;
+}
+
+input[type=checkbox], input[type=radio] {
+    margin-right: 5px;
+}
+
+button:focus, input:focus, select:focus, textarea:focus {
+    outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #5794cf;
+    background: #fff;
+}
+
+.form-top, .form-submit {
+    margin-bottom: 1.1em;
+}
+
+.icon-left, .icon-right {
+    position: relative;
+}
+.icon-left > i, .icon-right > i {
+    position: absolute;
+    font-size: 1em;
+    top: 0.9em;
+    color: #d1d1d1;
+}
+.icon-left input:focus + i, .icon-right input:focus + i {
+    color: #5794cf;
+}
+
+.icon-left > input {
+    padding-left: 2.5em;
+}
+.icon-left > i {
+    left: 1em;
+}
+
+.icon-right > input {
+    padding-right: 3em;
+}
+.icon-right > i {
+    right: 1em;
+}
+
+.form-phone {
+    position: relative;
+}
+.form-phone > input {
+    padding-left: 4.5em;
+}
+.form-phone .country-label {
+    display: -webkit-box;
+    display: flex;
+    position: absolute;
+    top: 0.75em;
+    left: 1em;
+    font-size: 0.95em;
+    opacity: 0.8;
+}
+.form-phone .country-label > img {
+    width: 18px;
+    height: 18px;
+    margin-right: 0.3em;
+}
+
+.form-submit {
+    text-align: right;
+}
+.form-submit .btn {
+    margin-left: 10px;
+}
+
+.form-checkbox {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    line-height: 1.2;
+    min-height: 55px;
+}
+.form-checkbox input {
+    margin-right: 0.8em;
+}
+.form-checkbox i {
+    margin-right: 0.8em;
+    color: #5794cf;
+}
+.form-checkbox label:last-child {
+    font-size: 0.95em;
+    line-height: 1;
+}
+
+.form-file > input[type=file] {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+.form-file > label:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.form-top > label:first-child, .label-top {
+    font-size: 0.8em;
+    font-weight: bold;
+    color: #585858;
+    padding-left: 3px;
+    display: block;
+    line-height: 1.3;
+    text-transform: uppercase;
+    margin-bottom: 0.2em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.form-top > label:first-child .req, .label-top .req {
+    color: #b50031;
+}
+.form-top > label:first-child.col-secondary, .label-top.col-secondary {
+    color: #5794cf;
+}
+
+.label-top-placehold {
+    padding-top: 1em;
+}
+
+.form-double-input {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.form-double-input label {
+    width: 100%;
+}
+.form-double-input > input[type=text], .form-double-input input[type=password], .form-double-input input[type=number], .form-double-input input[type=email], .form-double-input select, .form-double-input .ms-parent {
+    width: 48.5%;
+}
+.form-double-input .spacer {
+    width: 3%;
+    text-align: center;
+    line-height: 1;
+}
+
+.captcha {
+    margin-bottom: 1em;
+}
+
+/**
 MODAL
  */
+
 .modal > div {
     position: relative;
     max-width: 100%;

@@ -17,6 +17,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -103,4 +105,21 @@ public class Employer extends DomainObject {
     @XmlJavaTypeAdapter(MobilPhoneNumberAdapter.class)
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
+
+    @Transient
+    public boolean isInRole(Collection<Role> roles) {
+        if (roles == null) {
+            return false;
+        }
+        return !Collections.disjoint(this.roles, roles);
+    }
+
+    @Transient
+    public boolean isInRole(String eRole) {
+        if (roles == null) {
+            return false;
+        }
+        Role role = Role.getRole(eRole);
+        return this.roles.contains(role);
+    }
 }

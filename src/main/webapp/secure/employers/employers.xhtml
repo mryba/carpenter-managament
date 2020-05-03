@@ -16,13 +16,15 @@
                     <h2>Pracownicy</h2>
 
                     <div class="controls">
-                        <button class="btn col-primary bordered"
-                                data-toggle="modal"
-                                data-dismiss="modal"
-                                data-target="#add-employer">
-                            <f:ajax render="employerTableForm"/>
-                            <i class="fa fa-plus"></i>Dodaj pracownika
-                        </button>
+                        <h:form>
+
+                            <a href="#" class="btn bordered col-primary"
+                               data-toggle="modal"
+                               data-target="#add-employer"
+                               jsf:id="call-add-new-employer">
+                                <i class="fas fa-user-circle"></i> Dodaj pracownika
+                            </a>
+                        </h:form>
                     </div>
                 </div>
 

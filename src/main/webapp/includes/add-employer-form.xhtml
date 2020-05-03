@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<div jsf:id="add-employer" class="modal modal-small fade"
+<div id="add-employer" class="modal modal-small fade"
      xmlns="http://www.w3.org/1999/xhtml"
      xmlns:h="http://xmlns.jcp.org/jsf/html"
      xmlns:f="http://xmlns.jcp.org/jsf/core"
@@ -9,14 +9,28 @@
 
 
     <div>
-        <a class="modal-close" data-dismiss="modal"> <i class="fa fa-times"></i> </a>
-        <h:form id="add-employer-form" prependId="false">
-            <div class="modal-content">
+        <div>
+            <h:form id="add-employer-form" prependId="false">
+                <a class="modal-close" data-dismiss="modal"> <i class="fa fa-times"></i> </a>
 
-            </div>
-            <div class="modal-footer">
-                <h2>LOOOL</h2>
-            </div>
-        </h:form>
+                <div class="modal-content">
+
+                    <div jsf:rendered="#{principalBean.loggedUser.isInRole('ADMINISTRATOR')}">
+                        <div class="form-top">
+                            <label>Firmy</label>
+                        </div>
+                    </div>
+
+                    <div class="form-top">
+                        <label>Imię</label>
+                        <input type="text">
+
+                        </input>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </h:form>
+        </div>
     </div>
 </div>
