@@ -1,20 +1,28 @@
 package com.carpenter.core.control.service.employee;
 
-import com.carpenter.core.control.repository.EmployerRepository;
 import com.carpenter.core.entity.employee.Employer;
 
-import javax.ejb.Stateless;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
+import java.util.List;
 
-@Named(value = "employerBean")
-@Stateless
-public class EmployerBean {
+@Named("employerBean")
+@ViewScoped
+public class EmployerBean implements Serializable {
+
+    private static final long serialVersionUID = 7312921022733891332L;
 
     @Inject
-    private EmployerRepository employerRepository;
+    EmployerService employerService;
 
-    public Employer getEmployerByEmail(String email) {
-        return employerRepository.getEmployerByEmail(email);
+    public List<Employer> getEmployersList() {
+        return employerService.getEmployersList();
     }
+
+    public void addEmployer(){
+
+    }
+
 }

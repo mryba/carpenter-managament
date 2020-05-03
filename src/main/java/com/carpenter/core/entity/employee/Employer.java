@@ -1,6 +1,7 @@
 package com.carpenter.core.entity.employee;
 
 import com.carpenter.core.entity.Company;
+import com.carpenter.core.entity.dictionaries.Contract;
 import com.carpenter.core.entity.dictionaries.Gender;
 import com.carpenter.core.entity.dictionaries.Role;
 import com.carpenter.utils.ConstantsRegex;
@@ -68,10 +69,9 @@ public class Employer extends DomainObject {
     @Column(name = "NIP_NUMBER")
     private String nipNumber;
 
-    @Basic
-    @Column(name = "SELF_EMPLOYMENT")
-    @XmlElement(name = "self-employment")
-    private Boolean selfEmployment;
+    @Column(name = "CONTRACT")
+    @Enumerated(EnumType.STRING)
+    private Contract contract;
 
     @Basic
     @Column(name = "BANK_ACCOUNT_NUMBER")
