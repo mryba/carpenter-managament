@@ -34,9 +34,20 @@
                     </h:commandLink>
                 </div>
 
-                <h:commandLink action="#{loginController.logout}">
-                    <span class="glyphicon glyphicon-log-out"/>Wyloguj
-                </h:commandLink>
+                <div class="user-panel">
+                    <div class="user-avatar">
+                        <i class="far fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <h4>#{principalBean.loggedUser.firstName} #{principalBean.loggedUser.lastName}</h4>
+                        <h4>#{principalBean.loggedUser.company.name}</h4>
+                    </div>
+
+                    <h:commandLink action="#{loginController.logout}">
+                        Wyloguj <i class="fa fa-chevron-right"/>
+                    </h:commandLink>
+                </div>
+
             </div>
 
         </h:form>

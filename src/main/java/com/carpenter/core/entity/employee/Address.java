@@ -55,10 +55,4 @@ class Address extends DomainObject {
     @Column(name = "COUNTRY")
     private String country;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "EMPLOYER_ID")
-    @NotNull
-    @XmlTransient
-    private Employer employer;
-
 }
