@@ -3,8 +3,12 @@ package com.carpenter.core.control.dto;
 import com.carpenter.core.entity.dictionaries.Contract;
 import com.carpenter.core.entity.dictionaries.Gender;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployerDto {
@@ -16,8 +20,8 @@ public class EmployerDto {
     private String phone;
     private String email;
     private String nipNumber;
-    private Contract contract;
-    private Gender gender;
+    private String contract;
+    private String gender;
 
     //Address
     private String city;
@@ -26,5 +30,4 @@ public class EmployerDto {
     private String streetNumber;
     private String houseNumber;
     private String country;
-
 }

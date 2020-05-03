@@ -22,9 +22,77 @@
                     </div>
 
                     <div class="form-top">
-                        <label>Imię</label>
-                        <input type="text">
+                        <label for="add-employer-name">Imię</label>
+                        <input type="text"
+                               jsf:id="add-employer-name"
+                               jsf:value="#{employerBean.employerDto.firstName}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="@form :employerTableForm"/>
+                        </input>
+                    </div>
 
+                    <div class="form-top">
+                        <label for="add-employer-lastName">Nazwisko</label>
+                        <input type="text"
+                               jsf:id="add-employer-lastName"
+                               jsf:value="#{employerBean.employerDto.lastName}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="@form :employerTableForm"/>
+                        </input>
+                    </div>
+
+                    <div class="form-top">
+                        <label for="add-employer-email">Email</label>
+                        <input type="text"
+                               jsf:id="add-employer-email"
+                               jsf:value="#{employerBean.employerDto.email}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="@form :employerTableForm"/>
+                        </input>
+                    </div>
+
+                    <div class="form-top">
+                        <label for="add-employer-phone">Telefon</label>
+                        <input type="text"
+                               jsf:id="add-employer-phone"
+                               jsf:value="#{employerBean.employerDto.phone}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="@form :employerTableForm"/>
+                        </input>
+                    </div>
+
+                    <div class="form-top">
+                        <label>Umowa</label>
+                        <h:selectOneMenu id="add-employer-contract"
+                                         value="#{employerBean.employerDto.contract}">
+                            <f:selectItem noSelectionOption="false" itemLabel="Wybierz"/>
+                            <f:selectItems value="#{employerBean.availableContracts}"
+                                           var="c"
+                                           itemLabel="#{c}"
+                                           itemValue="#{c.name()}"/>
+
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="@form :employerTableForm employer-nip"/>
+
+                        </h:selectOneMenu>
+                    </div>
+
+                    <div class="form-top"
+                         jsf:id="employer-nip"
+                         jsf:rendered="#{employerBean.selfEmploymentOfContract}">
+                        <label for="add-employer-nip">NIP</label>
+                        <input type="text"
+                               jsf:id="add-employer-nip"
+                               jsf:value="#{employerBean.employerDto.nipNumber}">
+
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="@form: employerTableForm"/>
                         </input>
                     </div>
                 </div>
