@@ -22,7 +22,7 @@ public class EmployerRepository implements Serializable {
 
     public Employer getEmployerByEmail(String email) {
         return entityManager.createNamedQuery("Employee.findEmployerByEmail", Employer.class)
-                .setParameter("email", email).getSingleResult();
+                .setParameter("email", email).getResultList().stream().findFirst().orElse(null);
 
     }
 

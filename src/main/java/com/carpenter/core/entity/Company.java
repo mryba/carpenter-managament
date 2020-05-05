@@ -34,4 +34,8 @@ public class Company extends DomainObject {
 
     @Column(name = "PHONE")
     private String phone;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CLIENT_ID")
+    private Company company;
 }
