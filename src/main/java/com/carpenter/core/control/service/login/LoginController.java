@@ -1,6 +1,5 @@
 package com.carpenter.core.control.service.login;
 
-import com.carpenter.core.control.service.employee.EmployerBean;
 import com.carpenter.core.entity.employee.Employer;
 
 import javax.annotation.PostConstruct;
@@ -35,7 +34,7 @@ public class LoginController implements Serializable {
     private String originalUrl;
 
     @Inject
-    private EmployerBean employerBean;
+    private LoginBean loginBean;
 
     private transient UIInput errorComponent;
 
@@ -100,7 +99,7 @@ public class LoginController implements Serializable {
         try {
             request.login(email, password);
             request.changeSessionId();
-            Employer employer = employerBean.getEmployerByEmail(email);
+            Employer employer = loginBean.getEmployerByEmail(email);
 
             externalContext.getSessionMap().put("employer", employer);
 

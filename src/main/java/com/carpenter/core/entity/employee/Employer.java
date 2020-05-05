@@ -1,5 +1,6 @@
 package com.carpenter.core.entity.employee;
 
+import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.dictionaries.Contract;
 import com.carpenter.core.entity.dictionaries.Gender;
 import com.carpenter.core.entity.dictionaries.Role;
@@ -16,6 +17,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -31,13 +34,21 @@ import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
 @NamedQueries(
         @NamedQuery(
                 name = "Employee.findEmployerByEmail",
-                query = "SELECT e FROM Employer e WHERE e.email=:email"
+                query = "SELECT e FROM Employer e " +
+                        "LEFT JOIN FETCH e.addresses " +
+                        "LEFT JOIN FETCH e.roles " +
+                        "LEFT JOIN FETCH e.company " +
+                        "WHERE e.email=:email"
         )
 )
 @Access(AccessType.FIELD)
 public class Employer extends DomainObject {
 
     private static final long serialVersionUID = -3270776706987062366L;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "COMPANY_ID")
+    private Company company;
 
     @Column(name = "EMAIL")
     @NotNull
@@ -49,7 +60,7 @@ public class Employer extends DomainObject {
     @Column(name = "PASSWORD")
     private String password;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.LAZY)
     @CollectionTable(name = "EMPLOYERS_ROLES", joinColumns = @JoinColumn(name = "ID"))
     @Column(name = "ROLE")
     @Enumerated(EnumType.STRING)
@@ -84,12 +95,7 @@ public class Employer extends DomainObject {
     @XmlTransient
     private Gender gender;
 
-    @NotNull
-    @Size(max = 256)
-    @OneToMany(
-            mappedBy = "employer", fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}, orphanRemoval = true)
-    @Valid
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
     @XmlTransient
     private List<Address> addresses;
 
@@ -99,4 +105,21 @@ public class Employer extends DomainObject {
     @XmlJavaTypeAdapter(MobilPhoneNumberAdapter.class)
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
+
+    @Transient
+    public boolean isInRole(Collection<Role> roles) {
+        if (roles == null) {
+            return false;
+        }
+        return !Collections.disjoint(this.roles, roles);
+    }
+
+    @Transient
+    public boolean isInRole(String eRole) {
+        if (roles == null) {
+            return false;
+        }
+        Role role = Role.getRole(eRole);
+        return this.roles.contains(role);
+    }
 }
