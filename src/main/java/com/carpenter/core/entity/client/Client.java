@@ -16,6 +16,13 @@ import java.util.List;
         name = "CLIENTS",
         uniqueConstraints = @UniqueConstraint(name = "UNIQUE_NIP", columnNames = {"NIP"})
 )
+@NamedQueries({
+        @NamedQuery(name = "Client.findByNIP",
+                query = "SELECT c FROM Client c " +
+                        "WHERE c.nip =:nip"),
+        @NamedQuery(name = "Client.findAll",
+                query = "SELECT c FROM Client c")
+})
 @Access(AccessType.FIELD)
 public class Client extends DomainObject {
     public static final long serialVersionUID = -76794312687641354L;
@@ -41,7 +48,7 @@ public class Client extends DomainObject {
 
     @NotNull
     @Column(name = "NIP")
-    private String nipNumber;
+    private String nip;
 
     @Column(name = "EMAIL")
     private String email;
