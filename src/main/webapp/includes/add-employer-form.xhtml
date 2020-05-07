@@ -14,7 +14,6 @@
                 <a class="modal-close" data-dismiss="modal"> <i class="fa fa-times"></i> </a>
 
                 <div class="modal-content">
-
                     <div jsf:rendered="#{principalBean.loggedUser.isInRole('ADMINISTRATOR')}">
                         <div class="form-top">
                             <label>Firmy</label>
@@ -41,6 +40,21 @@
                                     execute="@this"
                                     render="@form :employerTableForm"/>
                         </input>
+                    </div>
+
+                    <div class="form-top">
+                        <label for="add-employer-gender">Płeć</label>
+                        <h:selectOneMenu id="add-employer-gender"
+                                         value="#{employerBean.employerDto.gender}">
+                            <f:selectItems value="#{employerBean.genders}"
+                                           var="g"
+                                           itemLabel="#{g}"
+                                           itemValue="#{g}"/>
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="@form :employerTableForm"/>
+
+                        </h:selectOneMenu>
                     </div>
 
                     <div class="form-top">
@@ -89,11 +103,97 @@
                         <input type="text"
                                jsf:id="add-employer-nip"
                                jsf:value="#{employerBean.employerDto.nipNumber}">
-
                             <f:ajax event="change"
                                     execute="@this"
-                                    render="@form: employerTableForm"/>
+                                    render="@form :employerTableForm"/>
                         </input>
+                    </div>
+
+                    <div class="form-top">
+                        <label for="add-address-checkbox">Dodaj adres</label>
+                        <h:selectBooleanCheckbox id="add-address-checkbox"
+                                                 value="#{employerBean.addAddress}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="@form :employerTableForm"/>
+                        </h:selectBooleanCheckbox>
+                        <i class="far fa-address-card"></i>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="form-top"
+                         jsf:rendered="#{employerBean.addAddress}">
+                        <label>Miasto / Wieś</label>
+                        <input type="text"
+                               jsf:id="add-employer-city"
+                               jsf:value="#{employerBean.employerDto.city}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="@form :employerTableForm"/>
+                        </input>
+                    </div>
+
+                    <div class="form-top"
+                         jsf:rendered="#{employerBean.addAddress}">
+                        <label for="add-employer-postal-code">Kod pocztowy</label>
+                        <input type="text"
+                               jsf:id="add-employer-postal-code"
+                               jsf:value="#{employerBean.employerDto.postalCode}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="@form :employerTableForm"/>
+                        </input>
+                    </div>
+
+                    <div class="form-top"
+                         jsf:rendered="#{employerBean.addAddress}">
+                        <label for="add-employer-street">Ulica</label>
+                        <input type="text"
+                               jsf:id="add-employer-street"
+                               jsf:value="#{employerBean.employerDto.street}">
+                            <f:ajax event="keyup"
+                                    delay="1000"
+                                    execute="@this"
+                                    render="@form :employerTableForm add-employer-street-number"/>
+                        </input>
+
+                    </div>
+
+                    <div class="form-top"
+                         jsf:rendered="#{employerBean.streetNumberActive}">
+                        <label for="add-employer-street-number">Numer ulicy</label>
+                        <input type="text"
+                               jsf:id="add-employer-street-number"
+                               jsf:value="#{employerBean.employerDto.streetNumber}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="@form :employerTableForm"/>
+                        </input>
+                    </div>
+
+                    <div class="form-top"
+                         jsf:rendered="#{employerBean.addAddress}">
+                        <label for="add-employer-house-number">Numer domu / mieszkania</label>
+                        <input type="text"
+                               jsf:id="add-employer-house-number"
+                               jsf:value="#{employerBean.employerDto.houseNumber}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="@form :employerTableForm"/>
+                        </input>
+                    </div>
+
+                    <div class="form-top"
+                         jsf:rendered="#{employerBean.addAddress}">
+                        <label>Kraj</label>
+                        <h:selectOneMenu>
+                            <f:selectItems value="#{employerBean.countries}"
+                                           var="c"
+                                           itemLabel="#{c}"
+                                           itemValue="#{c.name()}">
+
+                            </f:selectItems>
+                        </h:selectOneMenu>
                     </div>
                 </div>
                 <div class="modal-footer">

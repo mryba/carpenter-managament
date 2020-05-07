@@ -2,6 +2,8 @@ package com.carpenter.core.control.service.employee;
 
 import com.carpenter.core.control.dto.EmployerDto;
 import com.carpenter.core.entity.dictionaries.Contract;
+import com.carpenter.core.entity.dictionaries.Countries;
+import com.carpenter.core.entity.dictionaries.Gender;
 import com.carpenter.core.entity.employee.Employer;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +31,8 @@ public class EmployerBean implements Serializable {
     @Setter
     private EmployerDto employerDto;
 
+    private boolean isAddAddress;
+
     @PostConstruct
     public void init() {
         employerDto = new EmployerDto();
@@ -48,5 +52,37 @@ public class EmployerBean implements Serializable {
             return contract.equals("SELF_EMPLOYMENT");
         }
         return false;
+    }
+
+    public Gender[] getGenders() {
+        return Gender.values();
+    }
+
+    public boolean isAddAddress() {
+        return isAddAddress;
+    }
+
+    public void setAddAddress(boolean isAddAddress) {
+        this.isAddAddress = isAddAddress;
+        if (!isAddAddress) {
+            resetEmployerAddressValues();
+        }
+    }
+
+    public boolean isStreetNumberActive() {
+        return isAddAddress && employerDto.getStreet() != null && !employerDto.getStreet().isEmpty();
+    }
+
+    public Countries[] getCountries() {
+        return Countries.values();
+    }
+
+    private void resetEmployerAddressValues() {
+        employerDto.setCity(null);
+        employerDto.setPostalCode(null);
+        employerDto.setStreet(null);
+        employerDto.setStreetNumber(null);
+        employerDto.setHouseNumber(null);
+        employerDto.setCountry(null);
     }
 }

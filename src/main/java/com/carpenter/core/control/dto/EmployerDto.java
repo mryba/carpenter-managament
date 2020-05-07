@@ -1,7 +1,5 @@
 package com.carpenter.core.control.dto;
 
-import com.carpenter.core.entity.dictionaries.Contract;
-import com.carpenter.core.entity.dictionaries.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
