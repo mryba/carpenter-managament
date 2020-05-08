@@ -17,7 +17,7 @@ import java.util.List;
         uniqueConstraints = @UniqueConstraint(name = "UNIQUE_NIP", columnNames = {"NIP"})
 )
 @NamedQueries({
-        @NamedQuery(name = "Client.findByNIP",
+        @NamedQuery(name = "Client.findByNip",
                 query = "SELECT c FROM Client c " +
                         "WHERE c.nip =:nip"),
         @NamedQuery(name = "Client.findAll",

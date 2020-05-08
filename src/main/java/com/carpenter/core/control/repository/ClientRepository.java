@@ -17,7 +17,7 @@ public class ClientRepository implements Serializable {
     private transient EntityManager entityManager;
 
     public Client getClientByNIP(String nip) {
-        return entityManager.createNamedQuery("Client.findByNIP", Client.class)
+        return entityManager.createNamedQuery("Client.findByNip", Client.class)
                 .setParameter("nip", nip).getResultList().stream().findFirst().orElse(null);
     }
 

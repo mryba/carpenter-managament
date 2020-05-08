@@ -16,7 +16,7 @@ public class ClientService implements Serializable {
     @Inject
     ClientRepository clientRepository;
 
-    public Client getClientByNIP(String nip) {
+    public Client getClientByNip(String nip) {
         return clientRepository.getClientByNIP(nip);
     }
 
