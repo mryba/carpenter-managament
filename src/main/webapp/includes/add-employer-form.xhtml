@@ -26,8 +26,7 @@
                                jsf:id="add-employer-name"
                                jsf:value="#{employerBean.employerDto.firstName}">
                             <f:ajax event="change"
-                                    execute="@this"
-                                    render="@form :employerTableForm"/>
+                                    execute="@this"/>
                         </input>
                     </div>
 
@@ -37,8 +36,7 @@
                                jsf:id="add-employer-lastName"
                                jsf:value="#{employerBean.employerDto.lastName}">
                             <f:ajax event="change"
-                                    execute="@this"
-                                    render="@form :employerTableForm"/>
+                                    execute="@this"/>
                         </input>
                     </div>
 
@@ -51,8 +49,7 @@
                                            itemLabel="#{g}"
                                            itemValue="#{g}"/>
                             <f:ajax event="change"
-                                    execute="@this"
-                                    render="@form :employerTableForm"/>
+                                    execute="@this"/>
 
                         </h:selectOneMenu>
                     </div>
@@ -63,8 +60,7 @@
                                jsf:id="add-employer-email"
                                jsf:value="#{employerBean.employerDto.email}">
                             <f:ajax event="change"
-                                    execute="@this"
-                                    render="@form :employerTableForm"/>
+                                    execute="@this"/>
                         </input>
                     </div>
 
@@ -74,8 +70,7 @@
                                jsf:id="add-employer-phone"
                                jsf:value="#{employerBean.employerDto.phone}">
                             <f:ajax event="change"
-                                    execute="@this"
-                                    render="@form :employerTableForm"/>
+                                    execute="@this"/>
                         </input>
                     </div>
 
@@ -91,7 +86,7 @@
 
                             <f:ajax event="change"
                                     execute="@this"
-                                    render="@form :employerTableForm employer-nip"/>
+                                    render="@form :employerTableForm"/>
 
                         </h:selectOneMenu>
                     </div>
@@ -128,8 +123,7 @@
                                jsf:id="add-employer-city"
                                jsf:value="#{employerBean.employerDto.city}">
                             <f:ajax event="change"
-                                    execute="@this"
-                                    render="@form :employerTableForm"/>
+                                    execute="@this"/>
                         </input>
                     </div>
 
@@ -140,8 +134,7 @@
                                jsf:id="add-employer-postal-code"
                                jsf:value="#{employerBean.employerDto.postalCode}">
                             <f:ajax event="change"
-                                    execute="@this"
-                                    render="@form :employerTableForm"/>
+                                    execute="@this"/>
                         </input>
                     </div>
 
@@ -166,8 +159,7 @@
                                jsf:id="add-employer-street-number"
                                jsf:value="#{employerBean.employerDto.streetNumber}">
                             <f:ajax event="change"
-                                    execute="@this"
-                                    render="@form :employerTableForm"/>
+                                    execute="@this"/>
                         </input>
                     </div>
 
@@ -178,8 +170,7 @@
                                jsf:id="add-employer-house-number"
                                jsf:value="#{employerBean.employerDto.houseNumber}">
                             <f:ajax event="change"
-                                    execute="@this"
-                                    render="@form :employerTableForm"/>
+                                    execute="@this"/>
                         </input>
                     </div>
 
@@ -197,6 +188,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <h:commandLink class="btn btn-primary"
+                                   action="#{employerBean.saveEmployee}">
+                        <i class="fa-arrows-alt-h"></i> Zapisz
+                    </h:commandLink>
                 </div>
             </h:form>
         </div>

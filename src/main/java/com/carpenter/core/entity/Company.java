@@ -1,9 +1,12 @@
 package com.carpenter.core.entity;
 
+import com.carpenter.core.entity.employee.Employer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -34,4 +37,14 @@ public class Company extends DomainObject {
 
     @Column(name = "PHONE")
     private String phone;
+
+    @OneToMany(mappedBy = "company")
+    private Set<Employer> employers;
+
+    public void addEmployee(Employer employer) {
+        if (this.employers == null) {
+            employers = new LinkedHashSet<>();
+        }
+        this.employers.add(employer);
+    }
 }

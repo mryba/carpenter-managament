@@ -1,6 +1,8 @@
 package com.carpenter.core.control.service.employee;
 
 import com.carpenter.core.control.dto.EmployerDto;
+import com.carpenter.core.control.service.company.CompanyService;
+import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.dictionaries.Contract;
 import com.carpenter.core.entity.dictionaries.Countries;
 import com.carpenter.core.entity.dictionaries.Gender;
@@ -27,6 +29,9 @@ public class EmployerBean implements Serializable {
     @Inject
     EmployerService employerService;
 
+    @Inject
+    CompanyService companyService;
+
     @Getter
     @Setter
     private EmployerDto employerDto;
@@ -36,6 +41,14 @@ public class EmployerBean implements Serializable {
     @PostConstruct
     public void init() {
         employerDto = new EmployerDto();
+    }
+
+    public void saveEmployee(){
+        Employer employee = employerService.createEmployee(employerDto);
+        Company company = companyService.getCompanyById(1L);
+        employee.setCompany(company);
+
+        employerService.saveEmployee(employee);
     }
 
     public List<Employer> getEmployersList() {
@@ -85,4 +98,5 @@ public class EmployerBean implements Serializable {
         employerDto.setHouseNumber(null);
         employerDto.setCountry(null);
     }
+
 }

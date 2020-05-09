@@ -1,5 +1,6 @@
 package com.carpenter.core.control.repository;
 
+import com.carpenter.core.control.dto.EmployerDto;
 import com.carpenter.core.entity.employee.Employer;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,5 +35,9 @@ public class EmployerRepository implements Serializable {
             log.error("No employers found!");
             return Collections.emptyList();
         }
+    }
+
+    public void saveEmployee(Employer employer) {
+        entityManager.merge(employer);
     }
 }

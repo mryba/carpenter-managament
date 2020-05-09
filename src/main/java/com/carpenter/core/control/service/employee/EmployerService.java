@@ -19,7 +19,18 @@ public class EmployerService implements Serializable {
     @Inject
     EmployerRepository employerRepository;
 
-    public List<Employer> getEmployersList(){
+    private EmployeeMapper employeeMapper;
+
+    public List<Employer> getEmployersList() {
         return employerRepository.findAllEmployers();
+    }
+
+    public Employer createEmployee(EmployerDto employerDto) {
+        employeeMapper = new EmployeeMapper();
+        return employeeMapper.mapFromDomain(employerDto);
+    }
+
+    public void saveEmployee(Employer employee) {
+        employerRepository.saveEmployee(employee);
     }
 }

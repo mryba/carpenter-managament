@@ -7,8 +7,7 @@ import com.carpenter.core.entity.dictionaries.Role;
 import com.carpenter.utils.ConstantsRegex;
 import com.carpenter.utils.MobilPhoneNumberAdapter;
 import com.carpenter.core.entity.DomainObject;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -17,13 +16,13 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -52,10 +51,10 @@ public class Employer extends DomainObject {
 
     @Column(name = "EMAIL")
     @NotNull
-    @Pattern(regexp = ConstantsRegex.EMAIL_PATTERN)
+//    @Pattern(regexp = ConstantsRegex.EMAIL_PATTERN)
     private String email;
 
-    @NotNull
+//    @NotNull
     @XmlTransient
     @Column(name = "PASSWORD")
     private String password;
@@ -100,11 +99,31 @@ public class Employer extends DomainObject {
     private List<Address> addresses;
 
     @Basic
-    @Pattern(regexp = MSISDN_PATTERN)
+//    @Pattern(regexp = MSISDN_PATTERN)
     @Size(max = 16)
     @XmlJavaTypeAdapter(MobilPhoneNumberAdapter.class)
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
+
+    public void addRole(Role role) {
+        if (role == null) {
+            return;
+        }
+        if (this.roles == null) {
+            this.roles = new LinkedHashSet<>();
+        }
+        this.roles.add(role);
+    }
+
+    public void addAddress(Address address) {
+        if (address == null) {
+            return;
+        }
+        if (this.addresses == null) {
+            this.addresses = new LinkedList<>();
+        }
+        this.addresses.add(address);
+    }
 
     @Transient
     public boolean isInRole(Collection<Role> roles) {

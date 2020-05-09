@@ -19,7 +19,6 @@ public class DomainObject implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    @NotNull
     private Long id;
 
     @Temporal(TemporalType.TIMESTAMP)
