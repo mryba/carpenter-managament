@@ -1054,3 +1054,17 @@ body {
         padding-top: 130px;
     }
 }
+
+.form-msg {
+    font-size: 0.8em;
+    text-transform: uppercase;
+    padding: 0.5em 0.2em;
+    display: block;
+    line-height: 1;
+}
+.form-msg.col-danger {
+    color: #b50031;
+}
+.form-msg.col-success {
+    color: #52ac4d;
+}

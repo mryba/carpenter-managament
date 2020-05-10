@@ -9,14 +9,25 @@
 
 
     <div>
+        <a class="modal-close" data-dismiss="modal"> <i class="fa fa-times"></i> </a>
         <div>
             <h:form id="add-employer-form" prependId="false">
-                <a class="modal-close" data-dismiss="modal"> <i class="fa fa-times"></i> </a>
 
                 <div class="modal-content">
                     <div jsf:rendered="#{principalBean.loggedUser.isInRole('ADMINISTRATOR')}">
                         <div class="form-top">
                             <label>Firmy</label>
+                            <h:selectOneMenu id="add-employee-company"
+                                             value="#{employerBean.employerDto.companyId}">
+                                <f:selectItems
+                                        value="#{employerBean.companies}"
+                                        var="c"
+                                        itemValue="#{c.id}"
+                                        itemLabel="#{c.companyName}"/>
+
+                                <f:ajax event="change"
+                                        execute="@this"/>
+                            </h:selectOneMenu>
                         </div>
                     </div>
 
@@ -65,6 +76,45 @@
                     </div>
 
                     <div class="form-top">
+                        <label>Stworzyć konto</label>
+                        <h:selectBooleanCheckbox id="add-employee-account-type"
+                                                 value="#{employerBean.accountCreate}">
+                            <f:ajax event="change"
+                                    render="@form :employerTableForm"/>
+                        </h:selectBooleanCheckbox>
+                    </div>
+
+                    <h:form id="add-employee-password-form">
+
+                        <div class="form-top" jsf:rendered="#{employerBean.accountCreate}">
+                            <label for="add-employee-password">Hasło</label>
+                            <input type="password"
+                                   jsf:id="add-employee-password"
+                                   jsf:value="#{employeeValidation.password}"
+                                   jsf:redisplay="true"
+                                   jsf:validator="#{employeeValidation.validateFirstPassword}">
+                                <f:ajax event="change"
+                                        execute="@this"
+                                        render="@form add-employee-password-form"/>
+                            </input>
+                            <h:message for="add-employee-password" styleClass="form-msg col-danger"/>
+                        </div>
+
+                        <div class="form-top" jsf:rendered="#{employerBean.accountCreate}">
+                            <label for="add-employee-repassword">Powtórz hasło</label>
+                            <input type="password"
+                                   jsf:id="add-employee-repassword"
+                                   jsf:value="#{employeeValidation.rePassword}"
+                                   jsf:redisplay="true"
+                                   jsf:validator="#{employeeValidation.validateRePassword}">
+                                <f:ajax event="change"
+                                        execute="@this"
+                                        render="@form add-employee-password-form"/>
+                            </input>
+                            <h:message for="add-employee-repassword" styleClass="form-msg col-danger"/>
+                        </div>
+                    </h:form>
+                    <div class="form-top">
                         <label for="add-employer-phone">Telefon</label>
                         <input type="text"
                                jsf:id="add-employer-phone"
@@ -80,9 +130,9 @@
                                          value="#{employerBean.employerDto.contract}">
                             <f:selectItem noSelectionOption="false" itemLabel="Wybierz"/>
                             <f:selectItems value="#{employerBean.availableContracts}"
-                                           var="c"
-                                           itemLabel="#{c}"
-                                           itemValue="#{c.name()}"/>
+                                           var="cont"
+                                           itemLabel="#{cont}"
+                                           itemValue="#{cont.name()}"/>
 
                             <f:ajax event="change"
                                     execute="@this"

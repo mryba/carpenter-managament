@@ -12,7 +12,7 @@ import lombok.Setter;
 public class EmployerDto {
 
     //Employer
-    private CompanyDto companyDto;
+    private Long id;
     private String firstName;
     private String lastName;
     private String phone;
@@ -23,6 +23,10 @@ public class EmployerDto {
     private String contract;
     private String bankAccountNumber;
     private String gender;
+    private boolean activeAccount;
+
+    //Company
+    private Long companyId;
 
     //Address
     private String city;
@@ -31,4 +35,5 @@ public class EmployerDto {
     private String streetNumber;
     private String houseNumber;
     private String country;
+
 }

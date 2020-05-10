@@ -1,11 +1,14 @@
 package com.carpenter.core.control.service.employee;
 
+import com.carpenter.core.control.dto.CompanyDto;
 import com.carpenter.core.control.dto.EmployerDto;
 import com.carpenter.core.control.service.company.CompanyService;
+import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.dictionaries.Contract;
 import com.carpenter.core.entity.dictionaries.Countries;
 import com.carpenter.core.entity.dictionaries.Gender;
+import com.carpenter.core.entity.dictionaries.Role;
 import com.carpenter.core.entity.employee.Employer;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,23 +35,50 @@ public class EmployerBean implements Serializable {
     @Inject
     CompanyService companyService;
 
+    @Inject
+    PrincipalBean principalBean;
+
+    @Getter
+    @Setter
+    @Inject
+    EmployeeValidation employeeValidation;
+
     @Getter
     @Setter
     private EmployerDto employerDto;
 
     private boolean isAddAddress;
+    private boolean isAccountCreate;
 
     @PostConstruct
     public void init() {
         employerDto = new EmployerDto();
     }
 
-    public void saveEmployee(){
+    public void saveEmployee() {
         Employer employee = employerService.createEmployee(employerDto);
-        Company company = companyService.getCompanyById(1L);
+
+        Company company = getCompanyBasedOnLoggedUser();
         employee.setCompany(company);
 
+        if (isAccountCreate) {
+            String password = employeeValidation.getHashedPassword();
+            employee.setPassword(password);
+        }
+
         employerService.saveEmployee(employee);
+    }
+
+    public Company getCompanyBasedOnLoggedUser() {
+        if (principalBean.getLoggedUser().isInRole(Role.ADMINISTRATOR.name()) && employerDto.getCompanyId() != null) {
+            return companyService.getCompanyById(employerDto.getCompanyId());
+        }
+
+        if (principalBean.getLoggedUser().isInRole(Role.MANAGER.name())) {
+            return principalBean.getLoggedUser().getCompany();
+        }
+
+        return null;
     }
 
     public List<Employer> getEmployersList() {
@@ -99,4 +129,19 @@ public class EmployerBean implements Serializable {
         employerDto.setCountry(null);
     }
 
+    public List<CompanyDto> getCompanies() {
+        return companyService.getAllActiveCompanies();
+    }
+
+    public boolean isAccountCreate() {
+        return isAccountCreate;
+    }
+
+    public void setAccountCreate(boolean isAccountCreate) {
+        this.isAccountCreate = isAccountCreate;
+        if (!isAccountCreate) {
+            employerDto.setPassword(null);
+            employerDto.setRePassword(null);
+        }
+    }
 }

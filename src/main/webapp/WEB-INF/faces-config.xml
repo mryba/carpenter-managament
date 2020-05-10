@@ -9,6 +9,11 @@
             <base-name>LoginMessages</base-name>
             <var>login_msg</var>
         </resource-bundle>
+
+        <resource-bundle>
+            <base-name>ValidationMessages</base-name>
+            <var>validation_msg</var>
+        </resource-bundle>
     </application>
 </faces-config>
 

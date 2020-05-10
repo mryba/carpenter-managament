@@ -13,6 +13,12 @@ import java.util.Set;
 @Table(name = "COMPANY")
 @Entity
 @Access(AccessType.FIELD)
+@NamedQueries({
+        @NamedQuery(
+                name = "Company.findAllActiveCompanies",
+                query = "SELECT new com.carpenter.core.control.dto.CompanyDto(c.id, c.name) FROM Company c WHERE c.deleteDate is NULL"
+        )
+})
 public class Company extends DomainObject {
 
     private static final long serialVersionUID = -5294397336583896621L;

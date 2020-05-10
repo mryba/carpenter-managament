@@ -95,6 +95,7 @@ public class Employer extends DomainObject {
     private Gender gender;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @JoinColumn(name = "EMPLOYER_ID", referencedColumnName = "ID")
     @XmlTransient
     private List<Address> addresses;
 
@@ -104,6 +105,9 @@ public class Employer extends DomainObject {
     @XmlJavaTypeAdapter(MobilPhoneNumberAdapter.class)
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
+
+    @Column(name = "ACCOUNT_ACTIVE")
+    private Boolean accountActive;
 
     public void addRole(Role role) {
         if (role == null) {

@@ -1,8 +1,6 @@
 package com.carpenter.core.control.service.employee;
 
 import com.carpenter.core.control.dto.EmployerDto;
-import com.carpenter.core.control.service.company.CompanyMapper;
-import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.dictionaries.Contract;
 import com.carpenter.core.entity.dictionaries.Gender;
 import com.carpenter.core.entity.dictionaries.Role;
@@ -24,6 +22,7 @@ public class EmployeeMapper implements Mapper<Employer, EmployerDto> {
                 .lastName(employerDto.getLastName())
                 .gender(Gender.valueOf(employerDto.getGender()))
                 .phoneNumber(employerDto.getPhone())
+                .accountActive(Boolean.TRUE)
                 .build();
 
         employer.addRole(Role.EMPLOYER);
