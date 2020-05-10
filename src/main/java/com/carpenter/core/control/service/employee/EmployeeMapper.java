@@ -31,10 +31,11 @@ public class EmployeeMapper implements Mapper<Employer, EmployerDto> {
     }
 
     private Address mapAddressToDomain(EmployerDto employerDto) {
-        return new Address(
-                employerDto.getCity(), employerDto.getPostalCode(), employerDto.getStreet(), employerDto.getStreetNumber(), employerDto.getHouseNumber(), employerDto.getCountry()
-        );
-
+        if (employerDto.getCity() != null && employerDto.getPostalCode() != null) {
+            return new Address(
+                    employerDto.getCity(), employerDto.getPostalCode(), employerDto.getStreet(), employerDto.getStreetNumber(), employerDto.getHouseNumber(), employerDto.getCountry());
+        }
+        return new Address();
     }
 
     @Override

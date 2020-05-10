@@ -31,23 +31,28 @@
                         </div>
                     </div>
 
-                    <div class="form-top">
+                    <div class="form-top" jsf:id="employee-first-name-id">
                         <label for="add-employer-name">Imię</label>
                         <input type="text"
                                jsf:id="add-employer-name"
-                               jsf:value="#{employerBean.employerDto.firstName}">
-                            <f:ajax event="change"
-                                    execute="@this"/>
+                               jsf:value="#{employerBean.employerDto.firstName}"
+                               jsf:validator="#{employeeValidation.validateEmptyField}">
+                            <f:ajax event="blur"
+                                    execute="@this"
+                                    render="employee-first-name-id"/>
                         </input>
+                        <h:message for="add-employer-name" styleClass="form-msg col-danger"/>
                     </div>
 
-                    <div class="form-top">
+                    <div class="form-top" jsf:id="employee-last-name-id">
                         <label for="add-employer-lastName">Nazwisko</label>
                         <input type="text"
                                jsf:id="add-employer-lastName"
-                               jsf:value="#{employerBean.employerDto.lastName}">
-                            <f:ajax event="change"
-                                    execute="@this"/>
+                               jsf:value="#{employerBean.employerDto.lastName}"
+                               jsf:validator="#{employeeValidation.validateEmptyField}">
+                            <f:ajax event="blur"
+                                    execute="@this"
+                                    render="employee-last-name-id"/>
                         </input>
                     </div>
 
@@ -65,13 +70,14 @@
                         </h:selectOneMenu>
                     </div>
 
-                    <div class="form-top">
+                    <div class="form-top" jsf:id="employee-email-id">
                         <label for="add-employer-email">Email</label>
                         <input type="text"
                                jsf:id="add-employer-email"
                                jsf:value="#{employerBean.employerDto.email}">
                             <f:ajax event="change"
-                                    execute="@this"/>
+                                    execute="@this"
+                                    render="employee-email-id"/>
                         </input>
                     </div>
 
@@ -84,36 +90,34 @@
                         </h:selectBooleanCheckbox>
                     </div>
 
-                    <h:form id="add-employee-password-form">
+                    <div class="form-top" jsf:id="employee-password-id" jsf:rendered="#{employerBean.accountCreate}">
+                        <label for="add-employee-password">Hasło</label>
+                        <input type="password"
+                               jsf:id="add-employee-password"
+                               jsf:value="#{employeeValidation.password}"
+                               jsf:redisplay="true"
+                               jsf:validator="#{employeeValidation.validateFirstPassword}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="employee-password-id"/>
+                        </input>
+                        <h:message for="add-employee-password" styleClass="form-msg col-danger"/>
+                    </div>
 
-                        <div class="form-top" jsf:rendered="#{employerBean.accountCreate}">
-                            <label for="add-employee-password">Hasło</label>
-                            <input type="password"
-                                   jsf:id="add-employee-password"
-                                   jsf:value="#{employeeValidation.password}"
-                                   jsf:redisplay="true"
-                                   jsf:validator="#{employeeValidation.validateFirstPassword}">
-                                <f:ajax event="change"
-                                        execute="@this"
-                                        render="@form add-employee-password-form"/>
-                            </input>
-                            <h:message for="add-employee-password" styleClass="form-msg col-danger"/>
-                        </div>
+                    <div class="form-top" jsf:id="employee-rePassword-id" jsf:rendered="#{employerBean.accountCreate}">
+                        <label for="add-employee-repassword">Powtórz hasło</label>
+                        <input type="password"
+                               jsf:id="add-employee-repassword"
+                               jsf:value="#{employeeValidation.rePassword}"
+                               jsf:redisplay="true"
+                               jsf:validator="#{employeeValidation.validateRePassword}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="employee-rePassword-id"/>
+                        </input>
+                        <h:message for="add-employee-repassword" styleClass="form-msg col-danger"/>
+                    </div>
 
-                        <div class="form-top" jsf:rendered="#{employerBean.accountCreate}">
-                            <label for="add-employee-repassword">Powtórz hasło</label>
-                            <input type="password"
-                                   jsf:id="add-employee-repassword"
-                                   jsf:value="#{employeeValidation.rePassword}"
-                                   jsf:redisplay="true"
-                                   jsf:validator="#{employeeValidation.validateRePassword}">
-                                <f:ajax event="change"
-                                        execute="@this"
-                                        render="@form add-employee-password-form"/>
-                            </input>
-                            <h:message for="add-employee-repassword" styleClass="form-msg col-danger"/>
-                        </div>
-                    </h:form>
                     <div class="form-top">
                         <label for="add-employer-phone">Telefon</label>
                         <input type="text"
@@ -128,7 +132,6 @@
                         <label>Umowa</label>
                         <h:selectOneMenu id="add-employer-contract"
                                          value="#{employerBean.employerDto.contract}">
-                            <f:selectItem noSelectionOption="false" itemLabel="Wybierz"/>
                             <f:selectItems value="#{employerBean.availableContracts}"
                                            var="cont"
                                            itemLabel="#{cont}"
@@ -136,13 +139,13 @@
 
                             <f:ajax event="change"
                                     execute="@this"
-                                    render="@form :employerTableForm"/>
+                                    render="employer-nip-id"/>
 
                         </h:selectOneMenu>
                     </div>
 
                     <div class="form-top"
-                         jsf:id="employer-nip"
+                         jsf:id="employer-nip-id"
                          jsf:rendered="#{employerBean.selfEmploymentOfContract}">
                         <label for="add-employer-nip">NIP</label>
                         <input type="text"

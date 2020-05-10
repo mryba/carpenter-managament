@@ -38,8 +38,6 @@ public class EmployerBean implements Serializable {
     @Inject
     PrincipalBean principalBean;
 
-    @Getter
-    @Setter
     @Inject
     EmployeeValidation employeeValidation;
 

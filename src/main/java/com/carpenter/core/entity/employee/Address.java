@@ -29,8 +29,7 @@ public class Address extends DomainObject {
     private String city;
 
     @Basic
-    @NotNull
-//    @Pattern(regexp = "\\d{2}-\\d{3}")
+    @Pattern(regexp = "\\d{2}-\\d{3}", message = "Niepoprawny kod pocztowy")
     @Column(name = "POSTAL_CODE")
     private String postalCode;
 

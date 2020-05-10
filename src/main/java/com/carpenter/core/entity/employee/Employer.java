@@ -51,10 +51,9 @@ public class Employer extends DomainObject {
 
     @Column(name = "EMAIL")
     @NotNull
-//    @Pattern(regexp = ConstantsRegex.EMAIL_PATTERN)
+    @Pattern(regexp = ConstantsRegex.EMAIL_PATTERN)
     private String email;
 
-//    @NotNull
     @XmlTransient
     @Column(name = "PASSWORD")
     private String password;
@@ -100,10 +99,10 @@ public class Employer extends DomainObject {
     private List<Address> addresses;
 
     @Basic
-//    @Pattern(regexp = MSISDN_PATTERN)
+    @Column(name = "PHONE_NUMBER")
+    @Pattern(regexp = MSISDN_PATTERN)
     @Size(max = 16)
     @XmlJavaTypeAdapter(MobilPhoneNumberAdapter.class)
-    @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
 
     @Column(name = "ACCOUNT_ACTIVE")

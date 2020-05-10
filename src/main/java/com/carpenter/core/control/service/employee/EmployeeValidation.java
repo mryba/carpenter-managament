@@ -1,6 +1,5 @@
 package com.carpenter.core.control.service.employee;
 
-import org.apache.commons.codec.cli.Digest;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.annotation.PostConstruct;
@@ -93,5 +92,16 @@ public class EmployeeValidation implements Serializable {
             return DigestUtils.sha256Hex(password);
         }
         return null;
+    }
+
+    public void validateEmptyField(FacesContext facesContext, UIComponent component, Object value) {
+        if (value == null || value.toString().isEmpty()) {
+            throw new ValidatorException(
+                    new FacesMessage(
+                            resourceBundle.getString("com.carpenter.notNull"),
+                            resourceBundle.getString("com.carpenter.notNull")
+                    )
+            );
+        }
     }
 }
