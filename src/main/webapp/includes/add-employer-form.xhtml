@@ -54,6 +54,7 @@
                                     execute="@this"
                                     render="employee-last-name-id"/>
                         </input>
+                        <h:message for="add-employer-lastName" styleClass="form-msg col-danger"/>
                     </div>
 
                     <div class="form-top">
@@ -74,23 +75,27 @@
                         <label for="add-employer-email">Email</label>
                         <input type="text"
                                jsf:id="add-employer-email"
-                               jsf:value="#{employerBean.employerDto.email}">
-                            <f:ajax event="change"
+                               jsf:value="#{employerBean.employerDto.email}"
+                               jsf:validator="#{employeeValidation.validateEmptyField}">
+                            <f:ajax event="blur"
                                     execute="@this"
                                     render="employee-email-id"/>
                         </input>
+                        <h:message for="add-employer-email" styleClass="form-msg col-danger"/>
                     </div>
 
-                    <div class="form-top">
+                    <div class="form-top" jsf:id="employee-account-type-id">
                         <label>Stworzyć konto</label>
                         <h:selectBooleanCheckbox id="add-employee-account-type"
                                                  value="#{employerBean.accountCreate}">
                             <f:ajax event="change"
-                                    render="@form :employerTableForm"/>
+                                    execute="@this"
+                                    render="@form :add-employer-form"/>
                         </h:selectBooleanCheckbox>
                     </div>
 
-                    <div class="form-top" jsf:id="employee-password-id" jsf:rendered="#{employerBean.accountCreate}">
+                    <div class="form-top" jsf:id="employee-password-id"
+                         jsf:rendered="#{employerBean.accountCreate}">
                         <label for="add-employee-password">Hasło</label>
                         <input type="password"
                                jsf:id="add-employee-password"
@@ -139,7 +144,7 @@
 
                             <f:ajax event="change"
                                     execute="@this"
-                                    render="employer-nip-id"/>
+                                    render="@form :employerTableForm"/>
 
                         </h:selectOneMenu>
                     </div>
@@ -241,7 +246,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <h:commandLink class="btn btn-primary"
+                    <h:commandLink class="btn btn-primary "
                                    action="#{employerBean.saveEmployee}">
                         <i class="fa-arrows-alt-h"></i> Zapisz
                     </h:commandLink>
