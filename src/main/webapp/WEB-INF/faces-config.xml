@@ -14,6 +14,11 @@
             <base-name>ValidationMessages</base-name>
             <var>validation_msg</var>
         </resource-bundle>
+
+        <resource-bundle>
+            <base-name>EmployeeMessages</base-name>
+            <var>employee_msg</var>
+        </resource-bundle>
     </application>
 </faces-config>
 

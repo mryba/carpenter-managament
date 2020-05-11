@@ -63,7 +63,7 @@
                                          value="#{employerBean.employerDto.gender}">
                             <f:selectItems value="#{employerBean.genders}"
                                            var="g"
-                                           itemLabel="#{g}"
+                                           itemLabel="#{employee_msg['gender_'.concat(g.name())]}"
                                            itemValue="#{g}"/>
                             <f:ajax event="change"
                                     execute="@this"/>
@@ -127,10 +127,12 @@
                         <label for="add-employer-phone">Telefon</label>
                         <input type="text"
                                jsf:id="add-employer-phone"
-                               jsf:value="#{employerBean.employerDto.phone}">
+                               jsf:value="#{employerBean.employerDto.phone}"
+                               jsf:validator="#{employeeValidation.validateEmptyField}">
                             <f:ajax event="change"
                                     execute="@this"/>
                         </input>
+                        <h:message for="add-employer-phone" styleClass="form-msg col-danger"/>
                     </div>
 
                     <div class="form-top">
@@ -139,7 +141,7 @@
                                          value="#{employerBean.employerDto.contract}">
                             <f:selectItems value="#{employerBean.availableContracts}"
                                            var="cont"
-                                           itemLabel="#{cont}"
+                                           itemLabel="#{employee_msg['contract_'.concat(cont.name())]}"
                                            itemValue="#{cont.name()}"/>
 
                             <f:ajax event="change"
@@ -237,9 +239,9 @@
                         <label>Kraj</label>
                         <h:selectOneMenu>
                             <f:selectItems value="#{employerBean.countries}"
-                                           var="c"
-                                           itemLabel="#{c}"
-                                           itemValue="#{c.name()}">
+                                           var="country"
+                                           itemLabel="#{employee_msg['country_'.concat(country.name())]}"
+                                           itemValue="#{country.name()}">
 
                             </f:selectItems>
                         </h:selectOneMenu>
