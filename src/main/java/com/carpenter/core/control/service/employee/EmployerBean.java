@@ -88,15 +88,28 @@ public class EmployerBean implements Serializable {
     }
 
     public boolean isSelfEmploymentOfContract() {
-        String contract = employerDto.getContract();
-        if (contract != null) {
-            return contract.equals("SELF_EMPLOYMENT");
+        if (employerDto != null) {
+            String contract = employerDto.getContract();
+            if (contract != null) {
+                return contract.equals("SELF_EMPLOYMENT");
+            }
         }
         return false;
     }
 
     public Gender[] getGenders() {
         return Gender.values();
+    }
+
+    public void cleanEmployeeForm() {
+        employerDto.setFirstName(null);
+        employerDto.setLastName(null);
+        employerDto.setEmail(null);
+        employerDto.setNipNumber(null);
+        employerDto.setPhone(null);
+
+        setAccountCreate(false);
+        setAddAddress(false);
     }
 
     public boolean isAddAddress() {

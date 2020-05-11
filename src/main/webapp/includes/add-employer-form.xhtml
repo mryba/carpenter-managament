@@ -76,7 +76,7 @@
                         <input type="text"
                                jsf:id="add-employer-email"
                                jsf:value="#{employerBean.employerDto.email}"
-                               jsf:validator="#{employeeValidation.validateEmptyField}">
+                               jsf:validator="#{employeeValidation.validateEmail}">
                             <f:ajax event="blur"
                                     execute="@this"
                                     render="employee-email-id"/>
@@ -248,9 +248,18 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <h:commandLink class="btn btn-primary "
+                    <h:commandLink styleClass="btn col-danger bordered"
+                                   p:data-dismiss="modal"
+                                   p:data-toggle="modal">
+                        <f:ajax event="click"
+                                render="@form :add-employer-form"
+                                listener="#{employerBean.cleanEmployeeForm}"
+                                resetValues="true"/>
+                        <i class="fa fa-times"></i> Anuluj
+                    </h:commandLink>
+                    <h:commandLink class="btn col-primary"
                                    action="#{employerBean.saveEmployee}">
-                        <i class="fa-arrows-alt-h"></i> Zapisz
+                        <i class="fa fa-check"></i> Zapisz
                     </h:commandLink>
                 </div>
             </h:form>

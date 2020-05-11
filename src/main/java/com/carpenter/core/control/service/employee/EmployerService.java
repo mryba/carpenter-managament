@@ -33,4 +33,9 @@ public class EmployerService implements Serializable {
     public void saveEmployee(Employer employee) {
         employerRepository.saveEmployee(employee);
     }
+
+    public boolean getEmployeeByEmail(String email) {
+        Long employeeByEmail = employerRepository.findEmployeeByEmail(email);
+        return employeeByEmail > 0;
+    }
 }

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.Collections;
@@ -39,5 +40,16 @@ public class EmployerRepository implements Serializable {
 
     public void saveEmployee(Employer employer) {
         entityManager.merge(employer);
+    }
+
+    public Long findEmployeeByEmail(String email) {
+        try {
+            return entityManager.createQuery("SELECT e.id FROM Employer e WHERE e.email =:email ", Long.class)
+                    .setParameter("email", email)
+                    .getResultList()
+                    .stream().findFirst().orElse(0L);
+        } catch (NonUniqueResultException e) {
+            return 0L;
+        }
     }
 }

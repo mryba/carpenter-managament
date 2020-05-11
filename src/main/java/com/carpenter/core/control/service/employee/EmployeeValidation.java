@@ -1,6 +1,7 @@
 package com.carpenter.core.control.service.employee;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.omnifaces.util.Faces;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -8,6 +9,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -24,6 +26,9 @@ public class EmployeeValidation implements Serializable {
     private static final String RE_PASSWORD = "RE_PASSWORD";
 
     private ResourceBundle resourceBundle = ResourceBundle.getBundle("ValidationMessages");
+
+    @Inject
+    EmployerService employerService;
 
     private String password;
     private String rePassword;
@@ -94,6 +99,21 @@ public class EmployeeValidation implements Serializable {
         return null;
     }
 
+    public void validateEmail(FacesContext facesContext, UIComponent component, Object value) {
+        validateEmptyField(facesContext, component, value);
+
+        String email = (String) value;
+        boolean isEmployeeWithThatEmailExists = employerService.getEmployeeByEmail(email);
+        if (isEmployeeWithThatEmailExists) {
+            throw new ValidatorException(
+                    new FacesMessage(
+                            resourceBundle.getString("employee.email.exists"),
+                            resourceBundle.getString("employee.email.exists")
+                    )
+            );
+        }
+    }
+
     public void validateEmptyField(FacesContext facesContext, UIComponent component, Object value) {
         if (value == null || value.toString().isEmpty()) {
             throw new ValidatorException(
@@ -104,4 +124,5 @@ public class EmployeeValidation implements Serializable {
             );
         }
     }
+
 }
