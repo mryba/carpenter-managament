@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <h:head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"/>
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,900&#38;;display=swap&#38;;subset=latin-ext"
+              rel="stylesheet"/>
+
+        <!--BOOTSTRAP MODAL -->
+        <h:outputStylesheet library="carpenter" name="plugins/bootstrap-modal.css"/>
+
+        <!-- JS -->
+        <h:outputScript library="carpenter" name="/js/jquery-3.4.1.min.js"/>
+        <h:outputScript library="carpenter" name="/js/modal-bootstrap.js"/>
+
+        <!--CSS -->
+        <h:outputStylesheet library="carpenter" name="secure/style.css"/>
+
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <div class="crm-header">
+
+                <div class="main-menu">
+                    <h:commandLink>
+                        <i class="fas fa-calendar-check"></i>Kalendarz
+                    </h:commandLink>
+
+                    <h:commandLink
+                            action="#{navigationBean.employersRedirect}">
+                        <i class="fas fa-users"></i>Pracownicy
+                    </h:commandLink>
+
+                    <h:commandLink>
+                        <i class="fas fa-user-tie"></i>Klienci
+                    </h:commandLink>
+
+                    <h:commandLink>
+                        <i class="fas fa-file-invoice-dollar"></i>Faktury
+                    </h:commandLink>
+                </div>
+
+                <div class="user-panel">
+                    <div class="user-avatar">
+                        <i class="far fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <h4>#{principalBean.loggedUser.firstName} #{principalBean.loggedUser.lastName}</h4>
+                        <h4>#{principalBean.loggedUser.company.name}</h4>
+                    </div>
+
+                    <h:commandLink action="#{loginController.logout}">
+                        Wyloguj <i class="fa fa-chevron-right"/>
+                    </h:commandLink>
+                </div>
+
+            </div>
+
+        </h:form>
+
+        <!--CONTENT -->
+        <div class="site-content" jsf:id="mainContainer">
+            <ui:insert name="content"/>
+        </div>
+
+    </h:body>
+
+</ui:composition>
