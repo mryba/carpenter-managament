@@ -123,16 +123,23 @@
                         <h:message for="add-employee-repassword" styleClass="form-msg col-danger"/>
                     </div>
 
-                    <div class="form-top">
+                    <div class="form-top" jsf:id="add-employee-phone-group">
                         <label for="add-employer-phone">Telefon</label>
-                        <input type="text"
-                               jsf:id="add-employer-phone"
-                               jsf:value="#{employerBean.employerDto.phone}"
-                               jsf:validator="#{employeeValidation.validateEmptyField}">
-                            <f:ajax event="change"
-                                    execute="@this"/>
-                        </input>
-                        <h:message for="add-employer-phone" styleClass="form-msg col-danger"/>
+                        <div class="form-phone">
+                            <input type="text"
+                                   jsf:id="add-employer-phone"
+                                   jsf:value="#{employerBean.employerDto.phone}"
+                                   jsf:converter="country-code-converter"
+                                   jsf:validator="#{employeeValidation.validateEmptyField}">
+                                <f:ajax event="blur"
+                                        execute="@this"
+                                        render="add-employee-phone-group"/>
+                            </input>
+                            <div class="country-label">
+                                <h:graphicImage value="#{resource['carpenter:img/pl-flag.png']}"/> +48
+                            </div>
+                            <h:message for="add-employer-phone" styleClass="form-msg col-danger"/>
+                        </div>
                     </div>
 
                     <div class="form-top">
