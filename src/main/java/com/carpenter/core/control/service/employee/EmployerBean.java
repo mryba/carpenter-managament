@@ -4,6 +4,7 @@ import com.carpenter.core.control.dto.CompanyDto;
 import com.carpenter.core.control.dto.EmployerDto;
 import com.carpenter.core.control.service.company.CompanyService;
 import com.carpenter.core.control.service.login.PrincipalBean;
+import com.carpenter.core.control.utils.logger.Logged;
 import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.dictionaries.Contract;
 import com.carpenter.core.entity.dictionaries.Countries;
@@ -23,6 +24,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Logged
 @Named("employerBean")
 @ViewScoped
 public class EmployerBean implements Serializable {
