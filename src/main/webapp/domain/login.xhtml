@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:o="http://omnifaces.org/ui"
       xmlns:jsf="http://xmlns.jcp.org/jsf"
@@ -19,19 +20,14 @@
 <f:metadata>
     <f:event listener="#{loginController.isLogged}" type="preRenderView"/>
 </f:metadata>
-<body>
-
 <ui:composition template="template/domain-template.xhtml">
-
     <ui:define name="content">
         <div class="container">
             <h:form>
                 <div>
-                    <o:outputLabel styleClass="login-output"
-                                   for="email"
+                    <o:outputLabel for="email"
                                    value="#{login_msg.email}"/>
                     <h:inputText styleClass="login-input" id="email"
-                                 binding="#{usernameBinding}"
                                  validator="#{loginValidator.validateEmail}"
                                  value="#{loginController.email}"
                                  p:autofocus="autofocus"/>
@@ -39,19 +35,16 @@
                 </div>
 
                 <div>
-                    <o:outputLabel styleClass="login-output"
-                                   for="password"
+                    <o:outputLabel for="password"
                                    value="#{login_msg.password}"/>
                     <h:inputSecret styleClass="login-input" id="password"
-                                   binding="#{passwordBinding}"
                                    validator="#{loginValidator.validatePassword}"
                                    value="#{loginController.password}"/>
                     <h:message for="password" styleClass="domain-form-msg danger-col"/>
                 </div>
 
-                <div jsf:id="login-error-message" jsf:rendered="#{(not loginController.errorComponent.valid)
-                or (!usernameBinding.valid) or (!passwordBinding.valid)}">
-                    <h:message for="loginError"/>
+                <div class="error-message-login" jsf:rendered="#{not loginController.errorComponent.valid}">
+                    <h:message for="loginError" styleClass="domain-form-msg danger-col"/>
                 </div>
 
                 <h:inputHidden id="loginError" binding="#{loginController.errorComponent}"/>
@@ -59,16 +52,11 @@
                 <div class="center-button">
                     <button class="login-button" type="submit"
                             jsf:action="#{loginController.login}">
-                        Zaloguj <i class="fa fa-key"></i>
+                        <i class="fa fa-key"></i> Zaloguj
                     </button>
                 </div>
             </h:form>
-
-
         </div>
     </ui:define>
 </ui:composition>
-
-</body>
-
 </html>

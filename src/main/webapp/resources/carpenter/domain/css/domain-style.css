@@ -119,7 +119,7 @@ li a:hover {
     color: #428c42;
 }
 
-.login-output{
+.login-output {
     color: #39a5f1;
 }
 
@@ -154,6 +154,10 @@ li a:hover {
     background-color: #36b03c;
 }
 
+.error-message-login {
+    margin-top: 0.5em;
+}
+
 .domain-form-msg {
     font-size: 0.8em;
     text-transform: uppercase;
@@ -161,6 +165,7 @@ li a:hover {
     display: block;
     line-height: 1;
 }
+
 .domain-form-msg.danger-col {
     color: #b50031;
 }
