@@ -154,27 +154,13 @@ li a:hover {
     background-color: #36b03c;
 }
 
-
-/* .socials
-    width: 100%;
-    text-align: center;
-    background-color: #404040;;
-    height: 10em;
+.domain-form-msg {
+    font-size: 0.8em;
+    text-transform: uppercase;
+    padding: 0.5em 0.2em;
+    display: block;
+    line-height: 1;
 }
-
-.socialdivs{
-   width: 1000px;
-   margin-left: auto;
-   margin-right: auto;
-
+.domain-form-msg.danger-col {
+    color: #b50031;
 }
-
-.fb{
-    width: 250px;
-    height: 155px;
-    float: left;
-}
-
-.fb:hover{
-    background-color: #4668b3;
-} */

@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"/>
     <link href="https://fonts.googleapis.com/css?family=Lato:400,900&#38;;display=swap&#38;;subset=latin-ext"
           rel="stylesheet"/>
-    <h:outputScript library="carpenter" name="jquery-3.4.1.min.js"/>
+    <h:outputScript library="carpenter" name="/js/jquery-3.4.1.min.js"/>
 </h:head>
 
 <f:metadata>
@@ -27,22 +27,30 @@
         <div class="container">
             <h:form>
                 <div>
-                    <o:outputLabel styleClass="login-output" for="email" value="#{login_msg.email}"/>
-                    <h:inputText styleClass="login-input" id="email" binding="#{usernameBinding}"
+                    <o:outputLabel styleClass="login-output"
+                                   for="email"
+                                   value="#{login_msg.email}"/>
+                    <h:inputText styleClass="login-input" id="email"
+                                 binding="#{usernameBinding}"
+                                 validator="#{loginValidator.validateEmail}"
                                  value="#{loginController.email}"
                                  p:autofocus="autofocus"/>
+                    <h:message for="email" styleClass="domain-form-msg danger-col"/>
                 </div>
 
                 <div>
-                    <o:outputLabel styleClass="login-output" for="password" value="#{login_msg.password}"/>
-                    <h:inputSecret styleClass="login-input" id="password" binding="#{passwordBinding}"
+                    <o:outputLabel styleClass="login-output"
+                                   for="password"
+                                   value="#{login_msg.password}"/>
+                    <h:inputSecret styleClass="login-input" id="password"
+                                   binding="#{passwordBinding}"
+                                   validator="#{loginValidator.validatePassword}"
                                    value="#{loginController.password}"/>
+                    <h:message for="password" styleClass="domain-form-msg danger-col"/>
                 </div>
 
-                <div jsf:rendered="#{(not loginController.errorComponent.valid)
+                <div jsf:id="login-error-message" jsf:rendered="#{(not loginController.errorComponent.valid)
                 or (!usernameBinding.valid) or (!passwordBinding.valid)}">
-                    <h:message for="email"/>
-                    <h:message for="password"/>
                     <h:message for="loginError"/>
                 </div>
 
