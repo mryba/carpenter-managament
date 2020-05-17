@@ -2,16 +2,18 @@ package com.carpenter.core.entity.client;
 
 import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.DomainObject;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@Builder
 @Table(
         name = "CLIENTS",
         uniqueConstraints = @UniqueConstraint(name = "UNIQUE_NIP", columnNames = {"NIP"})
@@ -58,6 +60,12 @@ public class Client extends DomainObject {
 
     @Column(name = "WEB_SITE")
     private String webSite;
+
+    @Column(name = "STREET_NUMBER")
+    private String streetNumber;
+
+    @Column(name = "HOUSE_NUMBER")
+    private String houseNumber;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLIENT_ID", referencedColumnName = "ID")

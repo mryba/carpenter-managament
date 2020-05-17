@@ -2,6 +2,7 @@ package com.carpenter.core.control.service.client;
 
 import com.carpenter.core.control.dto.ClientDto;
 import com.carpenter.core.entity.client.Client;
+import com.carpenter.core.entity.employee.Employer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,5 +37,10 @@ public class ClientBean implements Serializable {
 
     public Client getClientByNip(String nip) {
         return clientService.getClientByNip(nip);
+    }
+
+    public void saveClient() {
+        Client client = clientService.createClient(clientDto);
+        clientService.addClient(client);
     }
 }

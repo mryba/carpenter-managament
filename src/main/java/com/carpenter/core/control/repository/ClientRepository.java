@@ -25,4 +25,8 @@ public class ClientRepository implements Serializable {
         return entityManager.createNamedQuery("Client.findAll", Client.class).getResultList();
     }
 
+    public void addClient(Client client) {
+        entityManager.merge(client);
+    }
+
 }

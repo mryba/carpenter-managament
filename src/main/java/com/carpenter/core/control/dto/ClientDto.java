@@ -21,5 +21,7 @@ public class ClientDto {
     private String email;
     private String phoneNumber;
     private String webSite;
+    private String streetNumber;
+    private String houseNumber;
 
 }

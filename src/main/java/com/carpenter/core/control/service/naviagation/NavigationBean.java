@@ -10,4 +10,8 @@ public class NavigationBean {
     public String employersRedirect(){
         return "/secure/employers/employers?faces-redirect=true";
     }
+
+    public String clientsRedirect() {
+        return "/secure/clients/clients?faces-redirect=true";
+    }
 }
