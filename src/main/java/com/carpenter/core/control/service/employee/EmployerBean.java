@@ -15,10 +15,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.annotation.PostConstruct;
+import javax.faces.component.UIInput;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.xml.registry.SaveException;
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -65,7 +68,6 @@ public class EmployerBean implements Serializable {
             String password = employeeValidation.getHashedPassword();
             employee.setPassword(password);
         }
-
         employerService.saveEmployee(employee);
     }
 
@@ -77,7 +79,6 @@ public class EmployerBean implements Serializable {
         if (principalBean.getLoggedUser().isInRole(Role.MANAGER.name())) {
             return principalBean.getLoggedUser().getCompany();
         }
-
         return null;
     }
 
@@ -85,8 +86,8 @@ public class EmployerBean implements Serializable {
         return employerService.getEmployersList();
     }
 
-    public Set<Contract> getAvailableContracts() {
-        return Stream.of(Contract.values()).collect(Collectors.toSet());
+    public List<Contract> getAvailableContracts() {
+        return Stream.of(Contract.values()).collect(Collectors.toList());
     }
 
     public boolean isSelfEmploymentOfContract() {

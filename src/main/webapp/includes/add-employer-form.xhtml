@@ -36,8 +36,8 @@
                         <input type="text"
                                jsf:id="add-employer-name"
                                jsf:value="#{employerBean.employerDto.firstName}"
-                               jsf:validator="#{employeeValidation.validateEmptyField}">
-                            <f:ajax event="blur"
+                               jsf:validator="#{employeeValidation.validateForename}">
+                            <f:ajax event="change"
                                     execute="@this"
                                     render="employee-first-name-id"/>
                         </input>
@@ -49,8 +49,8 @@
                         <input type="text"
                                jsf:id="add-employer-lastName"
                                jsf:value="#{employerBean.employerDto.lastName}"
-                               jsf:validator="#{employeeValidation.validateEmptyField}">
-                            <f:ajax event="blur"
+                               jsf:validator="#{employeeValidation.validateLastName}">
+                            <f:ajax event="change"
                                     execute="@this"
                                     render="employee-last-name-id"/>
                         </input>
@@ -90,37 +90,40 @@
                                                  value="#{employerBean.accountCreate}">
                             <f:ajax event="change"
                                     execute="@this"
-                                    render="@form :add-employer-form"/>
+                                    render="employee-password-id"/>
                         </h:selectBooleanCheckbox>
                     </div>
 
-                    <div class="form-top" jsf:id="employee-password-id"
-                         jsf:rendered="#{employerBean.accountCreate}">
-                        <label for="add-employee-password">Hasło</label>
-                        <input type="password"
-                               jsf:id="add-employee-password"
-                               jsf:value="#{employeeValidation.password}"
-                               jsf:redisplay="true"
-                               jsf:validator="#{employeeValidation.validateFirstPassword}">
-                            <f:ajax event="change"
-                                    execute="@this"
-                                    render="employee-password-id"/>
-                        </input>
-                        <h:message for="add-employee-password" styleClass="form-msg col-danger"/>
-                    </div>
+                    <div jsf:id="employee-password-id">
+                        <div jsf:rendered="#{employerBean.accountCreate}">
+                            <div class="form-top">
+                                <label for="add-employee-password">Hasło</label>
+                                <input type="password"
+                                       jsf:id="add-employee-password"
+                                       jsf:value="#{employeeValidation.password}"
+                                       jsf:redisplay="true"
+                                       jsf:validator="#{employeeValidation.validateFirstPassword}">
+                                    <f:ajax event="change"
+                                            execute="@this"
+                                            render="employee-password-id"/>
+                                </input>
+                                <h:message for="add-employee-password" styleClass="form-msg col-danger"/>
+                            </div>
 
-                    <div class="form-top" jsf:id="employee-rePassword-id" jsf:rendered="#{employerBean.accountCreate}">
-                        <label for="add-employee-repassword">Powtórz hasło</label>
-                        <input type="password"
-                               jsf:id="add-employee-repassword"
-                               jsf:value="#{employeeValidation.rePassword}"
-                               jsf:redisplay="true"
-                               jsf:validator="#{employeeValidation.validateRePassword}">
-                            <f:ajax event="change"
-                                    execute="@this"
-                                    render="employee-rePassword-id"/>
-                        </input>
-                        <h:message for="add-employee-repassword" styleClass="form-msg col-danger"/>
+                            <div class="form-top">
+                                <label for="add-employee-repassword">Powtórz hasło</label>
+                                <input type="password"
+                                       jsf:id="add-employee-repassword"
+                                       jsf:value="#{employeeValidation.rePassword}"
+                                       jsf:redisplay="true"
+                                       jsf:validator="#{employeeValidation.validateRePassword}">
+                                    <f:ajax event="change"
+                                            execute="@this"
+                                            render="employee-rePassword-id"/>
+                                </input>
+                                <h:message for="add-employee-repassword" styleClass="form-msg col-danger"/>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-top" jsf:id="add-employee-phone-group">
@@ -129,8 +132,8 @@
                             <input type="text"
                                    jsf:id="add-employer-phone"
                                    jsf:value="#{employerBean.employerDto.phone}"
-                                   jsf:converter="country-code-converter"
-                                   jsf:validator="#{employeeValidation.validateEmptyField}">
+                                   jsf:validator="#{employeeValidation.validatePhone}"
+                                   jsf:converter="country-code-converter">
                                 <f:ajax event="blur"
                                         execute="@this"
                                         render="add-employee-phone-group"/>
@@ -153,22 +156,21 @@
 
                             <f:ajax event="change"
                                     execute="@this"
-                                    render="@form :employerTableForm"/>
-
+                                    render="@this employer-nip-id"/>
                         </h:selectOneMenu>
-                    </div>
 
-                    <div class="form-top"
-                         jsf:id="employer-nip-id"
-                         jsf:rendered="#{employerBean.selfEmploymentOfContract}">
-                        <label for="add-employer-nip">NIP</label>
-                        <input type="text"
-                               jsf:id="add-employer-nip"
-                               jsf:value="#{employerBean.employerDto.nipNumber}">
-                            <f:ajax event="change"
-                                    execute="@this"
-                                    render="@form :employerTableForm"/>
-                        </input>
+                        <div jsf:id="employer-nip-id">
+                            <div class="form-top" jsf:rendered="#{employerBean.selfEmploymentOfContract}">
+                                <label for="add-employer-nip">NIP</label>
+                                <input type="text"
+                                       jsf:id="add-employer-nip"
+                                       jsf:value="#{employerBean.employerDto.nipNumber}">
+                                    <f:ajax event="change"
+                                            execute="@this"
+                                            render="@form :employerTableForm"/>
+                                </input>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-top">
@@ -177,83 +179,92 @@
                                                  value="#{employerBean.addAddress}">
                             <f:ajax event="change"
                                     execute="@this"
-                                    render="@form :employerTableForm"/>
+                                    render="add-employee-add-address-id"/>
                         </h:selectBooleanCheckbox>
                         <i class="far fa-address-card"></i>
                     </div>
 
                     <!-- Address -->
-                    <div class="form-top"
-                         jsf:rendered="#{employerBean.addAddress}">
-                        <label>Miasto / Wieś</label>
-                        <input type="text"
-                               jsf:id="add-employer-city"
-                               jsf:value="#{employerBean.employerDto.city}">
-                            <f:ajax event="change"
-                                    execute="@this"/>
-                        </input>
-                    </div>
+                    <div jsf:id="add-employee-add-address-id">
+                        <div jsf:rendered="#{employerBean.addAddress}">
+                            <div class="form-top">
+                                <label>Miasto / Wieś</label>
+                                <input type="text"
+                                       jsf:id="add-employer-city"
+                                       jsf:value="#{employerBean.employerDto.city}">
+                                    <f:ajax event="change"
+                                            execute="@this"/>
+                                </input>
+                            </div>
 
-                    <div class="form-top"
-                         jsf:rendered="#{employerBean.addAddress}">
-                        <label for="add-employer-postal-code">Kod pocztowy</label>
-                        <input type="text"
-                               jsf:id="add-employer-postal-code"
-                               jsf:value="#{employerBean.employerDto.postalCode}">
-                            <f:ajax event="change"
-                                    execute="@this"/>
-                        </input>
-                    </div>
+                            <div class="form-top"
+                                 jsf:rendered="#{employerBean.addAddress}">
+                                <label for="add-employer-postal-code">Kod pocztowy</label>
+                                <input type="text"
+                                       jsf:id="add-employer-postal-code"
+                                       jsf:value="#{employerBean.employerDto.postalCode}">
+                                    <f:ajax event="change"
+                                            execute="@this"/>
+                                </input>
+                            </div>
 
-                    <div class="form-top"
-                         jsf:rendered="#{employerBean.addAddress}">
-                        <label for="add-employer-street">Ulica</label>
-                        <input type="text"
-                               jsf:id="add-employer-street"
-                               jsf:value="#{employerBean.employerDto.street}">
-                            <f:ajax event="keyup"
-                                    delay="1000"
-                                    execute="@this"
-                                    render="@form :employerTableForm add-employer-street-number"/>
-                        </input>
+                            <div class="form-top"
+                                 jsf:rendered="#{employerBean.addAddress}">
+                                <label for="add-employer-street">Ulica</label>
+                                <input type="text"
+                                       jsf:id="add-employer-street"
+                                       jsf:value="#{employerBean.employerDto.street}">
+                                    <f:ajax event="keyup"
+                                            delay="300"
+                                            execute="@this"
+                                            render="add-employer-street-number-id"/>
+                                </input>
 
-                    </div>
+                                <div jsf:id="add-employer-street-number-id">
+                                    <div class="form-top" jsf:rendered="#{employerBean.streetNumberActive}">
+                                        <label for="add-employer-street-number">Numer ulicy</label>
+                                        <input type="text"
+                                               jsf:id="add-employer-street-number"
+                                               jsf:value="#{employerBean.employerDto.streetNumber}">
+                                            <f:ajax event="change"
+                                                    execute="@this"/>
+                                        </input>
+                                    </div>
+                                </div>
+                            </div>
 
-                    <div class="form-top"
-                         jsf:rendered="#{employerBean.streetNumberActive}">
-                        <label for="add-employer-street-number">Numer ulicy</label>
-                        <input type="text"
-                               jsf:id="add-employer-street-number"
-                               jsf:value="#{employerBean.employerDto.streetNumber}">
-                            <f:ajax event="change"
-                                    execute="@this"/>
-                        </input>
-                    </div>
+                            <div class="form-top"
+                                 jsf:rendered="#{employerBean.addAddress}">
+                                <label for="add-employer-house-number">Numer domu / mieszkania</label>
+                                <input type="text"
+                                       jsf:id="add-employer-house-number"
+                                       jsf:value="#{employerBean.employerDto.houseNumber}">
+                                    <f:ajax event="change"
+                                            execute="@this"/>
+                                </input>
+                            </div>
 
-                    <div class="form-top"
-                         jsf:rendered="#{employerBean.addAddress}">
-                        <label for="add-employer-house-number">Numer domu / mieszkania</label>
-                        <input type="text"
-                               jsf:id="add-employer-house-number"
-                               jsf:value="#{employerBean.employerDto.houseNumber}">
-                            <f:ajax event="change"
-                                    execute="@this"/>
-                        </input>
-                    </div>
-
-                    <div class="form-top"
-                         jsf:rendered="#{employerBean.addAddress}">
-                        <label>Kraj</label>
-                        <h:selectOneMenu>
-                            <f:selectItems value="#{employerBean.countries}"
-                                           var="country"
-                                           itemLabel="#{employee_msg['country_'.concat(country.name())]}"
-                                           itemValue="#{country.name()}">
-
-                            </f:selectItems>
-                        </h:selectOneMenu>
+                            <div class="form-top"
+                                 jsf:rendered="#{employerBean.addAddress}">
+                                <label>Kraj</label>
+                                <h:selectOneMenu>
+                                    <f:selectItems value="#{employerBean.countries}"
+                                                   var="country"
+                                                   itemLabel="#{employee_msg['country_'.concat(country.name())]}"
+                                                   itemValue="#{country.name()}">
+                                    </f:selectItems>
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <h:panelGroup id="validation-messages-container">
+                    <div class="infobox col-danger" jsf:rendered="#{not empty facesContext.messageList}">
+                        <h:messages/>
+                    </div>
+                </h:panelGroup>
+
                 <div class="modal-footer">
                     <h:commandLink styleClass="btn col-danger bordered"
                                    p:data-dismiss="modal"
@@ -264,10 +275,14 @@
                                 resetValues="true"/>
                         <i class="fa fa-times"></i> Anuluj
                     </h:commandLink>
-                    <h:commandLink class="btn col-primary"
-                                   action="#{employerBean.saveEmployee}">
-                        <i class="fa fa-check"></i> Zapisz
-                    </h:commandLink>
+
+                    <input type="submit"
+                           class="btn col-primary bordered fa fa-check"
+                           value="Zapisz"
+                           jsf:action="#{employerBean.saveEmployee}">
+                        <f:ajax execute="@form"
+                                render="@form employerTableForm closeDialogDiv"/>
+                    </input>
                 </div>
             </h:form>
         </div>

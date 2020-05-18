@@ -1068,3 +1068,91 @@ body {
 .form-msg.col-success {
     color: #52ac4d;
 }
+
+.infobox {
+    padding: 0.8em;
+    background: #fff;
+    border: 1px solid #0b2533;
+    color: #0b2533;
+    margin-bottom: 1em;
+    border-radius: 0.5em;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.infobox > i {
+    font-size: 1.3em;
+    margin-right: 0.5em;
+}
+.infobox > span {
+    margin-right: 0.5em;
+}
+.infobox .btn {
+    margin-left: auto;
+}
+.infobox.col-danger {
+    background: #b50031;
+    color: #fff;
+    border-color: #b50031;
+}
+.infobox.col-danger .btn {
+    color: #fff;
+}
+.infobox.col-danger.bordered {
+    background: inherit;
+    color: #b50031;
+}
+.infobox.col-danger.bordered .btn {
+    color: #b50031;
+}
+.infobox.col-success {
+    background: #52ac4d;
+    color: #fff;
+    border-color: #52ac4d;
+}
+.infobox.col-success .btn {
+    color: #fff;
+}
+.infobox.col-success.bordered {
+    background: inherit;
+    color: #52ac4d;
+}
+.infobox.col-success.bordered .btn {
+    color: #52ac4d;
+}
+.infobox.col-info {
+    background: #e8e7e1;
+    color: #0b2533;
+    border-color: #e8e7e1;
+}
+.infobox.col-info .btn {
+    color: #0b2533;
+}
+.infobox.col-info.bordered {
+    background: inherit;
+    border-color: #a7a189;
+    color: #484436;
+}
+.infobox.col-info.bordered .btn {
+    color: #484436;
+}
+.infobox ul {
+    padding: 0;
+    color: inherit;
+}
+.infobox ul li {
+    list-style-type: none;
+    padding: 0;
+}
+.infobox ul:last-child {
+    margin-bottom: 0;
+}
+.infobox.center {
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+.infobox.infobox-small {
+    font-size: 0.85em;
+}
