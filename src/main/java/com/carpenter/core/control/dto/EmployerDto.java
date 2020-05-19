@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Size;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,6 +17,7 @@ public class EmployerDto {
     private Long id;
     private String firstName;
     private String lastName;
+    @Size(max = 12, min = 12, message = "Hasło powinno zawierać 9 cyfr")
     private String phone;
     private String email;
     private String password;

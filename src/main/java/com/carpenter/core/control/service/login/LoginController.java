@@ -1,5 +1,6 @@
 package com.carpenter.core.control.service.login;
 
+import com.carpenter.core.control.utils.logger.Logged;
 import com.carpenter.core.entity.employee.Employer;
 
 import javax.annotation.PostConstruct;
@@ -21,6 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+@Logged
 @Named
 @ViewScoped
 public class LoginController implements Serializable {
