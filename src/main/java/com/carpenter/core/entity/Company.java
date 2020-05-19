@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -46,6 +47,9 @@ public class Company extends DomainObject {
 
     @OneToMany(mappedBy = "company")
     private Set<Employer> employers;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    private List<Offer> offers;
 
     public void addEmployee(Employer employer) {
         if (this.employers == null) {
