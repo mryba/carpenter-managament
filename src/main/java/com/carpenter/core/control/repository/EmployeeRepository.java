@@ -1,7 +1,6 @@
 package com.carpenter.core.control.repository;
 
-import com.carpenter.core.control.dto.EmployerDto;
-import com.carpenter.core.entity.employee.Employer;
+import com.carpenter.core.entity.employee.Employee;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.ejb.Stateless;
@@ -15,22 +14,22 @@ import java.util.List;
 
 @Slf4j
 @Stateless
-public class EmployerRepository implements Serializable {
+public class EmployeeRepository implements Serializable {
 
     private static final long serialVersionUID = -5269304361401704028L;
 
     @PersistenceContext
     private transient EntityManager entityManager;
 
-    public Employer getEmployerByEmail(String email) {
-        return entityManager.createNamedQuery("Employee.findEmployerByEmail", Employer.class)
+    public Employee getEmployeeByEmail(String email) {
+        return entityManager.createNamedQuery("Employee.findEmployerByEmail", Employee.class)
                 .setParameter("email", email).getSingleResult();
 
     }
 
-    public List<Employer> findAllEmployers() {
+    public List<Employee> findAllEmployees() {
         try {
-            return entityManager.createQuery("SELECT e from Employer e LEFT JOIN FETCH e.company WHERE e.deleteDate is NULL", Employer.class)
+            return entityManager.createQuery("SELECT e from Employee e LEFT JOIN FETCH e.company WHERE e.deleteDate is NULL", Employee.class)
                     .getResultList();
         } catch (NoResultException e) {
             log.error("No employers found!");
@@ -38,13 +37,13 @@ public class EmployerRepository implements Serializable {
         }
     }
 
-    public void saveEmployee(Employer employer) {
-        entityManager.merge(employer);
+    public void saveEmployee(Employee employee) {
+        entityManager.merge(employee);
     }
 
     public Long findEmployeeByEmail(String email) {
         try {
-            return entityManager.createQuery("SELECT e.id FROM Employer e WHERE e.email =:email ", Long.class)
+            return entityManager.createQuery("SELECT e.id FROM Employee e WHERE e.email =:email ", Long.class)
                     .setParameter("email", email)
                     .getResultList()
                     .stream().findFirst().orElse(0L);

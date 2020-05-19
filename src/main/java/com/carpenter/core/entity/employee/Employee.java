@@ -33,7 +33,7 @@ import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
 @NamedQueries(
         @NamedQuery(
                 name = "Employee.findEmployerByEmail",
-                query = "SELECT e FROM Employer e " +
+                query = "SELECT e FROM Employee e " +
                         "LEFT JOIN FETCH e.addresses " +
                         "LEFT JOIN FETCH e.roles " +
                         "LEFT JOIN FETCH e.company " +
@@ -41,7 +41,7 @@ import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
         )
 )
 @Access(AccessType.FIELD)
-public class Employer extends DomainObject {
+public class Employee extends DomainObject {
 
     private static final long serialVersionUID = -3270776706987062366L;
 

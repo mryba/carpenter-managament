@@ -1,6 +1,6 @@
 package com.carpenter.core.entity;
 
-import com.carpenter.core.entity.employee.Employer;
+import com.carpenter.core.entity.employee.Employee;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -45,12 +45,12 @@ public class Company extends DomainObject {
     private String phone;
 
     @OneToMany(mappedBy = "company")
-    private Set<Employer> employers;
+    private Set<Employee> employees;
 
-    public void addEmployee(Employer employer) {
-        if (this.employers == null) {
-            employers = new LinkedHashSet<>();
+    public void addEmployee(Employee employee) {
+        if (this.employees == null) {
+            employees = new LinkedHashSet<>();
         }
-        this.employers.add(employer);
+        this.employees.add(employee);
     }
 }

@@ -20,8 +20,8 @@
 
                             <a href="#" class="btn bordered col-primary"
                                data-toggle="modal"
-                               data-target="#add-employer"
-                               jsf:id="call-add-new-employer">
+                               data-target="#add-employee"
+                               jsf:id="call-add-new-employee">
                                 <i class="fas fa-user-circle"></i> Dodaj pracownika
                             </a>
                         </h:form>
@@ -47,6 +47,7 @@
                                 <th class="w10 left">NIP</th>
                                 <th class="w10 left">Umowa</th>
                                 <th class="w10 left">Numer konta Bankowego</th>
+                                <th class="w5"><i class="fas fa-user"></i></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -65,10 +66,17 @@
                                         #{e.nipNumber}
                                     </td>
                                     <td class="w10 left">
-                                        #{e.contract}
+                                        #{employee_msg['contract_'.concat(e.contract.name())]}
                                     </td>
                                     <td class="w10 left">
                                         #{e.bankAccountNumber}
+                                    </td>
+                                    <td class="w5">
+                                        <h:commandLink value="#{navigationBean.employeeRedirect}"
+                                                       styleClass="btn col-primary">
+                                            <f:param name="employeeId" value="#{e.id}"></f:param>
+                                            <i class="fa fa-caret-right"></i>
+                                        </h:commandLink>
                                     </td>
                                 </tr>
                             </ui:repeat>
@@ -78,11 +86,11 @@
                 </h:form>
 
             </div>
-            <ui:include src="/includes/add-employer-form.xhtml"/>
+            <ui:include src="/includes/add-employee-form.xhtml"/>
 
             <div jsf:id="closeDialogDiv">
                 <h:outputScript rendered="#{not facesContext.validationFailed}">
-                    $('#add-employer').modal('hide')
+                    $('#add-employee').modal('hide')
                 </h:outputScript>
             </div>
         </div>

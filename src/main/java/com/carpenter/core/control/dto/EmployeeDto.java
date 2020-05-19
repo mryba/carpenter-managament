@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployerDto {
+public class EmployeeDto {
 
     //Employer
     private Long id;

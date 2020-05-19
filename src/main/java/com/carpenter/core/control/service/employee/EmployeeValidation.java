@@ -24,7 +24,7 @@ public class EmployeeValidation implements Serializable {
     private ResourceBundle resourceBundle = ResourceBundle.getBundle("ValidationMessages");
 
     @Inject
-    EmployerService employerService;
+    EmployeeService employeeService;
 
     private String password;
     private String rePassword;
@@ -65,7 +65,7 @@ public class EmployeeValidation implements Serializable {
         validateEmptyField(facesContext, component, value, "employee.email.notNull");
 
         String email = (String) value;
-        boolean isEmployeeWithThatEmailExists = employerService.getEmployeeByEmail(email);
+        boolean isEmployeeWithThatEmailExists = employeeService.getEmployeeByEmail(email);
         if (isEmployeeWithThatEmailExists) {
             throw new ValidatorException(
                     new FacesMessage(
