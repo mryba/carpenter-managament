@@ -4,13 +4,12 @@ import com.carpenter.core.entity.employee.Employee;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+
+import static com.carpenter.utils.ConstantsRegex.FETCH_GRAPH;
 
 @Slf4j
 @Stateless
@@ -49,6 +48,18 @@ public class EmployeeRepository implements Serializable {
                     .stream().findFirst().orElse(0L);
         } catch (NonUniqueResultException e) {
             return 0L;
+        }
+    }
+
+    public Employee findEmployeeBeId(Long employeeId) {
+        try {
+            EntityGraph<?> graph = entityManager.getEntityGraph("Employee.addresses");
+            return entityManager.createNamedQuery("Employee.findEmployeeById", Employee.class)
+                    .setParameter("employeeId", employeeId)
+                    .setHint(FETCH_GRAPH, graph)
+                    .getResultList().iterator().next();
+        } catch (NonUniqueResultException e) {
+            return null;
         }
     }
 }

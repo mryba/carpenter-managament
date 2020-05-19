@@ -38,4 +38,8 @@ public class EmployeeService implements Serializable {
         Long employeeByEmail = employeeRepository.findEmployeeByEmail(email);
         return employeeByEmail > 0;
     }
+
+    public Employee getEmployeeById(Long employeeId) {
+        return employeeRepository.findEmployeeBeId(employeeId);
+    }
 }

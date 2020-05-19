@@ -31,15 +31,30 @@ import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
         uniqueConstraints = {@UniqueConstraint(name = "UNIQUE_EMAIL", columnNames = {"EMAIL"})
         })
 @NamedQueries(
-        @NamedQuery(
-                name = "Employee.findEmployerByEmail",
-                query = "SELECT e FROM Employee e " +
-                        "LEFT JOIN FETCH e.addresses " +
-                        "LEFT JOIN FETCH e.roles " +
-                        "LEFT JOIN FETCH e.company " +
-                        "WHERE e.email=:email"
-        )
+        {
+                @NamedQuery(
+                        name = "Employee.findEmployerByEmail",
+                        query = "SELECT e FROM Employee e " +
+                                "LEFT JOIN FETCH e.addresses " +
+                                "LEFT JOIN FETCH e.roles " +
+                                "LEFT JOIN FETCH e.company " +
+                                "WHERE e.email=:email"
+                ),
+                @NamedQuery(
+                        name = "Employee.findEmployeeById",
+                        query = "SELECT e FROM Employee e " +
+                                "WHERE e.id =:employeeId"
+                )
+        }
 )
+@NamedEntityGraphs({
+        @NamedEntityGraph(
+                name = "Employee.addresses",
+                attributeNodes = {
+                        @NamedAttributeNode(value = "addresses")
+                }
+        )
+})
 @Access(AccessType.FIELD)
 public class Employee extends DomainObject {
 

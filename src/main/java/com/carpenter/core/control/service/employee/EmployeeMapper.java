@@ -40,6 +40,26 @@ public class EmployeeMapper implements Mapper<Employee, EmployeeDto> {
 
     @Override
     public EmployeeDto mapToDomain(Employee employee) {
-        return null;
+        EmployeeDto employeeDto = EmployeeDto.builder()
+                .email(employee.getEmail())
+                .nipNumber(employee.getNipNumber() != null ? employee.getNipNumber() : "")
+                .contract(employee.getContract().name())
+                .bankAccountNumber(employee.getBankAccountNumber() !=null ? employee.getBankAccountNumber() : "")
+                .firstName(employee.getFirstName())
+                .lastName(employee.getLastName())
+                .gender(employee.getGender().name())
+                .phone(employee.getPhoneNumber() !=null ? employee.getPhoneNumber() : "")
+                .activeAccount(employee.getAccountActive())
+                .build();
+
+        if (employee.getAddresses() != null && !employee.getAddresses().isEmpty()) {
+            employeeDto.setCity(employee.getAddresses().iterator().next().getCity());
+            employeeDto.setPostalCode(employee.getAddresses().iterator().next().getPostalCode());
+            employeeDto.setStreet(employee.getAddresses().iterator().next().getStreetNumber());
+            employeeDto.setHouseNumber(employee.getAddresses().iterator().next().getHouseNumber());
+            employeeDto.setCountry(employee.getAddresses().iterator().next().getCountry());
+        }
+
+        return employeeDto;
     }
 }
