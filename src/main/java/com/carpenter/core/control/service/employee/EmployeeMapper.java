@@ -23,7 +23,9 @@ public class EmployeeMapper implements Mapper<Employee, EmployeeDto> {
                 .gender(Gender.valueOf(employeeDto.getGender()))
                 .phoneNumber(employeeDto.getPhone())
                 .accountActive(Boolean.TRUE)
+                .birthDate(employeeDto.getBirthDate())
                 .build();
+
 
         employee.addRole(Role.EMPLOYER);
         employee.addAddress(mapAddressToDomain(employeeDto));
@@ -44,11 +46,11 @@ public class EmployeeMapper implements Mapper<Employee, EmployeeDto> {
                 .email(employee.getEmail())
                 .nipNumber(employee.getNipNumber() != null ? employee.getNipNumber() : "")
                 .contract(employee.getContract().name())
-                .bankAccountNumber(employee.getBankAccountNumber() !=null ? employee.getBankAccountNumber() : "")
+                .bankAccountNumber(employee.getBankAccountNumber() != null ? employee.getBankAccountNumber() : "")
                 .firstName(employee.getFirstName())
                 .lastName(employee.getLastName())
                 .gender(employee.getGender().name())
-                .phone(employee.getPhoneNumber() !=null ? employee.getPhoneNumber() : "")
+                .phone(employee.getPhoneNumber() != null ? employee.getPhoneNumber() : "")
                 .activeAccount(employee.getAccountActive())
                 .build();
 

@@ -3,6 +3,8 @@ package com.carpenter.core.control.dto;
 import lombok.*;
 
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -37,4 +39,5 @@ public class EmployeeDto {
     private String houseNumber;
     private String country;
 
+    private Date birthDate;
 }

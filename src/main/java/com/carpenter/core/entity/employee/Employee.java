@@ -103,6 +103,9 @@ public class Employee extends DomainObject {
     @Column(name = "LAST_NAME")
     private String lastName;
 
+    @Column(name = "BIRTH_DATE")
+    private Date birthDate;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "GENDER")
     @XmlTransient

@@ -2,12 +2,14 @@ package com.carpenter.core.control.service.employee;
 
 import com.carpenter.core.control.dto.EmployeeDto;
 import com.carpenter.core.control.repository.EmployeeRepository;
+import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.entity.employee.Employee;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -19,6 +21,9 @@ public class EmployeeService implements Serializable {
     @Inject
     EmployeeRepository employeeRepository;
 
+    @Inject
+    PrincipalBean principalBean;
+
     private EmployeeMapper employeeMapper;
 
     public List<Employee> getEmployersList() {
@@ -27,7 +32,10 @@ public class EmployeeService implements Serializable {
 
     public Employee createEmployee(EmployeeDto employeeDto) {
         employeeMapper = new EmployeeMapper();
-        return employeeMapper.mapFromDomain(employeeDto);
+        Employee employee = employeeMapper.mapFromDomain(employeeDto);
+        employee.setCreateBy(principalBean.getLoggedUser().getEmail());
+        employee.setCreateDate(new Date());
+        return employee;
     }
 
     public void saveEmployee(Employee employee) {

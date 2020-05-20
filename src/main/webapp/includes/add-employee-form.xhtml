@@ -71,6 +71,30 @@
                         </h:selectOneMenu>
                     </div>
 
+                    <div class="form-top">
+                        <label>Data urodzenia</label>
+                        <h:inputText id="birthDate"
+                                     styleClass="datepicker"
+                                     value="#{employeeListBean.employeeDto.birthDate}"
+                                     p:placeholder="Data urodzenia">
+                            <f:convertDateTime pattern="yyyy-MM-dd"/>
+
+                            <f:ajax event="change"
+                                    delay="300"
+                                    execute="@this"/>
+                        </h:inputText>
+                        <h:outputScript>
+
+                            $(".datepicker").flatpickr({
+                                enableTime: true,
+                                dateFormat: "Y-m-d",
+                                time_24hr: true
+                            });
+
+                            tippy('[data-tippy-content]');
+
+                        </h:outputScript>
+                    </div>
                     <div class="form-top" jsf:id="employee-email-id">
                         <label for="add-employee-email">Email</label>
                         <input type="text"
