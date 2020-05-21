@@ -1,6 +1,6 @@
 package com.carpenter.core.control.service.login;
 
-import com.carpenter.core.entity.employee.Employer;
+import com.carpenter.core.entity.employee.Employee;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.enterprise.context.SessionScoped;
@@ -23,14 +23,14 @@ public class PrincipalBean implements Serializable {
     @Inject
     private PrincipalStatelessBean principalStatelessBean;
 
-    private Employer employer;
+    private Employee employee;
 
     @Produces
-    public Employer getLoggedUser() {
-        if (employer == null) {
+    public Employee getLoggedUser() {
+        if (employee == null) {
             refresh();
         }
-        return employer;
+        return employee;
     }
 
     private void refresh() {
@@ -38,7 +38,7 @@ public class PrincipalBean implements Serializable {
             return;
         }
         try {
-            employer = principalStatelessBean.getEmployerByEmail(principal.getName());
+            employee = principalStatelessBean.getEmployerByEmail(principal.getName());
         } catch (Exception e) {
             log.error("Error fetching user", e);
         }

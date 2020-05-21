@@ -31,17 +31,32 @@ import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
         uniqueConstraints = {@UniqueConstraint(name = "UNIQUE_EMAIL", columnNames = {"EMAIL"})
         })
 @NamedQueries(
-        @NamedQuery(
-                name = "Employee.findEmployerByEmail",
-                query = "SELECT e FROM Employer e " +
-                        "LEFT JOIN FETCH e.addresses " +
-                        "LEFT JOIN FETCH e.roles " +
-                        "LEFT JOIN FETCH e.company " +
-                        "WHERE e.email=:email"
-        )
+        {
+                @NamedQuery(
+                        name = "Employee.findEmployerByEmail",
+                        query = "SELECT e FROM Employee e " +
+                                "LEFT JOIN FETCH e.addresses " +
+                                "LEFT JOIN FETCH e.roles " +
+                                "LEFT JOIN FETCH e.company " +
+                                "WHERE e.email=:email"
+                ),
+                @NamedQuery(
+                        name = "Employee.findEmployeeById",
+                        query = "SELECT e FROM Employee e " +
+                                "WHERE e.id =:employeeId"
+                )
+        }
 )
+@NamedEntityGraphs({
+        @NamedEntityGraph(
+                name = "Employee.addresses",
+                attributeNodes = {
+                        @NamedAttributeNode(value = "addresses")
+                }
+        )
+})
 @Access(AccessType.FIELD)
-public class Employer extends DomainObject {
+public class Employee extends DomainObject {
 
     private static final long serialVersionUID = -3270776706987062366L;
 
@@ -87,6 +102,9 @@ public class Employer extends DomainObject {
     @Size(max = 256)
     @Column(name = "LAST_NAME")
     private String lastName;
+
+    @Column(name = "BIRTH_DATE")
+    private Date birthDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "GENDER")

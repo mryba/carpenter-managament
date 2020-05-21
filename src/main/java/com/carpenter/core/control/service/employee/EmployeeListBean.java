@@ -1,15 +1,16 @@
 package com.carpenter.core.control.service.employee;
 
 import com.carpenter.core.control.dto.CompanyDto;
-import com.carpenter.core.control.dto.EmployerDto;
+import com.carpenter.core.control.dto.EmployeeDto;
 import com.carpenter.core.control.service.company.CompanyService;
 import com.carpenter.core.control.service.login.PrincipalBean;
+import com.carpenter.core.control.utils.logger.Logged;
 import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.dictionaries.Contract;
 import com.carpenter.core.entity.dictionaries.Countries;
 import com.carpenter.core.entity.dictionaries.Gender;
 import com.carpenter.core.entity.dictionaries.Role;
-import com.carpenter.core.entity.employee.Employer;
+import com.carpenter.core.entity.employee.Employee;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,18 +20,18 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Named("employerBean")
+@Logged
+@Named("employeeListBean")
 @ViewScoped
-public class EmployerBean implements Serializable {
+public class EmployeeListBean implements Serializable {
 
     private static final long serialVersionUID = 7312921022733891332L;
 
     @Inject
-    EmployerService employerService;
+    EmployeeService employeeService;
 
     @Inject
     CompanyService companyService;
@@ -43,18 +44,18 @@ public class EmployerBean implements Serializable {
 
     @Getter
     @Setter
-    private EmployerDto employerDto;
+    private EmployeeDto employeeDto;
 
     private boolean isAddAddress;
     private boolean isAccountCreate;
 
     @PostConstruct
     public void init() {
-        employerDto = new EmployerDto();
+        employeeDto = new EmployeeDto();
     }
 
     public void saveEmployee() {
-        Employer employee = employerService.createEmployee(employerDto);
+        Employee employee = employeeService.createEmployee(employeeDto);
 
         Company company = getCompanyBasedOnLoggedUser();
         employee.setCompany(company);
@@ -63,33 +64,31 @@ public class EmployerBean implements Serializable {
             String password = employeeValidation.getHashedPassword();
             employee.setPassword(password);
         }
-
-        employerService.saveEmployee(employee);
+        employeeService.saveEmployee(employee);
     }
 
     public Company getCompanyBasedOnLoggedUser() {
-        if (principalBean.getLoggedUser().isInRole(Role.ADMINISTRATOR.name()) && employerDto.getCompanyId() != null) {
-            return companyService.getCompanyById(employerDto.getCompanyId());
+        if (principalBean.getLoggedUser().isInRole(Role.ADMINISTRATOR.name()) && employeeDto.getCompanyId() != null) {
+            return companyService.getCompanyById(employeeDto.getCompanyId());
         }
 
         if (principalBean.getLoggedUser().isInRole(Role.MANAGER.name())) {
             return principalBean.getLoggedUser().getCompany();
         }
-
         return null;
     }
 
-    public List<Employer> getEmployersList() {
-        return employerService.getEmployersList();
+    public List<Employee> getEmployersList() {
+        return employeeService.getEmployersList();
     }
 
-    public Set<Contract> getAvailableContracts() {
-        return Stream.of(Contract.values()).collect(Collectors.toSet());
+    public List<Contract> getAvailableContracts() {
+        return Stream.of(Contract.values()).collect(Collectors.toList());
     }
 
     public boolean isSelfEmploymentOfContract() {
-        if (employerDto != null) {
-            String contract = employerDto.getContract();
+        if (employeeDto != null) {
+            String contract = employeeDto.getContract();
             if (contract != null) {
                 return contract.equals("SELF_EMPLOYMENT");
             }
@@ -102,11 +101,11 @@ public class EmployerBean implements Serializable {
     }
 
     public void cleanEmployeeForm() {
-        employerDto.setFirstName(null);
-        employerDto.setLastName(null);
-        employerDto.setEmail(null);
-        employerDto.setNipNumber(null);
-        employerDto.setPhone(null);
+        employeeDto.setFirstName(null);
+        employeeDto.setLastName(null);
+        employeeDto.setEmail(null);
+        employeeDto.setNipNumber(null);
+        employeeDto.setPhone(null);
 
         setAccountCreate(false);
         setAddAddress(false);
@@ -124,7 +123,7 @@ public class EmployerBean implements Serializable {
     }
 
     public boolean isStreetNumberActive() {
-        return isAddAddress && employerDto.getStreet() != null && !employerDto.getStreet().isEmpty();
+        return isAddAddress && employeeDto.getStreet() != null && !employeeDto.getStreet().isEmpty();
     }
 
     public Countries[] getCountries() {
@@ -132,12 +131,12 @@ public class EmployerBean implements Serializable {
     }
 
     private void resetEmployerAddressValues() {
-        employerDto.setCity(null);
-        employerDto.setPostalCode(null);
-        employerDto.setStreet(null);
-        employerDto.setStreetNumber(null);
-        employerDto.setHouseNumber(null);
-        employerDto.setCountry(null);
+        employeeDto.setCity(null);
+        employeeDto.setPostalCode(null);
+        employeeDto.setStreet(null);
+        employeeDto.setStreetNumber(null);
+        employeeDto.setHouseNumber(null);
+        employeeDto.setCountry(null);
     }
 
     public List<CompanyDto> getCompanies() {
@@ -151,8 +150,8 @@ public class EmployerBean implements Serializable {
     public void setAccountCreate(boolean isAccountCreate) {
         this.isAccountCreate = isAccountCreate;
         if (!isAccountCreate) {
-            employerDto.setPassword(null);
-            employerDto.setRePassword(null);
+            employeeDto.setPassword(null);
+            employeeDto.setRePassword(null);
         }
     }
 }

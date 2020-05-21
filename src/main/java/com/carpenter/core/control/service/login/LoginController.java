@@ -1,6 +1,7 @@
 package com.carpenter.core.control.service.login;
 
-import com.carpenter.core.entity.employee.Employer;
+import com.carpenter.core.control.utils.logger.Logged;
+import com.carpenter.core.entity.employee.Employee;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.ConfigurableNavigationHandler;
@@ -21,6 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+@Logged
 @Named
 @ViewScoped
 public class LoginController implements Serializable {
@@ -99,9 +101,9 @@ public class LoginController implements Serializable {
         try {
             request.login(email, password);
             request.changeSessionId();
-            Employer employer = loginBean.getEmployerByEmail(email);
+            Employee employee = loginBean.getEmployeeByEmail(email);
 
-            externalContext.getSessionMap().put("employer", employer);
+            externalContext.getSessionMap().put("employer", employee);
 
             Map<String, Object> httpOnlyProperty = Collections.singletonMap("httpOnly", Boolean.TRUE);
             Map<String, Object> pathProperty = Collections.singletonMap("path", "/");

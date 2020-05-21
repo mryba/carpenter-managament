@@ -1,11 +1,12 @@
 package com.carpenter.core.entity;
 
-import com.carpenter.core.entity.employee.Employer;
+import com.carpenter.core.entity.employee.Employee;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -45,12 +46,15 @@ public class Company extends DomainObject {
     private String phone;
 
     @OneToMany(mappedBy = "company")
-    private Set<Employer> employers;
+    private Set<Employee> employees;
 
-    public void addEmployee(Employer employer) {
-        if (this.employers == null) {
-            employers = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    private List<Offer> offers;
+
+    public void addEmployee(Employee employee) {
+        if (this.employees == null) {
+            employees = new LinkedHashSet<>();
         }
-        this.employers.add(employer);
+        this.employees.add(employee);
     }
 }

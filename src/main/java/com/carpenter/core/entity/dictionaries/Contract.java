@@ -1,7 +1,7 @@
 package com.carpenter.core.entity.dictionaries;
 
 public enum  Contract {
-    SELF_EMPLOYMENT,
+    WITHOUT_A_CONTRACT,
     CONTRACT,
-    WITHOUT_A_CONTRACT
+    SELF_EMPLOYMENT
 }

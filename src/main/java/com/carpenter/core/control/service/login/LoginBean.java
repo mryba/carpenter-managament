@@ -1,7 +1,7 @@
 package com.carpenter.core.control.service.login;
 
-import com.carpenter.core.control.repository.EmployerRepository;
-import com.carpenter.core.entity.employee.Employer;
+import com.carpenter.core.control.repository.EmployeeRepository;
+import com.carpenter.core.entity.employee.Employee;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -12,9 +12,9 @@ import javax.inject.Named;
 public class LoginBean {
 
     @Inject
-    private EmployerRepository employerRepository;
+    private EmployeeRepository employeeRepository;
 
-    public Employer getEmployerByEmail(String email) {
-        return employerRepository.getEmployerByEmail(email);
+    public Employee getEmployeeByEmail(String email) {
+        return employeeRepository.getEmployeeByEmail(email);
     }
 }

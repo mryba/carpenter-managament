@@ -1,9 +1,9 @@
 package com.carpenter.core.control.service.employee;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.omnifaces.util.Faces;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -11,9 +11,8 @@ import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 @ViewScoped
@@ -22,48 +21,26 @@ public class EmployeeValidation implements Serializable {
 
     private static final long serialVersionUID = 8247119983863720299L;
 
-    private static final String PASSWORD = "PASSWORD";
-    private static final String RE_PASSWORD = "RE_PASSWORD";
-
     private ResourceBundle resourceBundle = ResourceBundle.getBundle("ValidationMessages");
 
     @Inject
-    EmployerService employerService;
+    EmployeeService employeeService;
 
     private String password;
     private String rePassword;
 
-    private Map<String, Boolean> mapOfFields;
+    @Getter
+    @Setter
+    @Size(max = 9, message = "Pole ")
+    private String phone;
 
-    @PostConstruct
-    public void init() {
-        mapOfFields = new HashMap<>();
-        mapOfFields.put(PASSWORD, false);
-        mapOfFields.put(RE_PASSWORD, false);
-    }
 
     public void validateFirstPassword(FacesContext facesContext, UIComponent component, Object value) {
-        if (value == null) {
-            mapOfFields.put(PASSWORD, false);
-            mapOfFields.put(RE_PASSWORD, false);
-
-            throw new ValidatorException(
-                    new FacesMessage(
-                            resourceBundle.getString("com.carpenter.password.empty"),
-                            resourceBundle.getString("com.carpenter.password.empty"))
-            );
-        }
+        validateEmptyField(facesContext, component, value, "com.carpenter.notNull");
     }
 
     public void validateRePassword(FacesContext facesContext, UIComponent component, Object value) {
-        if (value == null) {
-            throw new ValidatorException(
-                    new FacesMessage(
-                            resourceBundle.getString("com.carpenter.password.empty"),
-                            resourceBundle.getString("com.carpenter.password.empty")
-                    )
-            );
-        }
+        validateEmptyField(facesContext, component, value, "com.carpenter.notNull");
         rePassword = value.toString();
 
         if (!rePassword.equals(password)) {
@@ -75,6 +52,46 @@ public class EmployeeValidation implements Serializable {
             );
         }
     }
+
+    public void validateForename(FacesContext facesContext, UIComponent component, Object value) {
+        validateEmptyField(facesContext, component, value, "employee.forename.notNull");
+    }
+
+    public void validateLastName(FacesContext facesContext, UIComponent component, Object value) {
+        validateEmptyField(facesContext, component, value, "employee.lastName.notNull");
+    }
+
+    public void validateEmail(FacesContext facesContext, UIComponent component, Object value) {
+        validateEmptyField(facesContext, component, value, "employee.email.notNull");
+
+        String email = (String) value;
+        boolean isEmployeeWithThatEmailExists = employeeService.getEmployeeByEmail(email);
+        if (isEmployeeWithThatEmailExists) {
+            throw new ValidatorException(
+                    new FacesMessage(
+                            resourceBundle.getString("employee.email.exists"),
+                            resourceBundle.getString("employee.email.exists")
+                    )
+            );
+        }
+    }
+
+    public void validatePhone(FacesContext facesContext, UIComponent component, Object value) {
+        validateEmptyField(facesContext, component, value, "employee.phone.notNull");
+        phone = (String) value;
+    }
+
+    private void validateEmptyField(FacesContext facesContext, UIComponent component, Object value, String message) {
+        if (value == null || value.toString().isEmpty()) {
+            throw new ValidatorException(
+                    new FacesMessage(
+                            resourceBundle.getString(message),
+                            resourceBundle.getString(message)
+                    )
+            );
+        }
+    }
+
 
     public String getPassword() {
         return password;
@@ -97,32 +114,6 @@ public class EmployeeValidation implements Serializable {
             return DigestUtils.sha256Hex(password);
         }
         return null;
-    }
-
-    public void validateEmail(FacesContext facesContext, UIComponent component, Object value) {
-        validateEmptyField(facesContext, component, value);
-
-        String email = (String) value;
-        boolean isEmployeeWithThatEmailExists = employerService.getEmployeeByEmail(email);
-        if (isEmployeeWithThatEmailExists) {
-            throw new ValidatorException(
-                    new FacesMessage(
-                            resourceBundle.getString("employee.email.exists"),
-                            resourceBundle.getString("employee.email.exists")
-                    )
-            );
-        }
-    }
-
-    public void validateEmptyField(FacesContext facesContext, UIComponent component, Object value) {
-        if (value == null || value.toString().isEmpty()) {
-            throw new ValidatorException(
-                    new FacesMessage(
-                            resourceBundle.getString("com.carpenter.notNull"),
-                            resourceBundle.getString("com.carpenter.notNull")
-                    )
-            );
-        }
     }
 
 }

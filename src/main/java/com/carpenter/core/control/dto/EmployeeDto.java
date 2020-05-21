@@ -1,20 +1,23 @@
 package com.carpenter.core.control.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import javax.validation.constraints.Size;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployerDto {
+@Builder
+public class EmployeeDto {
 
     //Employer
     private Long id;
     private String firstName;
     private String lastName;
+    @Size(max = 12, min = 12, message = "Hasło powinno zawierać 9 cyfr")
     private String phone;
     private String email;
     private String password;
@@ -36,4 +39,5 @@ public class EmployerDto {
     private String houseNumber;
     private String country;
 
+    private Date birthDate;
 }

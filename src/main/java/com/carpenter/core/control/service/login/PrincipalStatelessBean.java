@@ -1,14 +1,12 @@
 package com.carpenter.core.control.service.login;
 
-import com.carpenter.core.entity.employee.Employer;
+import com.carpenter.core.entity.employee.Employee;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.ejb.Stateless;
 import javax.persistence.*;
 
 import java.io.Serializable;
-
-import static com.carpenter.utils.ConstantsRegex.FETCH_GRAPH;
 
 @Slf4j
 @Stateless
@@ -19,13 +17,13 @@ public class PrincipalStatelessBean implements Serializable {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public Employer getEmployerByEmail(String email) {
+    public Employee getEmployerByEmail(String email) {
         try {
-            Employer employer = entityManager.createNamedQuery("Employee.findEmployerByEmail", Employer.class)
+            Employee employee = entityManager.createNamedQuery("Employee.findEmployerByEmail", Employee.class)
                     .setParameter("email", email)
                     .getResultList().iterator().next();
-            log.debug("Fetched user {}", employer);
-            return employer;
+            log.debug("Fetched user {}", employee);
+            return employee;
         } catch (NonUniqueResultException | NoResultException e) {
             log.error("Cannot fetch user with email: {}", email);
             return null;

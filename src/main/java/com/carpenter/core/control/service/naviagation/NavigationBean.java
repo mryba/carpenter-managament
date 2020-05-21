@@ -8,7 +8,11 @@ import javax.inject.Named;
 public class NavigationBean {
 
     public String employersRedirect(){
-        return "/secure/employers/employers?faces-redirect=true";
+        return "/secure/employees/employees?faces-redirect=true";
+    }
+
+    public String employeeRedirect() {
+        return "/secure/employees/employee?faces-redirect=true";
     }
 
     public String clientsRedirect() {
