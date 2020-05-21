@@ -19,9 +19,9 @@ import java.sql.SQLException;
 
 public class ExtendedDatabaseServerLoginModule extends DatabaseServerLoginModule {
 
-    protected static final String EMPLOYER_QUERY = "SELECT EMPLOYERS.NAME, EMPLOYERS.LAST_NAME FROM EMPLOYERS WHERE EMPLOYERS.EMAIL=?";
+    protected static final String EMPLOYER_QUERY = "SELECT EMPLOYEES.FIRST_NAME, EMPLOYEES.LAST_NAME FROM EMPLOYEES WHERE EMPLOYEES.EMAIL=?";
 
-    protected static final String UPDATE_HASHED_PWD_QUERY = "UPDATE EMPLOYERS SET EMPLOYERS.PASSWORD =? WHERE EMPLOYERS.EMAIL=?";
+    protected static final String UPDATE_HASHED_PWD_QUERY = "UPDATE EMPLOYEES SET EMPLOYEES.PASSWORD =? WHERE EMPLOYEES.EMAIL=?";
 
     protected ExtendedPrincipal extendedPrincipal;
 

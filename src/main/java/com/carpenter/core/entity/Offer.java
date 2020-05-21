@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "OFFER")
+@Table(name = "OFFERS")
 @Entity
 @Builder
 @Access(AccessType.FIELD)
