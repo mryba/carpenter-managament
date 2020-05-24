@@ -10,7 +10,6 @@ import com.carpenter.core.entity.DomainObject;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -27,7 +26,7 @@ import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(
-        name = "EMPLOYERS",
+        name = "EMPLOYEES",
         uniqueConstraints = {@UniqueConstraint(name = "UNIQUE_EMAIL", columnNames = {"EMAIL"})
         })
 @NamedQueries(
@@ -74,7 +73,7 @@ public class Employee extends DomainObject {
     private String password;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.LAZY)
-    @CollectionTable(name = "EMPLOYERS_ROLES", joinColumns = @JoinColumn(name = "ID"))
+    @CollectionTable(name = "EMPLOYEE_ROLES", joinColumns = @JoinColumn(name = "ID"))
     @Column(name = "ROLE")
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
@@ -94,7 +93,7 @@ public class Employee extends DomainObject {
 
     @NotNull
     @Size(max = 256)
-    @Column(name = "NAME")
+    @Column(name = "FIRST_NAME")
     private String firstName;
 
     @Basic
@@ -112,7 +111,7 @@ public class Employee extends DomainObject {
     private Gender gender;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
-    @JoinColumn(name = "EMPLOYER_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "ID")
     @XmlTransient
     private List<Address> addresses;
 
