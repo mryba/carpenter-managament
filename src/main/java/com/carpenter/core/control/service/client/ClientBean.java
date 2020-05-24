@@ -42,4 +42,19 @@ public class ClientBean implements Serializable {
         Client client = clientService.createClient(clientDto);
         clientService.addClient(client);
     }
+
+    public void clearClientForm() {
+        clientDto.setName(null);
+        clientDto.setCity(null);
+        clientDto.setPostalCode(null);
+        clientDto.setStreet(null);
+        clientDto.setCountry(null);
+        clientDto.setBankAccountNumber(null);
+        clientDto.setNip(null);
+        clientDto.setEmail(null);
+        clientDto.setPhoneNumber(null);
+        clientDto.setWebSite(null);
+        clientDto.setStreetNumber(null);
+        clientDto.setHouseNumber(null);
+    }
 }

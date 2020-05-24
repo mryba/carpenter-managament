@@ -129,9 +129,24 @@
 
                 <div class="modal-footer">
 
-                    <h:commandLink action="#{clientBean.saveClient}">
-                            <i class="fa fa-check"></i> Zapisz
+                    <h:commandLink styleClass="btn col-danger bordered"
+                                   p:data-dismiss="modal"
+                                   p:data-toggle="modal">
+                        <f:ajax event="click"
+                                render="@form :add-client-form"
+                                listener="#{clientBean.clearClientForm}"
+                                resetValues="true"/>
+                        <i class="fa fa-times"></i> Anuluj
                     </h:commandLink>
+
+                    <input type="submit"
+                           class="btn col-success bordered"
+                           value="Zapisz"
+                           jsf:action="#{clientBean.saveClient}">
+                        <f:ajax
+                                execute="@form"
+                                render="@form clientsTableForm closeDialogDiv"/>
+                    </input>
 
                 </div>
             </h:form>
