@@ -6,7 +6,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -67,7 +66,7 @@ public class Client extends DomainObject {
     @Column(name = "HOUSE_NUMBER")
     private String houseNumber;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CLIENT_ID", referencedColumnName = "ID")
-    private List<Company> companies;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "COMPANY_ID", referencedColumnName = "ID")
+    private Company company;
 }
