@@ -19,37 +19,52 @@
                         <label for="add-client-name">Nazwa</label>
                         <input type="text"
                                jsf:id="add-client-name"
-                               jsf:value="#{clientBean.clientDto.name}">
-
+                               jsf:value="#{clientBean.clientDto.name}"
+                               jsf:validator="#{clientValidation.validateName}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="client-name"/>
                         </input>
+                        <h:message for="add-client-name" styleClass="form-msg col-danger"/>
                     </div>
 
-                    <div class="form-top" jsf:id="client-nip" >
+                    <div class="form-top" jsf:id="client-nip">
                         <label for="add-client-nip">NIP</label>
                         <input type="text"
                                jsf:id="add-client-nip"
-                               jsf:value="#{clientBean.clientDto.nip}">
-
-
+                               jsf:value="#{clientBean.clientDto.nip}"
+                               jsf:validator="#{clientValidation.validateNip}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="client-nip"/>
                         </input>
+                        <h:message for="add-client-nip" styleClass="form-msg col-danger"/>
                     </div>
 
                     <div class="form-top" jsf:id="client-email">
                         <label for="add-client-email">e-mail</label>
                         <input type="text"
                                jsf:id="add-client-email"
-                               jsf:value="#{clientBean.clientDto.email}">
-
+                               jsf:value="#{clientBean.clientDto.email}"
+                               jsf:validator="#{clientValidation.validateEmail}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="client-email"/>
                         </input>
+                        <h:message for="add-client-nip" styleClass="form-msg col-danger"/>
                     </div>
 
                     <div class="form-top" jsf:id="client-phone-number">
                         <label for="add-client-phone-number">Numer telefonu</label>
                         <input type="text"
                                jsf:id="add-client-phone-number"
-                               jsf:value="#{clientBean.clientDto.phoneNumber}">
-
+                               jsf:value="#{clientBean.clientDto.phoneNumber}"
+                               jsf:validator="#{clientValidation.validatePhoneNumber}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="client-phone-number"/>
                         </input>
+                        <h:message for="add-client-nip" styleClass="form-msg col-danger"/>
                     </div>
 
                     <div class="form-top" jsf:id="client-web-site">
@@ -57,7 +72,8 @@
                         <input type="text"
                                jsf:id="add-client-web-site"
                                jsf:value="#{clientBean.clientDto.webSite}">
-
+                            <f:ajax event="change"
+                                    execute="@this"/>
                         </input>
                     </div>
 
@@ -65,8 +81,11 @@
                         <label for="add-client-bank-account-number">Numer rachunku bankowego</label>
                         <input type="text"
                                jsf:id="add-client-bank-account-number"
-                               jsf:value="#{clientBean.clientDto.nip}">
-
+                               jsf:value="#{clientBean.clientDto.bankAccountNumber}"
+                               jsf:validator="#{clientValidation.validateBankAccountNumber}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="client-bank-account-number"/>
                         </input>
                     </div>
 
@@ -75,7 +94,8 @@
                         <input type="text"
                                jsf:id="add-client-country"
                                jsf:value="#{clientBean.clientDto.country}">
-
+                            <f:ajax event="change"
+                                    execute="@this"/>
                         </input>
                     </div>
 
@@ -84,7 +104,8 @@
                         <input type="text"
                                jsf:id="add-client-city"
                                jsf:value="#{clientBean.clientDto.city}">
-
+                            <f:ajax event="change"
+                                    execute="@this"/>
                         </input>
                     </div>
 
@@ -93,7 +114,8 @@
                         <input type="text"
                                jsf:id="add-client-postal-code"
                                jsf:value="#{clientBean.clientDto.postalCode}">
-
+                            <f:ajax event="change"
+                                    execute="@this"/>
                         </input>
                     </div>
 
@@ -102,7 +124,8 @@
                         <input type="text"
                                jsf:id="add-client-street"
                                jsf:value="#{clientBean.clientDto.street}">
-
+                            <f:ajax event="change"
+                                    execute="@this"/>
                         </input>
                     </div>
 
@@ -111,7 +134,8 @@
                         <input type="text"
                                jsf:id="add-client-street-number"
                                jsf:value="#{clientBean.clientDto.streetNumber}">
-
+                            <f:ajax event="change"
+                                    execute="@this"/>
                         </input>
                     </div>
 
@@ -120,15 +144,21 @@
                         <input type="text"
                                jsf:id="add-client-house-number"
                                jsf:value="#{clientBean.clientDto.houseNumber}">
-
+                            <f:ajax event="change"
+                                    execute="@this"/>
                         </input>
                     </div>
 
-
                 </div>
 
-                <div class="modal-footer">
+                <h:panelGroup id="validation-messages-container">
+                    <div class="infobox col-danger"
+                         jsf:rendered="#{not empty facesContext.messageList}">
+                        <h:messages/>
+                    </div>
+                </h:panelGroup>
 
+                <div class="modal-footer">
                     <h:commandLink styleClass="btn col-danger bordered"
                                    p:data-dismiss="modal"
                                    p:data-toggle="modal">
@@ -138,7 +168,6 @@
                                 resetValues="true"/>
                         <i class="fa fa-times"></i> Anuluj
                     </h:commandLink>
-
                     <input type="submit"
                            class="btn col-success bordered"
                            value="Zapisz"
@@ -147,7 +176,6 @@
                                 execute="@form"
                                 render="@form clientsTableForm closeDialogDiv"/>
                     </input>
-
                 </div>
             </h:form>
         </div>
