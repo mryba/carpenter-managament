@@ -2,12 +2,14 @@ package com.carpenter.core.entity;
 
 import com.carpenter.core.entity.dictionaries.ArchitectureType;
 import com.carpenter.utils.ConstantsRegex;
+import com.carpenter.utils.MobilPhoneNumberAdapter;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -40,9 +42,11 @@ public class Offer extends DomainObject {
     @Column(name = "PHONE")
     @Pattern(regexp = ConstantsRegex.MSISDN_PATTERN)
     @Size(max = 16)
+    @XmlJavaTypeAdapter(MobilPhoneNumberAdapter.class)
     private String phone;
 
     @Column(name = "EMAIL")
+    @NotNull
     @Pattern(regexp = ConstantsRegex.EMAIL_PATTERN)
     private String email;
 

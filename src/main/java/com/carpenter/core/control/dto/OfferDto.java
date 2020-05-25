@@ -15,8 +15,8 @@ public class OfferDto {
     //Offer
     private Long id;
     private String workCity;
-    private Date workDateFrom;
-    private Date workDateTo;
+    private String workDateFrom;
+    private String workDateTo;
     private Double buildingDimension;
     private String architectureType;
     private String phone;

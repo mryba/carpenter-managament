@@ -56,6 +56,12 @@
                     <h:commandLink>
                         <i class="fas fa-file-invoice-dollar"></i>Faktury
                     </h:commandLink>
+
+                    <h:commandLink
+                        action="#{navigationBean.offersRedirect}">
+                        <f:ajax onevent="showLoader"/>
+                        <i class="fas fa-envelope-open-text"></i>Oferty
+                    </h:commandLink>
                 </div>
 
                 <div class="user-panel">
