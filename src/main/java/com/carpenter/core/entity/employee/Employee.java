@@ -1,19 +1,20 @@
 package com.carpenter.core.entity.employee;
 
+import com.carpenter.core.control.service.calendar.WorkingDay;
 import com.carpenter.core.entity.Company;
+import com.carpenter.core.entity.DomainObject;
 import com.carpenter.core.entity.dictionaries.Contract;
 import com.carpenter.core.entity.dictionaries.Gender;
 import com.carpenter.core.entity.dictionaries.Role;
 import com.carpenter.utils.ConstantsRegex;
 import com.carpenter.utils.MobilPhoneNumberAdapter;
-import com.carpenter.core.entity.DomainObject;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.*;
 
@@ -124,6 +125,9 @@ public class Employee extends DomainObject {
 
     @Column(name = "ACCOUNT_ACTIVE")
     private Boolean accountActive;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "employees")
+    private Set<WorkingDay> workingDay;
 
     public void addRole(Role role) {
         if (role == null) {

@@ -1,11 +1,13 @@
 package com.carpenter.core.entity.client;
 
+import com.carpenter.core.control.service.calendar.WorkingDay;
 import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.DomainObject;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -69,4 +71,8 @@ public class Client extends DomainObject {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COMPANY_ID", referencedColumnName = "ID")
     private Company company;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+    private Set<WorkingDay> workingDays;
+
 }
