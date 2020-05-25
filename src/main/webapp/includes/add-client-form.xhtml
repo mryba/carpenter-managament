@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<div id="add-client" class="modal modal-small fade"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://xmlns.jcp.org/jsf/html"
+     xmlns:f="http://xmlns.jcp.org/jsf/core"
+     xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+     xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+
+    <div>
+        <a class="modal-close" data-dismiss="modal"><i class="fa fa-times"></i> </a>
+        <div>
+            <h:form id="add-client-form" prependId="false">
+
+                <div class="modal-conent">
+
+                    <div class="form-top" jsf:id="client-name">
+                        <label for="add-client-name">Nazwa</label>
+                        <input type="text"
+                               jsf:id="add-client-name"
+                               jsf:value="#{clientBean.clientDto.name}"
+                               jsf:validator="#{clientValidation.validateName}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="client-name"/>
+                        </input>
+                        <h:message for="add-client-name" styleClass="form-msg col-danger"/>
+                    </div>
+
+                    <div class="form-top" jsf:id="client-nip">
+                        <label for="add-client-nip">NIP</label>
+                        <input type="text"
+                               jsf:id="add-client-nip"
+                               jsf:value="#{clientBean.clientDto.nip}"
+                               jsf:validator="#{clientValidation.validateNip}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="client-nip"/>
+                        </input>
+                        <h:message for="add-client-nip" styleClass="form-msg col-danger"/>
+                    </div>
+
+                    <div class="form-top" jsf:id="client-email">
+                        <label for="add-client-email">e-mail</label>
+                        <input type="text"
+                               jsf:id="add-client-email"
+                               jsf:value="#{clientBean.clientDto.email}"
+                               jsf:validator="#{clientValidation.validateEmail}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="client-email"/>
+                        </input>
+                        <h:message for="add-client-nip" styleClass="form-msg col-danger"/>
+                    </div>
+
+                    <div class="form-top" jsf:id="client-phone-number">
+                        <label for="add-client-phone-number">Numer telefonu</label>
+                        <input type="text"
+                               jsf:id="add-client-phone-number"
+                               jsf:value="#{clientBean.clientDto.phoneNumber}"
+                               jsf:validator="#{clientValidation.validatePhoneNumber}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="client-phone-number"/>
+                        </input>
+                        <h:message for="add-client-nip" styleClass="form-msg col-danger"/>
+                    </div>
+
+                    <div class="form-top" jsf:id="client-web-site">
+                        <label for="add-client-web-site">Strona WWW</label>
+                        <input type="text"
+                               jsf:id="add-client-web-site"
+                               jsf:value="#{clientBean.clientDto.webSite}">
+                            <f:ajax event="change"
+                                    execute="@this"/>
+                        </input>
+                    </div>
+
+                    <div class="form-top" jsf:id="client-bank-account-number">
+                        <label for="add-client-bank-account-number">Numer rachunku bankowego</label>
+                        <input type="text"
+                               jsf:id="add-client-bank-account-number"
+                               jsf:value="#{clientBean.clientDto.bankAccountNumber}"
+                               jsf:validator="#{clientValidation.validateBankAccountNumber}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="client-bank-account-number"/>
+                        </input>
+                    </div>
+
+                    <div class="form-top" jsf:id="client-country">
+                        <label for="add-client-country">Państwo</label>
+                        <input type="text"
+                               jsf:id="add-client-country"
+                               jsf:value="#{clientBean.clientDto.country}">
+                            <f:ajax event="change"
+                                    execute="@this"/>
+                        </input>
+                    </div>
+
+                    <div class="form-top" jsf:id="client-city">
+                        <label for="add-client-city">Miasto</label>
+                        <input type="text"
+                               jsf:id="add-client-city"
+                               jsf:value="#{clientBean.clientDto.city}">
+                            <f:ajax event="change"
+                                    execute="@this"/>
+                        </input>
+                    </div>
+
+                    <div class="form-top" jsf:id="client-postal-code">
+                        <label for="add-client-postal-code">Kod pocztowy</label>
+                        <input type="text"
+                               jsf:id="add-client-postal-code"
+                               jsf:value="#{clientBean.clientDto.postalCode}">
+                            <f:ajax event="change"
+                                    execute="@this"/>
+                        </input>
+                    </div>
+
+                    <div class="form-top" jsf:id="client-street">
+                        <label for="add-client-street">Ulica</label>
+                        <input type="text"
+                               jsf:id="add-client-street"
+                               jsf:value="#{clientBean.clientDto.street}">
+                            <f:ajax event="change"
+                                    execute="@this"/>
+                        </input>
+                    </div>
+
+                    <div class="form-top" jsf:id="client-street-number">
+                        <label for="add-client-street-number">Nr</label>
+                        <input type="text"
+                               jsf:id="add-client-street-number"
+                               jsf:value="#{clientBean.clientDto.streetNumber}">
+                            <f:ajax event="change"
+                                    execute="@this"/>
+                        </input>
+                    </div>
+
+                    <div class="form-top" jsf:id="client-house-number">
+                        <label for="add-client-house-number">Numer lokalu</label>
+                        <input type="text"
+                               jsf:id="add-client-house-number"
+                               jsf:value="#{clientBean.clientDto.houseNumber}">
+                            <f:ajax event="change"
+                                    execute="@this"/>
+                        </input>
+                    </div>
+
+                </div>
+
+                <h:panelGroup id="validation-messages-container">
+                    <div class="infobox col-danger"
+                         jsf:rendered="#{not empty facesContext.messageList}">
+                        <h:messages/>
+                    </div>
+                </h:panelGroup>
+
+                <div class="modal-footer">
+                    <h:commandLink styleClass="btn col-danger bordered"
+                                   p:data-dismiss="modal"
+                                   p:data-toggle="modal">
+                        <f:ajax event="click"
+                                render="@form :add-client-form"
+                                listener="#{clientBean.clearClientForm}"
+                                resetValues="true"/>
+                        <i class="fa fa-times"></i> Anuluj
+                    </h:commandLink>
+                    <input type="submit"
+                           class="btn col-success bordered"
+                           value="Zapisz"
+                           jsf:action="#{clientBean.saveClient}">
+                        <f:ajax
+                                execute="@form"
+                                render="@form clientsTableForm closeDialogDiv"/>
+                    </input>
+                </div>
+            </h:form>
+        </div>
+    </div>
+</div>
