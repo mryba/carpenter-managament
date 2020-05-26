@@ -77,7 +77,7 @@ public class CalendarTimeManager implements Serializable {
     }
 
     public Date getEndDate(){
-        return Date.from(viewEndDate.atZone(ZoneId.systemDefault()).toInstant());
+        return Date.from(viewEndDate.minusSeconds(1).atZone(ZoneId.systemDefault()).toInstant());
     }
 
 }

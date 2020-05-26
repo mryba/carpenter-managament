@@ -70,8 +70,7 @@ public class LoginController implements Serializable {
         this.originalUrl = (String) externalContext.getRequestMap().get(RequestDispatcher.FORWARD_REQUEST_URI);
 
         if (this.originalUrl == null || originalUrl.isEmpty() || (originalUrl.length() == 1)) {
-            //test
-            originalUrl = "/secure/main.xhtml";
+            originalUrl = "/secure/calendars/week-calendar.xhtml";
         }
 
         String originalQuery = (String) externalContext.getRequestMap().get(RequestDispatcher.FORWARD_QUERY_STRING);

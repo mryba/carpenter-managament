@@ -22,4 +22,8 @@ public class NavigationBean {
     public String offersRedirect(){
         return "/secure/offers/offers?faces-redirect=true";
     }
+
+    public String calendarDayViewRedirect() {
+        return "/secure/calendars/week-calendar.xhtml?faces-redirect=true";
+    }
 }
