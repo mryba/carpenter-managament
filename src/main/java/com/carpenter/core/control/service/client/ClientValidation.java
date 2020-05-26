@@ -23,25 +23,28 @@ public class ClientValidation implements Serializable {
     ClientService clientService;
 
     public void validateName(FacesContext facesContext, UIComponent component, Object value) {
-        validateEmptyField(value, "client.name.notNull", "com.carpenter.notNull");
+        validateEmptyField(value, "client.name.notNull");
     }
 
     public void validateNip(FacesContext facesContext, UIComponent component, Object value) {
-        validateEmptyField(value, "client.nip.notNull", "com.carpenter.notNull");
+        validateEmptyField(value, "client.nip.notNull");
         if (!InputValidator.isNipValid(value.toString())) {
             invalidInput("com.carpenter.nip.invalid", "com.carpenter.nip.invalid");
+        }
+        if (!clientService.isClientNew((String) value)) {
+            invalidInput("client.nip.exists", "client.nip.exists");
         }
     }
 
     public void validateEmail(FacesContext facesContext, UIComponent component, Object value) {
-        validateEmptyField(value, "com.carpenter.email.notNull", "com.carpenter.notNull");
+        validateEmptyField(value, "com.carpenter.email.notNull");
         if (!InputValidator.isEmailValid(value.toString())) {
             invalidInput("com.carpenter.email.invalid", "com.carpenter.email.invalid");
         }
     }
 
     public void validatePhoneNumber(FacesContext facesContext, UIComponent component, Object value) {
-        validateEmptyField(value, "com.carpenter.phone.notNull", "com.carpenter.notNull");
+        validateEmptyField(value, "com.carpenter.phone.notNull");
     }
 
     public void validateBankAccountNumber(FacesContext facesContext, UIComponent component, Object value) {
@@ -52,9 +55,9 @@ public class ClientValidation implements Serializable {
         }
     }
 
-    private void validateEmptyField(Object value, String summary, String detail) {
+    private void validateEmptyField(Object value, String summary) {
         if (value == null || value.toString().isEmpty()) {
-            invalidInput(summary, detail);
+            invalidInput(summary, "com.carpenter.notNull");
         }
     }
 

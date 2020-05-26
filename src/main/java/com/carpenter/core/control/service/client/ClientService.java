@@ -35,4 +35,8 @@ public class ClientService implements Serializable {
     public void addClient(Client client) {
         clientRepository.addClient(client);
     }
+
+    public boolean isClientNew(String nip) {
+        return getClientByNip(nip) == null;
+    }
 }
