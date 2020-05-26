@@ -23,47 +23,48 @@ public class ClientValidation implements Serializable {
     ClientService clientService;
 
     public void validateName(FacesContext facesContext, UIComponent component, Object value) {
-        validateEmptyField(facesContext, component, value, "com.carpenter.notNull");
+        validateEmptyField(value, "client.name.notNull", "com.carpenter.notNull");
     }
 
     public void validateNip(FacesContext facesContext, UIComponent component, Object value) {
-        validateEmptyField(facesContext, component, value, "com.carpenter.notNull");
+        validateEmptyField(value, "client.nip.notNull", "com.carpenter.notNull");
         if (!InputValidator.isNipValid(value.toString())) {
-            throw new ValidatorException(new FacesMessage(
-                    "invalid nip", "check sum incorrect"
-            ));
+            invalidInput("com.carpenter.nip.invalid", "com.carpenter.nip.invalid");
         }
     }
 
     public void validateEmail(FacesContext facesContext, UIComponent component, Object value) {
-        validateEmptyField(facesContext, component, value, "com.carpenter.notNull");
+        validateEmptyField(value, "com.carpenter.email.notNull", "com.carpenter.notNull");
         if (!InputValidator.isEmailValid(value.toString())) {
-            throw new ValidatorException(new FacesMessage(
-                    "invalid email", "invalid email"
-            ));
+            invalidInput("com.carpenter.email.invalid", "com.carpenter.email.invalid");
         }
     }
 
     public void validatePhoneNumber(FacesContext facesContext, UIComponent component, Object value) {
-        validateEmptyField(facesContext, component, value, "com.carpenter.notNull");
+        validateEmptyField(value, "com.carpenter.phone.notNull", "com.carpenter.notNull");
     }
 
     public void validateBankAccountNumber(FacesContext facesContext, UIComponent component, Object value) {
         if (!InputValidator.isBankAccountNumberValid(value.toString())) {
-            throw new ValidatorException(new FacesMessage(
-                    "invalid bankAccount", "invalid bankAccount"
-            ));
+            invalidInput(
+                    "com.carpenter.bankAccountNumber.invalid",
+                    "com.carpenter.bankAccountNumber.invalid");
         }
     }
 
-    public void validateEmptyField(FacesContext facesContext, UIComponent component, Object value, String message) {
+    private void validateEmptyField(Object value, String summary, String detail) {
         if (value == null || value.toString().isEmpty()) {
-            throw new ValidatorException(new FacesMessage(
-                    resourceBundle.getString(message),
-                    resourceBundle.getString(message)
-            ));
+            invalidInput(summary, detail);
         }
     }
 
+    private void invalidInput(String summary, String detail) {
+        throw new ValidatorException(
+                new FacesMessage(
+                        resourceBundle.getString(summary),
+                        resourceBundle.getString(detail)
+                )
+        );
+    }
 
 }
