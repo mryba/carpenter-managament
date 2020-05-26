@@ -27,9 +27,11 @@ public class Offer extends DomainObject {
     private String workCity;
 
     @Column(name = "WORK_DATE_FROM")
+    @Temporal(TemporalType.DATE)
     private Date workDateFrom;
 
     @Column(name = "WORK_DATE_TO")
+    @Temporal(TemporalType.DATE)
     private Date workDateTo;
 
     @Column(name = "BUILDING_DIMENSION")

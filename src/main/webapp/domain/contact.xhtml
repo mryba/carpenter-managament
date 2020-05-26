@@ -8,26 +8,25 @@
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:jsf="http://xmlns.jcp.org/jsf">
 
-<h:body>
-    <ui:composition template="template/domain-template.xhtml">
-        <ui:define name="content">
-            <div class="container">
 
-                <h:form  id="add-offer-form" prependId="false">
-                    <div class="form-top" jsf:id="offer-work-city-id">
+
+<ui:composition template="template/domain-template.xhtml">
+    <ui:define name="content">
+        <div class="container">
+
+            <h:form>
+
+                    <div class="form-group col-md-6">
                         <label for="add-offer-workCity">Miasto</label>
-                        <input type="text"
+                        <input class="form-control" type="text"
                                jsf:id="add-offer-workCity"
-                               jsf:value="#{offerBean.offerDto.workCity}">
-                            <f:ajax event="blur"
-                                    execute="@this"
-                                    render="offer-work-city-id"/>
-                        </input>
+                               jsf:value="#{offerBean.offerDto.workCity}"/>
                     </div>
 
-                    <div class="form-top">
+                    <div class="form-group col-md-6">
                         <label for="add-offer-architectureType">Typ architektury</label>
-                        <h:selectOneMenu id="add-offer-architectureType"
+                        <h:selectOneMenu class="form-control"
+                                         id="add-offer-architectureType"
                                          value="#{offerBean.offerDto.architectureType}">
                             <f:selectItems value="#{offerBean.architectureTypes}"
                                            var="g"
@@ -38,75 +37,94 @@
                         </h:selectOneMenu>
                     </div>
 
-                    <div class="form-top" jsf:id="offer-work-date-from-id">
-                        <label for="add-offer-workDateFrom">Czas od</label>
-                        <input type="date"
-                               jsf:id="add-offer-workDateFrom"
-                               jsf:value="#{offerBean.offerDto.workDateFrom}">
-                            <f:ajax event="blur"
-                                    execute="@this"
-                                    render="offer-work-date-from-id"/>
-                        </input>
-                    </div>
 
-                    <div class="form-top" jsf:id="offer-work-date-to-id">
-                        <label for="add-offer-workDateTo">Czas do</label>
-                        <input type="date"
-                               jsf:id="add-offer-workDateTo"
-                               jsf:value="#{offerBean.offerDto.workDateTo}">
-                            <f:ajax event="blur"
-                                    execute="@this"
-                                    render="offer-work-date-to-id"/>
-                        </input>
-                    </div>
+                <div class="form-group">
+                    <label for="workDateFrom">Data od</label><br/>
+                    <h:inputText class="form-control"
+                                 id="workDateFrom"
+                                 styleClass="datepicker"
+                                 value="#{offerBean.offerDto.workDateFrom}"
+                                 p:placeholder="RRRR-MM-DD">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
 
-                    <div class="form-top" jsf:id="offer-building-dimension-id">
-                        <label for="add-offer-buildingDimension">Wymiary budynku</label>
-                        <input type="number" step="0.01"
-                               jsf:id="add-offer-buildingDimension"
-                               jsf:value="#{offerBean.offerDto.buildingDimension}">
-                            <f:ajax event="blur"
-                                    execute="@this"
-                                    render="offer-building-dimension-id"/>
-                        </input>
-                    </div>
+                        <f:ajax event="change"
+                                delay="300"
+                                execute="@this"/>
+                    </h:inputText>
+                    <h:outputScript>
 
-                    <div class="form-top" jsf:id="offer-email-id">
-                        <label for="add-offer-email">Email</label>
-                        <input type="text"
-                               jsf:id="add-offer-email"
-                               jsf:value="#{offerBean.offerDto.email}">
-                            <f:ajax event="blur"
-                                    execute="@this"
-                                    render="offer-email-id"/>
-                        </input>
-                    </div>
+                        $(".datepicker").flatpickr({
+                            enableTime: false,
+                            dateFormat: "Y-m-d"
+                        });
+
+                        tippy('[data-tippy-content]');
+
+                    </h:outputScript>
+                </div>
+
+                <div class="form-group">
+                    <label for="workDateTo">Data do</label><br/>
+                    <h:inputText class="form-control"
+                                 id="workDateTo"
+                                 styleClass="datepicker"
+                                 value="#{offerBean.offerDto.workDateTo}"
+                                 p:placeholder="RRRR-MM-DD">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+
+                        <f:ajax event="change"
+                                delay="300"
+                                execute="@this"/>
+                    </h:inputText>
+                    <h:outputScript>
+
+                        $(".datepicker").flatpickr({
+                            enableTime: false,
+                            dateFormat: "Y-m-d"
+                        });
+
+                        tippy('[data-tippy-content]');
+
+                    </h:outputScript>
+                </div>
+
+                <div class="form-group">
+                    <label for="add-offer-buildingDimension">Wymiary budynku</label>
+                    <input class="form-control" type="number" step="0.01"
+                           jsf:id="add-offer-buildingDimension"
+                           jsf:value="#{offerBean.offerDto.buildingDimension}">
+                    </input>
+                </div>
+
+                <div class="form-group">
+                    <label for="add-offer-email">Email</label>
+                    <input class="form-control" type="text"
+                           jsf:id="add-offer-email"
+                           jsf:value="#{offerBean.offerDto.email}">
+                    </input>
+                </div>
 
 
-                    <div class="form-top" jsf:id="offer-phone-group">
-                        <label for="add-offer-phone">Telefon</label>
-                            <input type="text"
-                                   jsf:id="add-offer-phone"
-                                   jsf:value="#{offerBean.offerDto.phone}"
-                                   jsf:converter="country-code-converter">
-                                <f:ajax event="blur"
-                                        execute="@this"
-                                        render="offer-phone-group"/>
-                            </input>
-                    </div>
+                <div class="form-group">
+                    <label for="add-offer-phone">Telefon</label>
+                    <input class="form-control" type="text"
+                           jsf:id="add-offer-phone"
+                           jsf:value="#{offerBean.offerDto.phone}"
+                           jsf:converter="country-code-converter">
+                    </input>
+                </div>
 
 
+                <div class="center-button">
+                    <button class="btn btn-secondary" type="submit"
+                            jsf:action="#{offerBean.save}">
+                        <i class="fa fa-check"></i> Wyślij ofertę
+                    </button>
+                </div>
+            </h:form>
 
-                    <div class="center-button">
-                        <button class="login-button" type="submit"
-                                jsf:action="#{offerBean.save}">
-                            <i class="fa fa-check"></i> Wyślij ofertę
-                        </button>
-                    </div>
-                </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
 
-            </div>
-        </ui:define>
-    </ui:composition>
-</h:body>
 </html>
