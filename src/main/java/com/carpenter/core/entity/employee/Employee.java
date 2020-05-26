@@ -1,6 +1,6 @@
 package com.carpenter.core.entity.employee;
 
-import com.carpenter.core.control.service.calendar.WorkingDay;
+import com.carpenter.core.entity.WorkingDay;
 import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.DomainObject;
 import com.carpenter.core.entity.dictionaries.Contract;
@@ -126,8 +126,8 @@ public class Employee extends DomainObject {
     @Column(name = "ACCOUNT_ACTIVE")
     private Boolean accountActive;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "employees")
-    private Set<WorkingDay> workingDay;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+    private Set<WorkingDay> workingDays;
 
     public void addRole(Role role) {
         if (role == null) {
@@ -147,6 +147,21 @@ public class Employee extends DomainObject {
             this.addresses = new LinkedList<>();
         }
         this.addresses.add(address);
+    }
+
+    public void addWorkingDay(WorkingDay workingDay) {
+        if (workingDays == null) {
+            workingDays = new LinkedHashSet<>();
+        }
+        workingDays.add(workingDay);
+        workingDay.setEmployee(this);
+    }
+
+    public void removeWorkingDay(WorkingDay workingDay) {
+        if (workingDays != null) {
+            workingDays.remove(workingDay);
+            workingDay.setEmployee(null);
+        }
     }
 
     @Transient

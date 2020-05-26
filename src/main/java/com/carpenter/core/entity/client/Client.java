@@ -1,6 +1,6 @@
 package com.carpenter.core.entity.client;
 
-import com.carpenter.core.control.service.calendar.WorkingDay;
+import com.carpenter.core.entity.WorkingDay;
 import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.DomainObject;
 import lombok.*;
