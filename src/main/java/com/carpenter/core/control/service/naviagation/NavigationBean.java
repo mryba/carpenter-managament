@@ -7,7 +7,7 @@ import javax.inject.Named;
 @ApplicationScoped
 public class NavigationBean {
 
-    public String employersRedirect(){
+    public String employersRedirect() {
         return "/secure/employees/employees?faces-redirect=true";
     }
 
@@ -17,8 +17,9 @@ public class NavigationBean {
 
     public String clientsRedirect() {
         return "/secure/clients/clients?faces-redirect=true";
+    }
 
-    public String offersRedirect(){
+    public String offersRedirect() {
         return "/secure/offers/offers?faces-redirect=true";
     }
 }
