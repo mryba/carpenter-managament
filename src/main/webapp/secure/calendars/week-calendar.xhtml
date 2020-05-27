@@ -16,30 +16,56 @@
                 <div class="card-header">
                     <h2>Kalendarz</h2>
                 </div>
-                <h:form id="dateForm" prependId="false">
-                    <div class="calendar-navigator">
-                        <a jsf:action="#{calendarWeekBean.moveBackward}">
-                            <i class="fa fa-chevron-left"></i>
-                            <f:ajax execute="@this"
-                                    render="@form calendarForm"
-                                    onevent="showLoader"/>
-                        </a>
-                        <div>
-                            <h:outputFormat value="{0,date,d.MM}">
-                                <f:param value="#{calendarWeekBean.timeManager.startDate}"/>
-                            </h:outputFormat>
-                            -
-                            <h:outputFormat value="{0,date,d.MM}">
-                                <f:param value="#{calendarWeekBean.timeManager.endDate}"/>
-                            </h:outputFormat>
+                <!--Date -->
+                <div class="card-subheader">
+                    <h:form id="dateForm" prependId="false">
+                        <div class="calendar-navigator">
+                            <a jsf:action="#{calendarWeekBean.moveBackward}">
+                                <i class="fa fa-chevron-left"></i>
+                                <f:ajax execute="@this"
+                                        render="@form calendarForm"
+                                        onevent="showLoader"/>
+                            </a>
+                            <div>
+                                <h:outputFormat value="{0,date,d.MM}">
+                                    <f:param value="#{calendarWeekBean.timeManager.startDate}"/>
+                                </h:outputFormat>
+                                -
+                                <h:outputFormat value="{0,date,d.MM}">
+                                    <f:param value="#{calendarWeekBean.timeManager.endDate}"/>
+                                </h:outputFormat>
+                            </div>
+                            <a jsf:action="#{calendarWeekBean.moveForward}">
+                                <i class="fa fa-caret-right"></i>
+                                <f:ajax execute="@this"
+                                        render="@form calendarForm"
+                                        onevent="showLoader"/>
+                            </a>
                         </div>
-                        <a jsf:action="#{calendarWeekBean.moveForward}">
-                            <i class="fa fa-caret-right"></i>
-                            <f:ajax execute="@this"
-                                    render="@form calendarForm"
-                                    onevent="showLoader"/>
-                        </a>
+                    </h:form>
+                </div>
+
+                <h:form id="calendarForm" prependId="false">
+                    <div class="table calendar-view calendar-view-week">
+                        <table jsf:id="calendarWeekTable">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="calendar-header"></th>
+                                <ui:repeat value="#{calendarWeekBean.dates}" var="day">
+                                    <th scope="col" class="calendar-header">
+                                        <h:outputFormat value="{0,date,EEE', 'd.MM}">
+                                            <f:param value="#{day}"/>
+                                        </h:outputFormat>
+                                    </th>
+                                </ui:repeat>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
                     </div>
+
                 </h:form>
             </div>
         </div>
