@@ -57,11 +57,13 @@
                         <i class="fas fa-file-invoice-dollar"></i>Faktury
                     </h:commandLink>
 
+                    <ui:fragment rendered="#{employeeListBean.hasLoggedUserAdminOrManagerRole}">
                     <h:commandLink
                         action="#{navigationBean.offersRedirect}">
                         <f:ajax onevent="showLoader"/>
-                        <i class="fas fa-envelope-open-text"></i>Oferty
+                        <i class="fas fa-envelope-open-text"></i>Oferty (#{offerBean.unreadOffersFromLoggedUserCompany})
                     </h:commandLink>
+                    </ui:fragment>
                 </div>
 
                 <div class="user-panel">

@@ -2,6 +2,7 @@ package com.carpenter.core.control.service.offer;
 
 import com.carpenter.core.control.dto.OfferDto;
 import com.carpenter.core.control.service.company.CompanyService;
+import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.Offer;
 import com.carpenter.core.entity.dictionaries.ArchitectureType;
@@ -13,6 +14,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 @Named("offerBean")
 @ViewScoped
@@ -23,6 +26,9 @@ public class OfferBean implements Serializable {
 
     @Inject
     CompanyService companyService;
+
+    @Inject
+    PrincipalBean principalBean;
 
     @Getter
     @Setter
@@ -41,7 +47,24 @@ public class OfferBean implements Serializable {
             return;
         }
         offer.setCompany(company);
+        offer.setCreateDate(new Date());
         offerService.save(offer);
+    }
+
+    public void remove(Long id) {
+        offerService.remove(id);
+    }
+
+    public List<Offer> getOffersFromLoggedUserCompany() {
+        Company company = principalBean.getLoggedUser().getCompany();
+        if(company == null) {
+            return null;
+        }
+        return offerService.getOffersByCompany(company.getId());
+    }
+
+    public Long getUnreadOffersFromLoggedUserCompany() {
+        return getOffersFromLoggedUserCompany().stream().filter(o -> !o.getIsRead()).count();
     }
 
     public ArchitectureType[] getArchitectureTypes() {
