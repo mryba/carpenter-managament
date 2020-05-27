@@ -89,66 +89,81 @@
                         </input>
                     </div>
 
-                    <div class="form-top" jsf:id="client-country">
-                        <label for="add-client-country">Państwo</label>
-                        <input type="text"
-                               jsf:id="add-client-country"
-                               jsf:value="#{clientBean.clientDto.country}">
+                    <div class="form-top">
+                        <label for="add-address-checkbox">Dodaj dane korespondencyjne</label>
+                        <h:selectBooleanCheckbox id="add-address-checkbox"
+                                                 value="#{clientBean.includeAddress}">
                             <f:ajax event="change"
-                                    execute="@this"/>
-                        </input>
+                                    execute="@this"
+                                    render="client-add-address"/>
+                        </h:selectBooleanCheckbox>
+                        <i class="far fa-address-card"></i>
                     </div>
 
-                    <div class="form-top" jsf:id="client-city">
-                        <label for="add-client-city">Miasto</label>
-                        <input type="text"
-                               jsf:id="add-client-city"
-                               jsf:value="#{clientBean.clientDto.city}">
-                            <f:ajax event="change"
-                                    execute="@this"/>
-                        </input>
-                    </div>
+                    <div jsf:id="client-add-address">
+                        <div jsf:rendered="#{clientBean.includeAddress}">
 
-                    <div class="form-top" jsf:id="client-postal-code">
-                        <label for="add-client-postal-code">Kod pocztowy</label>
-                        <input type="text"
-                               jsf:id="add-client-postal-code"
-                               jsf:value="#{clientBean.clientDto.postalCode}">
-                            <f:ajax event="change"
-                                    execute="@this"/>
-                        </input>
-                    </div>
+                            <div class="form-top">
+                                <label>Kraj</label>
+                                <h:selectOneMenu id="client-country"
+                                                 value="#{clientBean.clientDto.country}">
+                                    <f:selectItems value="#{clientBean.countries}">
+                                    </f:selectItems>
 
-                    <div class="form-top" jsf:id="client-street">
-                        <label for="add-client-street">Ulica</label>
-                        <input type="text"
-                               jsf:id="add-client-street"
-                               jsf:value="#{clientBean.clientDto.street}">
-                            <f:ajax event="change"
-                                    execute="@this"/>
-                        </input>
-                    </div>
+                                </h:selectOneMenu>
+                            </div>
 
-                    <div class="form-top" jsf:id="client-street-number">
-                        <label for="add-client-street-number">Nr</label>
-                        <input type="text"
-                               jsf:id="add-client-street-number"
-                               jsf:value="#{clientBean.clientDto.streetNumber}">
-                            <f:ajax event="change"
-                                    execute="@this"/>
-                        </input>
-                    </div>
+                            <div class="form-top" jsf:id="client-city">
+                                <label for="add-client-city">Miasto</label>
+                                <input type="text"
+                                       jsf:id="add-client-city"
+                                       jsf:value="#{clientBean.clientDto.city}">
+                                    <f:ajax event="change"
+                                            execute="@this"/>
+                                </input>
+                            </div>
 
-                    <div class="form-top" jsf:id="client-house-number">
-                        <label for="add-client-house-number">Numer lokalu</label>
-                        <input type="text"
-                               jsf:id="add-client-house-number"
-                               jsf:value="#{clientBean.clientDto.houseNumber}">
-                            <f:ajax event="change"
-                                    execute="@this"/>
-                        </input>
-                    </div>
+                            <div class="form-top" jsf:id="client-postal-code">
+                                <label for="add-client-postal-code">Kod pocztowy</label>
+                                <input type="text"
+                                       jsf:id="add-client-postal-code"
+                                       jsf:value="#{clientBean.clientDto.postalCode}">
+                                    <f:ajax event="change"
+                                            execute="@this"/>
+                                </input>
+                            </div>
 
+                            <div class="form-top" jsf:id="client-street">
+                                <label for="add-client-street">Ulica</label>
+                                <input type="text"
+                                       jsf:id="add-client-street"
+                                       jsf:value="#{clientBean.clientDto.street}">
+                                    <f:ajax event="change"
+                                            execute="@this"/>
+                                </input>
+                            </div>
+
+                            <div class="form-top" jsf:id="client-street-number">
+                                <label for="add-client-street-number">Nr</label>
+                                <input type="text"
+                                       jsf:id="add-client-street-number"
+                                       jsf:value="#{clientBean.clientDto.streetNumber}">
+                                    <f:ajax event="change"
+                                            execute="@this"/>
+                                </input>
+                            </div>
+
+                            <div class="form-top" jsf:id="client-house-number">
+                                <label for="add-client-house-number">Numer lokalu</label>
+                                <input type="text"
+                                       jsf:id="add-client-house-number"
+                                       jsf:value="#{clientBean.clientDto.houseNumber}">
+                                    <f:ajax event="change"
+                                            execute="@this"/>
+                                </input>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <h:panelGroup id="validation-messages-container">

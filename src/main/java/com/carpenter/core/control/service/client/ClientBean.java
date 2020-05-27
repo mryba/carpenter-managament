@@ -2,6 +2,7 @@ package com.carpenter.core.control.service.client;
 
 import com.carpenter.core.control.dto.ClientDto;
 import com.carpenter.core.entity.client.Client;
+import com.carpenter.core.entity.dictionaries.Countries;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +25,16 @@ public class ClientBean implements Serializable {
     @Getter
     @Setter
     private ClientDto clientDto;
+
+    private boolean includeAddress;
+
+    public boolean isIncludeAddress() {
+        return includeAddress;
+    }
+
+    public void setIncludeAddress(boolean includeAddress) {
+        this.includeAddress = includeAddress;
+    }
 
     @PostConstruct
     public void init() {
@@ -56,5 +67,9 @@ public class ClientBean implements Serializable {
         clientDto.setWebSite(null);
         clientDto.setStreetNumber(null);
         clientDto.setHouseNumber(null);
+    }
+
+    public Countries[] getCountries() {
+        return Countries.values();
     }
 }
