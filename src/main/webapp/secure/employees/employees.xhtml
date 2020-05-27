@@ -75,6 +75,7 @@
                                         <h:link outcome="/secure/employees/employee"
                                                 styleClass="btn col-primary">
                                             <f:param name="employeeId" value="#{e.id}"/>
+                                            <f:ajax onevent="showLoader"/>
                                             <i class="fa fa-caret-right"></i>
                                         </h:link>
                                     </td>

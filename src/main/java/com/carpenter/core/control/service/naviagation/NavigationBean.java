@@ -17,5 +17,8 @@ public class NavigationBean {
 
     public String clientsRedirect() {
         return "/secure/clients/clients?faces-redirect=true";
+
+    public String offersRedirect(){
+        return "/secure/offers/offers?faces-redirect=true";
     }
 }

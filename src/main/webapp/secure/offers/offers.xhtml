@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/secure/template.xhtml">
+
+    <ui:param name="pageTitle" value="Oferty"/>
+
+    <ui:define name="content">
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Oferty</h2>
+            </div>
+
+            <div class="table">
+                <table>
+                    <thead>
+                    <tr>
+                        <th class="w10 left">Data</th>
+                        <th class="w10 left">Miasto</th>
+                        <th class="w10 left">Typ architektury</th>
+                        <th class="w10 left">E-mail / Telefon</th>
+                        <th class="w5"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <ui:repeat value="#{offerBean.offersFromLoggedUserCompany}" var="o">
+                        <tr>
+                            <!--<h:outputStylesheet styleClass="#{!o.isRead ? 'unread-offer' : 'read-offer'}"> -->
+                            <td class="w10 left">
+                                #{o.createDate}
+                            </td>
+                            <td class="w10 left">
+                                #{o.workCity}
+                            </td>
+                            <td class="w10 left">
+                                <h4>#{o.architectureType}</h4>
+                            </td>
+                            <td class="w10 left">
+                                #{o.email} / #{o.phone}
+                            </td>
+                            <td class="w5">
+                                <input type="button"
+                                       class="btn col-danger bordered fa fa-check"
+                                       value="Usuń"
+                                       jsf:action="#{offerBean.remove(o.id)}">
+                                </input>
+                            </td>
+                        </tr>
+                    </ui:repeat>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </ui:define>
+</ui:composition>

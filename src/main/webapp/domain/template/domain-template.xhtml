@@ -7,11 +7,22 @@
 <h:head>
 
     <h:outputStylesheet library="carpenter" name="domain/css/domain-style.css"/>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"/>
     <link href="https://fonts.googleapis.com/css?family=Lato:400,900&#38;;display=swap&#38;;subset=latin-ext"
           rel="stylesheet"/>
-    <h:outputScript library="carpenter" name="jquery-3.4.1.min.js"/>
+    <h:outputScript library="carpenter" name="/js/jquery-3.4.1.min.js"/>
+
+    <!--DATEPICKER -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_green.css"/>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/pl.js"></script>
+
+    <script>
+        flatpickr.localize(flatpickr.l10ns.pl);
+    </script>
 
 </h:head>
 

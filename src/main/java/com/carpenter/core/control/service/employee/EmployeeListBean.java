@@ -19,6 +19,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -48,6 +49,7 @@ public class EmployeeListBean implements Serializable {
 
     private boolean isAddAddress;
     private boolean isAccountCreate;
+    private boolean hasLoggedUserAdminOrManagerRole;
 
     @PostConstruct
     public void init() {
@@ -153,5 +155,10 @@ public class EmployeeListBean implements Serializable {
             employeeDto.setPassword(null);
             employeeDto.setRePassword(null);
         }
+    }
+
+    public boolean getHasLoggedUserAdminOrManagerRole() {
+        this.hasLoggedUserAdminOrManagerRole = principalBean.getLoggedUser().isInRole(Arrays.asList(Role.MANAGER, Role.ADMINISTRATOR));
+        return hasLoggedUserAdminOrManagerRole;
     }
 }

@@ -7,6 +7,7 @@ import com.carpenter.core.entity.Offer;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.util.List;
 
 @SessionScoped
 public class OfferService implements Serializable {
@@ -23,5 +24,16 @@ public class OfferService implements Serializable {
 
     public void save(Offer offer) {
         offerRepository.save(offer);
+    }
+
+    public void remove(Long id) {
+        offerRepository.remove(id);
+    }
+
+    public List<Offer> getOffersByCompany(Long companyId) {
+        if (companyId == null) {
+            return null;
+        }
+        return offerRepository.getOffersByCompany(companyId);
     }
 }
