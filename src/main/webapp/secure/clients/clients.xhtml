@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/secure/template.xhtml">
+
+    <ui:param name="pageTitle" value="Klienci"/>
+
+    <ui:define name="content">
+
+        <div class="wrapper">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Klienci</h2>
+
+                    <div class="controls"
+                         jsf:rendered=
+                                 "#{principalBean.loggedUser.isInRole('ADMINISTRATOR') ||
+                                 principalBean.loggedUser.isInRole('MANAGER')}">
+                        <h:form>
+                            <a href="#" class="btn bordered col-primary"
+                               data-toggle="modal"
+                               data-target="#add-client"
+                               jsf:id="call-add-new-client">
+                                <i class="fas fa-user-circle"></i>Dodaj klienta
+                            </a>
+                        </h:form>
+                    </div>
+                </div>
+
+                <h:form id="clientsTableForm" prependId="false">
+                    <div class="table">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th class="w10 left">Firma</th>
+                                <th class="w10 left">E-mail / Telefon</th>
+                                <th class="w10 left">NIP</th>
+                                <th class="w10 left">Numer konta Bankowego</th>
+                                <th class="w5"><i class="fas fa-user"></i></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <ui:repeat value="#{clientBean.clientList}" var="c">
+                                <tr>
+                                    <td class="w10 left">
+                                        #{c.name}
+                                    </td>
+                                    <td class="w10 left">
+                                        <h4>#{c.email} / #{c.phoneNumber}</h4>
+                                    </td>
+                                    <td class="w10 left">
+                                        #{c.nip}
+                                    </td>
+                                    <td class="w10 left">
+                                        #{c.bankAccountNumber}
+                                    </td>
+                                    <td class="w5">
+                                        <h:link outcome="/secure/clients/client"
+                                                styleClass="btn col-primary">
+                                            <f:param name="clientId" value="#{c.id}"/>
+                                            <i class="fa fa-caret-right"></i>
+                                        </h:link>
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+                </h:form>
+            </div>
+
+            <ui:include src="/includes/add-client-form.xhtml"/>
+
+            <div jsf:id="closeDialogDiv">
+                <h:outputScript rendered="#{not facesContext.validationFailed}">
+                    $('#add-client').modal('hide')
+                </h:outputScript>
+            </div>
+        </div>
+    </ui:define>
+
+
+</ui:composition>
