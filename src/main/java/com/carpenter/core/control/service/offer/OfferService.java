@@ -30,10 +30,18 @@ public class OfferService implements Serializable {
         offerRepository.remove(id);
     }
 
+    public void changeToRead(Long id) {
+        offerRepository.changeToRead(id);
+    }
+
     public List<Offer> getOffersByCompany(Long companyId) {
         if (companyId == null) {
             return null;
         }
         return offerRepository.getOffersByCompany(companyId);
+    }
+
+    public Offer findOfferById(Long id) {
+        return offerRepository.findOfferById(id);
     }
 }

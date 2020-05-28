@@ -1404,3 +1404,7 @@ body {
         opacity: 0;
     }
 }
+
+div.table > table tbody tr.unread-offer, table.table tbody tr.unread-offer {
+    font-weight: bold; !important;
+}

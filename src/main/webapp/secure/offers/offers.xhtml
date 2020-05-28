@@ -27,9 +27,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <ui:repeat value="#{offerBean.offersFromLoggedUserCompany}" var="o">
-                        <tr>
-                            <!--<h:outputStylesheet styleClass="#{!o.isRead ? 'unread-offer' : 'read-offer'}"> -->
+                    <ui:repeat value="#{offerListBean.offersFromLoggedUserCompany}" var="o">
+                        <tr class="#{o.isRead ? 'read-offer' : 'unread-offer'}">
                             <td class="w10 left">
                                 #{o.createDate}
                             </td>
@@ -37,17 +36,19 @@
                                 #{o.workCity}
                             </td>
                             <td class="w10 left">
-                                <h4>#{o.architectureType}</h4>
+                                #{o.architectureType}
                             </td>
                             <td class="w10 left">
                                 #{o.email} / #{o.phone}
                             </td>
                             <td class="w5">
-                                <input type="button"
-                                       class="btn col-danger bordered fa fa-check"
-                                       value="Usuń"
-                                       jsf:action="#{offerBean.remove(o.id)}">
-                                </input>
+                                <h:link outcome="/secure/offers/offer"
+                                        styleClass="btn col-primary">
+                                    <!-- action="#{offerBean.changeToRead(o.id)}"> -->
+                                    <f:param name="offerId" value="#{o.id}"/>
+                                    <f:ajax onevent="showLoader"/>
+                                    <i class="fa fa-caret-right"></i>
+                                </h:link>
                             </td>
                         </tr>
                     </ui:repeat>

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.Collections;
@@ -19,6 +20,15 @@ public class OfferRepository implements Serializable {
     private transient EntityManager entityManager;
 
     public void save(Offer offer) {
+        entityManager.merge(offer);
+    }
+
+    public void changeToRead(Long id) {
+        Offer offer = entityManager.find(Offer.class, id);
+        if (offer == null || offer.getIsRead()) {
+            return;
+        }
+        offer.setIsRead(Boolean.TRUE);
         entityManager.merge(offer);
     }
 
@@ -36,6 +46,15 @@ public class OfferRepository implements Serializable {
         } catch (NoResultException e) {
             log.error("No offers found!");
             return Collections.emptyList();
+        }
+    }
+
+    public Offer findOfferById(Long id) {
+        try {
+            return entityManager.createNamedQuery("Offer.findOfferById", Offer.class)
+                    .setParameter("offerId", id).getResultList().iterator().next();
+        } catch (NonUniqueResultException e) {
+            return null;
         }
     }
 }
