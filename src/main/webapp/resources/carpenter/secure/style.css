@@ -97,7 +97,7 @@ body {
     -webkit-box-align: center;
     align-items: center;
     height: 100%;
-    width: 341px;
+    width: auto;
     margin-left: auto;
     color: #0b2533;
     -webkit-transition: all 0.3s ease;

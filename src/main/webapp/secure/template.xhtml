@@ -59,11 +59,11 @@
                     </h:commandLink>
 
                     <ui:fragment rendered="#{employeeListBean.hasLoggedUserAdminOrManagerRole}">
-                    <h:commandLink
-                        action="#{navigationBean.offersRedirect}">
-                        <f:ajax onevent="showLoader"/>
-                        <i class="fas fa-envelope-open-text"></i>Oferty (#{offerBean.unreadOffersFromLoggedUserCompany})
-                    </h:commandLink>
+                        <h:commandLink
+                                action="#{navigationBean.offersRedirect}">
+                            <f:ajax onevent="showLoader"/>
+                            <i class="fas fa-envelope-open-text"></i>Oferty (#{offerBean.unreadOffersFromLoggedUserCompany})
+                        </h:commandLink>
                     </ui:fragment>
                 </div>
 
@@ -74,6 +74,14 @@
                     <div class="user-info">
                         <h4>#{principalBean.loggedUser.firstName} #{principalBean.loggedUser.lastName}</h4>
                         <h4>#{principalBean.loggedUser.company.name}</h4>
+                    </div>
+
+                    <div class="user-avatar"
+                         jsf:rendered="#{principalBean.loggedUser.isInRole('ADMINISTRATOR')}">
+                        <h:commandLink
+                                action="#{navigationBean.adminRedirect}">
+                            <i class="fas fa-users-cog"></i>
+                        </h:commandLink>
                     </div>
 
                     <h:commandLink action="#{loginController.logout}">
