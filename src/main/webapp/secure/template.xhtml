@@ -76,11 +76,11 @@
                         <h4>#{principalBean.loggedUser.company.name}</h4>
                     </div>
 
-                    <div class="user-avatar"
+                    <div class="admin-dash"
                          jsf:rendered="#{principalBean.loggedUser.isInRole('ADMINISTRATOR')}">
                         <h:commandLink
                                 action="#{navigationBean.adminRedirect}">
-                            <i class="fas fa-users-cog"></i>
+                            <i class="fas fa-users-cog"></i>Panel<br/>Administracyjny
                         </h:commandLink>
                     </div>
 
