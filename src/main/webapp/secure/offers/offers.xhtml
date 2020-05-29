@@ -22,7 +22,7 @@
                         <th class="w10 left">Data</th>
                         <th class="w10 left">Miasto</th>
                         <th class="w10 left">Typ architektury</th>
-                        <th class="w10 left">E-mail / Telefon</th>
+                        <th class="w10 left">E-mail</th>
                         <th class="w5"></th>
                     </tr>
                     </thead>
@@ -36,15 +36,14 @@
                                 #{o.workCity}
                             </td>
                             <td class="w10 left">
-                                #{o.architectureType}
+                                #{offer_msg['architecture_type_'.concat(o.architectureType.name())]}
                             </td>
                             <td class="w10 left">
-                                #{o.email} / #{o.phone}
+                                #{o.email}
                             </td>
                             <td class="w5">
                                 <h:link outcome="/secure/offers/offer"
                                         styleClass="btn col-primary">
-                                    <!-- action="#{offerBean.changeToRead(o.id)}"> -->
                                     <f:param name="offerId" value="#{o.id}"/>
                                     <f:ajax onevent="showLoader"/>
                                     <i class="fa fa-caret-right"></i>

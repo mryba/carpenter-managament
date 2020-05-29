@@ -29,13 +29,15 @@ public class OfferBean implements Serializable {
         if (offerId != null) {
             offerMapper = new OfferMapper();
             Offer offer = offerService.findOfferById(offerId);
-            // Poprawić zmianę statusu przeczytana/nieprzeczytana
-            offerService.changeToRead(offerId);
             offerDto = offerMapper.mapToDomain(offer);
         }
     }
 
     public OfferDto getOfferDto() {
         return offerDto;
+    }
+
+    public Long getOfferId() {
+        return offerId;
     }
 }

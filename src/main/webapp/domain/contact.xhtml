@@ -1,14 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
+<?xml version="1.0" encoding="UTF-8" ?>
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui
-              ="http://java.sun.com/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:jsf="http://xmlns.jcp.org/jsf">
-
-
+>
 
 <ui:composition template="template/domain-template.xhtml">
     <ui:define name="content">
@@ -16,35 +14,38 @@
 
             <h:form>
 
-                    <div class="form-group col-md-6">
-                        <label for="add-offer-workCity">Miasto</label>
-                        <input class="form-control" type="text"
-                               jsf:id="add-offer-workCity"
-                               jsf:value="#{offerListBean.offerDto.workCity}"/>
-                    </div>
+                <div>
+                    <label for="add-offer-workCity">Miasto</label><br/>
+                    <h:inputText styleClass="offer-input" type="text"
+                                 id="add-offer-workCity"
+                                 value="#{offerListBean.offerDto.workCity}"
+                                 validator="#{offerValidation.validateWorkCity}"/>
+                    <h:message for="add-offer-workCity" styleClass="form-msg col-danger"/>
+                </div>
 
-                    <div class="form-group col-md-6">
-                        <label for="add-offer-architectureType">Typ architektury</label>
-                        <h:selectOneMenu class="form-control"
-                                         id="add-offer-architectureType"
-                                         value="#{offerListBean.offerDto.architectureType}">
-                            <f:selectItems value="#{offerListBean.architectureTypes}"
-                                           var="g"
-                                           itemLabel="#{offer_msg['architectureType_'.concat(g.name())]}"
-                                           itemValue="#{g}"/>
-                            <f:ajax event="change"
-                                    execute="@this"/>
-                        </h:selectOneMenu>
-                    </div>
+                <div>
+                    <label for="add-offer-architecture-type">Typ architektury</label><br/>
+                    <h:selectOneMenu styleClass="offer-input"
+                                     id="add-offer-architecture-type"
+                                     value="#{offerListBean.offerDto.architectureType}">
+                        <f:selectItems value="#{offerListBean.architectureTypes}"
+                                       var="a"
+                                       itemLabel="#{offer_msg['architecture_type_'.concat(a.name())]}"
+                                       itemValue="#{a}"/>
+                        <f:ajax event="change"
+                                execute="@this"/>
+                    </h:selectOneMenu>
+                </div>
 
 
-                <div class="form-group">
-                    <label for="workDateFrom">Data od</label><br/>
+                <div>
+                    <label for="work-date-from">Data od</label><br/>
                     <h:inputText class="form-control"
-                                 id="workDateFrom"
+                                 id="work-date-from"
                                  styleClass="datepicker"
                                  value="#{offerListBean.offerDto.workDateFrom}"
-                                 p:placeholder="RRRR-MM-DD">
+                                 p:placeholder="RRRR-MM-DD"
+                                 validator="#{offerValidation.validateWorkDateFrom}">
                         <f:convertDateTime pattern="yyyy-MM-dd"/>
 
                         <f:ajax event="change"
@@ -61,12 +62,13 @@
                         tippy('[data-tippy-content]');
 
                     </h:outputScript>
+                    <h:message for="work-date-from" styleClass="form-msg col-danger"/>
                 </div>
 
-                <div class="form-group">
-                    <label for="workDateTo">Data do</label><br/>
+                <div>
+                    <label for="work-date-to">Data do</label><br/>
                     <h:inputText class="form-control"
-                                 id="workDateTo"
+                                 id="work-date-to"
                                  styleClass="datepicker"
                                  value="#{offerListBean.offerDto.workDateTo}"
                                  p:placeholder="RRRR-MM-DD">
@@ -88,37 +90,39 @@
                     </h:outputScript>
                 </div>
 
-                <div class="form-group">
-                    <label for="add-offer-buildingDimension">Wymiary budynku</label>
-                    <input class="form-control" type="number" step="0.01"
-                           jsf:id="add-offer-buildingDimension"
-                           jsf:value="#{offerListBean.offerDto.buildingDimension}">
-                    </input>
+                <div>
+                    <label for="add-offer-building-dimension">Wymiary budynku</label><br/>
+                    <h:inputText styleClass="offer-input" type="number" step="0.01"
+                                 id="add-offer-building-dimension"
+                                 value="#{offerListBean.offerDto.buildingDimension}"
+                                 validator="#{offerValidation.validateBuildingDimension}"/>
+                    <h:message for="add-offer-building-dimension" styleClass="form-msg col-danger"/>
                 </div>
 
-                <div class="form-group">
-                    <label for="add-offer-email">Email</label>
-                    <input class="form-control" type="text"
-                           jsf:id="add-offer-email"
-                           jsf:value="#{offerListBean.offerDto.email}">
-                    </input>
+                <div>
+                    <label for="add-offer-email">Email</label><br/>
+                    <h:inputText styleClass="offer-input" type="text"
+                                 id="add-offer-email"
+                                 value="#{offerListBean.offerDto.email}"
+                                 validator="#{offerValidation.validateEmail}"/>
+                    <h:message for="add-offer-email" styleClass="form-msg col-danger"/>
                 </div>
 
 
-                <div class="form-group">
-                    <label for="add-offer-phone">Telefon</label>
-                    <input class="form-control" type="text"
-                           jsf:id="add-offer-phone"
-                           jsf:value="#{offerListBean.offerDto.phone}"
-                           jsf:converter="country-code-converter">
-                    </input>
+                <div>
+                    <label for="add-offer-phone">Telefon</label><br/>
+                    +48<h:inputText styleClass="offer-input" type="text"
+                                    id="add-offer-phone"
+                                    value="#{offerListBean.offerDto.phone}"
+                                    validator="#{offerValidation.validatePhone}"
+                                    converter="country-code-converter"/>
+                    <h:message for="add-offer-phone" styleClass="form-msg col-danger"/>
                 </div>
 
 
                 <div class="center-button">
                     <button class="btn btn-secondary" type="submit"
-                            jsf:action="#{offerListBean.save}">
-                        <i class="fa fa-check"></i> Wyślij ofertę
+                            jsf:action="#{offerListBean.save}">Wyślij ofertę
                     </button>
                 </div>
             </h:form>
