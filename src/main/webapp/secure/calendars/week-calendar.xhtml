@@ -4,7 +4,8 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:jsf="http://xmlns.jcp.org/jsf"
-                xmlns:carpenter="http://xmlns.jcp.org/jsf/composite/carpenter"
+                xmlns:carpenter="http://xmlns.jcp.org/jsf/composite/carpenter/calendar"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
                 template="/secure/template.xhtml">
 
     <ui:param name="pageTitle" value="Kalendarz"/>
@@ -44,6 +45,16 @@
                             </a>
                         </div>
                     </h:form>
+                    <div class="controls">
+                        <h:commandLink
+                                styleClass="btn bordered col-primary"
+                                p:data-toggle="modal"
+                                p:data-target="#add-work-time">
+                            <f:ajax execute="@this"
+                                    onevent="showLoader"/>
+                            <i class="far fa-clock"></i> Dodaj czas pracy
+                        </h:commandLink>
+                    </div>
                 </div>
 
                 <h:form id="calendarForm" prependId="false">
@@ -86,9 +97,15 @@
                             </tbody>
                         </table>
                     </div>
-
                 </h:form>
             </div>
+        </div>
+
+        <ui:include src="/includes/add-work-time.xhtml"/>
+        <div jsf:id="closeDialogDiv">
+            <h:outputScript rendered="#{not facesContext.validationFailed}">
+                $('#add-work-time').modal('hide')
+            </h:outputScript>
         </div>
 
     </ui:define>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<div id="add-work-time" class="modal modal-main fade"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://xmlns.jcp.org/jsf/html"
+     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+     xmlns:f="http://xmlns.jcp.org/jsf/core"
+     xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+     xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+
+    <div>
+        <a class="modal-close" data-dismiss="modal"> <i class="fa fa-times"></i> </a>
+        <div>
+            <h:form id="add-work-time-form" prependId="false">
+
+                <div class="modal-content">
+                    <div class="container-resp">
+                        <div class="form-top col1-4">
+                            <label>Klient</label>
+                            <h:selectOneMenu id="add-work-time-client"
+                                             value="#{workTimeBean.clientId}">
+
+                                <f:selectItems
+                                        value="#{clientBean.clientList}"
+                                        var="c"
+                                        itemValue="#{c.id}"
+                                        itemLabel="#{c.name}"/>
+
+                                <f:ajax event="change"
+                                        execute="@this"/>
+
+                            </h:selectOneMenu>
+                        </div>
+
+                        <div class="form-top col1-3">
+                            <label>Dzień pracy</label>
+                            <h:inputText id="add-work-time-date"
+                                         styleClass="datepicker"
+                                         value="#{workTimeBean.dateTime}"
+                                         p:placeholder="Dzień pracy">
+                                <f:convertDateTime pattern="yyyy-MM-dd"/>
+
+                                <f:ajax event="change"
+                                        delay="300"
+                                        execute="@this"/>
+                            </h:inputText>
+
+                            <h:outputScript>
+
+                                $(".datepicker").flatpickr({
+                                    enableTime: true,
+                                    dateFormat: "Y-m-d",
+                                    time_24hr: true
+                                });
+
+                                tippy('[data-tippy-content]');
+
+                            </h:outputScript>
+                        </div>
+                        <div class="form-top col1-4">
+                            <label>Ilość godzin</label>
+                            <h:selectOneMenu id="add-work-time-time"
+                                             value="#{workTimeBean.hours}">
+                                <f:selectItems value="#{workTimeBean.hour}"
+                                               var="d"
+                                               itemLabel="#{d.name()}"
+                                               itemValue="#{d.number}"/>
+                                <f:ajax event="change"
+                                        execute="@this"/>
+                            </h:selectOneMenu>
+
+                        </div>
+                    </div>
+                    <div class="table">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th class="w10 left">Firma</th>
+                                <th class="w10 left">Nazwisko i Imię</th>
+                                <th class="w10 left">E-mail / Telefon</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <ui:repeat value="#{employeeListBean.employersList}" var="e">
+                                <tr>
+                                    <td class="w10 left">
+                                        #{e.company.name}
+                                    </td>
+                                    <td class="w10 left">
+                                        <h4>#{e.lastName} #{e.firstName}</h4>
+                                    </td>
+                                    <td class="w10 left">
+                                        #{e.email} / #{e.phoneNumber}
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </div>
+</div>
