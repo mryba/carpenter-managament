@@ -28,7 +28,7 @@ public class EmployeeRepository implements Serializable {
 
     public List<Employee> findAllEmployees() {
         try {
-            return entityManager.createQuery("SELECT e from Employee e LEFT JOIN FETCH e.company WHERE e.deleteDate is NULL", Employee.class)
+            return entityManager.createQuery("SELECT e from Employee e LEFT JOIN FETCH e.company LEFT JOIN FETCH e.addresses WHERE e.deleteDate is NULL", Employee.class)
                     .getResultList();
         } catch (NoResultException e) {
             log.error("No employers found!");

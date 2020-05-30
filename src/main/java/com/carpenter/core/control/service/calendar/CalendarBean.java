@@ -1,5 +1,7 @@
 package com.carpenter.core.control.service.calendar;
 
+import com.carpenter.core.control.service.employee.EmployeeMapper;
+import com.carpenter.core.control.service.employee.EmployeeService;
 import com.carpenter.core.control.service.login.PrincipalBean;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +20,11 @@ public abstract class CalendarBean implements Serializable {
 
     @Inject
     PrincipalBean principalBean;
+
+    @Inject
+    EmployeeService employeeService;
+
+    EmployeeMapper employeeMapper;
 
     public void initCalendarMode(Mode mode) {
         timeManager.setMode(mode);

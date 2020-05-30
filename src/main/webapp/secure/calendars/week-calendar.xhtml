@@ -4,6 +4,7 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:carpenter="http://xmlns.jcp.org/jsf/composite/carpenter"
                 template="/secure/template.xhtml">
 
     <ui:param name="pageTitle" value="Kalendarz"/>
@@ -50,7 +51,7 @@
                         <table jsf:id="calendarWeekTable">
                             <thead>
                             <tr>
-                                <th scope="col" class="calendar-header"></th>
+                                <th scope="col" class="calendar-header">Tydzień</th>
                                 <ui:repeat value="#{calendarWeekBean.dates}" var="day">
                                     <th scope="col" class="calendar-header">
                                         <h:outputFormat value="{0,date,EEE', 'd.MM}">
@@ -58,10 +59,30 @@
                                         </h:outputFormat>
                                     </th>
                                 </ui:repeat>
+                                <th scope="col" class="calendar-header">
+                                    Suma
+                                </th>
+                            </tr>
+                            <tr>
+                                <th scope="col" class="calendar-sub-header">Godziny</th>
+                                <ui:repeat value="#{calendarWeekBean.dates}" var="sm">
+                                    <th scope="col" class="calendar-sub-header">
+
+                                    </th>
+                                </ui:repeat>
+                                <th scope="col" class="calendar-sub-header">
+                                    <!-- Suma godzin -->
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
-
+                            <ui:repeat value="#{calendarWeekBean.employees}" var="e">
+                                <tr>
+                                    <th scope="col" class="calendar-row-label">
+                                        <carpenter:calendar-cell employee="#{e}"/>
+                                    </th>
+                                </tr>
+                            </ui:repeat>
                             </tbody>
                         </table>
                     </div>

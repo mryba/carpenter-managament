@@ -1587,10 +1587,12 @@ body {
     align-items: center;
     font-size: 1.5em;
 }
+
 .calendar-navigator > div {
     margin: 0 1em;
     font-weight: bold;
 }
+
 .calendar-navigator a {
     color: #5794cf;
 }
@@ -1598,25 +1600,41 @@ body {
 .calendar-view .calendar-header {
     font-size: 1.1em;
 }
+
+.calendar-view .calendar-sub-header {
+    font-size: 1.1em;
+    background-color: chocolate;
+    border-top: 1px solid #1a3823;
+}
+
 .calendar-view .calendar-row-label {
-    background: #0b2533;
+    background: #32a852;
     color: #fff;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid #1a3823;
+    border-right: 1px solid #1a3823;
     width: 80px;
     padding-left: 0.5em;
     padding-right: 0.5em;
 }
+
+
+.calendar-cell-content {
+    justify-content: center;
+}
+
 @media (max-width: 580px) {
     .calendar-view .calendar-row-label {
         font-size: 0.75em;
         width: 30px;
     }
 }
+
 .calendar-view .calendar-cell {
     padding: 0;
     border-top: 0;
     vertical-align: top;
 }
+
 .calendar-view .calendar-cell-content {
     display: -webkit-box;
     display: flex;
@@ -1642,6 +1660,7 @@ body {
     width: 140px;
     position: relative;
 }
+
 .calendar-event .client {
     padding: 0.8em;
     font-size: 0.9em;
@@ -1651,15 +1670,18 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .calendar-event .client.text-muted {
     opacity: 0.3;
     background: #d1d1d1;
 }
+
 .calendar-event .contact-type {
     padding: 0 0.8em;
     margin-bottom: 0.2em;
     text-transform: none;
 }
+
 .calendar-event .contact-type > i {
     position: absolute;
     margin: 0;
@@ -1670,6 +1692,7 @@ body {
     opacity: 0.5;
     pointer-events: none;
 }
+
 .calendar-event .dealer-info, .calendar-event .owner-info {
     font-size: 0.8em;
     padding: 0 0.85em;
@@ -1683,32 +1706,40 @@ body {
     width: 100%;
     overflow: hidden;
 }
+
 .calendar-event .contact-status {
     padding: 0;
     background: none;
 }
+
 .calendar-event .contact-status .status-name {
     display: none;
 }
+
 .calendar-event .contact-status .status-bar {
     height: 3px;
     background: #5794cf;
     margin-bottom: 0.6em;
 }
+
 .calendar-event .contact-status.processing .status-bar {
     background: #5794cf;
 }
+
 .calendar-event .contact-status.overdue .status-bar, .calendar-event .contact-status.error .status-bar {
     background: #b50031;
 }
+
 .calendar-event .contact-status.done .status-bar, .calendar-event .contact-status.success .status-bar {
     background: #52ac4d;
 }
+
 .calendar-event .model {
     padding: 0 0.8em;
     font-size: 0.9em;
     margin-bottom: 1em;
 }
+
 .calendar-event .details-btn {
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
@@ -1719,12 +1750,15 @@ body {
     background: #f1f1f1;
     text-transform: uppercase;
 }
+
 .calendar-event .details-btn i {
     margin-left: 0.3em;
 }
+
 .calendar-event:hover {
     border-color: #5794cf;
 }
+
 .calendar-event:hover .details-btn {
     background: #5794cf;
     color: #fff;
@@ -1733,6 +1767,7 @@ body {
 .calendar-view.calendar-view-week .calendar-cell {
     width: 14%;
 }
+
 .calendar-view.calendar-view-week .calendar-cell .calendar-cell-content {
     -webkit-box-pack: center;
     justify-content: center;
@@ -1741,6 +1776,7 @@ body {
 .calendar-view.calendar-view-month .calendar-cell {
     width: 100px;
 }
+
 .calendar-view.calendar-view-month .calendar-cell .month-day {
     width: 100%;
     text-align: right;
@@ -1748,12 +1784,15 @@ body {
     font-weight: bold;
     font-size: 1.3em;
 }
+
 .calendar-view.calendar-view-month .calendar-cell.other-month {
     background: #e9e9e9;
 }
+
 .calendar-view.calendar-view-month .calendar-cell.other-month .month-day {
     opacity: 0.6;
 }
+
 .calendar-view.calendar-view-month .calendar-cell .calendar-cell-content {
     -webkit-box-pack: center;
     justify-content: center;

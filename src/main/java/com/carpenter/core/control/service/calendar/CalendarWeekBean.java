@@ -1,5 +1,8 @@
 package com.carpenter.core.control.service.calendar;
 
+import com.carpenter.core.control.dto.EmployeeDto;
+import com.carpenter.core.control.service.employee.EmployeeMapper;
+import com.carpenter.core.entity.employee.Employee;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.PostConstruct;
@@ -32,5 +35,17 @@ public class CalendarWeekBean extends CalendarBean {
             startDate = startDate.plusDays(1);
         }
         return dates;
+    }
+
+    public List<EmployeeDto> getEmployees() {
+        List<Employee> employersList = employeeService.getEmployersList();
+        List<EmployeeDto> employeeDtos = new LinkedList<>();
+        employeeMapper = new EmployeeMapper();
+        for (Employee employee : employersList) {
+            EmployeeDto employeeDto = employeeMapper.mapToDomain(employee);
+            employeeDtos.add(employeeDto);
+
+        }
+        return employeeDtos;
     }
 }
