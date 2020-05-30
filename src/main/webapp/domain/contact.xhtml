@@ -11,7 +11,9 @@
 <ui:composition template="template/domain-template.xhtml">
     <ui:define name="content">
         <div class="container">
-
+            <ui:fragment rendered="#{offerListBean.sent}">
+                Oferta została wysłana
+            </ui:fragment>
             <h:form>
 
                 <div>
@@ -118,7 +120,7 @@
                                     converter="country-code-converter"/>
                     <h:message for="add-offer-phone" styleClass="form-msg col-danger"/>
                 </div>
-
+                <br/>
 
                 <div class="center-button">
                     <button class="btn btn-secondary" type="submit"

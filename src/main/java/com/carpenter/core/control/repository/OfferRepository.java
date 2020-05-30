@@ -40,7 +40,7 @@ public class OfferRepository implements Serializable {
 
     public List<Offer> getOffersByCompany(Long companyId) {
         try {
-            return entityManager.createQuery("SELECT o from Offer o LEFT JOIN FETCH o.company WHERE o.company.id =: companyId", Offer.class)
+            return entityManager.createQuery("SELECT o from Offer o LEFT JOIN FETCH o.company WHERE o.company.id =: companyId ORDER BY o.createDate DESC", Offer.class)
                     .setParameter("companyId", companyId)
                     .getResultList();
         } catch (NoResultException e) {

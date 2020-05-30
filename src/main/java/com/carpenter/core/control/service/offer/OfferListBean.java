@@ -34,6 +34,10 @@ public class OfferListBean implements Serializable {
     @Setter
     private OfferDto offerDto;
 
+    @Getter
+    @Setter
+    private boolean isSent;
+
     @PostConstruct
     public void init() {
         offerDto = new OfferDto();
@@ -49,6 +53,7 @@ public class OfferListBean implements Serializable {
         offer.setCompany(company);
         offer.setCreateDate(new Date());
         offerService.save(offer);
+        setSent(true);
     }
 
     public void remove(Long id) {
@@ -78,4 +83,5 @@ public class OfferListBean implements Serializable {
     public ArchitectureType[] getArchitectureTypes() {
         return ArchitectureType.values();
     }
+
 }

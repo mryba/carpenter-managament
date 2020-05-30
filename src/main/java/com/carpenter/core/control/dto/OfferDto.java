@@ -19,7 +19,6 @@ public class OfferDto {
     private Date workDateTo;
     private Double buildingDimension;
     private String architectureType;
-    @Size(max = 12, min = 12, message = "Numer telefonu powinien zawierać 9 cyfr")
     private String phone;
     private String email;
 

@@ -39,6 +39,9 @@ public class OfferValidation implements Serializable {
     public void validatePhone(FacesContext facesContext, UIComponent component, Object value) {
         validateEmptyField(facesContext, component, value, "offer.phone.notNull");
         phone = (String) value;
+        if (phone.length() < 12) {
+            invalidInput("offer.phone.incorrect");
+        }
     }
 
     public void validateEmail(FacesContext facesContext, UIComponent component, Object value) {
@@ -47,12 +50,17 @@ public class OfferValidation implements Serializable {
 
     private void validateEmptyField(FacesContext facesContext, UIComponent component, Object value, String message) {
         if (value == null || value.toString().isEmpty()) {
-            throw new ValidatorException(
-                    new FacesMessage(
-                            resourceBundle.getString(message),
-                            resourceBundle.getString(message)
-                    )
-            );
+            invalidInput(message);
         }
     }
+
+    private void invalidInput(String message) {
+        throw new ValidatorException(
+                new FacesMessage(
+                        resourceBundle.getString(message),
+                        resourceBundle.getString(message)
+                )
+        );
+    }
+
 }
