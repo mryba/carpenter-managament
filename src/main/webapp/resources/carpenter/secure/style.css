@@ -143,27 +143,28 @@ body {
     white-space: nowrap;
 }
 
-.crm-header .user-panel .admin-dash {
+.crm-header .user-panel .actions {
     border-left: 1px solid #d1d1d1;
-    border-right: 1px solid #d1d1d1;
-    align-items: center;
-    text-transform: uppercase;
-    text-align: center;
-    font-weight: bold;
-    font-size: 0.8em;
-    cursor: pointer;
-    width: 140px;
     height: 100%;
-    justify-content: center;
     display: flex;
-    margin-right: 0.6em;
+    flex-direction: column;
 }
 
-.crm-header .user-panel .admin-dash > a i  {
-    font-size: 1.5em;
-    margin-bottom: 0.6em;
-    display: block;
+.crm-header .user-panel .actions .admin{
     color: #32a852;
+    border-bottom: 1px solid #d1d1d1;
+    height: 50%;
+    font-size: 1.5em;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+.crm-header .user-panel .actions .logout {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex: 1;
 }
 
 @media (max-width: 1180px) {
