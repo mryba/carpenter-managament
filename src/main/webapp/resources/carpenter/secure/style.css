@@ -1594,7 +1594,7 @@ body {
 }
 
 .calendar-navigator a {
-    color: #5794cf;
+    color: #32a852;
 }
 
 .calendar-view .calendar-header {
@@ -1603,7 +1603,19 @@ body {
 
 .calendar-view .calendar-sub-header {
     font-size: 1.1em;
-    background-color: chocolate;
+    background-color: #5794cf;
+    border-top: 1px solid #1a3823;
+}
+
+.calendar-view .calendar-sub-header-first-col{
+    font-size: 1.1em;
+    background-color: #32a852;
+    border-top: 1px solid #1a3823;
+}
+
+.calendar-view .calendar-sub-header-last-col{
+    font-size: 1.1em;
+    background-color: #ebcc34;
     border-top: 1px solid #1a3823;
 }
 
