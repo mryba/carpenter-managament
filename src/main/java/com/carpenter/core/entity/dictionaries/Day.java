@@ -1,9 +1,5 @@
 package com.carpenter.core.entity.dictionaries;
 
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
-
 public enum Day {
     ONE(1),
     TWO(2),

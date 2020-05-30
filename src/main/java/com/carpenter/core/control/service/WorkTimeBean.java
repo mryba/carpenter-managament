@@ -18,7 +18,7 @@ public class WorkTimeBean implements Serializable {
 
     private Long clientId;
     private Date dateTime;
-    private Integer hours;
+    private Integer hours = Day.EIGHT.getNumber();
 
     public List<Day> getHour() {
         return Stream.of(Day.values()).collect(Collectors.toList());

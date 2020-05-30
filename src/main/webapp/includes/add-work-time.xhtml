@@ -64,7 +64,7 @@
                                              value="#{workTimeBean.hours}">
                                 <f:selectItems value="#{workTimeBean.hour}"
                                                var="d"
-                                               itemLabel="#{d.name()}"
+                                               itemLabel="#{common_msg['day_'.concat(d.name())]}"
                                                itemValue="#{d.number}"/>
                                 <f:ajax event="change"
                                         execute="@this"/>
