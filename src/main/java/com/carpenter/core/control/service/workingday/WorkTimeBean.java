@@ -38,9 +38,6 @@ public class WorkTimeBean implements Serializable {
     EmployeeService employeeService;
 
     @Inject
-    ClientService clientService;
-
-    @Inject
     WorkingDayService workingDayService;
 
     @Inject
@@ -113,7 +110,8 @@ public class WorkTimeBean implements Serializable {
     public void saveTime(){
         for (EmployeeDto employeeDto : employees) {
             WorkingDay workingDay = new WorkingDay();
-            workingDay.setCreateDate(dateTime);
+            workingDay.setCreateDate(new Date());
+            workingDay.setDay(dateTime);
             workingDay.setCreateBy(principalBean.getLoggedUser().getEmail());
             Employee employee = employeeService.getEmployeeById(employeeDto.getId());
 //            Client client = clientService.getClientById(clientId);

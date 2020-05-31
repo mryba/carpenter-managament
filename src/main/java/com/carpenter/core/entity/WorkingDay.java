@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -26,4 +27,7 @@ public class WorkingDay extends DomainObject {
 
     @Column(name = "HOURS")
     private Integer hours;
+
+    @Column(name = "DAY")
+    private Date day;
 }

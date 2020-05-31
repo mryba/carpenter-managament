@@ -32,8 +32,8 @@ public class WorkingDayRepository implements Serializable {
         Root<WorkingDay> root = query.from(WorkingDay.class);
 
         Predicate predicate = builder.and(
-                builder.greaterThanOrEqualTo(root.get(WorkingDay_.createDate), startDate),
-                builder.lessThanOrEqualTo(root.get(WorkingDay_.createDate), endDate)
+                builder.greaterThanOrEqualTo(root.get(WorkingDay_.day), startDate),
+                builder.lessThanOrEqualTo(root.get(WorkingDay_.day), endDate)
         );
 
         query.where(predicate);

@@ -50,7 +50,7 @@ public class CalendarWeekBean extends CalendarBean {
             dates.add(from);
 
             final LocalDate startDateAsLocalDate = startDate.toLocalDate();
-            List<WorkingDay> day = workingWeek.stream().filter(d -> d.getCreateDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().equals(startDateAsLocalDate)).collect(Collectors.toList());
+            List<WorkingDay> day = workingWeek.stream().filter(d -> d.getDay().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().equals(startDateAsLocalDate)).collect(Collectors.toList());
             startDate = startDate.plusDays(1);
 
             final Integer staticCount = count;
