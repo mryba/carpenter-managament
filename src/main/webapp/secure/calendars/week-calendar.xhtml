@@ -95,6 +95,28 @@
                                     <th scope="col" class="calendar-row-label">
                                         <carpenter:calendar-cell employee="#{e}"/>
                                     </th>
+                                    <th scope="col">
+                                        #{calendarWeekBean.getGetWorkDays('MONDAY', e)}
+                                    </th>
+                                    <th scope="col">
+                                        #{calendarWeekBean.getGetWorkDays('TUESDAY', e)}
+                                    </th>
+                                    <th scope="col">
+                                        #{calendarWeekBean.getGetWorkDays('WEDNESDAY', e)}
+                                    </th>
+                                    <th scope="col">
+                                        #{calendarWeekBean.getGetWorkDays('THURSDAY', e)}
+                                    </th>
+                                    <th scope="col">
+                                        #{calendarWeekBean.getGetWorkDays('FRIDAY', e)}
+                                    </th>
+                                    <th scope="col">
+                                        #{calendarWeekBean.getGetWorkDays('SATURDAY', e)}
+                                    </th>
+                                    <th scope="col">
+                                        #{calendarWeekBean.getGetWorkDays('SUNDAY', e)}
+                                    </th>
+
                                 </tr>
                             </ui:repeat>
                             </tbody>
