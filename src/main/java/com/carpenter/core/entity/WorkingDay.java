@@ -1,6 +1,5 @@
 package com.carpenter.core.entity;
 
-import com.carpenter.core.entity.DomainObject;
 import com.carpenter.core.entity.client.Client;
 import com.carpenter.core.entity.employee.Employee;
 import lombok.EqualsAndHashCode;

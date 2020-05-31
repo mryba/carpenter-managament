@@ -53,7 +53,7 @@ public class EmployeeRepository implements Serializable {
 
     public Employee findEmployeeBeId(Long employeeId) {
         try {
-            EntityGraph<?> graph = entityManager.getEntityGraph("Employee.addresses");
+            EntityGraph<?> graph = entityManager.getEntityGraph("Employee.fetch");
             return entityManager.createNamedQuery("Employee.findEmployeeById", Employee.class)
                     .setParameter("employeeId", employeeId)
                     .setHint(FETCH_GRAPH, graph)

@@ -1,8 +1,13 @@
-package com.carpenter.core.control.service;
+package com.carpenter.core.control.service.workingday;
 
 import com.carpenter.core.control.dto.EmployeeDto;
+import com.carpenter.core.control.service.client.ClientService;
 import com.carpenter.core.control.service.employee.EmployeeService;
+import com.carpenter.core.control.service.login.PrincipalBean;
+import com.carpenter.core.entity.WorkingDay;
+import com.carpenter.core.entity.client.Client;
 import com.carpenter.core.entity.dictionaries.Day;
+import com.carpenter.core.entity.employee.Employee;
 import lombok.Getter;
 
 import javax.annotation.PostConstruct;
@@ -10,8 +15,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -33,6 +36,15 @@ public class WorkTimeBean implements Serializable {
 
     @Inject
     EmployeeService employeeService;
+
+    @Inject
+    ClientService clientService;
+
+    @Inject
+    WorkingDayService workingDayService;
+
+    @Inject
+    PrincipalBean principalBean;
 
     @PostConstruct
     public void init() {
@@ -95,6 +107,22 @@ public class WorkTimeBean implements Serializable {
         groupHours = Day.EIGHT.getNumber();
         for (EmployeeDto employee : employees) {
             employeesHours.put(employee, groupHours);
+        }
+    }
+
+    public void saveTime(){
+        for (EmployeeDto employeeDto : employees) {
+            WorkingDay workingDay = new WorkingDay();
+            workingDay.setCreateDate(dateTime);
+            workingDay.setCreateBy(principalBean.getLoggedUser().getEmail());
+            Employee employee = employeeService.getEmployeeById(employeeDto.getId());
+//            Client client = clientService.getClientById(clientId);
+
+            workingDay.setHours(employeesHours.get(employeeDto));
+            employee.addWorkingDay(workingDay);
+//            client.addWorkingDat(workingDay);
+
+            workingDayService.saveWorkingDay(workingDay);
         }
     }
 }

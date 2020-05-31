@@ -38,4 +38,13 @@ public class ClientRepository implements Serializable {
         entityManager.merge(client);
     }
 
+    public Client getClientById(Long id) {
+        try {
+            return entityManager.createNamedQuery("Client.findById", Client.class)
+                    .setParameter("id", id)
+                    .getResultList().stream().findFirst().orElse(null);
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 }

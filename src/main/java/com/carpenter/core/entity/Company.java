@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Set;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Table(name = "COMPANY")
 @Entity
 @Access(AccessType.FIELD)

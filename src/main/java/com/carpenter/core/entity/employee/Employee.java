@@ -23,8 +23,8 @@ import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @Entity
 @Table(
         name = "EMPLOYEES",
@@ -49,9 +49,10 @@ import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
 )
 @NamedEntityGraphs({
         @NamedEntityGraph(
-                name = "Employee.addresses",
+                name = "Employee.fetch",
                 attributeNodes = {
-                        @NamedAttributeNode(value = "addresses")
+                        @NamedAttributeNode(value = "addresses"),
+                        @NamedAttributeNode(value = "workingDays")
                 }
         )
 })
@@ -114,7 +115,7 @@ public class Employee extends DomainObject {
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
     @JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "ID")
     @XmlTransient
-    private List<Address> addresses;
+    private Set<Address> addresses;
 
     @Basic
     @Column(name = "PHONE_NUMBER")
@@ -144,16 +145,19 @@ public class Employee extends DomainObject {
             return;
         }
         if (this.addresses == null) {
-            this.addresses = new LinkedList<>();
+            this.addresses = new LinkedHashSet<>();
         }
         this.addresses.add(address);
     }
 
     public void addWorkingDay(WorkingDay workingDay) {
-        if (workingDays == null) {
-            workingDays = new LinkedHashSet<>();
+        if (workingDay == null) {
+            return;
         }
-        workingDays.add(workingDay);
+        if (this.workingDays == null) {
+            this.workingDays = new LinkedHashSet<>();
+        }
+        this.workingDays.add(workingDay);
         workingDay.setEmployee(this);
     }
 

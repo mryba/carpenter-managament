@@ -6,12 +6,15 @@ import com.carpenter.core.entity.DomainObject;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.resource.spi.work.Work;
 import javax.validation.constraints.NotNull;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Builder
@@ -24,7 +27,11 @@ import java.util.Set;
                 query = "SELECT c FROM Client c " +
                         "WHERE c.nip =:nip"),
         @NamedQuery(name = "Client.findAll",
-                query = "SELECT c FROM Client c")
+                query = "SELECT c FROM Client c"),
+        @NamedQuery(
+                name = "Client.findById",
+                query = "SELECT c FROM Client c JOIN FETCH c.workingDays WHERE c.id =:id"
+        )
 })
 @Access(AccessType.FIELD)
 public class Client extends DomainObject {
@@ -74,5 +81,13 @@ public class Client extends DomainObject {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
     private Set<WorkingDay> workingDays;
+
+    public void addWorkingDat(WorkingDay workingDay) {
+        if (workingDays == null) {
+            workingDays = new LinkedHashSet<>();
+        }
+        workingDays.add(workingDay);
+        workingDay.setClient(this);
+    }
 
 }

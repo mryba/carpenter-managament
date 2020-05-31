@@ -23,6 +23,10 @@ public class ClientService implements Serializable {
         return clientRepository.getClientByNIP(nip);
     }
 
+    public Client getClientById(Long id){
+        return clientRepository.getClientById(id);
+    }
+
     public List<Client> getClientsList(){
         return clientRepository.getAllClients();
     }

@@ -114,6 +114,16 @@
                             </tbody>
                         </table>
                     </div>
+                    <hr></hr>
+                    <div class="modal-footer">
+                        <input type="submit"
+                               class="btn col-success bordered fa fa-check"
+                               value="Zapisz"
+                               jsf:action="#{workTimeBean.saveTime}">
+                            <f:ajax execute="@form"
+                                    render="calendarForm closeDialogDiv"/>
+                        </input>
+                    </div>
                 </div>
             </h:form>
         </div>
