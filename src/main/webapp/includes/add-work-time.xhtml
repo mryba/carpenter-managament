@@ -37,8 +37,8 @@
                             <label>Dzień pracy</label>
                             <h:inputText id="add-work-time-date"
                                          styleClass="datepicker"
-                                         value="#{workTimeBean.dateTime}"
-                                         p:placeholder="Dzień pracy">
+                                         label="#{workTimeBean.dateTime}"
+                                         value="#{workTimeBean.dateTime}">
                                 <f:convertDateTime pattern="yyyy-MM-dd"/>
 
                                 <f:ajax event="change"
@@ -61,37 +61,53 @@
                         <div class="form-top col1-4">
                             <label>Ilość godzin</label>
                             <h:selectOneMenu id="add-work-time-time"
-                                             value="#{workTimeBean.hours}">
+                                             value="#{workTimeBean.groupHours}">
                                 <f:selectItems value="#{workTimeBean.hour}"
                                                var="d"
                                                itemLabel="#{common_msg['day_'.concat(d.name())]}"
                                                itemValue="#{d.number}"/>
                                 <f:ajax event="change"
-                                        execute="@this"/>
+                                        execute="@this"
+                                        render="add-work-table-id"
+                                        onevent="showLoader"/>
                             </h:selectOneMenu>
 
                         </div>
                     </div>
-                    <div class="table">
+                    <div class="table" jsf:id="add-work-table-id">
                         <table>
                             <thead>
                             <tr>
                                 <th class="w10 left">Firma</th>
                                 <th class="w10 left">Nazwisko i Imię</th>
-                                <th class="w10 left">E-mail / Telefon</th>
+                                <th class="w5 left">Godziny</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <ui:repeat value="#{employeeListBean.employersList}" var="e">
+                            <ui:repeat value="#{workTimeBean.employees}" var="e">
                                 <tr>
                                     <td class="w10 left">
-                                        #{e.company.name}
+                                        #{e.companyName}
                                     </td>
                                     <td class="w10 left">
                                         <h4>#{e.lastName} #{e.firstName}</h4>
                                     </td>
-                                    <td class="w10 left">
-                                        #{e.email} / #{e.phoneNumber}
+                                    <td class="w5">
+                                        <div class="">
+                                            <h:commandLink action="#{workTimeBean.minusHour(e)}">
+                                                <f:ajax execute="@this"
+                                                        render="add-work-table-id"/>
+                                                <i class="fas fa-minus"></i>
+                                            </h:commandLink>
+
+                                            #{workTimeBean.employeeHour(e)}
+
+                                            <h:commandLink action="#{workTimeBean.plusHour(e)}">
+                                                <f:ajax execute="@this"
+                                                        render="add-work-table-id"/>
+                                                <i class="fas fa-plus"></i>
+                                            </h:commandLink>
+                                        </div>
                                     </td>
                                 </tr>
                             </ui:repeat>

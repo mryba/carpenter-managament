@@ -9,11 +9,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Named("calendarWeekBean")
 @ViewScoped
@@ -21,6 +18,8 @@ import java.util.List;
 public class CalendarWeekBean extends CalendarBean {
 
     private static final long serialVersionUID = 7818636965206530503L;
+
+    private List<EmployeeDto> employeeDtos = new LinkedList<>();
 
     @PostConstruct
     public void initWeekCalendar() {
@@ -38,14 +37,8 @@ public class CalendarWeekBean extends CalendarBean {
     }
 
     public List<EmployeeDto> getEmployees() {
-        List<Employee> employersList = employeeService.getEmployersList();
-        List<EmployeeDto> employeeDtos = new LinkedList<>();
-        employeeMapper = new EmployeeMapper();
-        for (Employee employee : employersList) {
-            EmployeeDto employeeDto = employeeMapper.mapToDomain(employee);
-            employeeDtos.add(employeeDto);
-
-        }
+        employeeDtos.clear();
+        employeeDtos.addAll(employeeService.getEmployees());
         return employeeDtos;
     }
 }

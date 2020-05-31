@@ -10,6 +10,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Slf4j
@@ -49,5 +50,16 @@ public class EmployeeService implements Serializable {
 
     public Employee getEmployeeById(Long employeeId) {
         return employeeRepository.findEmployeeBeId(employeeId);
+    }
+
+    public List<EmployeeDto> getEmployees() {
+        List<EmployeeDto> employees = new LinkedList<>();
+        employeeMapper = new EmployeeMapper();
+        for (Employee employee : getEmployersList()) {
+            EmployeeDto employeeDto = employeeMapper.mapToDomain(employee);
+            employees.add(employeeDto);
+
+        }
+        return employees;
     }
 }
