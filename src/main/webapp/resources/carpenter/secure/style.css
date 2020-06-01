@@ -165,6 +165,27 @@ body {
     align-items: center;
     display: flex;
     flex: 1;
+    padding-left: 1em;
+}
+
+.crm-header .user-panel .actions > .admin:hover {
+    background-color: #f1f1f1;
+    color: #2a8543
+}
+
+.crm-header .user-panel .actions > .logout:hover {
+    background-color: #f1f1f1;
+}
+
+.crm-header .user-panel .actions > .admin:active {
+    color: #2a8543;
+    background-color: #cee0f1;
+    border-bottom: 2px solid #d1d1d1;
+}
+
+.crm-header .user-panel .actions > .logout:active {
+    color: #2a8543;
+    border-bottom: 1px solid #d1d1d1;
 }
 
 @media (max-width: 1180px) {
