@@ -82,7 +82,7 @@ public class CalendarWeekBean extends CalendarBean {
 
 
     public Integer getGetRowCount(EmployeeDto employee) {
-        return employeeDtoListMap.get(employee);
+        return employeeDtoListMap.get(employee) != null ? employeeDtoListMap.get(employee) : 0;
     }
 
     public int getSumColumn() {

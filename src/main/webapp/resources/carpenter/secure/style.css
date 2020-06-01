@@ -1607,16 +1607,22 @@ body {
     border-top: 1px solid #1a3823;
 }
 
-.calendar-view .calendar-sub-header-first-col{
+.calendar-view .calendar-sub-header-first-col {
     font-size: 1.1em;
     background-color: #32a852;
     border-top: 1px solid #1a3823;
 }
 
-.calendar-view .calendar-sub-header-last-col{
+.calendar-view .calendar-sub-header-last-col {
+    color: black;
     font-size: 1.1em;
     background-color: #ebcc34;
     border-top: 1px solid #1a3823;
+}
+
+.calendar-view .calendar-row {
+    border-top: 1px solid #1a3823;
+    border-right: 1px solid #1a3823;
 }
 
 .calendar-view .calendar-row-label {
