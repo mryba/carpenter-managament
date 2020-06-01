@@ -28,8 +28,12 @@ public class CalendarWeekBean extends CalendarBean {
 
     private static final long serialVersionUID = 7818636965206530503L;
 
-    private List<EmployeeDto> employeeDtos = new LinkedList<>();
-    private Map<Week, List<WorkingDay>> workingDaysMap = new LinkedHashMap<>();
+    private final List<EmployeeDto> employeeDtos = new LinkedList<>();
+    private final Map<Week, List<WorkingDay>> workingDaysMap = new LinkedHashMap<>();
+    private final Map<Date, Week> weekMap = new LinkedHashMap<>();
+    private final Map<EmployeeDto, Integer> employeeDtoListMap = new LinkedHashMap<>();
+
+    private int sumColumn = 0;
 
     @Inject
     WorkingDayService workingDayService;
@@ -40,6 +44,7 @@ public class CalendarWeekBean extends CalendarBean {
     }
 
     public List<Date> getDates() {
+        sumColumn = 0;
         List<WorkingDay> workingWeek = workingDayService.getWorkingWeek(timeManager.getStartDate(), timeManager.getEndDate());
 
         List<Date> dates = new LinkedList<>();
@@ -51,14 +56,37 @@ public class CalendarWeekBean extends CalendarBean {
             dates.add(from);
 
             final LocalDate startDateAsLocalDate = startDate.toLocalDate();
-            List<WorkingDay> day = workingWeek.stream().filter(d -> d.getDay().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().equals(startDateAsLocalDate)).collect(Collectors.toList());
+            List<WorkingDay> day = workingWeek
+                    .stream()
+                    .filter(d -> d.getDay().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().equals(startDateAsLocalDate))
+                    .collect(Collectors.toList());
+
             startDate = startDate.plusDays(1);
 
             final Integer staticCount = count;
-            Stream.of(Week.values()).filter(w -> w.getNumber().equals(staticCount)).findFirst().ifPresent(week -> workingDaysMap.put(week, day));
+            Stream.of(Week.values()).filter(w -> w.getNumber().equals(staticCount)).findFirst().ifPresent(week -> {
+                workingDaysMap.put(week, day);
+                weekMap.put(from, week);
+            });
             count++;
         }
         return dates;
+    }
+
+    public Integer getColumnCount(Date date) {
+        Week week = weekMap.get(date);
+        int columnCount = Math.toIntExact(workingDaysMap.get(week).stream().mapToInt(WorkingDay::getHours).sum());
+        sumColumn = sumColumn + columnCount;
+        return columnCount;
+    }
+
+
+    public Integer getGetRowCount(EmployeeDto employee) {
+        return employeeDtoListMap.get(employee);
+    }
+
+    public int getSumColumn() {
+        return sumColumn;
     }
 
     public List<EmployeeDto> getEmployees() {
@@ -71,8 +99,13 @@ public class CalendarWeekBean extends CalendarBean {
         List<WorkingDay> workingDays = workingDaysMap.get(Week.valueOf(type));
         WorkingDay workingDay = workingDays.stream().filter(d -> d.getEmployee().getId().equals(employee.getId())).findFirst().orElse(null);
         if (workingDay != null) {
+
+            Integer rowCount = employeeDtoListMap.computeIfAbsent(employee, r -> 0);
+            rowCount = rowCount + workingDay.getHours();
+            employeeDtoListMap.put(employee, rowCount);
             return workingDay.getHours();
         }
         return 0;
     }
+
 }

@@ -78,14 +78,16 @@
                                 </th>
                             </tr>
                             <tr>
-                                <th scope="col" class="calendar-sub-header-first-col">Godziny</th>
+                                <th scope="col" class="calendar-sub-header-first-col">
+                                    Godziny
+                                </th>
                                 <ui:repeat value="#{calendarWeekBean.dates}" var="sm">
                                     <th scope="col" class="calendar-sub-header">
-
+                                        #{calendarWeekBean.getColumnCount(sm)}
                                     </th>
                                 </ui:repeat>
                                 <th scope="col" class="calendar-sub-header-last-col">
-                                    <!-- Suma godzin -->
+                                    #{calendarWeekBean.sumColumn}
                                 </th>
                             </tr>
                             </thead>
@@ -115,6 +117,9 @@
                                     </th>
                                     <th scope="col">
                                         #{calendarWeekBean.getGetWorkDays('SUNDAY', e)}
+                                    </th>
+                                    <th scope="col">
+                                        #{calendarWeekBean.getGetRowCount(e)}
                                     </th>
 
                                 </tr>
