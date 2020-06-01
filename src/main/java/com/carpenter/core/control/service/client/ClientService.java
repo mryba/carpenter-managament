@@ -12,7 +12,7 @@ import java.util.List;
 @SessionScoped
 public class ClientService implements Serializable {
 
-    public static final long serialVersionUID = 3281746910120923L;
+    public static final long serialVersionUID = 4381746910120923L;
 
     @Inject
     ClientRepository clientRepository;

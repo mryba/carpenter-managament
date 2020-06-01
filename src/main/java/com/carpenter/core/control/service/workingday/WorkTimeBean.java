@@ -34,8 +34,14 @@ public class WorkTimeBean implements Serializable {
     @Getter
     private List<EmployeeDto> employees;
 
+    @Getter
+    private List<Client> clients;
+
     @Inject
     EmployeeService employeeService;
+
+    @Inject
+    ClientService clientService;
 
     @Inject
     WorkingDayService workingDayService;
@@ -46,6 +52,7 @@ public class WorkTimeBean implements Serializable {
     @PostConstruct
     public void init() {
         employees = employeeService.getEmployees();
+        clients = clientService.getClientsList();
         for (EmployeeDto employee : employees) {
             employeesHours.put(employee, groupHours);
         }
@@ -107,18 +114,20 @@ public class WorkTimeBean implements Serializable {
         }
     }
 
-    public void saveTime(){
+    public void saveTime() {
         for (EmployeeDto employeeDto : employees) {
             WorkingDay workingDay = new WorkingDay();
             workingDay.setCreateDate(new Date());
             workingDay.setDay(dateTime);
             workingDay.setCreateBy(principalBean.getLoggedUser().getEmail());
             Employee employee = employeeService.getEmployeeById(employeeDto.getId());
-//            Client client = clientService.getClientById(clientId);
+            Client client = clients.stream().filter(c -> c.getId().equals(clientId)).findFirst().orElse(null);
 
             workingDay.setHours(employeesHours.get(employeeDto));
             employee.addWorkingDay(workingDay);
-//            client.addWorkingDat(workingDay);
+            if (client != null) {
+                client.addWorkingDat(workingDay);
+            }
 
             workingDayService.saveWorkingDay(workingDay);
         }

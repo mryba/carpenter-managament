@@ -4,6 +4,7 @@ import com.carpenter.core.control.dto.EmployeeDto;
 import com.carpenter.core.control.service.employee.EmployeeMapper;
 import com.carpenter.core.control.service.workingday.WorkingDayService;
 import com.carpenter.core.entity.WorkingDay;
+import com.carpenter.core.entity.client.Client;
 import com.carpenter.core.entity.dictionaries.Day;
 import com.carpenter.core.entity.dictionaries.Week;
 import com.carpenter.core.entity.employee.Employee;
@@ -54,10 +55,7 @@ public class CalendarWeekBean extends CalendarBean {
             startDate = startDate.plusDays(1);
 
             final Integer staticCount = count;
-            Week week = Stream.of(Week.values()).filter(w -> w.getNumber().equals(staticCount)).findFirst().orElse(null);
-            if (week != null) {
-                workingDaysMap.put(week, day);
-            }
+            Stream.of(Week.values()).filter(w -> w.getNumber().equals(staticCount)).findFirst().ifPresent(week -> workingDaysMap.put(week, day));
             count++;
         }
         return dates;

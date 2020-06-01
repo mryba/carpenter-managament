@@ -19,10 +19,10 @@
                         <div class="form-top col1-4">
                             <label>Klient</label>
                             <h:selectOneMenu id="add-work-time-client"
+                                             converter="javax.faces.Long"
                                              value="#{workTimeBean.clientId}">
-
                                 <f:selectItems
-                                        value="#{clientBean.clientList}"
+                                        value="#{workTimeBean.clients}"
                                         var="c"
                                         itemValue="#{c.id}"
                                         itemLabel="#{c.name}"/>

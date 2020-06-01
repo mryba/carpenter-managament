@@ -15,7 +15,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Builder
 @Table(
@@ -26,16 +25,22 @@ import java.util.Set;
         @NamedQuery(name = "Client.findByNip",
                 query = "SELECT c FROM Client c " +
                         "WHERE c.nip =:nip"),
-        @NamedQuery(name = "Client.findAll",
+        @NamedQuery(
+                name = "Client.findAll",
                 query = "SELECT c FROM Client c"),
         @NamedQuery(
                 name = "Client.findById",
                 query = "SELECT c FROM Client c JOIN FETCH c.workingDays WHERE c.id =:id"
         )
 })
+@NamedEntityGraphs({
+        @NamedEntityGraph(
+                name = "Client.workingDays",
+                attributeNodes = @NamedAttributeNode("workingDays")
+        )
+})
 @Access(AccessType.FIELD)
 public class Client extends DomainObject {
-    public static final long serialVersionUID = -76794312687641354L;
 
     @NotNull
     @Column(name = "NAME")
