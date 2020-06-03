@@ -1,16 +1,15 @@
 package com.carpenter.core.control.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ClientDto {
 
+    private long id;
     private String name;
     private String city;
     private String postalCode;
