@@ -10,7 +10,13 @@
 
 
     <div>
-        <a class="modal-close" data-dismiss="modal"> <i class="fa fa-times"></i> </a>
+        <a class="modal-close"
+           data-dismiss="modal"
+           jsf:actionListener="#{workTimeBean.clear}">
+            <f:ajax execute="@this"
+                    onevent="showLoader"/>
+            <i class="fa fa-times"></i>
+        </a>
         <div>
             <h:form id="add-work-time-form" prependId="false">
 
@@ -115,6 +121,16 @@
                         </table>
                     </div>
                     <div class="modal-footer">
+
+                        <button class="btn bordered col-danger"
+                                jsf:action="#{workTimeBean.clear}"
+                                data-dismiss="modal">
+                            <f:ajax execute="@this"
+                                    resetValues="true"
+                                    onevent="showLoader"/>
+                            <i class="fa fa-times"></i> Anuluj
+                        </button>
+
                         <button type="submit"
                                 class="btn bordered col-primary"
                                 jsf:action="#{workTimeBean.saveTime}">

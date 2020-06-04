@@ -15,8 +15,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.time.Instant;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -29,7 +27,7 @@ import java.util.stream.Stream;
 public class WorkTimeBean implements Serializable {
 
     private Long clientId;
-    private Date dateTime = new Date(System.currentTimeMillis() - 1000L * 60L * 60L * 24L);
+    private Date dateTime = new Date(System.currentTimeMillis() - (1000L * 60L * 60L * 24L));
     private Integer groupHours = Day.EIGHT.getNumber();
 
     private Map<EmployeeDto, Integer> employeesHours = new LinkedHashMap<>();
@@ -108,7 +106,7 @@ public class WorkTimeBean implements Serializable {
 
     public void clear() {
         clientId = null;
-        dateTime = new Date();
+        dateTime = new Date(System.currentTimeMillis() - (1000L * 60L * 60L * 24L));
         employeesHours.clear();
         groupHours = Day.EIGHT.getNumber();
         for (EmployeeDto employee : employees) {
