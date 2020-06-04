@@ -22,4 +22,8 @@ public class NavigationBean {
     public String offersRedirect() {
         return "/secure/offers/offers?faces-redirect=true";
     }
+
+    public String adminRedirect() {
+        return "/secure/admin/admin-dashboard?faces-redirect=true";
+    }
 }

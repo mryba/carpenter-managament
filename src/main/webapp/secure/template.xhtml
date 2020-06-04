@@ -76,9 +76,22 @@
                         <h4>#{principalBean.loggedUser.company.name}</h4>
                     </div>
 
-                    <h:commandLink action="#{loginController.logout}">
-                        Wyloguj <i class="fa fa-chevron-right"/>
-                    </h:commandLink>
+
+
+                    <div class="actions">
+                        <div class="admin"
+                             jsf:rendered="#{principalBean.loggedUser.isInRole('ADMINISTRATOR')}">
+                            <h:commandLink
+                                    action="#{navigationBean.adminRedirect}">
+                                <i class="fas fa-users-cog"></i>
+                            </h:commandLink>
+                        </div>
+                        <div class="logout">
+                            <h:commandLink action="#{loginController.logout}">
+                                Wyloguj <i class="fa fa-chevron-right"/>
+                            </h:commandLink>
+                        </div>
+                    </div>
                 </div>
 
             </div>
