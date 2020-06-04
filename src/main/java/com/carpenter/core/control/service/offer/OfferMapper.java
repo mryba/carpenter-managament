@@ -24,6 +24,15 @@ public class OfferMapper implements Mapper<Offer, OfferDto> {
 
     @Override
     public OfferDto mapToDomain(Offer offer) {
-        return null;
+        OfferDto offerDto = OfferDto.builder()
+                .architectureType(offer.getArchitectureType().name())
+                .buildingDimension(offer.getBuildingDimension())
+                .email(offer.getEmail())
+                .phone(offer.getPhone())
+                .workCity(offer.getWorkCity())
+                .workDateFrom(offer.getWorkDateFrom())
+                .workDateTo(offer.getWorkDateTo())
+                .build();
+        return offerDto;
     }
 }

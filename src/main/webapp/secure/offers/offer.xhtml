@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/secure/template.xhtml">
+
+    <ui:define name="content">
+        #{offerListBean.changeToRead(offerBean.offerId)}
+        <div class="wrapper">
+            <div class="card client-card">
+                <p>Miasto: <b>#{offerBean.offerDto.workCity}</b></p>
+                <p>Typ architektoniczny:
+                    <b>#{offer_msg['architecture_type_'.concat(offerBean.offerDto.architectureType)]}</b></p>
+                <p>Wymiary budynku: <b>#{offerBean.offerDto.buildingDimension} m2</b></p>
+                <p>Data rozpoczęcia pracy: <b>#{offerBean.offerDto.workDateFrom}</b></p>
+                <p>Data zakończenia pracy: <b>#{offerBean.offerDto.workDateTo}</b></p>
+                <hr/>
+                <ul>Kontakt:
+                    <li>E-mail: <b>#{offerBean.offerDto.email}</b></li>
+                    <li>Telefon: <b>#{offerBean.offerDto.phone}</b></li>
+                </ul>
+
+
+            </div>
+        </div>
+
+
+    </ui:define>
+</ui:composition>

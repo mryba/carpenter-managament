@@ -12,6 +12,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Named("clientBean")
 @ViewScoped
@@ -25,6 +27,7 @@ public class ClientBean implements Serializable {
     @Getter
     @Setter
     private ClientDto clientDto;
+    private ClientMapper clientMapper;
 
     private boolean includeAddress;
 
@@ -41,8 +44,12 @@ public class ClientBean implements Serializable {
         clientDto = new ClientDto();
     }
 
-    public List<Client> getClientList() {
-        return clientService.getClientsList();
+    public List<ClientDto> getClientList() {
+        clientMapper = new ClientMapper();
+        return clientService.getClientsList()
+                .stream()
+                .map(client -> clientMapper.mapToDomain(client))
+                .collect(Collectors.toList());
     }
 
     public Client getClientByNip(String nip) {

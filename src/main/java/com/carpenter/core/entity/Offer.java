@@ -20,6 +20,15 @@ import java.util.Date;
 @Entity
 @Builder
 @Access(AccessType.FIELD)
+@NamedQueries(
+        {
+                @NamedQuery(
+                        name = "Offer.findOfferById",
+                        query = "SELECT o FROM Offer o " +
+                                "WHERE o.id=:offerId"
+                )
+        }
+)
 public class Offer extends DomainObject {
 
     @Size(max = 64)
