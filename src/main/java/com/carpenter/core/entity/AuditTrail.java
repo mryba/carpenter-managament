@@ -12,9 +12,10 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Builder
-@Table(name = "AUDITRAILS")
+@Table(name = "AUDIT_TRAILS")
+@NamedQuery(name = "AuditTrail.findAll", query = "SELECT a FROM AuditTrail a")
 @Access(AccessType.FIELD)
-public class AudiTrails extends DomainObject {
+public class AuditTrail extends DomainObject {
     private static final long serialVersionUID = 3501239749381341L;
 
     @Enumerated(EnumType.STRING)
