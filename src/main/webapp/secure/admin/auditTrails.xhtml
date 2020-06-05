@@ -23,7 +23,7 @@
                         <table>
                             <thead>
                             <tr>
-                                <th class="w10 left">USER</th>
+                                <th class="w10 left">USER ID</th>
                                 <th class="w10 left">Action</th>
 
                             </tr>
@@ -32,7 +32,7 @@
                             <ui:repeat value="#{auditTrailBean.auditTrailList}" var="a">
                                 <tr>
                                     <td class="w10 left">
-                                        #{a.employeeId}
+                                        #{a.employee.id}
                                     </td>
                                     <td class="w10 left">
                                         <h4>#{a.activity}</h4>

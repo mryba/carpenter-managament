@@ -1,6 +1,10 @@
 package com.carpenter.core.control.service.login;
 
+import com.carpenter.core.control.dto.AuditTrailDto;
+import com.carpenter.core.control.service.audit.AuditTrailBean;
 import com.carpenter.core.control.utils.logger.Logged;
+import com.carpenter.core.entity.AuditTrail;
+import com.carpenter.core.entity.dictionaries.Activity;
 import com.carpenter.core.entity.employee.Employee;
 
 import javax.annotation.PostConstruct;
@@ -37,6 +41,10 @@ public class LoginController implements Serializable {
 
     @Inject
     private LoginBean loginBean;
+    @Inject
+    private AuditTrailBean auditTrailBean;
+    @Inject
+    private PrincipalBean principalBean;
 
     private transient UIInput errorComponent;
 
@@ -116,6 +124,8 @@ public class LoginController implements Serializable {
                     Collections.singletonMap("httpOnly", Boolean.TRUE)
             );
 
+            addAuditTrail(employee, Activity.LOGIN);
+
             return originalUrl;
 
         } catch (ServletException e) {
@@ -133,7 +143,19 @@ public class LoginController implements Serializable {
     public String logout() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 
+        Employee employee = principalBean.getLoggedUser();
+        addAuditTrail(employee, Activity.LOGOUT);
+
         externalContext.invalidateSession();
+
         return "/domain/login?faces-redirect=true";
+    }
+
+    public void addAuditTrail(Employee employee, Activity activity) {
+        AuditTrail auditTrail = new AuditTrail();
+        auditTrail.setActivity(activity);
+        auditTrail.setEmployee(employee);
+
+        auditTrailBean.addAuditTrail(auditTrail);
     }
 }

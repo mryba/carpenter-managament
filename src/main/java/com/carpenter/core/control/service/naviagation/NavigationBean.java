@@ -24,6 +24,6 @@ public class NavigationBean {
     }
 
     public String adminRedirect() {
-        return "/secure/admin/admin-dashboard?faces-redirect=true";
+        return "/secure/admin/auditTrails?faces-redirect=true";
     }
 }

@@ -1,5 +1,6 @@
 package com.carpenter.core.control.dto;
 
+import com.carpenter.core.entity.employee.Employee;
 import lombok.*;
 
 @Setter
@@ -9,7 +10,7 @@ import lombok.*;
 @Builder
 public class AuditTrailDto {
 
-    private long id;
+    private Long id;
     private String activity;
-    private String employeeId;
+    private Employee employee;
 }

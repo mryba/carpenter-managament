@@ -1,6 +1,7 @@
 package com.carpenter.core.control.service.audit;
 
 import com.carpenter.core.control.dto.AuditTrailDto;
+import com.carpenter.core.entity.AuditTrail;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,9 +33,13 @@ public class AuditTrailBean implements Serializable {
 
     public List<AuditTrailDto> getAuditTrailList() {
         auditTrailMapper = new AuditTrailMapper();
-        return auditTrailService.getAudiTrailsList()
+        return auditTrailService.getAuditTrailsList()
                 .stream()
-                .map(audiTrail -> auditTrailMapper.mapToDomain(audiTrail))
+                .map(auditTrail -> auditTrailMapper.mapToDomain(auditTrail))
                 .collect(Collectors.toList());
+    }
+
+    public void addAuditTrail(AuditTrail auditTrail) {
+        auditTrailService.addAuditTrail(auditTrail);
     }
 }

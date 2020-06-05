@@ -15,7 +15,11 @@ public class AuditTrailService implements Serializable {
     @Inject
     AuditTrailRepository auditTrailRepository;
 
-    public List<AuditTrail> getAudiTrailsList() {
+    public List<AuditTrail> getAuditTrailsList() {
         return auditTrailRepository.getAllAudiTrails();
+    }
+
+    public void addAuditTrail(AuditTrail auditTrail) {
+        auditTrailRepository.addAuditTrail(auditTrail);
     }
 }

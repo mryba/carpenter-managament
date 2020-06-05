@@ -28,7 +28,7 @@ public class AuditTrailRepository implements Serializable {
         }
     }
 
-    public void addAudiTrail(AuditTrail auditTrail) {
+    public void addAuditTrail(AuditTrail auditTrail) {
         entityManager.merge(auditTrail);
     }
 }
