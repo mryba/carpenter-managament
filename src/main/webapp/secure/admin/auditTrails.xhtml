@@ -24,8 +24,9 @@
                             <thead>
                             <tr>
                                 <th class="w10 left">USER ID</th>
+                                <th class="w10 left">Imię</th>
+                                <th class="w10 left">Nazwisko</th>
                                 <th class="w10 left">Action</th>
-
                             </tr>
                             </thead>
                             <tbody>
@@ -35,9 +36,14 @@
                                         #{a.employee.id}
                                     </td>
                                     <td class="w10 left">
+                                        <h4>#{a.employee.firstName}</h4>
+                                    </td>
+                                    <td class="w10 left">
+                                        <h4>#{a.employee.lastName}</h4>
+                                    </td>
+                                    <td class="w10 left">
                                         <h4>#{a.activity}</h4>
                                     </td>
-
                                 </tr>
                             </ui:repeat>
                             </tbody>

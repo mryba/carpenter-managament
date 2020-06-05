@@ -3,7 +3,6 @@ package com.carpenter.core.control.service.login;
 import com.carpenter.core.control.dto.AuditTrailDto;
 import com.carpenter.core.control.service.audit.AuditTrailBean;
 import com.carpenter.core.control.utils.logger.Logged;
-import com.carpenter.core.entity.AuditTrail;
 import com.carpenter.core.entity.dictionaries.Activity;
 import com.carpenter.core.entity.employee.Employee;
 
@@ -152,10 +151,10 @@ public class LoginController implements Serializable {
     }
 
     public void addAuditTrail(Employee employee, Activity activity) {
-        AuditTrail auditTrail = new AuditTrail();
-        auditTrail.setActivity(activity);
-        auditTrail.setEmployee(employee);
+        AuditTrailDto auditTrailDto = new AuditTrailDto();
+        auditTrailDto.setActivity(activity.toString());
+        auditTrailDto.setEmployee(employee);
 
-        auditTrailBean.addAuditTrail(auditTrail);
+        auditTrailBean.addAuditTrail(auditTrailDto);
     }
 }
