@@ -11,10 +11,16 @@ import com.carpenter.core.entity.employee.Employee;
 import lombok.Getter;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Local;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,7 +33,7 @@ import java.util.stream.Stream;
 public class WorkTimeBean implements Serializable {
 
     private Long clientId;
-    private Date dateTime = new Date(System.currentTimeMillis() - (1000L * 60L * 60L * 24L));
+    private LocalDate dateTime = LocalDate.now().minusDays(1);
     private Integer groupHours = Day.EIGHT.getNumber();
 
     private Map<EmployeeDto, Integer> employeesHours = new LinkedHashMap<>();
@@ -70,11 +76,11 @@ public class WorkTimeBean implements Serializable {
         this.clientId = clientId;
     }
 
-    public Date getDateTime() {
+    public LocalDate getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(Date dateTime) {
+    public void setDateTime(LocalDate dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -106,7 +112,7 @@ public class WorkTimeBean implements Serializable {
 
     public void clear() {
         clientId = null;
-        dateTime = new Date(System.currentTimeMillis() - (1000L * 60L * 60L * 24L));
+        dateTime = LocalDate.now().minusDays(1);
         employeesHours.clear();
         groupHours = Day.EIGHT.getNumber();
         for (EmployeeDto employee : employees) {
@@ -116,20 +122,31 @@ public class WorkTimeBean implements Serializable {
 
     public void saveTime() {
         for (EmployeeDto employeeDto : employees) {
-            WorkingDay workingDay = new WorkingDay();
-            workingDay.setCreateDate(new Date());
-            workingDay.setDay(dateTime);
-            workingDay.setCreateBy(principalBean.getLoggedUser().getEmail());
-            Employee employee = employeeService.getEmployeeById(employeeDto.getId());
-            Client client = clients.stream().filter(c -> c.getId().equals(clientId)).findFirst().orElse(null);
 
-            workingDay.setHours(employeesHours.get(employeeDto));
-            employee.addWorkingDay(workingDay);
-            if (client != null) {
-                client.addWorkingDat(workingDay);
+            WorkingDay workingDay = workingDayService.findIfEmployeeWorkDayIsPerform(employeeDto.getId(), dateTime);
+
+            if (workingDay != null) {
+                workingDay.setHours(employeesHours.get(employeeDto));
+                workingDay.setEditDate(new Date());
+                workingDayService.mergeWorkingDay(workingDay);
+            } else {
+                workingDay = new WorkingDay();
+                workingDay.setCreateBy(principalBean.getLoggedUser().getEmail());
+                workingDay.setCreateDate(new Date());
+                workingDay.setDay(Date.from(dateTime.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+                workingDay.setCreateBy(principalBean.getLoggedUser().getEmail());
+
+                Employee employee = employeeService.getEmployeeById(employeeDto.getId());
+                Client client = clients.stream().filter(c -> c.getId().equals(clientId)).findFirst().orElse(null);
+
+                workingDay.setHours(employeesHours.get(employeeDto));
+                employee.addWorkingDay(workingDay);
+                if (client != null) {
+                    client.addWorkingDat(workingDay);
+                }
+                workingDayService.saveWorkingDay(workingDay);
             }
-
-            workingDayService.saveWorkingDay(workingDay);
         }
+        clear();
     }
 }

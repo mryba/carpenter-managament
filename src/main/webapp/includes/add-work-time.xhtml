@@ -44,8 +44,8 @@
                             <h:inputText id="add-work-time-date"
                                          styleClass="datepicker"
                                          label="#{workTimeBean.dateTime}"
-                                         value="#{workTimeBean.dateTime}">
-                                <f:convertDateTime pattern="yyyy-MM-dd"/>
+                                         value="#{workTimeBean.dateTime}"
+                                         converter="localDateConverter">
 
                                 <f:ajax event="change"
                                         delay="300"
@@ -53,15 +53,7 @@
                             </h:inputText>
 
                             <h:outputScript>
-
-                                $(".datepicker").flatpickr({
-                                    enableTime: true,
-                                    dateFormat: "Y-m-d",
-                                    time_24hr: true
-                                });
-
-                                tippy('[data-tippy-content]');
-
+                                $(".datepicker").flatpickr();
                             </h:outputScript>
                         </div>
                         <div class="form-top col1-4">
@@ -133,9 +125,11 @@
 
                         <button type="submit"
                                 class="btn bordered col-primary"
+                                data-dismiss="modal"
                                 jsf:action="#{workTimeBean.saveTime}">
                             <i class="fa fa-check"></i>Zapisz
                             <f:ajax execute="@form"
+                                    resetValues="true"
                                     render="calendarForm closeDialogDiv"/>
                         </button>
                     </div>

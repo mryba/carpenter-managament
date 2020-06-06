@@ -6,12 +6,15 @@ import com.carpenter.core.entity.WorkingDay_;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +27,10 @@ public class WorkingDayRepository implements Serializable {
 
     public void saveWorkingDay(WorkingDay workingDay) {
         entityManager.persist(workingDay);
+    }
+
+    public void mergeWorkingDay(WorkingDay workingDay) {
+        entityManager.merge(workingDay);
     }
 
     public List<WorkingDay> findAllWorkingDaysInScope(Date startDate, Date endDate) {
@@ -44,5 +51,18 @@ public class WorkingDayRepository implements Serializable {
         } catch (NoResultException e) {
             return Collections.emptyList();
         }
+    }
+
+    public WorkingDay findEmployeeWorkDayById(Long id, LocalDate day) {
+        try {
+            Date dayDate = Date.from(day.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+            return entityManager.createNamedQuery("WorkingDay.findEmployeeWorkDay", WorkingDay.class)
+                    .setParameter("employeeId", id)
+                    .setParameter("day", dayDate)
+                    .getResultList().stream().findFirst().orElse(null);
+        } catch (NonUniqueResultException e) {
+            return null;
+        }
+
     }
 }

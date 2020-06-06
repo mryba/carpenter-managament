@@ -11,10 +11,15 @@ import java.util.Date;
 
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "WORKING_DAYS")
 @Access(AccessType.FIELD)
+@NamedQueries({
+        @NamedQuery(
+                name = "WorkingDay.findEmployeeWorkDay",
+                query = "SELECT w FROM WorkingDay w WHERE w.employee.id =:employeeId AND w.day = :day"
+        )
+})
 public class WorkingDay extends DomainObject {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,6 +33,10 @@ public class WorkingDay extends DomainObject {
     @Column(name = "HOURS")
     private Integer hours;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DAY")
     private Date day;
+
+    @Column(name = "EDIT_DATE")
+    private Date editDate;
 }

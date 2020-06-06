@@ -13,7 +13,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "ADDRESSES")
 @Access(AccessType.FIELD)
