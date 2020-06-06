@@ -45,10 +45,13 @@
                                          styleClass="datepicker"
                                          label="#{workTimeBean.dateTime}"
                                          value="#{workTimeBean.dateTime}"
+                                         validator="#{workTimeBean.validateDate}"
                                          converter="localDateConverter">
 
                                 <f:ajax event="change"
                                         delay="300"
+                                        render="add-work-table-id"
+                                        onevent="showLoader"
                                         execute="@this"/>
                             </h:inputText>
 
@@ -79,16 +82,20 @@
                                 <th class="w10 left">Firma</th>
                                 <th class="w10 left">Nazwisko i Imię</th>
                                 <th class="w5 left">Godziny</th>
+                                <th class="w5 left">Dodaj ilość godzin</th>
                             </tr>
                             </thead>
                             <tbody>
                             <ui:repeat value="#{workTimeBean.employees}" var="e">
-                                <tr>
+                                <tr class="#{workTimeBean.errorMessage[e] ? 'checked' : ''}">
                                     <td class="w10 left">
                                         #{e.companyName}
                                     </td>
                                     <td class="w10 left">
                                         <h4>#{e.lastName} #{e.firstName}</h4>
+                                    </td>
+                                    <td class="w5">
+                                        #{workTimeBean.getEmployeeHoursIfExists(e)}
                                     </td>
                                     <td class="w5">
                                         <div class="">
@@ -110,6 +117,11 @@
                                 </tr>
                             </ui:repeat>
                             </tbody>
+                            <h:panelGroup id="validation-messages-container">
+                                <div class="infobox col-danger" jsf:rendered="#{not empty facesContext.messageList}">
+                                    <h:messages/>
+                                </div>
+                            </h:panelGroup>
                         </table>
                     </div>
                     <div class="modal-footer">

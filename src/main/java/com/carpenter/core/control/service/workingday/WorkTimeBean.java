@@ -11,16 +11,16 @@ import com.carpenter.core.entity.employee.Employee;
 import lombok.Getter;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.Local;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -37,6 +37,9 @@ public class WorkTimeBean implements Serializable {
     private Integer groupHours = Day.EIGHT.getNumber();
 
     private Map<EmployeeDto, Integer> employeesHours = new LinkedHashMap<>();
+    @Getter
+    private Map<EmployeeDto, Boolean> errorMessage = new LinkedHashMap<>();
+
     @Getter
     private List<EmployeeDto> employees;
 
@@ -96,6 +99,11 @@ public class WorkTimeBean implements Serializable {
         return employeesHours.get(employee);
     }
 
+    public Integer getEmployeeHoursIfExists(EmployeeDto employee) {
+        WorkingDay workDay = workingDayService.findIfEmployeeWorkDayIsPerform(employee.getId(), dateTime);
+        return workDay != null ? workDay.getHours() : 0;
+    }
+
     public void plusHour(EmployeeDto employee) {
         Integer hour = employeesHours.get(employee);
         if (hour < 24) {
@@ -149,4 +157,24 @@ public class WorkTimeBean implements Serializable {
         }
         clear();
     }
+
+    public void validateDate(FacesContext facesContext, UIComponent component, Object value) {
+        errorMessage.clear();
+        if (value != null && !value.toString().isEmpty())
+            for (EmployeeDto employee : employees) {
+                LocalDate date = (LocalDate) value;
+                WorkingDay workDay = workingDayService.findIfEmployeeWorkDayIsPerform(employee.getId(), date);
+
+                if (workDay != null) {
+                    errorMessage.put(employee, Boolean.TRUE);
+                }
+            }
+        if (!errorMessage.isEmpty()) {
+            throw new ValidatorException(
+                    new FacesMessage("LOOOL", "LOOOL2")
+            );
+        }
+    }
+
 }
+
