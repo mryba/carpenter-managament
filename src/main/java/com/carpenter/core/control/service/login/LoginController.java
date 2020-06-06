@@ -150,6 +150,7 @@ public class LoginController implements Serializable {
         return "/domain/login?faces-redirect=true";
     }
 
+    //todo metoda prywatna, activity nie rzuci NPE bo recznie ustawiasz, ale Employee czasami może być dołóż warunek :)
     public void addAuditTrail(Employee employee, Activity activity) {
         AuditTrailDto auditTrailDto = new AuditTrailDto();
         auditTrailDto.setActivity(activity.toString());

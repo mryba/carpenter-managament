@@ -27,6 +27,7 @@ public class AuditTrailBean implements Serializable {
 
     @PostConstruct
     public void init() {
+        //todo czemu inicializujesz audiTrailDto? nigdzie go tutaj nie używasz - > a w Login Controllerze w addAuditBean nie odnosisz sie do niego tylko tworzysz nowy.
         auditTrailDto = new AuditTrailDto();
     }
 

@@ -12,5 +12,7 @@ public class AuditTrailDto {
 
     private Long id;
     private String activity;
+
+    //todo w DTO embedded niech bedzie takze DTO - > EmployeeDto
     private Employee employee;
 }

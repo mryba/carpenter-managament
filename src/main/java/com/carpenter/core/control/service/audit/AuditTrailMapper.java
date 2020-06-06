@@ -6,6 +6,7 @@ import com.carpenter.core.entity.dictionaries.Activity;
 import com.carpenter.utils.Mapper;
 
 public class AuditTrailMapper implements Mapper<AuditTrail, AuditTrailDto> {
+
     @Override
     public AuditTrail mapFromDomain(AuditTrailDto auditTrailDto) {
         return AuditTrail.builder()
