@@ -28,7 +28,7 @@ public class EmployeeRepository implements Serializable {
 
     public List<Employee> findAllEmployees() {
         try {
-            return entityManager.createQuery("SELECT e from Employee e LEFT JOIN FETCH e.company WHERE e.deleteDate is NULL", Employee.class)
+            return entityManager.createQuery("SELECT e from Employee e LEFT JOIN FETCH e.company LEFT JOIN FETCH e.addresses WHERE e.deleteDate is NULL", Employee.class)
                     .getResultList();
         } catch (NoResultException e) {
             log.error("No employers found!");
@@ -53,7 +53,7 @@ public class EmployeeRepository implements Serializable {
 
     public Employee findEmployeeBeId(Long employeeId) {
         try {
-            EntityGraph<?> graph = entityManager.getEntityGraph("Employee.addresses");
+            EntityGraph<?> graph = entityManager.getEntityGraph("Employee.fetch");
             return entityManager.createNamedQuery("Employee.findEmployeeById", Employee.class)
                     .setParameter("employeeId", employeeId)
                     .setHint(FETCH_GRAPH, graph)

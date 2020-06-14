@@ -1,5 +1,6 @@
 package com.carpenter.core.entity;
 
+import com.carpenter.core.entity.client.Client;
 import com.carpenter.core.entity.employee.Employee;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,7 +11,6 @@ import java.util.List;
 import java.util.Set;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Table(name = "COMPANY")
 @Entity
 @Access(AccessType.FIELD)
@@ -47,6 +47,9 @@ public class Company extends DomainObject {
 
     @OneToMany(mappedBy = "company")
     private Set<Employee> employees;
+
+    @OneToMany(mappedBy = "company")
+    private Set<Client> clients;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<Offer> offers;

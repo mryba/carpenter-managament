@@ -84,15 +84,7 @@
                                     execute="@this"/>
                         </h:inputText>
                         <h:outputScript>
-
-                            $(".datepicker").flatpickr({
-                                enableTime: true,
-                                dateFormat: "Y-m-d",
-                                time_24hr: true
-                            });
-
-                            tippy('[data-tippy-content]');
-
+                            $(".datepicker").flatpickr();
                         </h:outputScript>
                     </div>
                     <div class="form-top" jsf:id="employee-email-id">

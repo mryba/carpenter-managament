@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://xmlns.jcp.org/jsf/composite"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:carpenter="http://xmlns.jcp.org/jsf/composite/carpenter"
+      xml:lang="pl">
+
+<composite:interface>
+    <composite:attribute name="employee" type="com.carpenter.core.control.dto.EmployeeDto" required="true"/>
+
+</composite:interface>
+
+<composite:implementation>
+
+    <div class="calendar-cell-content">
+        #{cc.attrs.employee.firstName}
+        #{cc.attrs.employee.lastName}
+    </div>
+</composite:implementation>
+
+</html>

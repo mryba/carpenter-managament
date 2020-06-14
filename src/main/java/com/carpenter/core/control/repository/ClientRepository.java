@@ -4,12 +4,15 @@ import com.carpenter.core.entity.client.Client;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+
+import static com.carpenter.utils.ConstantsRegex.FETCH_GRAPH;
 
 @Slf4j
 @Stateless
@@ -27,7 +30,10 @@ public class ClientRepository implements Serializable {
 
     public List<Client> getAllClients() {
         try {
-            return entityManager.createNamedQuery("Client.findAll", Client.class).getResultList();
+            EntityGraph<?> graph = entityManager.getEntityGraph("Client.workingDays");
+            return entityManager.createNamedQuery("Client.findAll", Client.class)
+                    .setHint(FETCH_GRAPH, graph)
+                    .getResultList();
         } catch (NoResultException e) {
             log.error("No clients found!");
             return Collections.emptyList();
@@ -38,4 +44,13 @@ public class ClientRepository implements Serializable {
         entityManager.merge(client);
     }
 
+    public Client getClientById(Long id) {
+        try {
+            return entityManager.createNamedQuery("Client.findById", Client.class)
+                    .setParameter("id", id)
+                    .getResultList().iterator().next();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 }

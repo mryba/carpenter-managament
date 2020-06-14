@@ -1,16 +1,20 @@
 package com.carpenter.core.entity.client;
 
+import com.carpenter.core.entity.WorkingDay;
 import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.DomainObject;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.resource.spi.work.Work;
 import javax.validation.constraints.NotNull;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @Entity
 @Builder
 @Table(
@@ -21,12 +25,22 @@ import javax.validation.constraints.NotNull;
         @NamedQuery(name = "Client.findByNip",
                 query = "SELECT c FROM Client c " +
                         "WHERE c.nip =:nip"),
-        @NamedQuery(name = "Client.findAll",
-                query = "SELECT c FROM Client c")
+        @NamedQuery(
+                name = "Client.findAll",
+                query = "SELECT c FROM Client c"),
+        @NamedQuery(
+                name = "Client.findById",
+                query = "SELECT c FROM Client c JOIN FETCH c.workingDays WHERE c.id =:id"
+        )
+})
+@NamedEntityGraphs({
+        @NamedEntityGraph(
+                name = "Client.workingDays",
+                attributeNodes = @NamedAttributeNode("workingDays")
+        )
 })
 @Access(AccessType.FIELD)
 public class Client extends DomainObject {
-    public static final long serialVersionUID = -76794312687641354L;
 
     @NotNull
     @Column(name = "NAME")
@@ -69,4 +83,16 @@ public class Client extends DomainObject {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COMPANY_ID", referencedColumnName = "ID")
     private Company company;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+    private Set<WorkingDay> workingDays;
+
+    public void addWorkingDat(WorkingDay workingDay) {
+        if (workingDays == null) {
+            workingDays = new LinkedHashSet<>();
+        }
+        workingDays.add(workingDay);
+        workingDay.setClient(this);
+    }
+
 }

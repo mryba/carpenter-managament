@@ -43,6 +43,7 @@ public class EmployeeMapper implements Mapper<Employee, EmployeeDto> {
     @Override
     public EmployeeDto mapToDomain(Employee employee) {
         EmployeeDto employeeDto = EmployeeDto.builder()
+                .id(employee.getId())
                 .email(employee.getEmail())
                 .nipNumber(employee.getNipNumber() != null ? employee.getNipNumber() : "")
                 .contract(employee.getContract().name())
@@ -62,6 +63,10 @@ public class EmployeeMapper implements Mapper<Employee, EmployeeDto> {
             employeeDto.setCountry(employee.getAddresses().iterator().next().getCountry());
         }
 
+        if (employee.getCompany() != null) {
+            employeeDto.setCompanyId(employee.getCompany().getId());
+            employeeDto.setCompanyName(employee.getCompany().getName());
+        }
         return employeeDto;
     }
 }

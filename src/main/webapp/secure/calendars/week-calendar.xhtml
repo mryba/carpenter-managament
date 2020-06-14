@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:carpenter="http://xmlns.jcp.org/jsf/composite/carpenter/calendar"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+                template="/secure/template.xhtml">
+
+    <ui:param name="pageTitle" value="Kalendarz"/>
+    <ui:param name="calendarView" value="week"/>
+
+    <ui:define name="content">
+
+        <div class="wrapper calendar-page">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Kalendarz</h2>
+                </div>
+                <!--Date -->
+                <div class="card-subheader">
+                    <h:form id="dateForm" prependId="false">
+                        <div class="calendar-navigator">
+                            <a jsf:action="#{calendarWeekBean.moveBackward}">
+                                <i class="fa fa-chevron-left"></i>
+                                <f:ajax execute="@this"
+                                        render="@form calendarForm"
+                                        onevent="showLoader"/>
+                            </a>
+                            <div>
+                                <h:outputFormat value="{0,date,d.MM}">
+                                    <f:param value="#{calendarWeekBean.timeManager.startDate}"/>
+                                </h:outputFormat>
+                                -
+                                <h:outputFormat value="{0,date,d.MM}">
+                                    <f:param value="#{calendarWeekBean.timeManager.endDate}"/>
+                                </h:outputFormat>
+                            </div>
+                            <a jsf:action="#{calendarWeekBean.moveForward}">
+                                <i class="fa fa-caret-right"></i>
+                                <f:ajax execute="@this"
+                                        render="@form calendarForm"
+                                        onevent="showLoader"/>
+                            </a>
+                        </div>
+                    </h:form>
+                    <div class="controls">
+                        <h:commandLink
+                                styleClass="btn bordered col-primary"
+                                p:data-toggle="modal"
+                                p:data-target="#add-work-time">
+                            <f:ajax execute="@this"
+                                    resetValues="true"
+                                    render="add-work-time-form"
+                                    onevent="showLoader"/>
+                            <i class="far fa-clock"></i> Dodaj czas pracy
+                        </h:commandLink>
+                    </div>
+                </div>
+
+                <h:form id="calendarForm" prependId="false">
+                    <div class="table calendar-view calendar-view-week">
+                        <table jsf:id="calendarWeekTable">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="calendar-header">Tydzień</th>
+                                <ui:repeat value="#{calendarWeekBean.dates}" var="day">
+                                    <th scope="col" class="calendar-header">
+                                        <h:outputFormat value="{0,date,EEE', 'd.MM}">
+                                            <f:param value="#{day}"/>
+                                        </h:outputFormat>
+                                    </th>
+                                </ui:repeat>
+                                <th scope="col" class="calendar-header">
+                                    Suma
+                                </th>
+                            </tr>
+                            <tr>
+                                <th scope="col" class="calendar-sub-header-first-col">
+                                    Godziny
+                                </th>
+                                <ui:repeat value="#{calendarWeekBean.dates}" var="sm">
+                                    <th scope="col" class="calendar-sub-header">
+                                        #{calendarWeekBean.getColumnCount(sm)}
+                                    </th>
+                                </ui:repeat>
+                                <th scope="col" class="calendar-sub-header-last-col">
+                                    #{calendarWeekBean.sumColumn}
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <ui:repeat value="#{calendarWeekBean.employees}" var="e">
+                                <tr>
+                                    <th scope="col" class="calendar-row-label">
+                                        <carpenter:calendar-cell employee="#{e}"/>
+                                    </th>
+                                    <th scope="col" class="calendar-row">
+                                        #{calendarWeekBean.getGetWorkDays('MONDAY', e)}
+                                    </th>
+                                    <th scope="col" class="calendar-row">
+                                        #{calendarWeekBean.getGetWorkDays('TUESDAY', e)}
+                                    </th>
+                                    <th scope="col" class="calendar-row">
+                                        #{calendarWeekBean.getGetWorkDays('WEDNESDAY', e)}
+                                    </th>
+                                    <th scope="col" class="calendar-row">
+                                        #{calendarWeekBean.getGetWorkDays('THURSDAY', e)}
+                                    </th>
+                                    <th scope="col" class="calendar-row">
+                                        #{calendarWeekBean.getGetWorkDays('FRIDAY', e)}
+                                    </th>
+                                    <th scope="col" class="calendar-row">
+                                        #{calendarWeekBean.getGetWorkDays('SATURDAY', e)}
+                                    </th>
+                                    <th scope="col" class="calendar-row">
+                                        #{calendarWeekBean.getGetWorkDays('SUNDAY', e)}
+                                    </th>
+                                    <th scope="col" class="calendar-sub-header">
+                                        #{calendarWeekBean.getGetRowCount(e)}
+                                    </th>
+
+                                </tr>
+                            </ui:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+
+        <ui:include src="/includes/add-work-time.xhtml"/>
+        <div jsf:id="closeDialogDiv">
+            <h:outputScript rendered="#{not facesContext.validationFailed}">
+                $('#add-work-time').modal('hide')
+            </h:outputScript>
+        </div>
+
+    </ui:define>
+</ui:composition>

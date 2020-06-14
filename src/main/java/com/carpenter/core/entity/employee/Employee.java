@@ -1,19 +1,20 @@
 package com.carpenter.core.entity.employee;
 
+import com.carpenter.core.entity.WorkingDay;
 import com.carpenter.core.entity.Company;
+import com.carpenter.core.entity.DomainObject;
 import com.carpenter.core.entity.dictionaries.Contract;
 import com.carpenter.core.entity.dictionaries.Gender;
 import com.carpenter.core.entity.dictionaries.Role;
 import com.carpenter.utils.ConstantsRegex;
 import com.carpenter.utils.MobilPhoneNumberAdapter;
-import com.carpenter.core.entity.DomainObject;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.*;
 
@@ -22,8 +23,8 @@ import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @Entity
 @Table(
         name = "EMPLOYEES",
@@ -48,9 +49,10 @@ import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
 )
 @NamedEntityGraphs({
         @NamedEntityGraph(
-                name = "Employee.addresses",
+                name = "Employee.fetch",
                 attributeNodes = {
-                        @NamedAttributeNode(value = "addresses")
+                        @NamedAttributeNode(value = "addresses"),
+                        @NamedAttributeNode(value = "workingDays")
                 }
         )
 })
@@ -113,7 +115,7 @@ public class Employee extends DomainObject {
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
     @JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "ID")
     @XmlTransient
-    private List<Address> addresses;
+    private Set<Address> addresses;
 
     @Basic
     @Column(name = "PHONE_NUMBER")
@@ -124,6 +126,9 @@ public class Employee extends DomainObject {
 
     @Column(name = "ACCOUNT_ACTIVE")
     private Boolean accountActive;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+    private Set<WorkingDay> workingDays;
 
     public void addRole(Role role) {
         if (role == null) {
@@ -140,9 +145,27 @@ public class Employee extends DomainObject {
             return;
         }
         if (this.addresses == null) {
-            this.addresses = new LinkedList<>();
+            this.addresses = new LinkedHashSet<>();
         }
         this.addresses.add(address);
+    }
+
+    public void addWorkingDay(WorkingDay workingDay) {
+        if (workingDay == null) {
+            return;
+        }
+        if (this.workingDays == null) {
+            this.workingDays = new LinkedHashSet<>();
+        }
+        this.workingDays.add(workingDay);
+        workingDay.setEmployee(this);
+    }
+
+    public void removeWorkingDay(WorkingDay workingDay) {
+        if (workingDays != null) {
+            workingDays.remove(workingDay);
+            workingDay.setEmployee(null);
+        }
     }
 
     @Transient

@@ -39,8 +39,10 @@
             <div class="crm-header">
 
                 <div class="main-menu">
-                    <h:commandLink>
+                    <h:commandLink styleClass="#{pageTitle eq 'Kalendarz' ? 'active': ''}"
+                                   action="#{navigationBean.calendarDayViewRedirect}">
                         <i class="fas fa-calendar-check"></i>Kalendarz
+                        <f:ajax onevent="showLoader"/>
                     </h:commandLink>
 
                     <h:commandLink

@@ -30,6 +30,7 @@ public class EmployeeDto {
 
     //Company
     private Long companyId;
+    private String companyName;
 
     //Address
     private String city;
@@ -40,4 +41,5 @@ public class EmployeeDto {
     private String country;
 
     private Date birthDate;
+
 }
