@@ -18,6 +18,11 @@ import java.util.Date;
         @NamedQuery(
                 name = "WorkingDay.findEmployeeWorkDay",
                 query = "SELECT w FROM WorkingDay w WHERE w.employee.id =:employeeId AND w.day = :day"
+        ),
+        @NamedQuery(
+                name = "WorkingDay.findAllWorkingDayByDate",
+                query = "SELECT w FROM WorkingDay w " +
+                        "WHERE w.day =:yesterday"
         )
 })
 public class WorkingDay extends DomainObject {

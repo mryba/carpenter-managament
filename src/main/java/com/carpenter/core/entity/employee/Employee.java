@@ -20,6 +20,7 @@ import java.util.*;
 
 import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
 
+@EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -44,6 +45,11 @@ import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
                         name = "Employee.findEmployeeById",
                         query = "SELECT e FROM Employee e " +
                                 "WHERE e.id =:employeeId"
+                ),
+                @NamedQuery(
+                        name = "Employee.findAllActiveEmployee",
+                        query = "SELECT e FROM Employee e " +
+                                "WHERE e.accountActive IS NOT NULL "
                 )
         }
 )

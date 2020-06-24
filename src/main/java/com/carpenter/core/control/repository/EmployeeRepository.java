@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.ejb.Stateless;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -60,6 +61,15 @@ public class EmployeeRepository implements Serializable {
                     .getResultList().iterator().next();
         } catch (NonUniqueResultException e) {
             return null;
+        }
+    }
+
+    public Collection<Employee> findAllActiveEmployees() {
+        try {
+            return entityManager.createNamedQuery("Employee.findAllActiveEmployee", Employee.class)
+                    .getResultList();
+        } catch (NoResultException e) {
+            return Collections.emptyList();
         }
     }
 }

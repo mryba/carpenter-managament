@@ -2,6 +2,7 @@ package com.carpenter.core.control.service.workingday;
 
 import com.carpenter.core.entity.WorkingDay;
 import com.carpenter.core.entity.WorkingDay_;
+import com.carpenter.core.entity.employee.Employee;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -15,6 +16,7 @@ import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -63,6 +65,16 @@ public class WorkingDayRepository implements Serializable {
         } catch (NonUniqueResultException e) {
             return null;
         }
+    }
 
+    public Collection<WorkingDay> findAllWorkingDayByDate(LocalDate yesterday) {
+        try {
+            Date yesterdayDate = Date.from(yesterday.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+            return entityManager.createNamedQuery("WorkingDay.findAllWorkingDayByDate", WorkingDay.class)
+                    .setParameter("yesterday", yesterdayDate)
+                    .getResultList();
+        } catch (NoResultException e) {
+            return Collections.emptyList();
+        }
     }
 }
