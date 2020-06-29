@@ -188,6 +188,21 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-top">
+                        <label>Klient</label>
+                        <h:selectOneMenu id="add-employee-present-client"
+                                         value="#{employeeListBean.employeeDto.presentClient}">
+                            <f:selectItems value="#{employeeListBean.availableClients}"
+                                           var="client"
+                                           itemLabel="#{client.name}"
+                                           itemValue="#{client.id}"/>
+
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="@this"/>
+
+                        </h:selectOneMenu>
+                    </div>
 
                     <div class="form-top">
                         <label for="add-address-checkbox">Dodaj adres</label>
@@ -273,6 +288,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
 
                 <h:panelGroup id="validation-messages-container">

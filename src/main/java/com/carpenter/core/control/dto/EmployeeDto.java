@@ -27,6 +27,7 @@ public class EmployeeDto {
     private String bankAccountNumber;
     private String gender;
     private boolean activeAccount;
+    private Long presentClient;
 
     //Company
     private Long companyId;

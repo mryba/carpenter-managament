@@ -13,7 +13,6 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Named("clientBean")
 @ViewScoped

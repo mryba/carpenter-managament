@@ -3,6 +3,7 @@ package com.carpenter.core.entity.employee;
 import com.carpenter.core.entity.WorkingDay;
 import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.DomainObject;
+import com.carpenter.core.entity.client.Client;
 import com.carpenter.core.entity.dictionaries.Contract;
 import com.carpenter.core.entity.dictionaries.Gender;
 import com.carpenter.core.entity.dictionaries.Role;
@@ -20,7 +21,7 @@ import java.util.*;
 
 import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -135,6 +136,10 @@ public class Employee extends DomainObject {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
     private Set<WorkingDay> workingDays;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PRESENT_CLIENT", referencedColumnName = "ID")
+    private Client presentClient;
 
     public void addRole(Role role) {
         if (role == null) {

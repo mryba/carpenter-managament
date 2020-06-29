@@ -3,6 +3,7 @@ package com.carpenter.core.entity.client;
 import com.carpenter.core.entity.WorkingDay;
 import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.DomainObject;
+import com.carpenter.core.entity.employee.Employee;
 import lombok.*;
 
 import javax.persistence.*;
@@ -86,6 +87,9 @@ public class Client extends DomainObject {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
     private Set<WorkingDay> workingDays;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "presentClient")
+    private Set<Employee> presentsEmployees;
 
     public void addWorkingDat(WorkingDay workingDay) {
         if (workingDays == null) {

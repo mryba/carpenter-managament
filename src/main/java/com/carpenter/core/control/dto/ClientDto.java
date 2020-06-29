@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 public class ClientDto {
 
-    private long id;
+    private Long id;
     private String name;
     private String city;
     private String postalCode;

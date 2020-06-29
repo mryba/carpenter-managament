@@ -7,6 +7,7 @@ import com.carpenter.core.entity.client.Client;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 
 @SessionScoped
@@ -23,12 +24,19 @@ public class ClientService implements Serializable {
         return clientRepository.getClientByNIP(nip);
     }
 
-    public Client getClientById(Long id){
+    public Client getClientById(Long id) {
         return clientRepository.getClientById(id);
     }
 
-    public List<Client> getClientsList(){
+    public List<Client> getClientsList() {
         return clientRepository.getAllClients();
+    }
+
+    public List<ClientDto> getAllAvailableClients() {
+        List<ClientDto> toReturn = new LinkedList<>();
+        clientMapper = new ClientMapper();
+        clientRepository.getAllClients().forEach(e -> toReturn.add(clientMapper.mapToDomain(e)));
+        return toReturn;
     }
 
     public Client createClient(ClientDto clientDto) {
@@ -42,5 +50,9 @@ public class ClientService implements Serializable {
 
     public boolean isClientNew(String nip) {
         return getClientByNip(nip) == null;
+    }
+
+    public Client mapClientToDomain(ClientDto clientDto){
+        return clientMapper.mapFromDomain(clientDto);
     }
 }

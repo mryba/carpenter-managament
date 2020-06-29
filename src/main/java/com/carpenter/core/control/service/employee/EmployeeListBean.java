@@ -1,11 +1,14 @@
 package com.carpenter.core.control.service.employee;
 
+import com.carpenter.core.control.dto.ClientDto;
 import com.carpenter.core.control.dto.CompanyDto;
 import com.carpenter.core.control.dto.EmployeeDto;
+import com.carpenter.core.control.service.client.ClientService;
 import com.carpenter.core.control.service.company.CompanyService;
 import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.control.utils.logger.Logged;
 import com.carpenter.core.entity.Company;
+import com.carpenter.core.entity.client.Client;
 import com.carpenter.core.entity.dictionaries.Contract;
 import com.carpenter.core.entity.dictionaries.Countries;
 import com.carpenter.core.entity.dictionaries.Gender;
@@ -20,6 +23,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -43,9 +47,14 @@ public class EmployeeListBean implements Serializable {
     @Inject
     EmployeeValidation employeeValidation;
 
+    @Inject
+    ClientService clientService;
+
     @Getter
     @Setter
     private EmployeeDto employeeDto;
+
+    private List<ClientDto> clients = new LinkedList<>();
 
     private boolean isAddAddress;
     private boolean isAccountCreate;
@@ -59,6 +68,11 @@ public class EmployeeListBean implements Serializable {
     public void saveEmployee() {
         Employee employee = employeeService.createEmployee(employeeDto);
 
+        ClientDto clientDto = clients.stream().filter(c -> employeeDto.getPresentClient().equals(c.getId())).findFirst().orElse(null);
+        if (clientDto != null) {
+            Client client = clientService.mapClientToDomain(clientDto);
+            employee.setPresentClient(client);
+        }
         Company company = getCompanyBasedOnLoggedUser();
         employee.setCompany(company);
 
@@ -160,5 +174,11 @@ public class EmployeeListBean implements Serializable {
     public boolean getHasLoggedUserAdminOrManagerRole() {
         this.hasLoggedUserAdminOrManagerRole = principalBean.getLoggedUser().isInRole(Arrays.asList(Role.MANAGER, Role.ADMINISTRATOR));
         return hasLoggedUserAdminOrManagerRole;
+    }
+
+    public List<ClientDto> getAvailableClients() {
+        clients.clear();
+        clients.addAll(clientService.getAllAvailableClients());
+        return clients;
     }
 }

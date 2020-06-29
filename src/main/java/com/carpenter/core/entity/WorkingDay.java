@@ -5,10 +5,12 @@ import com.carpenter.core.entity.employee.Employee;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
 
+@EqualsAndHashCode(callSuper = true, exclude = "employee")
 @Getter
 @Setter
 @Entity

@@ -2,15 +2,17 @@ package com.carpenter.core.entity;
 
 import com.carpenter.core.entity.client.Client;
 import com.carpenter.core.entity.employee.Employee;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-@Data
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true, exclude = "employees")
+@Getter
+@Setter
 @Table(name = "COMPANY")
 @Entity
 @Access(AccessType.FIELD)
