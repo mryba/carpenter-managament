@@ -4,6 +4,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:jsf="http://xmlns.jcp.org/jsf"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
                 template="/secure/template.xhtml">
 
     <ui:param name="pageTitle" value="Klienci"/>
@@ -16,9 +17,7 @@
                     <h2>Klienci</h2>
 
                     <div class="controls"
-                         jsf:rendered=
-                                 "#{principalBean.loggedUser.isInRole('ADMINISTRATOR') ||
-                                 principalBean.loggedUser.isInRole('MANAGER')}">
+                         jsf:rendered="#{principalBean.loggedUser.isInRole('ADMINISTRATOR')}">
                         <h:form>
                             <a href="#" class="btn bordered col-primary"
                                data-toggle="modal"
@@ -63,6 +62,15 @@
                                             <f:param name="clientId" value="#{c.id}"/>
                                             <i class="fa fa-caret-right"></i>
                                         </h:link>
+                                        <h:commandLink styleClass="btn bordered col-primary"
+                                                       p:data-toggle="modal"
+                                                       p:data-target="#add-present-client"
+                                                       p:title="Ustaw bierzącego klienta">
+                                            <f:ajax execute="@this"
+                                                    resetValues="true"
+                                                    onevent="showLoader"/>
+                                            <i class="fas fa-user"></i>
+                                        </h:commandLink>
                                     </td>
                                 </tr>
                             </ui:repeat>
@@ -73,6 +81,7 @@
             </div>
 
             <ui:include src="/includes/add-client-form.xhtml"/>
+            <ui:include src="/includes/add-present-client.xhtml"/>
 
             <div jsf:id="closeDialogDiv">
                 <h:outputScript rendered="#{not facesContext.validationFailed}">

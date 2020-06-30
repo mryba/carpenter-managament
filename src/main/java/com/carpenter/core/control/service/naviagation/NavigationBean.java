@@ -7,7 +7,7 @@ import javax.inject.Named;
 @ApplicationScoped
 public class NavigationBean {
 
-    public String employersRedirect() {
+    public String employeesRedirect() {
         return "/secure/employees/employees?faces-redirect=true";
     }
 

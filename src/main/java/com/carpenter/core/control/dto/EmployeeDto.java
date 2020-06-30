@@ -13,7 +13,7 @@ import java.util.Date;
 @Builder
 public class EmployeeDto {
 
-    //Employer
+    //Employee
     private Long id;
     private String firstName;
     private String lastName;
@@ -27,6 +27,7 @@ public class EmployeeDto {
     private String bankAccountNumber;
     private String gender;
     private boolean activeAccount;
+
     private Long presentClient;
 
     //Company

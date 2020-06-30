@@ -1,6 +1,9 @@
 package com.carpenter.core.control.service.client;
 
 import com.carpenter.core.control.dto.ClientDto;
+import com.carpenter.core.control.dto.CompanyDto;
+import com.carpenter.core.control.service.company.CompanyService;
+import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.client.Client;
 import com.carpenter.core.entity.dictionaries.Countries;
 import lombok.Getter;
@@ -23,10 +26,18 @@ public class ClientBean implements Serializable {
     @Inject
     ClientService clientService;
 
+    @Inject
+    CompanyService companyService;
+
     @Getter
     @Setter
     private ClientDto clientDto;
+
+    private CompanyDto companyDto;
+
     private ClientMapper clientMapper;
+
+    private List<CompanyDto> allActiveCompanies;
 
     private boolean includeAddress;
 
@@ -41,6 +52,7 @@ public class ClientBean implements Serializable {
     @PostConstruct
     public void init() {
         clientDto = new ClientDto();
+        allActiveCompanies = companyService.getAllActiveCompanies();
     }
 
     public List<ClientDto> getClientList() {
@@ -77,5 +89,21 @@ public class ClientBean implements Serializable {
 
     public Countries[] getCountries() {
         return Countries.values();
+    }
+
+    public List<CompanyDto> getAllActiveCompanies() {
+        return allActiveCompanies;
+    }
+
+    public CompanyDto getCompanyDto() {
+        return companyDto;
+    }
+
+    public void setCompanyDto(CompanyDto companyDto) {
+        this.companyDto = companyDto;
+    }
+
+    public void savePresentClient() {
+        ClientDto clientDto = this.clientDto;
     }
 }

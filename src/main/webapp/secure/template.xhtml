@@ -46,7 +46,7 @@
                     </h:commandLink>
 
                     <h:commandLink
-                            action="#{navigationBean.employersRedirect}">
+                            action="#{navigationBean.employeesRedirect}">
                         <f:ajax onevent="showLoader"/>
                         <i class="fas fa-users"></i>Pracownicy
                     </h:commandLink>
@@ -77,8 +77,6 @@
                         <h4>#{principalBean.loggedUser.firstName} #{principalBean.loggedUser.lastName}</h4>
                         <h4>#{principalBean.loggedUser.company.name}</h4>
                     </div>
-
-
 
                     <div class="actions">
                         <div class="admin"

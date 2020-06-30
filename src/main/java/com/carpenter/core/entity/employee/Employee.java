@@ -59,7 +59,8 @@ import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
                 name = "Employee.fetch",
                 attributeNodes = {
                         @NamedAttributeNode(value = "addresses"),
-                        @NamedAttributeNode(value = "workingDays")
+                        @NamedAttributeNode(value = "workingDays"),
+                        @NamedAttributeNode(value = "company")
                 }
         )
 })

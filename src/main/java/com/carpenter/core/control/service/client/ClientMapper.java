@@ -27,6 +27,7 @@ public class ClientMapper implements Mapper<Client, ClientDto> {
     @Override
     public ClientDto mapToDomain(Client client) {
         return ClientDto.builder()
+                .id(client.getId())
                 .name(client.getName())
                 .nip(client.getNip())
                 .email(client.getEmail())
