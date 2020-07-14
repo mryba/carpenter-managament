@@ -12,6 +12,9 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Path("/carpenter")
 @RequestScoped
@@ -27,7 +30,9 @@ public class CarpenterWebEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response sendMail(CarpenterOfferRequest request) {
 
-//        Instant instant = Instant.parse(request.getStartDate()).;
+        Instant instant = Instant.parse(request.getStartDate());
+
+        LocalDate localDate = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
         String sb = "Rodzaj architektury: " + request.getArchType() + "\n" +
                 "Imię: " + request.getName() + "\n" +
                 "Firma: " + request.getCompany() + "\n" +
