@@ -20,13 +20,6 @@ public class MailDispatchBean implements Serializable {
     private static final String SANDER_INFO_MAIL = "podkarpaccy.ciesle@gmail.com";
     private static final String SENDING_EMAIL_ERROR_MESSAGE = "Error sending e-mail";
 
-    @Resource(mappedName = "java:jboss/mail/carpenterMS")
-    private transient Session mailSession;
-
-    private void init() {
-
-    }
-
     @Asynchronous
     public void sandEmail(String recipient, String subject, String content) {
         log.info("Dispaching email with subject \"{}\" and contents: \"{}\" to: {}", subject, content, recipient);

@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.Instant;
 
 @Path("/carpenter")
 @RequestScoped
@@ -26,11 +27,13 @@ public class CarpenterWebEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response sendMail(CarpenterOfferRequest request) {
 
-        String sb = request.getArchType() +
-                request.getName() + "\n" +
-                request.getCompany() + "\n" +
-                request.getPhone() + "\n" +
-                request.getDescription();
+//        Instant instant = Instant.parse(request.getStartDate()).;
+        String sb = "Rodzaj architektury: " + request.getArchType() + "\n" +
+                "Imię: " + request.getName() + "\n" +
+                "Firma: " + request.getCompany() + "\n" +
+                "Telefon: " + request.getPhone() + "\n" +
+                "Email: " + request.getEmail() + "\n" +
+                "Opis: " + request.getDescription();
         mailDispatchBean.sandEmailToManager(sb);
 
         CarpenterOfferResponse response = new CarpenterOfferResponse(Boolean.TRUE, Boolean.TRUE);
