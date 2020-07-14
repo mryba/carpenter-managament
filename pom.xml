@@ -47,6 +47,14 @@
             <version>1.14</version>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>org.jboss.resteasy</groupId>-->
+<!--            <artifactId>resteasy-multipart-provider</artifactId>-->
+<!--            <version>4.4.0.Final</version>-->
+<!--        </dependency>-->
+
+        <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+
         <dependency>
             <groupId>org.omnifaces</groupId>
             <artifactId>omnifaces</artifactId>
