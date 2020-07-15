@@ -33,7 +33,9 @@ public class CarpenterWebEndpoint {
         Instant instant = Instant.parse(request.getStartDate());
 
         LocalDate localDate = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
-        String sb = "Rodzaj architektury: " + request.getArchType() + "\n" +
+        String sb = "Miasto: " + request.getCity() + "\n" +
+                "Data rozpoczęcia: " + localDate + "\n" +
+                "Rodzaj architektury: " + request.getArchType() + "\n" +
                 "Imię: " + request.getName() + "\n" +
                 "Firma: " + request.getCompany() + "\n" +
                 "Telefon: " + request.getPhone() + "\n" +
