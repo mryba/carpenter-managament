@@ -12,9 +12,11 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
+@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Table(name = "OFFERS")
 @Entity
 @Builder
@@ -38,21 +40,18 @@ public class Offer extends DomainObject {
     @Temporal(TemporalType.DATE)
     private Date workDateFrom;
 
-    @Column(name = "WORK_DATE_TO")
-    @Temporal(TemporalType.DATE)
-    private Date workDateTo;
-
-    @Column(name = "BUILDING_DIMENSION")
-    private Double buildingDimension;
-
     @Column(name = "ARCHITECTURE_TYPE")
     @Enumerated(EnumType.STRING)
     private ArchitectureType architectureType;
 
+    @Column(name = "FORENAME_OF_CALLING")
+    private String forenameOfCalling;
+
+    @Column(name = "COMPANY_NAME")
+    private String companyName;
+
     @Column(name = "PHONE")
-    @Pattern(regexp = ConstantsRegex.MSISDN_PATTERN)
     @Size(max = 16)
-    @XmlJavaTypeAdapter(MobilPhoneNumberAdapter.class)
     private String phone;
 
     @Column(name = "EMAIL")
@@ -60,12 +59,14 @@ public class Offer extends DomainObject {
     @Pattern(regexp = ConstantsRegex.EMAIL_PATTERN)
     private String email;
 
+    @Column(name = "DESCRIPTION")
+    private String description;
+
     @Column(name = "IS_READ")
     @NotNull
     private Boolean isRead;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COMPANY_ID")
-    @NotNull
     private Company company;
 }

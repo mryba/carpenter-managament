@@ -9,30 +9,29 @@ public class OfferMapper implements Mapper<Offer, OfferDto> {
 
     @Override
     public Offer mapFromDomain(OfferDto offerDto) {
-        Offer offer = Offer.builder()
-                .architectureType(ArchitectureType.valueOf(offerDto.getArchitectureType()))
-                .buildingDimension(offerDto.getBuildingDimension())
-                .email(offerDto.getEmail())
-                .isRead(Boolean.FALSE)
-                .phone(offerDto.getPhone())
+        return Offer.builder()
+                .architectureType(ArchitectureType.of(offerDto.getArchitectureType()))
                 .workCity(offerDto.getWorkCity())
                 .workDateFrom(offerDto.getWorkDateFrom())
-                .workDateTo(offerDto.getWorkDateTo())
+                .forenameOfCalling(offerDto.getForenameOfCalling())
+                .companyName(offerDto.getCompanyName())
+                .email(offerDto.getEmail())
+                .phone(offerDto.getPhone())
+                .description(offerDto.getDescription())
+                .isRead(Boolean.FALSE)
                 .build();
-        return offer;
     }
 
     @Override
     public OfferDto mapToDomain(Offer offer) {
-        OfferDto offerDto = OfferDto.builder()
+        return OfferDto.builder()
                 .architectureType(offer.getArchitectureType().name())
-                .buildingDimension(offer.getBuildingDimension())
-                .email(offer.getEmail())
-                .phone(offer.getPhone())
                 .workCity(offer.getWorkCity())
                 .workDateFrom(offer.getWorkDateFrom())
-                .workDateTo(offer.getWorkDateTo())
+                .forenameOfCalling(offer.getForenameOfCalling())
+                .email(offer.getEmail())
+                .phone(offer.getPhone())
+                .description(offer.getDescription())
                 .build();
-        return offerDto;
     }
 }

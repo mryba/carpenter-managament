@@ -3,6 +3,7 @@ package com.carpenter.api.endpoint;
 import com.carpenter.api.request.CarpenterOfferRequest;
 import com.carpenter.api.response.CarpenterOfferResponse;
 import com.carpenter.core.control.mail.MailDispatchBean;
+import com.carpenter.core.control.service.offer.OfferService;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,32 +23,17 @@ import java.time.ZoneId;
 public class CarpenterWebEndpoint {
 
     @Inject
-    MailDispatchBean mailDispatchBean;
+    OfferService offerService;
 
     @POST
     @Path("/post")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response sendMail(CarpenterOfferRequest request) {
+    public Response offerArrive(CarpenterOfferRequest request) {
 
-        Instant instant = Instant.parse(request.getStartDate());
-
-        LocalDate localDate = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
-        String sb = "Miasto: " + request.getCity() + "\n" +
-                "Data rozpoczęcia: " + localDate + "\n" +
-                "Rodzaj architektury: " + request.getArchType() + "\n" +
-                "Imię: " + request.getName() + "\n" +
-                "Firma: " + request.getCompany() + "\n" +
-                "Telefon: " + request.getPhone() + "\n" +
-                "Email: " + request.getEmail() + "\n" +
-                "Opis: " + request.getDescription();
-        mailDispatchBean.sandEmailToManager(sb);
-
-        CarpenterOfferResponse response = new CarpenterOfferResponse(Boolean.TRUE, Boolean.TRUE);
-        String json = new Gson().toJson(response);
-
+        String response =  offerService.performOffer(request);
         return Response
-                .ok(json, MediaType.APPLICATION_JSON)
+                .ok(response, MediaType.APPLICATION_JSON)
                 .header("Access-Control-Allow-Origin", "*")
                 .header("Access-Control-Allow-Credentials", "true")
                 .header("Access-Control-Allow-Headers",
