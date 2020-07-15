@@ -9,6 +9,13 @@ body {
     margin: 0 auto;
 }
 
+.domain-wrapper{
+    width:100%;
+    max-width: 600px;
+    padding: 0 1em;
+    margin: 0 auto;
+}
+
 .site-content {
     padding: 2em 0;
 }
@@ -355,6 +362,80 @@ Card
 
     .card .card-subheader .view-controls > button {
         margin-bottom: 1em;
+    }
+}
+
+/**
+Login page
+ */
+
+.login-page-body {
+    padding: 0;
+    background: #e4f5e9;
+}
+
+.login-page {
+    display: -webkit-box;
+    display: flex;
+    min-height: 100vh;
+    -webkit-box-align: stretch;
+    align-items: stretch;
+}
+
+.login-page .form-login {
+    position: relative;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    padding: 3em;
+    margin: auto;
+}
+.login-page .form-login .logo {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 170px;
+}
+.login-page .form-login > form {
+    width: 400px;
+}
+.login-page .form-login > form .crm-logo {
+    margin-bottom: 1.5em;
+    padding-bottom: 1.5em;
+    border-bottom: 1px solid #d1d1d1;
+}
+.login-page .form-login > form .crm-logo img {
+    width: 100px;
+}
+.login-page .form-login > form .btn {
+    font-size: 0.9em;
+    margin-top: 0.6em;
+}
+.login-page .form-login .version-number {
+    position: absolute;
+    bottom: 1em;
+    font-size: 0.75em;
+    right: 1em;
+    color: #7e7e7e;
+}
+@media (max-width: 800px) {
+    .login-page .image {
+        display: none;
+    }
+
+    .login-page .form-login {
+        width: 100%;
+        padding: 1.5em;
+        padding-top: 100px;
+    }
+
+    .login-page .form-login > form {
+        max-width: 100%;
+        box-sizing: border-box;
     }
 }
 

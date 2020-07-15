@@ -22,7 +22,6 @@ public class MailDispatchBean implements Serializable {
     private static final String SENDING_EMAIL_ERROR_MESSAGE = "Error sending e-mail";
     private static final String EMAIL_PASSWORD = System.getProperty("emailPassword");
 
-
     @Asynchronous
     public void sandEmail(String recipient, String subject, String content) {
         log.info("Dispatching email with subject \"{}\" and contents: \"{}\" to: {}", subject, content, recipient);

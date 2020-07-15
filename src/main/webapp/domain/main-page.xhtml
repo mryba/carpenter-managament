@@ -1,12 +1,78 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
 
-<h:body>
-    <ui:composition template="login.xhtml">
+<h:head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/carpenter/img/builder.svg"/>
 
-    </ui:composition>
+    <h:outputStylesheet library="carpenter" name="css/style.css"/>
+    <h:outputScript library="carpenter" name="js/carpenter.js"/>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"/>
+
+
+</h:head>
+<f:metadata>
+    <f:event listener="#{loginController.isLogged}" type="preRenderView"/>
+</f:metadata>
+<h:body styleClass="login-page-body">
+
+    <div class="login-page">
+
+        <div class="form-login">
+            <h:form>
+                <div class="header">
+                    <h1><strong>CRM</strong></h1>
+                </div>
+                <div>
+                    <div class="form-top">
+                        <o:outputLabel for="email"
+                                       value="#{login_msg.email}"/>
+                        <h:inputText styleClass="login-input" id="email"
+                                     validator="#{loginValidator.validateEmail}"
+                                     value="#{loginController.email}"
+                                     p:autofocus="autofocus"/>
+                        <h:message for="email" styleClass="domain-form-msg danger-col"/>
+                    </div>
+
+                    <div class="form-top">
+                        <o:outputLabel for="password"
+                                       value="#{login_msg.password}"/>
+                        <h:inputSecret styleClass="login-input" id="password"
+                                       validator="#{loginValidator.validatePassword}"
+                                       value="#{loginController.password}"/>
+                        <h:message for="password" styleClass="domain-form-msg danger-col"/>
+                    </div>
+
+                    <div class="error-message-login" jsf:rendered="#{not loginController.errorComponent.valid}">
+                        <h:message for="loginError" styleClass="domain-form-msg danger-col"/>
+                    </div>
+
+                    <h:inputHidden id="loginError" binding="#{loginController.errorComponent}"/>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn col-primary"
+                            type="submit"
+                            jsf:action="#{loginController.login}">
+                        <f:ajax onevent="showLoader"/>
+                        <i class="fa fa-key"></i> Zaloguj
+                    </button>
+
+                </div>
+            </h:form>
+        </div>
+
+    </div>
 </h:body>
+
 </html>
