@@ -43,4 +43,5 @@ public class OfferListBean implements Serializable {
     public void changeToRead(Long id) {
         offerService.changeToRead(id);
     }
+
 }
