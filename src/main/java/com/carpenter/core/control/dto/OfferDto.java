@@ -22,6 +22,11 @@ public class OfferDto {
     private String phone;
     private String email;
     private String description;
+    private Boolean read;
+
+    public boolean isRead(){
+        return Boolean.TRUE.equals(read);
+    }
 
     //Company
     private Long companyId;

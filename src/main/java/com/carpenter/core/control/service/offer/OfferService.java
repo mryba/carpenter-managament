@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @SessionScoped
@@ -53,11 +54,12 @@ public class OfferService implements Serializable {
         offerRepository.changeToRead(id);
     }
 
-    public List<Offer> getOffersByCompany(Long companyId) {
-        if (companyId == null) {
-            return null;
-        }
-        return offerRepository.getOffersByCompany(companyId);
+    public List<OfferDto> getOffersByCompany(Long companyId) {
+        offerMapper = new OfferMapper();
+        return offerRepository.getOffersByCompany(companyId)
+                .stream()
+                .map(offerMapper::mapToDomain)
+                .collect(Collectors.toList());
     }
 
     public Offer findOfferById(Long id) {
