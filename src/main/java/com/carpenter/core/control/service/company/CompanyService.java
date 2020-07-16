@@ -14,13 +14,21 @@ import java.util.List;
 public class CompanyService implements Serializable {
 
     @Inject
-    CompanyRepository companyRepository;
+    private CompanyRepository companyRepository;
 
     public Company getCompanyById(Long companyId) {
-       return companyRepository.findCompanyById(companyId);
+        return companyRepository.findCompanyById(companyId);
+    }
+
+    public Company getCompanyByName(String companyName){
+        return companyRepository.findCompanyByName(companyName);
     }
 
     public List<CompanyDto> getAllActiveCompanies() {
         return companyRepository.findAllActiveCompanies();
+    }
+
+    public void saveCompany(Company company) {
+        companyRepository.save(company);
     }
 }

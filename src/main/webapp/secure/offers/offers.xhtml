@@ -19,10 +19,13 @@
                 <table>
                     <thead>
                     <tr>
-                        <th class="w10 left">Data</th>
-                        <th class="w10 left">Miasto</th>
                         <th class="w10 left">Typ architektury</th>
-                        <th class="w10 left">E-mail</th>
+                        <th class="w10 left">Miasto</th>
+                        <th class="w10 left">Data rozpoczęcia</th>
+                        <th class="w5 left">Firma</th>
+                        <th class="w5 left">E-mail</th>
+                        <th class="w5 left">Telefon</th>
+                        <th class="w15 left">Opis</th>
                         <th class="w5"></th>
                     </tr>
                     </thead>
@@ -30,16 +33,25 @@
                     <ui:repeat value="#{offerListBean.offersFromLoggedUserCompany}" var="o">
                         <tr class="#{o.isRead ? 'read-offer' : 'unread-offer'}">
                             <td class="w10 left">
-                                #{o.createDate}
+                                <h4> #{offer_msg['architecture_type_'.concat(o.architectureType.name())]}</h4>
                             </td>
                             <td class="w10 left">
                                 #{o.workCity}
                             </td>
                             <td class="w10 left">
-                                #{offer_msg['architecture_type_'.concat(o.architectureType.name())]}
+                                #{o.workDateFrom}
                             </td>
-                            <td class="w10 left">
+                            <td class="w5 left">
+                                #{o.companyName}
+                            </td>
+                            <td class="w5 left">
                                 #{o.email}
+                            </td>
+                            <td class="w5 left">
+                                #{o.phone}
+                            </td>
+                            <td class="w15 left">
+                                #{o.description}
                             </td>
                             <td class="w5">
                                 <h:link outcome="/secure/offers/offer"

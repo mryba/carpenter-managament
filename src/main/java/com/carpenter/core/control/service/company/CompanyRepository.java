@@ -10,15 +10,32 @@ import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Stateless
 public class CompanyRepository implements Serializable {
 
     @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
-    public Company findCompanyById(Long companyId) {
-       return entityManager.find(Company.class, companyId);
+    public Company findCompanyById(Long companyId){
+        try {
+            return entityManager.createNamedQuery("Company.findById", Company.class)
+                    .setParameter("companyId", companyId)
+                    .getResultList().iterator().next();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
+    }
+
+    public Company findCompanyByName(String companyName) {
+        try {
+            return entityManager.createNamedQuery("Company.findByName", Company.class)
+                    .setParameter("companyName", companyName)
+                    .getResultList().iterator().next();
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 
     public List<CompanyDto> findAllActiveCompanies() {
@@ -28,5 +45,9 @@ public class CompanyRepository implements Serializable {
         }catch (NoResultException e){
             return Collections.emptyList();
         }
+    }
+
+    public void save(Company company) {
+        entityManager.merge(company);
     }
 }

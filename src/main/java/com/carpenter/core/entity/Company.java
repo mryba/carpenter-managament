@@ -5,7 +5,7 @@ import com.carpenter.core.entity.employee.Employee;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -20,6 +20,14 @@ import java.util.Set;
         @NamedQuery(
                 name = "Company.findAllActiveCompanies",
                 query = "SELECT new com.carpenter.core.control.dto.CompanyDto(c.id, c.name) FROM Company c WHERE c.deleteDate is NULL"
+        ),
+        @NamedQuery(
+                name = "Company.findById",
+                query = "SELECT c FROM Company c LEFT JOIN FETCH c.offers WHERE c.id =:companyId"
+        ),
+        @NamedQuery(
+                name = "Company.findByName",
+                query = "SELECT c FROM Company c LEFT JOIN FETCH c.offers WHERE c.name =:companyName"
         )
 })
 public class Company extends DomainObject {
@@ -53,13 +61,14 @@ public class Company extends DomainObject {
     @OneToMany(mappedBy = "company")
     private Set<Client> clients;
 
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "company", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Offer> offers;
 
-    public void addEmployee(Employee employee) {
-        if (this.employees == null) {
-            employees = new LinkedHashSet<>();
+    public void addOffer(Offer offer) {
+        if (this.offers == null) {
+            this.offers = new LinkedList<>();
         }
-        this.employees.add(employee);
+        this.offers.add(offer);
+        offer.setCompany(this);
     }
 }

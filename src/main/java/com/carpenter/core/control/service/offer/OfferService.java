@@ -5,6 +5,8 @@ import com.carpenter.api.response.CarpenterOfferResponse;
 import com.carpenter.core.control.dto.OfferDto;
 import com.carpenter.core.control.mail.MailDispatchBean;
 import com.carpenter.core.control.repository.OfferRepository;
+import com.carpenter.core.control.service.company.CompanyService;
+import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.Offer;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,9 @@ public class OfferService implements Serializable {
 
     @Inject
     private MailDispatchBean mailDispatchBean;
+
+    @Inject
+    private CompanyService companyService;
 
     private OfferMapper offerMapper;
 
@@ -61,10 +66,9 @@ public class OfferService implements Serializable {
 
     public String performOffer(CarpenterOfferRequest request) {
         Instant instant = Instant.parse(request.getStartDate());
-        offerMapper = new OfferMapper();
-
         LocalDate workDateFrom = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
 
+        offerMapper = new OfferMapper();
         OfferDto offerDto = OfferDto.builder()
                 .architectureType(request.getArchType())
                 .workCity(request.getCity())
@@ -79,34 +83,17 @@ public class OfferService implements Serializable {
         offer.setCreateDate(new Date());
         offer.setCreateBy("system");
 
-        offerRepository.save(offer);
-        log.info("Successfully saved offer: {}", offer);
+        //for now
+        Company company = companyService.getCompanyById(1L);
 
-        String sb = "<html><body>"
-                + "<table style='display:block'>" +
-                "<tr><td>" +
-                "Miasto: " + request.getCity() +
-                "</tr></td>" +
-                "<tr><td>" +
-                "Rodzaj architektury: " + request.getArchType() +
-                "</tr></td>" +
-                "<tr><td>" +
-                "Imię: " + request.getName() +
-                "</tr></td>" +
-                "<tr><td>" +
-                "Firma: " + request.getCompany() +
-                "</tr></td>" +
-                "<tr><td>" +
-                "Telefon: " + request.getPhone() +
-                "</tr></td>" +
-                "<tr><td>" +
-                "Email: " + request.getEmail() +
-                "</tr></td>" +
-                "<tr><td>" +
-                "Opis: " + request.getDescription() +
-                "</tr></td>" +
-                "</table></body></html>";
-        mailDispatchBean.sandEmailToManager(sb);
+        //after deploy
+//        Company company = companyService.getCompanyByName("Podkarpaccy Cieśla");
+
+        company.addOffer(offer);
+        companyService.saveCompany(company);
+        log.info("Successfully saved offer");
+
+        mailDispatchBean.sandEmailToManager(OfferHtmlTemplate.offerTemplateHtml(request, workDateFrom));
 
         CarpenterOfferResponse response = new CarpenterOfferResponse(Boolean.TRUE, Boolean.TRUE);
         return new Gson().toJson(response);

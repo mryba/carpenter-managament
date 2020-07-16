@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = "company")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

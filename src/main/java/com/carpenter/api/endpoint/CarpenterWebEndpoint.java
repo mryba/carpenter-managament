@@ -30,8 +30,8 @@ public class CarpenterWebEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response offerArrive(CarpenterOfferRequest request) {
-
-        String response =  offerService.performOffer(request);
+        log.info("Offer arrived: {}", request);
+        String response = offerService.performOffer(request);
         return Response
                 .ok(response, MediaType.APPLICATION_JSON)
                 .header("Access-Control-Allow-Origin", "*")
