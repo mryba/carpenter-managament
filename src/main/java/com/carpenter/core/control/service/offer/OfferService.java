@@ -70,9 +70,9 @@ public class OfferService implements Serializable {
                 .workCity(request.getCity())
                 .workDateFrom(Date.from(instant))
                 .forenameOfCalling(request.getName())
-                .companyName(request.getCompany())
+                .companyName(request.getCompany().isEmpty() ? null : request.getCompany())
                 .email(request.getEmail())
-                .phone(request.getPhone())
+                .phone(request.getPhone().isEmpty() ? null : request.getPhone())
                 .description(request.getDescription())
                 .build();
         Offer offer = offerMapper.mapFromDomain(offerDto);
@@ -82,14 +82,30 @@ public class OfferService implements Serializable {
         offerRepository.save(offer);
         log.info("Successfully saved offer: {}", offer);
 
-        String sb = "Miasto: " + request.getCity() + "\n" +
-                "Data rozpoczęcia: " + workDateFrom + "\n" +
-                "Rodzaj architektury: " + request.getArchType() + "\n" +
-                "Imię: " + request.getName() + "\n" +
-                "Firma: " + request.getCompany() + "\n" +
-                "Telefon: " + request.getPhone() + "\n" +
-                "Email: " + request.getEmail() + "\n" +
-                "Opis: " + request.getDescription();
+        String sb = "<html><body>"
+                + "<table style='display:block'>" +
+                "<tr><td>" +
+                "Miasto: " + request.getCity() +
+                "</tr></td>" +
+                "<tr><td>" +
+                "Rodzaj architektury: " + request.getArchType() +
+                "</tr></td>" +
+                "<tr><td>" +
+                "Imię: " + request.getName() +
+                "</tr></td>" +
+                "<tr><td>" +
+                "Firma: " + request.getCompany() +
+                "</tr></td>" +
+                "<tr><td>" +
+                "Telefon: " + request.getPhone() +
+                "</tr></td>" +
+                "<tr><td>" +
+                "Email: " + request.getEmail() +
+                "</tr></td>" +
+                "<tr><td>" +
+                "Opis: " + request.getDescription() +
+                "</tr></td>" +
+                "</table></body></html>";
         mailDispatchBean.sandEmailToManager(sb);
 
         CarpenterOfferResponse response = new CarpenterOfferResponse(Boolean.TRUE, Boolean.TRUE);
