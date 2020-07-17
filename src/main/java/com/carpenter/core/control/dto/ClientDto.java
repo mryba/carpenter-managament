@@ -22,5 +22,5 @@ public class ClientDto {
     private String webSite;
     private String streetNumber;
     private String houseNumber;
-
+    private Long offerId;
 }

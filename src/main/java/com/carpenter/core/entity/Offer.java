@@ -1,5 +1,6 @@
 package com.carpenter.core.entity;
 
+import com.carpenter.core.entity.client.Client;
 import com.carpenter.core.entity.dictionaries.ArchitectureType;
 import com.carpenter.utils.ConstantsRegex;
 import com.carpenter.utils.MobilPhoneNumberAdapter;
@@ -69,4 +70,8 @@ public class Offer extends DomainObject {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COMPANY_ID")
     private Company company;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CLIENT_ID")
+    private Client client;
 }

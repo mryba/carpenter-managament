@@ -1,5 +1,6 @@
 package com.carpenter.core.entity.client;
 
+import com.carpenter.core.entity.Offer;
 import com.carpenter.core.entity.WorkingDay;
 import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.DomainObject;
@@ -91,12 +92,23 @@ public class Client extends DomainObject {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "presentClient")
     private Set<Employee> presentsEmployees;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Offer> offers;
+
     public void addWorkingDat(WorkingDay workingDay) {
         if (workingDays == null) {
             workingDays = new LinkedHashSet<>();
         }
         workingDays.add(workingDay);
         workingDay.setClient(this);
+    }
+
+    public void addOffer(Offer offer) {
+        if (offers == null) {
+            offers = new LinkedHashSet<>();
+        }
+        offers.add(offer);
+        offer.setClient(this);
     }
 
 }

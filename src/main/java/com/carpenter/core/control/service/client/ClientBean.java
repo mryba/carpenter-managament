@@ -3,7 +3,8 @@ package com.carpenter.core.control.service.client;
 import com.carpenter.core.control.dto.ClientDto;
 import com.carpenter.core.control.dto.CompanyDto;
 import com.carpenter.core.control.service.company.CompanyService;
-import com.carpenter.core.entity.Company;
+import com.carpenter.core.control.service.offer.OfferService;
+import com.carpenter.core.entity.Offer;
 import com.carpenter.core.entity.client.Client;
 import com.carpenter.core.entity.dictionaries.Countries;
 import lombok.Getter;
@@ -28,6 +29,9 @@ public class ClientBean implements Serializable {
 
     @Inject
     CompanyService companyService;
+
+    @Inject
+    OfferService offerService;
 
     @Getter
     @Setter
@@ -69,7 +73,14 @@ public class ClientBean implements Serializable {
 
     public void saveClient() {
         Client client = clientService.createClient(clientDto);
+        if (clientDto.getOfferId() != null) {
+            client.addOffer(getOfferById(clientDto.getOfferId()));
+        }
         clientService.addClient(client);
+    }
+
+    private Offer getOfferById(Long offerId){
+        return offerService.findOfferById(offerId);
     }
 
     public void clearClientForm() {

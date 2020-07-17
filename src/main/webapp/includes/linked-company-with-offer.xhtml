@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<div id="linked-company-with-offer" class="modal modal-main fade"
+<div id="linked-company-with-offer" class="modal modal-small fade"
      xmlns="http://www.w3.org/1999/xhtml"
      xmlns:h="http://xmlns.jcp.org/jsf/html"
      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
@@ -16,33 +16,39 @@
         <div>
             <h:form id="linked-company-with-offer-form" prependId="false">
                 <div>
-                    <div class="container-resp">
-                        <div class="form-top col1-4">
+                    <div class="modal-conent">
+                        <div class="form-top">
                             <label>Połącz z istniejącym klientem</label>
                             <h:selectOneMenu id="link-client-with-offer-client"
                                              converter="javax.faces.Long"
                                              value="#{linkedClientWithOffer.offerId}">
                                 <f:selectItems value="#{linkedClientWithOffer.allClients}"
-                                              var="c"
-                                              itemLabel="#{c.name}"
-                                              itemValue="#{c.id}"/>
+                                               var="c"
+                                               itemLabel="#{c.name}"
+                                               itemValue="#{c.id}"/>
                                 <f:ajax execute="@this"
                                         event="change"/>
                             </h:selectOneMenu>
                         </div>
-                        <div class="form-top col1-4">
+                        <div class="form-top">
                             <label>Dodaj nowego Klienta</label>
-                            <h:commandLink styleClass="btn bordered col-primary"
-                                           data-toggle="modal"
-                                           data-target="#add-client">
-                                <i class="fas fa-user-circle"></i>
-                            </h:commandLink>
+                            <h:selectBooleanCheckbox value="#{linkedClientWithOffer.createNewClient}">
+                                <f:ajax event="change"
+                                        execute="@this"
+                                        render="linked-company-create-client"/>
+                            </h:selectBooleanCheckbox>
+                        </div>
+                        <div jsf:id="linked-company-create-client">
+                            <div class="form-top"
+                                 jsf:rendered="#{linkedClientWithOffer.createNewClient}">
+                                <ui:include src="/includes/add-client.xhtml"/>
+                            </div>
                         </div>
                     </div>
                 </div>
             </h:form>
         </div>
     </div>
-    <ui:include src="/includes/add-client-form.xhtml"/>
+
 
 </div>
