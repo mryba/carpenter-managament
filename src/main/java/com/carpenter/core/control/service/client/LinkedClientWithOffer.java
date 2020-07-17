@@ -1,6 +1,7 @@
 package com.carpenter.core.control.service.client;
 
 import com.carpenter.core.control.dto.ClientDto;
+import com.carpenter.core.entity.dictionaries.OfferLinkType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ public class LinkedClientWithOffer implements Serializable {
 
     private Long offerId;
     private Long clientId;
+    private OfferLinkType offerLinkType;
     private boolean createNewClient = false;
 
     public List<ClientDto> getAllClients() {
@@ -37,5 +39,9 @@ public class LinkedClientWithOffer implements Serializable {
         if (createNewClient) {
             clientBean.getClientDto().setOfferId(offerId);
         }
+    }
+
+    public OfferLinkType[] getAvailableLinks() {
+        return OfferLinkType.values();
     }
 }
