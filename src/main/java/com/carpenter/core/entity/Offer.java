@@ -12,8 +12,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
+import java.util.Objects;
 
-@EqualsAndHashCode(callSuper = true, exclude = "company")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -74,4 +74,27 @@ public class Offer extends DomainObject {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLIENT_ID")
     private Client client;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Offer)) return false;
+        Offer offer = (Offer) o;
+        return Objects.equals(workCity, offer.workCity) &&
+                Objects.equals(workDateFrom, offer.workDateFrom) &&
+                architectureType == offer.architectureType &&
+                Objects.equals(forenameOfCalling, offer.forenameOfCalling) &&
+                Objects.equals(companyName, offer.companyName) &&
+                Objects.equals(phone, offer.phone) &&
+                Objects.equals(email, offer.email) &&
+                Objects.equals(description, offer.description) &&
+                Objects.equals(isRead, offer.isRead) &&
+                Objects.equals(company, offer.company) &&
+                Objects.equals(client, offer.client);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(workCity, workDateFrom, architectureType, forenameOfCalling, companyName, phone, email, description, isRead, company, client);
+    }
 }

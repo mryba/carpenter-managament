@@ -21,7 +21,6 @@ import java.util.*;
 
 import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
 
-@EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -123,7 +122,7 @@ public class Employee extends DomainObject {
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
     @JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "ID")
     @XmlTransient
-    private Set<Address> addresses;
+    private List<Address> addresses;
 
     @Basic
     @Column(name = "PHONE_NUMBER")
@@ -136,7 +135,7 @@ public class Employee extends DomainObject {
     private Boolean accountActive;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
-    private Set<WorkingDay> workingDays;
+    private List<WorkingDay> workingDays;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRESENT_CLIENT", referencedColumnName = "ID")
@@ -157,7 +156,7 @@ public class Employee extends DomainObject {
             return;
         }
         if (this.addresses == null) {
-            this.addresses = new LinkedHashSet<>();
+            this.addresses = new LinkedList<>();
         }
         this.addresses.add(address);
     }
@@ -167,7 +166,7 @@ public class Employee extends DomainObject {
             return;
         }
         if (this.workingDays == null) {
-            this.workingDays = new LinkedHashSet<>();
+            this.workingDays = new LinkedList<>();
         }
         this.workingDays.add(workingDay);
         workingDay.setEmployee(this);
@@ -195,5 +194,34 @@ public class Employee extends DomainObject {
         }
         Role role = Role.getRole(eRole);
         return this.roles.contains(role);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Employee)) return false;
+        if (!super.equals(o)) return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(company, employee.company) &&
+                Objects.equals(email, employee.email) &&
+                Objects.equals(password, employee.password) &&
+                Objects.equals(roles, employee.roles) &&
+                Objects.equals(nipNumber, employee.nipNumber) &&
+                contract == employee.contract &&
+                Objects.equals(bankAccountNumber, employee.bankAccountNumber) &&
+                Objects.equals(firstName, employee.firstName) &&
+                Objects.equals(lastName, employee.lastName) &&
+                Objects.equals(birthDate, employee.birthDate) &&
+                gender == employee.gender &&
+                Objects.equals(addresses, employee.addresses) &&
+                Objects.equals(phoneNumber, employee.phoneNumber) &&
+                Objects.equals(accountActive, employee.accountActive) &&
+                Objects.equals(workingDays, employee.workingDays) &&
+                Objects.equals(presentClient, employee.presentClient);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), company, email, password, roles, nipNumber, contract, bankAccountNumber, firstName, lastName, birthDate, gender, addresses, phoneNumber, accountActive, workingDays, presentClient);
     }
 }

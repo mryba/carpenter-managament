@@ -7,10 +7,10 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude = "employees")
 @Getter
 @Setter
 @Table(name = "COMPANY")
@@ -56,10 +56,10 @@ public class Company extends DomainObject {
     private String phone;
 
     @OneToMany(mappedBy = "company")
-    private Set<Employee> employees;
+    private List<Employee> employees;
 
     @OneToMany(mappedBy = "company")
-    private Set<Client> clients;
+    private List<Client> clients;
 
     @OneToMany(mappedBy = "company", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Offer> offers;
@@ -70,5 +70,28 @@ public class Company extends DomainObject {
         }
         this.offers.add(offer);
         offer.setCompany(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Company)) return false;
+        if (!super.equals(o)) return false;
+        Company company = (Company) o;
+        return Objects.equals(name, company.name) &&
+                Objects.equals(city, company.city) &&
+                Objects.equals(postalCode, company.postalCode) &&
+                Objects.equals(street, company.street) &&
+                Objects.equals(country, company.country) &&
+                Objects.equals(email, company.email) &&
+                Objects.equals(phone, company.phone) &&
+                Objects.equals(employees, company.employees) &&
+                Objects.equals(clients, company.clients) &&
+                Objects.equals(offers, company.offers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), name, city, postalCode, street, country, email, phone, employees, clients, offers);
     }
 }

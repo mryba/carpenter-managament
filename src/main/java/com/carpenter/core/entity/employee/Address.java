@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -50,4 +51,21 @@ public class Address extends DomainObject {
     @Column(name = "COUNTRY")
     private String country;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Address)) return false;
+        Address address = (Address) o;
+        return Objects.equals(city, address.city) &&
+                Objects.equals(postalCode, address.postalCode) &&
+                Objects.equals(street, address.street) &&
+                Objects.equals(streetNumber, address.streetNumber) &&
+                Objects.equals(houseNumber, address.houseNumber) &&
+                Objects.equals(country, address.country);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(city, postalCode, street, streetNumber, houseNumber, country);
+    }
 }

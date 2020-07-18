@@ -10,8 +10,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.resource.spi.work.Work;
 import javax.validation.constraints.NotNull;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -87,17 +86,17 @@ public class Client extends DomainObject {
     private Company company;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
-    private Set<WorkingDay> workingDays;
+    private List<WorkingDay> workingDays;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "presentClient")
-    private Set<Employee> presentsEmployees;
+    private List<Employee> presentsEmployees;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<Offer> offers;
+    private List<Offer> offers;
 
     public void addWorkingDat(WorkingDay workingDay) {
         if (workingDays == null) {
-            workingDays = new LinkedHashSet<>();
+            workingDays = new LinkedList<>();
         }
         workingDays.add(workingDay);
         workingDay.setClient(this);
@@ -105,10 +104,38 @@ public class Client extends DomainObject {
 
     public void addOffer(Offer offer) {
         if (offers == null) {
-            offers = new LinkedHashSet<>();
+            offers = new LinkedList<>();
         }
         offers.add(offer);
         offer.setClient(this);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Client)) return false;
+        if (!super.equals(o)) return false;
+        Client client = (Client) o;
+        return Objects.equals(name, client.name) &&
+                Objects.equals(city, client.city) &&
+                Objects.equals(postalCode, client.postalCode) &&
+                Objects.equals(street, client.street) &&
+                Objects.equals(country, client.country) &&
+                Objects.equals(bankAccountNumber, client.bankAccountNumber) &&
+                Objects.equals(nip, client.nip) &&
+                Objects.equals(email, client.email) &&
+                Objects.equals(phoneNumber, client.phoneNumber) &&
+                Objects.equals(webSite, client.webSite) &&
+                Objects.equals(streetNumber, client.streetNumber) &&
+                Objects.equals(houseNumber, client.houseNumber) &&
+                Objects.equals(company, client.company) &&
+                Objects.equals(workingDays, client.workingDays) &&
+                Objects.equals(presentsEmployees, client.presentsEmployees) &&
+                Objects.equals(offers, client.offers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), name, city, postalCode, street, country, bankAccountNumber, nip, email, phoneNumber, webSite, streetNumber, houseNumber, company, workingDays, presentsEmployees, offers);
+    }
 }

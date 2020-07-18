@@ -8,9 +8,10 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.Past;
 import java.util.Date;
+import java.util.Objects;
 
-@EqualsAndHashCode(callSuper = true, exclude = "employee")
 @Getter
 @Setter
 @Entity
@@ -46,4 +47,21 @@ public class WorkingDay extends DomainObject {
 
     @Column(name = "EDIT_DATE")
     private Date editDate;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof WorkingDay)) return false;
+        WorkingDay that = (WorkingDay) o;
+        return Objects.equals(employee, that.employee) &&
+                Objects.equals(client, that.client) &&
+                Objects.equals(hours, that.hours) &&
+                Objects.equals(day, that.day) &&
+                Objects.equals(editDate, that.editDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(employee, client, hours, day, editDate);
+    }
 }
