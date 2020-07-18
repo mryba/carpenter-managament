@@ -27,6 +27,7 @@ import java.util.Objects;
                 @NamedQuery(
                         name = "Offer.findOfferById",
                         query = "SELECT o FROM Offer o " +
+                                "LEFT JOIN FETCH o.company " +
                                 "WHERE o.id=:offerId"
                 )
         }
@@ -71,14 +72,11 @@ public class Offer extends DomainObject {
     @JoinColumn(name = "COMPANY_ID")
     private Company company;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CLIENT_ID")
-    private Client client;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Offer)) return false;
+        if (!super.equals(o)) return false;
         Offer offer = (Offer) o;
         return Objects.equals(workCity, offer.workCity) &&
                 Objects.equals(workDateFrom, offer.workDateFrom) &&
@@ -89,12 +87,11 @@ public class Offer extends DomainObject {
                 Objects.equals(email, offer.email) &&
                 Objects.equals(description, offer.description) &&
                 Objects.equals(isRead, offer.isRead) &&
-                Objects.equals(company, offer.company) &&
-                Objects.equals(client, offer.client);
+                Objects.equals(company, offer.company);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(workCity, workDateFrom, architectureType, forenameOfCalling, companyName, phone, email, description, isRead, company, client);
+        return Objects.hash(super.hashCode(), workCity, workDateFrom, architectureType, forenameOfCalling, companyName, phone, email, description, isRead, company);
     }
 }

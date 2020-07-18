@@ -3,6 +3,7 @@ package com.carpenter.core.control.service.client;
 import com.carpenter.core.control.dto.ClientDto;
 import com.carpenter.core.control.dto.CompanyDto;
 import com.carpenter.core.control.service.company.CompanyService;
+import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.control.service.offer.OfferService;
 import com.carpenter.core.entity.Offer;
 import com.carpenter.core.entity.client.Client;
@@ -15,6 +16,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +33,7 @@ public class ClientBean implements Serializable {
     CompanyService companyService;
 
     @Inject
-    OfferService offerService;
+    PrincipalBean principalBean;
 
     @Getter
     @Setter
@@ -44,6 +46,7 @@ public class ClientBean implements Serializable {
     private List<CompanyDto> allActiveCompanies;
 
     private boolean includeAddress;
+    private Long offerId;
 
     public boolean isIncludeAddress() {
         return includeAddress;
@@ -67,20 +70,12 @@ public class ClientBean implements Serializable {
                 .collect(Collectors.toList());
     }
 
-    public Client getClientByNip(String nip) {
-        return clientService.getClientByNip(nip);
-    }
-
     public void saveClient() {
         Client client = clientService.createClient(clientDto);
-        if (clientDto.getOfferId() != null) {
-            client.addOffer(getOfferById(clientDto.getOfferId()));
-        }
-        clientService.addClient(client);
-    }
+        client.setCreateBy(principalBean.getLoggedUser().getEmail());
+        client.setCreateDate(new Date());
 
-    private Offer getOfferById(Long offerId){
-        return offerService.findOfferById(offerId);
+        clientService.save(client);
     }
 
     public void clearClientForm() {
@@ -116,5 +111,14 @@ public class ClientBean implements Serializable {
 
     public void savePresentClient() {
         ClientDto clientDto = this.clientDto;
+    }
+
+
+    public Long getOfferId() {
+        return offerId;
+    }
+
+    public void setOfferId(Long offerId) {
+        this.offerId = offerId;
     }
 }

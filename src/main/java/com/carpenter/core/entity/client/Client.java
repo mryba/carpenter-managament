@@ -91,9 +91,6 @@ public class Client extends DomainObject {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "presentClient")
     private List<Employee> presentsEmployees;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<Offer> offers;
-
     public void addWorkingDat(WorkingDay workingDay) {
         if (workingDays == null) {
             workingDays = new LinkedList<>();
@@ -102,13 +99,6 @@ public class Client extends DomainObject {
         workingDay.setClient(this);
     }
 
-    public void addOffer(Offer offer) {
-        if (offers == null) {
-            offers = new LinkedList<>();
-        }
-        offers.add(offer);
-        offer.setClient(this);
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -130,12 +120,11 @@ public class Client extends DomainObject {
                 Objects.equals(houseNumber, client.houseNumber) &&
                 Objects.equals(company, client.company) &&
                 Objects.equals(workingDays, client.workingDays) &&
-                Objects.equals(presentsEmployees, client.presentsEmployees) &&
-                Objects.equals(offers, client.offers);
+                Objects.equals(presentsEmployees, client.presentsEmployees);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, city, postalCode, street, country, bankAccountNumber, nip, email, phoneNumber, webSite, streetNumber, houseNumber, company, workingDays, presentsEmployees, offers);
+        return Objects.hash(super.hashCode(), name, city, postalCode, street, country, bankAccountNumber, nip, email, phoneNumber, webSite, streetNumber, houseNumber, company, workingDays, presentsEmployees);
     }
 }

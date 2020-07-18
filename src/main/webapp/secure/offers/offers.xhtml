@@ -55,18 +55,6 @@
                                     #{o.description}
                                 </td>
                                 <td class="w5">
-                                    <h:commandLink styleClass="btn btn-sm btn-icon"
-                                                   p:data-toggle="modal"
-                                                   p:data-target="#linked-company-with-offer">
-
-                                        <f:setPropertyActionListener value="#{o.id}"
-                                                                     target="#{linkedClientWithOffer.offerId}"/>
-
-                                        <f:ajax execute="@this"
-                                                render="linked-company-with-offer-form"/>
-                                        <i class="fas fa-link"></i>
-                                    </h:commandLink>
-
                                     <h:link outcome="/secure/offers/offer"
                                             styleClass="btn col-primary">
                                         <f:param name="offerId" value="#{o.id}"/>
@@ -81,7 +69,5 @@
                 </div>
             </div>
         </div>
-        <ui:include src="/includes/linked-company-with-offer.xhtml"/>
-
     </ui:define>
 </ui:composition>

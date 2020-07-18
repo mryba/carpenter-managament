@@ -37,19 +37,6 @@ public class OfferService implements Serializable {
 
     private OfferMapper offerMapper;
 
-    public Offer create(OfferDto offerDto) {
-        offerMapper = new OfferMapper();
-        return offerMapper.mapFromDomain(offerDto);
-    }
-
-    public void save(Offer offer) {
-        offerRepository.save(offer);
-    }
-
-    public void remove(Long id) {
-        offerRepository.remove(id);
-    }
-
     public void changeToRead(Long id) {
         offerRepository.changeToRead(id);
     }

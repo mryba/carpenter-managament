@@ -23,7 +23,8 @@ import java.util.Set;
         ),
         @NamedQuery(
                 name = "Company.findById",
-                query = "SELECT c FROM Company c LEFT JOIN FETCH c.offers WHERE c.id =:companyId"
+                query = "SELECT distinct c FROM Company c " +
+                        "WHERE c.id =:companyId"
         ),
         @NamedQuery(
                 name = "Company.findByName",
@@ -58,7 +59,7 @@ public class Company extends DomainObject {
     @OneToMany(mappedBy = "company")
     private List<Employee> employees;
 
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "company", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Client> clients;
 
     @OneToMany(mappedBy = "company", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -70,6 +71,14 @@ public class Company extends DomainObject {
         }
         this.offers.add(offer);
         offer.setCompany(this);
+    }
+
+    public void addClient(Client client) {
+        if (this.clients == null) {
+            this.clients = new LinkedList<>();
+        }
+        this.clients.add(client);
+        client.setCompany(this);
     }
 
     @Override

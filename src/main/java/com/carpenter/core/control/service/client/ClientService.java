@@ -44,7 +44,7 @@ public class ClientService implements Serializable {
         return clientMapper.mapFromDomain(clientDto);
     }
 
-    public void addClient(Client client) {
+    public void save(Client client) {
         clientRepository.addClient(client);
     }
 

@@ -2,15 +2,16 @@ package com.carpenter.core.control.service.company;
 
 import com.carpenter.core.control.dto.CompanyDto;
 import com.carpenter.core.entity.Company;
+import org.hibernate.jpa.QueryHints;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import static com.carpenter.utils.ConstantsRegex.FETCH_GRAPH;
 
 @Stateless
 public class CompanyRepository implements Serializable {
@@ -18,7 +19,7 @@ public class CompanyRepository implements Serializable {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public Company findCompanyById(Long companyId){
+    public Company findCompanyById(Long companyId) {
         try {
             return entityManager.createNamedQuery("Company.findById", Company.class)
                     .setParameter("companyId", companyId)
@@ -42,7 +43,7 @@ public class CompanyRepository implements Serializable {
         try {
             return entityManager.createNamedQuery("Company.findAllActiveCompanies", CompanyDto.class)
                     .getResultList();
-        }catch (NoResultException e){
+        } catch (NoResultException e) {
             return Collections.emptyList();
         }
     }
