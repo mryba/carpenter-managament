@@ -73,7 +73,7 @@ public class OfferService implements Serializable {
         offer.setCreateBy("system");
 
         //for now
-        Company company = companyService.getCompanyById(1L);
+        Company company = companyService.getCompanyById(2L);
 
         //after deploy
 //        Company company = companyService.getCompanyByName("Podkarpaccy Cieśla");

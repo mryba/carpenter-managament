@@ -24,6 +24,7 @@ import java.util.Set;
         @NamedQuery(
                 name = "Company.findById",
                 query = "SELECT distinct c FROM Company c " +
+                        "LEFT JOIN FETCH c.offers " +
                         "WHERE c.id =:companyId"
         ),
         @NamedQuery(
