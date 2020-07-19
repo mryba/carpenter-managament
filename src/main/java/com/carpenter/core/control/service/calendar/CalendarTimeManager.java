@@ -8,6 +8,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjuster;
@@ -24,6 +25,7 @@ public class CalendarTimeManager implements Serializable {
 
     private LocalDateTime viewStartDate = null;
     private LocalDateTime viewEndDate = null;
+
     private Mode mode;
 
     public void setMode(Mode mode) {
@@ -38,7 +40,7 @@ public class CalendarTimeManager implements Serializable {
         }
         if (mode == Mode.MONTH) {
             viewStartDate = LocalDateTime.now().with(TemporalAdjusters.firstDayOfMonth()).truncatedTo(ChronoUnit.DAYS);
-            viewEndDate = LocalDateTime.now().with(TemporalAdjusters.lastDayOfMonth()).truncatedTo(ChronoUnit.DAYS);
+            viewEndDate = viewStartDate.with(TemporalAdjusters.firstDayOfNextMonth()).truncatedTo(ChronoUnit.DAYS);
         }
     }
 

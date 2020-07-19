@@ -28,7 +28,6 @@ public class CalendarWeekBean extends CalendarBean {
 
     private static final long serialVersionUID = 7818636965206530503L;
 
-    private final List<EmployeeDto> employeeDtos = new LinkedList<>();
     private final Map<Week, List<WorkingDay>> workingDaysMap = new LinkedHashMap<>();
     private final Map<Date, Week> weekMap = new LinkedHashMap<>();
     private final Map<EmployeeDto, Integer> employeeDtoListMap = new LinkedHashMap<>();
@@ -89,11 +88,6 @@ public class CalendarWeekBean extends CalendarBean {
         return sumColumn;
     }
 
-    public List<EmployeeDto> getEmployees() {
-        employeeDtos.clear();
-        employeeDtos.addAll(employeeService.getEmployees());
-        return employeeDtos;
-    }
 
     public Integer getGetWorkDays(String type, EmployeeDto employee) {
         List<WorkingDay> workingDays = workingDaysMap.get(Week.valueOf(type));

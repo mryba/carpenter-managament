@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:carpenter="http://xmlns.jcp.org/jsf/composite/carpenter/calendar"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+                template="/secure/template.xhtml">
+
+    <ui:param name="pageTitle" value="Kalendarz"/>
+    <ui:param name="calendarView" value="month"/>
+
+    <ui:define name="content">
+
+        <div class="wrapper calendar-page">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Kalendarz</h2>
+                    <div class="controls">
+                        <h:commandLink
+                                styleClass="btn bordered col-primary"
+                                p:data-toggle="modal"
+                                p:data-target="#add-work-time">
+                            <f:ajax execute="@this"
+                                    resetValues="true"
+                                    render="add-work-time-form"
+                                    onevent="showLoader"/>
+                            <i class="far fa-clock"></i> Dodaj czas pracy
+                        </h:commandLink>
+                    </div>
+                </div>
+                <div class="card-subheader">
+                    <h:form>
+                        <div class="calendar-navigator">
+                            <a jsf:action="#{calendarMonthBean.moveBackward()}">
+                                <i class="fa fa-chevron-left"></i>
+                                <f:ajax execute="@this" render="@form calendarForm" onevent="showLoader"/>
+                            </a>
+                            <div>
+                                #{calendarMonthBean.currentMonthName}
+                                <h:outputFormat value="{0,date,yyyy}">
+                                    <f:param value="#{calendarMonthBean.timeManager.startDate}"/>
+                                </h:outputFormat>
+                            </div>
+                            <a jsf:action="#{calendarMonthBean.moveForward}">
+                                <i class="fa fa-chevron-right"></i>
+                                <f:ajax execute="@this" render="@form calendarForm" onevent="showLoader"/>
+                            </a>
+                        </div>
+                    </h:form>
+                    <h:form>
+                        <ui:include src="calendar-views.xhtml"/>
+                    </h:form>
+                </div>
+                <h:form id="calendarForm" prependId="false">
+                    <div class="table calendar-view calendar-header">
+                        <table jsf:id="calendarMonthTable">
+                            <thead>
+                            <tr>
+                                <th scope="col" class="calendar-header-month">Miesiąc</th>
+                                <ui:repeat value="#{calendarMonthBean.dates}"
+                                           var="day">
+                                    <th scope="col" class="calendar-header-month">
+                                        <h:outputFormat value="{0,date,d.MM}">
+                                            <f:param value="#{day}"/>
+                                        </h:outputFormat>
+                                    </th>
+                                </ui:repeat>
+                                <th scope="col" class="calendar-header">
+                                    Suma
+                                </th>
+                            </tr>
+                            <tr>
+                                <th scope="col" class="calendar-header">
+                                    Godziny
+                                </th>
+                                <ui:repeat value="#{calendarMonthBean.dates}"
+                                           var="sm">
+                                    <th scope="col" class="calendar-sub-header">
+                                        2
+                                    </th>
+                                </ui:repeat>
+                                <th scope="col" class="calendar-sub-header-last-col">
+                                    99
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <ui:repeat value="#{calendarMonthBean.employees}" var="e">
+                                <tr>
+                                    <th scope="col" class="calendar-row-label">
+                                        <carpenter:calendar-cell employee="#{e}"/>
+                                    </th>
+                                </tr>
+                            </ui:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

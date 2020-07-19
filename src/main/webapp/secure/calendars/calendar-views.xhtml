@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<ui:composition>
+    <div class="btn-group resp">
+        <h:commandLink action="#{navigationBean.calendarDayViewRedirect}"
+                       styleClass="btn btn-sm col-primary #{calendarView eq 'week' ? '' : 'bordered'}">
+            <i class="fas fa-th-large"></i>Tydzień
+            <f:ajax onevent="showLoader"/>
+        </h:commandLink>
+        <h:commandLink action="#{navigationBean.calendarMonthViewRedirect}"
+                       styleClass="btn btn-sm col-primary #{calendarView eq 'month' ? '' : 'bordered'}">
+            <i class="fas fa-th"></i> Miesiąc
+            <f:ajax onevent="showLoader"/>
+        </h:commandLink>
+    </div>
+</ui:composition>
+
+</html>

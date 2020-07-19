@@ -6,7 +6,6 @@ import com.carpenter.core.entity.WorkingDay;
 import com.carpenter.core.entity.employee.Employee;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -15,7 +14,10 @@ import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -32,7 +34,6 @@ public class WorkingDayScheduler implements Serializable {
     @Inject
     ClientRepository clientRepository;
 
-    @PostConstruct
     @Schedule(minute = "30", hour = "23", persistent = false)
     public void initWorkingDay() {
         LocalDate yesterday = LocalDate.now().minusDays(2);

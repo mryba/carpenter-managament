@@ -17,6 +17,19 @@
             <div class="card">
                 <div class="card-header">
                     <h2>Kalendarz</h2>
+                    <div class="controls">
+                        <h:commandLink
+                                styleClass="btn bordered col-primary"
+                                p:data-toggle="modal"
+                                p:data-target="#add-work-time">
+                            <f:ajax execute="@this"
+                                    resetValues="true"
+                                    render="add-work-time-form"
+                                    onevent="showLoader"/>
+                            <i class="far fa-clock"></i> Dodaj czas pracy
+                        </h:commandLink>
+                    </div>
+
                 </div>
                 <!--Date -->
                 <div class="card-subheader">
@@ -45,18 +58,11 @@
                             </a>
                         </div>
                     </h:form>
-                    <div class="controls">
-                        <h:commandLink
-                                styleClass="btn bordered col-primary"
-                                p:data-toggle="modal"
-                                p:data-target="#add-work-time">
-                            <f:ajax execute="@this"
-                                    resetValues="true"
-                                    render="add-work-time-form"
-                                    onevent="showLoader"/>
-                            <i class="far fa-clock"></i> Dodaj czas pracy
-                        </h:commandLink>
-                    </div>
+
+                    <h:form>
+                        <ui:include src="calendar-views.xhtml"/>
+                    </h:form>
+
                 </div>
 
                 <h:form id="calendarForm" prependId="false">

@@ -31,4 +31,7 @@ public class NavigationBean {
         return "/secure/calendars/week-calendar.xhtml?faces-redirect=true";
     }
 
+    public String calendarMonthViewRedirect() {
+        return "/secure/calendars/month-calendar.xhtml?faces-redirect=true";
+    }
 }
