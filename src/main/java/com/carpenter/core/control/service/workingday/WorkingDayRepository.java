@@ -9,10 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -39,6 +36,7 @@ public class WorkingDayRepository implements Serializable {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<WorkingDay> query = builder.createQuery(WorkingDay.class);
         Root<WorkingDay> root = query.from(WorkingDay.class);
+        root.fetch(WorkingDay_.employee, JoinType.LEFT);
 
         Predicate predicate = builder.and(
                 builder.greaterThanOrEqualTo(root.get(WorkingDay_.day), startDate),

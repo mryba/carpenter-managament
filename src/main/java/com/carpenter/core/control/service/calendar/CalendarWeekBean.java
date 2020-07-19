@@ -1,18 +1,12 @@
 package com.carpenter.core.control.service.calendar;
 
 import com.carpenter.core.control.dto.EmployeeDto;
-import com.carpenter.core.control.service.employee.EmployeeMapper;
-import com.carpenter.core.control.service.workingday.WorkingDayService;
 import com.carpenter.core.entity.WorkingDay;
-import com.carpenter.core.entity.client.Client;
-import com.carpenter.core.entity.dictionaries.Day;
 import com.carpenter.core.entity.dictionaries.Week;
-import com.carpenter.core.entity.employee.Employee;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,9 +28,6 @@ public class CalendarWeekBean extends CalendarBean {
 
     private int sumColumn = 0;
 
-    @Inject
-    WorkingDayService workingDayService;
-
     @PostConstruct
     public void initWeekCalendar() {
         initCalendarMode(Mode.WEEK);
@@ -44,7 +35,7 @@ public class CalendarWeekBean extends CalendarBean {
 
     public List<Date> getDates() {
         sumColumn = 0;
-        List<WorkingDay> workingWeek = workingDayService.getWorkingWeek(timeManager.getStartDate(), timeManager.getEndDate());
+        List<WorkingDay> workingWeek = workingDayService.getWorkingDaysInScope(timeManager.getStartDate(), timeManager.getEndDate());
 
         List<Date> dates = new LinkedList<>();
         LocalDateTime startDate = timeManager.getViewStartDate();

@@ -23,7 +23,7 @@ public class WorkingDayService implements Serializable {
         workingDayRepository.mergeWorkingDay(workingDay);
     }
 
-    public List<WorkingDay> getWorkingWeek(Date startDate, Date endDate) {
+    public List<WorkingDay> getWorkingDaysInScope(Date startDate, Date endDate) {
         return workingDayRepository.findAllWorkingDaysInScope(startDate, endDate);
     }
 

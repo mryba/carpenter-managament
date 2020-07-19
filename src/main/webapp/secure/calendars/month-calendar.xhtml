@@ -76,13 +76,13 @@
                                     Godziny
                                 </th>
                                 <ui:repeat value="#{calendarMonthBean.dates}"
-                                           var="sm">
+                                           var="d">
                                     <th scope="col" class="calendar-sub-header">
-                                        2
+                                        #{calendarMonthBean.getCountEmployeeHour(d)}
                                     </th>
                                 </ui:repeat>
                                 <th scope="col" class="calendar-sub-header-last-col">
-                                    99
+                                    #{calendarMonthBean.getSumOfColumns()}
                                 </th>
                             </tr>
                             </thead>
@@ -91,6 +91,14 @@
                                 <tr>
                                     <th scope="col" class="calendar-row-label">
                                         <carpenter:calendar-cell employee="#{e}"/>
+                                    </th>
+                                    <ui:repeat value="#{calendarMonthBean.dates}" var="date">
+                                        <th scope="col" class="calendar-row">
+                                            #{calendarMonthBean.getWorkHours(date, e)}
+                                        </th>
+                                    </ui:repeat>
+                                    <th scope="col" class="calendar-sub-header">
+                                        #{calendarMonthBean.getRowCount(e)}
                                     </th>
                                 </tr>
                             </ui:repeat>
