@@ -26,7 +26,7 @@ public class CalendarMonthBean extends CalendarBean {
 
     private List<WorkingDay> workingWeek = new LinkedList<>();
     private Map<LocalDate, AtomicInteger> dateMap = new LinkedHashMap<>();
-    private Map<Long, AtomicInteger> employeeMap = new LinkedHashMap<>();
+    private Map<LocalDate, RowRepresentative> employeeMap = new LinkedHashMap<>();
 
     @PostConstruct
 
@@ -59,6 +59,11 @@ public class CalendarMonthBean extends CalendarBean {
                     .mapToInt(WorkingDay::getHours).sum();
             dateMap.computeIfAbsent(finalStartDate, k -> new AtomicInteger(sum));
 
+            for (WorkingDay workingDay : workingWeek) {
+                if (convertDateToLocalDate(workingDay.getDay()).equals(finalStartDate) && !employeeMap.containsKey(finalStartDate)) {
+                    employeeMap.computeIfAbsent(finalStartDate, k -> new RowRepresentative(workingDay.getEmployee().getId(), new AtomicInteger(workingDay.getHours())));
+                }
+            }
 
             startDate = startDate.plusDays(1);
         }
@@ -92,10 +97,10 @@ public class CalendarMonthBean extends CalendarBean {
     }
 
     public Integer getRowCount(EmployeeDto employeeDto) {
-//        AtomicInteger atomicInteger = employeeMap.get(employeeDto.getId());
-//        if (atomicInteger != null) {
-//            return atomicInteger.get();
-//        }
+        List<RowRepresentative> rr = employeeMap.values().stream().filter(r -> r.getEmployeeId().equals(employeeDto.getId())).collect(Collectors.toList());
+        if (!rr.isEmpty()) {
+            return rr.stream().mapToInt(rowRepresentative -> rowRepresentative.getHours().get()).sum();
+        }
         return 0;
     }
 }
