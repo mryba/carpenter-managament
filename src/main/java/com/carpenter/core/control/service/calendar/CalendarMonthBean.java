@@ -115,36 +115,62 @@ public class CalendarMonthBean extends CalendarBean {
     }
 
     public void renderExcel() {
-        MonthCalendarExcelService excelService = new MonthCalendarExcelService();
+        LocalDateTime startDate = timeManager.getViewStartDate();
+        LocalDateTime viewEndDate = timeManager.getViewEndDate();
+
+        List<String> result = new LinkedList<>();
+        result.add("Imię i nazwisko");
+        while (startDate.isBefore(viewEndDate)) {
+            String day = startDate.toLocalDate().getDayOfMonth() + " " + startDate.toLocalDate().getMonth().getDisplayName(TextStyle.FULL, FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
+            result.add(day);
+            startDate = startDate.plusDays(1);
+        }
+
+        MonthCalendarExcelService excelService = new MonthCalendarExcelService(result);
         excelService.initSheet();
 
         int rowNum = 1;
-        List<RecordRow> resultList = new ArrayList<>();
-        List<EmployeeDto> employeeDtos = getEmployeeDtos();
-        for (EmployeeDto employee : employeeDtos) {
-
-            List<RecordRow> recordRows = employeeMap.values().stream()
-                    .map(r -> r.getRecordRows().stream()
-                            .filter(rr -> rr.getEmployeeId().equals(employee.getId()))
-                            .findFirst()
-                            .orElse(null)).collect(Collectors.toList());
-            int sum = recordRows.stream().mapToInt(rowRepresentative -> rowRepresentative.getHours().get()).sum();
-            resultList.add(new RecordRow(employee.getId(), employee.getFirstName(), employee.getLastName(), new AtomicInteger(sum)));
-        }
-
-        for (RecordRow recordRow : resultList) {
-
+        for (Map.Entry<LocalDate, RowRepresentative> entry : employeeMap.entrySet()) {
             Row row = excelService.getSheet().createRow(rowNum++);
 
-            row.createCell(0).setCellValue(recordRow.getEmployeeName() + recordRow.getEmployeeLastName());
+            result.remove(0);
+            int recordRowNum = 0;
+            for (RecordRow recordRow : entry.getValue().getRecordRows()) {
 
-//            Cell dateOfBirth = row.createCell(1);
-//            dateOfBirth.setCellValue();
-//            dateOfBirth.setCellStyle(excelService.getDateCellStyle());
+                row.createCell(recordRowNum).setCellValue(recordRow.getHours().get());
+                recordRowNum++;
+            }
 
-            row.createCell(1).setCellValue(getRowCount(recordRow.getEmployeeId()));
 
         }
+
+//        List<RecordRow> resultList = new ArrayList<>();
+//        List<EmployeeDto> employeeDtos = getEmployeeDtos();
+
+//        for (EmployeeDto employee : employeeDtos) {
+//
+//            List<RecordRow> recordRows = employeeMap.values().stream()
+//                    .map(r -> r.getRecordRows().stream()
+//                            .filter(rr -> rr.getEmployeeId().equals(employee.getId()))
+//                            .findFirst()
+//                            .orElse(null)).collect(Collectors.toList());
+//            int sum = recordRows.stream().mapToInt(rowRepresentative -> rowRepresentative.getHours().get()).sum();
+//            resultList.add(new RecordRow(employee.getId(), employee.getFirstName(), employee.getLastName(), new AtomicInteger(sum)));
+//        }
+
+//        for (RecordRow recordRow : resultList) {
+//
+//            Row row = excelService.getSheet().createRow(rowNum++);
+//
+//            row.createCell(0).setCellValue(recordRow.getEmployeeName() + recordRow.getEmployeeLastName());
+//
+////            Cell dateOfBirth = row.createCell(1);
+////            dateOfBirth.setCellValue();
+////            dateOfBirth.setCellStyle(excelService.getDateCellStyle());
+//
+//            row.createCell(1).setCellValue(getRowCount(recordRow.getEmployeeId()));
+//
+//        }
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
 
