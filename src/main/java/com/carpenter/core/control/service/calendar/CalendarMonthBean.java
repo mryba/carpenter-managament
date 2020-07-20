@@ -3,17 +3,15 @@ package com.carpenter.core.control.service.calendar;
 import com.carpenter.core.control.dto.EmployeeDto;
 import com.carpenter.core.control.excel.service.MonthCalendarExcelService;
 import com.carpenter.core.entity.WorkingDay;
-import com.carpenter.core.entity.employee.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -66,9 +64,9 @@ public class CalendarMonthBean extends CalendarBean {
             dateMap.computeIfAbsent(finalStartDate, k -> new AtomicInteger(sum));
 
             for (WorkingDay workingDay : workingWeek) {
-                if (convertDateToLocalDate(workingDay.getDay()).equals(finalStartDate) && !employeeMap.containsKey(finalStartDate)) {
-                    employeeMap.computeIfAbsent(finalStartDate, k -> new RowRepresentative(
-                            workingDay.getEmployee().getId(), workingDay.getEmployee().getFirstName(), workingDay.getEmployee().getLastName(), new AtomicInteger(workingDay.getHours())));
+                if (convertDateToLocalDate(workingDay.getDay()).equals(finalStartDate)) {
+                    RowRepresentative rowRepresentative = employeeMap.computeIfAbsent(finalStartDate, k -> new RowRepresentative());
+                    rowRepresentative.findRecordRow(workingDay);
                 }
             }
 
@@ -104,9 +102,14 @@ public class CalendarMonthBean extends CalendarBean {
     }
 
     public Integer getRowCount(Long employeeId) {
-        List<RowRepresentative> rr = employeeMap.values().stream().filter(r -> r.getEmployeeId().equals(employeeId)).collect(Collectors.toList());
-        if (!rr.isEmpty()) {
-            return rr.stream().mapToInt(rowRepresentative -> rowRepresentative.getHours().get()).sum();
+        List<RecordRow> recordRows = employeeMap.values().stream()
+                .map(r -> r.getRecordRows().stream()
+                        .filter(rr -> rr.getEmployeeId().equals(employeeId))
+                        .findFirst()
+                        .orElse(null)).collect(Collectors.toList());
+
+        if (!recordRows.isEmpty()) {
+            return recordRows.stream().mapToInt(rowRepresentative -> rowRepresentative.getHours().get()).sum();
         }
         return 0;
     }
@@ -116,31 +119,45 @@ public class CalendarMonthBean extends CalendarBean {
         excelService.initSheet();
 
         int rowNum = 1;
-        for (Map.Entry<LocalDate, RowRepresentative> entry : employeeMap.entrySet()) {
+        List<RecordRow> resultList = new ArrayList<>();
+        List<EmployeeDto> employeeDtos = getEmployeeDtos();
+        for (EmployeeDto employee : employeeDtos) {
 
+            List<RecordRow> recordRows = employeeMap.values().stream()
+                    .map(r -> r.getRecordRows().stream()
+                            .filter(rr -> rr.getEmployeeId().equals(employee.getId()))
+                            .findFirst()
+                            .orElse(null)).collect(Collectors.toList());
+            int sum = recordRows.stream().mapToInt(rowRepresentative -> rowRepresentative.getHours().get()).sum();
+            resultList.add(new RecordRow(employee.getId(), employee.getFirstName(), employee.getLastName(), new AtomicInteger(sum)));
+        }
+
+        for (RecordRow recordRow : resultList) {
 
             Row row = excelService.getSheet().createRow(rowNum++);
 
-            row.createCell(0).setCellValue(entry.getValue().getEmployeeName() + entry.getValue().getEmployeeLastName());
+            row.createCell(0).setCellValue(recordRow.getEmployeeName() + recordRow.getEmployeeLastName());
 
-            Cell dateOfBirth = row.createCell(1);
-            dateOfBirth.setCellValue(entry.getKey());
-            dateOfBirth.setCellStyle(excelService.getDateCellStyle());
+//            Cell dateOfBirth = row.createCell(1);
+//            dateOfBirth.setCellValue();
+//            dateOfBirth.setCellStyle(excelService.getDateCellStyle());
 
-            row.createCell(2).setCellValue(getRowCount(entry.getValue().getEmployeeId()));
+            row.createCell(1).setCellValue(getRowCount(recordRow.getEmployeeId()));
 
-            // Write the output to a file
-            FileOutputStream fileOut = null;
-            try {
-                fileOut = new FileOutputStream("poi-generated-file.xlsx");
-                excelService.getWorkbook().write(fileOut);
-                fileOut.close();
+        }
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = facesContext.getExternalContext();
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        externalContext.setResponseContentType("application/vnd.ms-excel");
+        externalContext.setResponseHeader("Content-Disposition", "attachment; filename=raport-miesieczny-" + System.currentTimeMillis() + ".xlsx");
 
-
+        try {
+            excelService.getWorkbook().write(externalContext.getResponseOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            facesContext.responseComplete();
         }
     }
 }
+
