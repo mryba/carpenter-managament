@@ -54,11 +54,16 @@ public class EmployeeRepository implements Serializable {
 
     public Employee findEmployeeBeId(Long employeeId) {
         try {
-            EntityGraph<?> graph = entityManager.getEntityGraph("Employee.fetch");
-            return entityManager.createNamedQuery("Employee.findEmployeeById", Employee.class)
+            Employee employee = entityManager.createQuery(
+                    "SELECT e FROM Employee e LEFT JOIN FETCH e.addresses WHERE e.id =:employeeId", Employee.class)
                     .setParameter("employeeId", employeeId)
-                    .setHint(FETCH_GRAPH, graph)
                     .getResultList().iterator().next();
+
+             employee = entityManager.createQuery(
+                    "SELECT e FROM Employee e LEFT JOIN FETCH e.workingDays WHERE e.id=:employeeId", Employee.class)
+                    .setParameter("employeeId", employeeId)
+                    .getResultList().iterator().next();
+             return employee;
         } catch (NonUniqueResultException e) {
             return null;
         }

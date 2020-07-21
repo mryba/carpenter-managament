@@ -29,7 +29,7 @@ public class CalendarMonthBean extends CalendarBean {
     private static final long serialVersionUID = 7818636965206530503L;
 
     private List<WorkingDay> workingWeek = new LinkedList<>();
-    private Map<LocalDate, AtomicInteger> dateMap = new LinkedHashMap<>();
+    //    private Map<LocalDate, AtomicInteger> dateMap = new LinkedHashMap<>();
     private Map<LocalDate, RowRepresentative> employeeMap = new LinkedHashMap<>();
 
     @PostConstruct
@@ -58,10 +58,10 @@ public class CalendarMonthBean extends CalendarBean {
 
             final LocalDate finalStartDate = startDate.toLocalDate();
 
-            int sum = workingWeek.stream()
-                    .filter(wd -> convertDateToLocalDate(wd.getDay()).equals(finalStartDate))
-                    .mapToInt(WorkingDay::getHours).sum();
-            dateMap.computeIfAbsent(finalStartDate, k -> new AtomicInteger(sum));
+//            int sum = workingWeek.stream()
+//                    .filter(wd -> convertDateToLocalDate(wd.getDay()).equals(finalStartDate))
+//                    .mapToInt(WorkingDay::getHours).sum();
+//            dateMap.computeIfAbsent(finalStartDate, k -> new AtomicInteger(sum));
 
             for (WorkingDay workingDay : workingWeek) {
                 if (convertDateToLocalDate(workingDay.getDay()).equals(finalStartDate)) {
@@ -90,15 +90,14 @@ public class CalendarMonthBean extends CalendarBean {
 
     public Integer getCountEmployeeHour(Date date) {
         LocalDate localDate = convertDateToLocalDate(date);
-        AtomicInteger atomicInteger = dateMap.get(localDate);
-        if (atomicInteger != null) {
-            return atomicInteger.get();
+        if (employeeMap.get(localDate) != null) {
+            return employeeMap.get(localDate).getRecordRows().stream().mapToInt(rr -> rr.getHours().get()).sum();
         }
         return 0;
     }
 
     public Integer getSumOfColumns() {
-        return dateMap.values().stream().mapToInt(AtomicInteger::get).sum();
+        return employeeMap.values().stream().mapToInt(rr -> rr.getRecordRows().stream().mapToInt(r -> r.getHours().get()).sum()).sum();
     }
 
     public Integer getRowCount(Long employeeId) {
@@ -109,7 +108,9 @@ public class CalendarMonthBean extends CalendarBean {
                         .orElse(null)).collect(Collectors.toList());
 
         if (!recordRows.isEmpty()) {
-            return recordRows.stream().mapToInt(rowRepresentative -> rowRepresentative.getHours().get()).sum();
+            return recordRows.stream()
+                    .filter(Objects::nonNull)
+                    .filter(rr -> rr.getHours() != null).mapToInt(rowRepresentative -> rowRepresentative.getHours().get()).sum();
         }
         return 0;
     }
@@ -119,34 +120,22 @@ public class CalendarMonthBean extends CalendarBean {
         LocalDateTime viewEndDate = timeManager.getViewEndDate();
 
         List<String> result = new LinkedList<>();
+        List<LocalDate> resultDate = new LinkedList<>();
         result.add("Imię i nazwisko");
         while (startDate.isBefore(viewEndDate)) {
             String day = startDate.toLocalDate().getDayOfMonth() + " " + startDate.toLocalDate().getMonth().getDisplayName(TextStyle.FULL, FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
             result.add(day);
+            resultDate.add(startDate.toLocalDate());
             startDate = startDate.plusDays(1);
         }
 
         MonthCalendarExcelService excelService = new MonthCalendarExcelService(result);
         excelService.initSheet();
 
-        int rowNum = 1;
-        for (Map.Entry<LocalDate, RowRepresentative> entry : employeeMap.entrySet()) {
-            Row row = excelService.getSheet().createRow(rowNum++);
-
-            result.remove(0);
-            int recordRowNum = 0;
-            for (RecordRow recordRow : entry.getValue().getRecordRows()) {
-
-                row.createCell(recordRowNum).setCellValue(recordRow.getHours().get());
-                recordRowNum++;
-            }
-
-
-        }
 
 //        List<RecordRow> resultList = new ArrayList<>();
 //        List<EmployeeDto> employeeDtos = getEmployeeDtos();
-
+//
 //        for (EmployeeDto employee : employeeDtos) {
 //
 //            List<RecordRow> recordRows = employeeMap.values().stream()
@@ -157,7 +146,10 @@ public class CalendarMonthBean extends CalendarBean {
 //            int sum = recordRows.stream().mapToInt(rowRepresentative -> rowRepresentative.getHours().get()).sum();
 //            resultList.add(new RecordRow(employee.getId(), employee.getFirstName(), employee.getLastName(), new AtomicInteger(sum)));
 //        }
-
+//
+//
+//        int rowNum = 1;
+//
 //        for (RecordRow recordRow : resultList) {
 //
 //            Row row = excelService.getSheet().createRow(rowNum++);

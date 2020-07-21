@@ -41,11 +41,7 @@ import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
                                 "LEFT JOIN FETCH e.company " +
                                 "WHERE e.email=:email"
                 ),
-                @NamedQuery(
-                        name = "Employee.findEmployeeById",
-                        query = "SELECT e FROM Employee e " +
-                                "WHERE e.id =:employeeId"
-                ),
+
                 @NamedQuery(
                         name = "Employee.findAllActiveEmployee",
                         query = "SELECT e FROM Employee e " +
