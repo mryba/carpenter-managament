@@ -33,7 +33,6 @@ public class CalendarMonthBean extends CalendarBean {
     private Map<LocalDate, RowRepresentative> employeeMap = new LinkedHashMap<>();
 
     @PostConstruct
-
     public void init() {
         workingWeek.clear();
         initCalendarMode(Mode.MONTH);
@@ -133,36 +132,17 @@ public class CalendarMonthBean extends CalendarBean {
         excelService.initSheet();
 
 
-//        List<RecordRow> resultList = new ArrayList<>();
-//        List<EmployeeDto> employeeDtos = getEmployeeDtos();
-//
-//        for (EmployeeDto employee : employeeDtos) {
-//
-//            List<RecordRow> recordRows = employeeMap.values().stream()
-//                    .map(r -> r.getRecordRows().stream()
-//                            .filter(rr -> rr.getEmployeeId().equals(employee.getId()))
-//                            .findFirst()
-//                            .orElse(null)).collect(Collectors.toList());
-//            int sum = recordRows.stream().mapToInt(rowRepresentative -> rowRepresentative.getHours().get()).sum();
-//            resultList.add(new RecordRow(employee.getId(), employee.getFirstName(), employee.getLastName(), new AtomicInteger(sum)));
-//        }
-//
-//
-//        int rowNum = 1;
-//
-//        for (RecordRow recordRow : resultList) {
-//
-//            Row row = excelService.getSheet().createRow(rowNum++);
-//
-//            row.createCell(0).setCellValue(recordRow.getEmployeeName() + recordRow.getEmployeeLastName());
-//
-////            Cell dateOfBirth = row.createCell(1);
-////            dateOfBirth.setCellValue();
-////            dateOfBirth.setCellStyle(excelService.getDateCellStyle());
-//
-//            row.createCell(1).setCellValue(getRowCount(recordRow.getEmployeeId()));
-//
-//        }
+        for (EmployeeDto employee : employeeService.getEmployees()) {
+            int cellNum = 1;
+            int rowNum = 1;
+            while (startDate.isBefore(viewEndDate)) {
+                Row row = excelService.getSheet().createRow(rowNum++);
+                Integer workHours = getWorkHours(Date.from(startDate.toLocalDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), employee);
+                row.createCell(cellNum).setCellValue(workHours);
+            }
+            startDate = startDate.plusDays(1);
+        }
+
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
 
