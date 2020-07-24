@@ -18,7 +18,7 @@ import java.time.ZoneId;
 import java.time.format.TextStyle;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @Named("calendarMonthBean")
@@ -28,14 +28,14 @@ public class CalendarMonthBean extends CalendarBean {
     private static final long serialVersionUID = 7818636965206530503L;
 
     private List<WorkingDay> workingWeek = new LinkedList<>();
-    //    private Map<LocalDate, AtomicInteger> dateMap = new LinkedHashMap<>();
-    private Map<LocalDate, RecordRow> employeeMap = new LinkedHashMap<>();
     private List<LocalDate> monthlyDates;
 
-    private List<Map.Entry<EmployeeDto, RecordRow>> rrMap;
+    private List<Map.Entry<EmployeeDto, RecordRow>> recordRowMap;
+    private Map<LocalDate, AtomicInteger> columnCount = new LinkedHashMap<>();
 
     @PostConstruct
     public void init() {
+        columnCount.clear();
         workingWeek.clear();
         initCalendarMode(Mode.MONTH);
     }
@@ -47,7 +47,7 @@ public class CalendarMonthBean extends CalendarBean {
 
     public List<Date> getDates() {
         List<Date> result = new LinkedList<>();
-
+        columnCount.clear();
         LocalDateTime startDate = timeManager.getViewStartDate();
         LocalDateTime viewEndDate = timeManager.getViewEndDate();
 
@@ -74,31 +74,26 @@ public class CalendarMonthBean extends CalendarBean {
         for (EmployeeDto employee : employeeDtos) {
 
             RecordRow recordRow = map.computeIfAbsent(employee, k -> new RecordRow(monthlyDates));
-            recordRow.insertRecord(employee, workingWeek).countDay(workingWeek);
+            recordRow.insertRecord(employee).countDay(workingWeek);
+
         }
-        log.info("Finish");
-        rrMap = new LinkedList<>(map.entrySet());
+
+        recordRowMap = new LinkedList<>(map.entrySet());
     }
 
-//    public Integer getWorkHours(Date date, EmployeeDto employeeDto) {
-//        LocalDate dateAsLocalDate = convertDateToLocalDate(date);
-//        return workingWeek.stream()
-//                .filter(w -> w.getEmployee().getId().equals(employeeDto.getId()))
-//                .filter(wd -> convertDateToLocalDate(wd.getDay()).equals(dateAsLocalDate))
-//                .map(WorkingDay::getHours)
-//                .findFirst().orElse(0);
-//    }
+    public Integer getWorkHours(Long employeeId, RecordRowRepresentative rrr, LocalDate date) {
+        if (rrr.getEmployeeDto().getId().equals(employeeId)) {
 
-    public Integer getWorkHours(LocalDate date, Long employeeId) {
-        return workingWeek.stream()
-                .filter(w -> w.getEmployee().getId().equals(employeeId))
-                .filter(wd -> convertDateToLocalDate(wd.getDay()).equals(date))
-                .map(WorkingDay::getHours)
-                .findFirst().orElse(0);
+            Map<LocalDate, AtomicInteger> hourMap = rrr.getHourMap();
+            AtomicInteger atomicInteger = hourMap.get(date);
+
+            return atomicInteger.intValue();
+        }
+        return 0;
     }
 
-    public List<Map.Entry<EmployeeDto, RecordRow>> getRrMap() {
-        return rrMap;
+    public List<Map.Entry<EmployeeDto, RecordRow>> getRecordRowMap() {
+        return recordRowMap;
     }
 
     public List<LocalDate> getMonthlyDates() {
@@ -110,30 +105,31 @@ public class CalendarMonthBean extends CalendarBean {
     }
 
     public Integer getCountEmployeeHour(Date date) {
+        int sumColumn = 0;
         LocalDate localDate = convertDateToLocalDate(date);
-        if (employeeMap.get(localDate) != null) {
-            return employeeMap.get(localDate).getRecordRowRepresentatives().stream().mapToInt(rr -> rr.getHours().get()).sum();
+
+        for (Map.Entry<EmployeeDto, RecordRow> entry : recordRowMap) {
+            int sum = entry.getValue().getRecordRowRepresentatives()
+                    .stream()
+                    .map(rrr -> rrr.getHourMap().get(localDate))
+                    .mapToInt(AtomicInteger::intValue)
+                    .sum();
+            sumColumn = sumColumn + sum;
+            if (columnCount.get(localDate) != null) {
+                columnCount.get(localDate).getAndAdd(sum);
+            } else {
+                columnCount.putIfAbsent(localDate, new AtomicInteger(sum));
+            }
         }
-        return 0;
+        return sumColumn;
     }
 
     public Integer getSumOfColumns() {
-        return employeeMap.values().stream().mapToInt(rr -> rr.getRecordRowRepresentatives().stream().mapToInt(r -> r.getHours().get()).sum()).sum();
+        return columnCount.values().stream().mapToInt(AtomicInteger::intValue).sum();
     }
 
-    public Integer getRowCount(Long employeeId) {
-        List<RecordRowRepresentative> recordRowRepresentatives = employeeMap.values().stream()
-                .map(r -> r.getRecordRowRepresentatives().stream()
-                        .filter(rr -> rr.getEmployeeDto().getId().equals(employeeId))
-                        .findFirst()
-                        .orElse(null)).collect(Collectors.toList());
-
-        if (!recordRowRepresentatives.isEmpty()) {
-            return recordRowRepresentatives.stream()
-                    .filter(Objects::nonNull)
-                    .filter(rr -> rr.getHours() != null).mapToInt(rowRepresentative -> rowRepresentative.getHours().get()).sum();
-        }
-        return 0;
+    public Integer getRowCount(RecordRowRepresentative rrr) {
+        return rrr.getHourMap().values().stream().mapToInt(AtomicInteger::intValue).sum();
     }
 
     public void renderExcel() {
@@ -159,7 +155,7 @@ public class CalendarMonthBean extends CalendarBean {
             int rowNum = 1;
             while (startDate.isBefore(viewEndDate)) {
                 Row row = excelService.getSheet().createRow(rowNum++);
-                Integer workHours = getWorkHours(startDate.toLocalDate(), employee.getId());
+                Integer workHours = getWorkHours(employee.getId(), null, startDate.toLocalDate());
                 row.createCell(cellNum).setCellValue(workHours);
             }
             startDate = startDate.plusDays(1);

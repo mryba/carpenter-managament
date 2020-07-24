@@ -18,16 +18,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class RecordRowRepresentative {
 
     private EmployeeDto employeeDto;
-    private AtomicInteger hours;
     private List<LocalDate> monthlyDates;
 
     private final Map<LocalDate, AtomicInteger> hourMap = new LinkedHashMap<>();
     private int total;
 
-    public RecordRowRepresentative(EmployeeDto employeeDto, AtomicInteger hours, List<LocalDate> monthlyDates) {
+    public RecordRowRepresentative(EmployeeDto employeeDto, List<LocalDate> monthlyDates) {
         this(monthlyDates);
         this.employeeDto = employeeDto;
-        this.hours = hours;
     }
 
     public RecordRowRepresentative(List<LocalDate> monthlyDates) {
@@ -39,8 +37,11 @@ public class RecordRowRepresentative {
 
     public void countDay(List<WorkingDay> workingDays) {
         for (WorkingDay workingDay : workingDays) {
-            hourMap.keySet().stream().filter(hm -> hm.equals(convertDateToLocalDate(workingDay.getDay())))
-                    .findFirst().ifPresent(date -> hourMap.put(date, new AtomicInteger(workingDay.getHours())));
+            hourMap.keySet().stream()
+                    .filter(hm -> workingDay.getEmployee().getId().equals(employeeDto.getId()))
+                    .filter(hm -> hm.equals(convertDateToLocalDate(workingDay.getDay())))
+                    .findFirst()
+                    .ifPresent(date -> hourMap.put(date, new AtomicInteger(workingDay.getHours())));
         }
     }
 
