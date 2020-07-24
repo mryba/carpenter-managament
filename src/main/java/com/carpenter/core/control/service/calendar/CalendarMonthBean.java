@@ -4,7 +4,6 @@ import com.carpenter.core.control.dto.EmployeeDto;
 import com.carpenter.core.control.excel.service.MonthCalendarExcelService;
 import com.carpenter.core.entity.WorkingDay;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
 import javax.annotation.PostConstruct;
@@ -18,7 +17,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -30,7 +29,10 @@ public class CalendarMonthBean extends CalendarBean {
 
     private List<WorkingDay> workingWeek = new LinkedList<>();
     //    private Map<LocalDate, AtomicInteger> dateMap = new LinkedHashMap<>();
-    private Map<LocalDate, RowRepresentative> employeeMap = new LinkedHashMap<>();
+    private Map<LocalDate, RecordRow> employeeMap = new LinkedHashMap<>();
+    private List<LocalDate> monthlyDates;
+
+    private List<Map.Entry<EmployeeDto, RecordRow>> rrMap;
 
     @PostConstruct
     public void init() {
@@ -51,36 +53,56 @@ public class CalendarMonthBean extends CalendarBean {
 
         workingWeek = workingDayService.getWorkingDaysInScope(timeManager.getStartDate(), timeManager.getEndDate());
 
+        monthlyDates = new LinkedList<>();
         while (startDate.isBefore(viewEndDate)) {
             Date from = Date.from(startDate.atZone(ZoneId.systemDefault()).toInstant());
             result.add(from);
 
             final LocalDate finalStartDate = startDate.toLocalDate();
 
-//            int sum = workingWeek.stream()
-//                    .filter(wd -> convertDateToLocalDate(wd.getDay()).equals(finalStartDate))
-//                    .mapToInt(WorkingDay::getHours).sum();
-//            dateMap.computeIfAbsent(finalStartDate, k -> new AtomicInteger(sum));
-
-            for (WorkingDay workingDay : workingWeek) {
-                if (convertDateToLocalDate(workingDay.getDay()).equals(finalStartDate)) {
-                    RowRepresentative rowRepresentative = employeeMap.computeIfAbsent(finalStartDate, k -> new RowRepresentative());
-                    rowRepresentative.findRecordRow(workingDay);
-                }
-            }
-
+            monthlyDates.add(finalStartDate);
             startDate = startDate.plusDays(1);
         }
+        initSheet();
         return result;
     }
 
-    public Integer getWorkHours(Date date, EmployeeDto employeeDto) {
-        LocalDate dateAsLocalDate = convertDateToLocalDate(date);
+    public void initSheet() {
+        Map<EmployeeDto, RecordRow> map = new ConcurrentHashMap<>();
+
+        List<EmployeeDto> employeeDtos = getEmployees();
+        for (EmployeeDto employee : employeeDtos) {
+
+            RecordRow recordRow = map.computeIfAbsent(employee, k -> new RecordRow(monthlyDates));
+            recordRow.insertRecord(employee, workingWeek).countDay(workingWeek);
+        }
+        log.info("Finish");
+        rrMap = new LinkedList<>(map.entrySet());
+    }
+
+//    public Integer getWorkHours(Date date, EmployeeDto employeeDto) {
+//        LocalDate dateAsLocalDate = convertDateToLocalDate(date);
+//        return workingWeek.stream()
+//                .filter(w -> w.getEmployee().getId().equals(employeeDto.getId()))
+//                .filter(wd -> convertDateToLocalDate(wd.getDay()).equals(dateAsLocalDate))
+//                .map(WorkingDay::getHours)
+//                .findFirst().orElse(0);
+//    }
+
+    public Integer getWorkHours(LocalDate date, Long employeeId) {
         return workingWeek.stream()
-                .filter(w -> w.getEmployee().getId().equals(employeeDto.getId()))
-                .filter(wd -> convertDateToLocalDate(wd.getDay()).equals(dateAsLocalDate))
+                .filter(w -> w.getEmployee().getId().equals(employeeId))
+                .filter(wd -> convertDateToLocalDate(wd.getDay()).equals(date))
                 .map(WorkingDay::getHours)
                 .findFirst().orElse(0);
+    }
+
+    public List<Map.Entry<EmployeeDto, RecordRow>> getRrMap() {
+        return rrMap;
+    }
+
+    public List<LocalDate> getMonthlyDates() {
+        return monthlyDates;
     }
 
     private static LocalDate convertDateToLocalDate(Date date) {
@@ -90,24 +112,24 @@ public class CalendarMonthBean extends CalendarBean {
     public Integer getCountEmployeeHour(Date date) {
         LocalDate localDate = convertDateToLocalDate(date);
         if (employeeMap.get(localDate) != null) {
-            return employeeMap.get(localDate).getRecordRows().stream().mapToInt(rr -> rr.getHours().get()).sum();
+            return employeeMap.get(localDate).getRecordRowRepresentatives().stream().mapToInt(rr -> rr.getHours().get()).sum();
         }
         return 0;
     }
 
     public Integer getSumOfColumns() {
-        return employeeMap.values().stream().mapToInt(rr -> rr.getRecordRows().stream().mapToInt(r -> r.getHours().get()).sum()).sum();
+        return employeeMap.values().stream().mapToInt(rr -> rr.getRecordRowRepresentatives().stream().mapToInt(r -> r.getHours().get()).sum()).sum();
     }
 
     public Integer getRowCount(Long employeeId) {
-        List<RecordRow> recordRows = employeeMap.values().stream()
-                .map(r -> r.getRecordRows().stream()
-                        .filter(rr -> rr.getEmployeeId().equals(employeeId))
+        List<RecordRowRepresentative> recordRowRepresentatives = employeeMap.values().stream()
+                .map(r -> r.getRecordRowRepresentatives().stream()
+                        .filter(rr -> rr.getEmployeeDto().getId().equals(employeeId))
                         .findFirst()
                         .orElse(null)).collect(Collectors.toList());
 
-        if (!recordRows.isEmpty()) {
-            return recordRows.stream()
+        if (!recordRowRepresentatives.isEmpty()) {
+            return recordRowRepresentatives.stream()
                     .filter(Objects::nonNull)
                     .filter(rr -> rr.getHours() != null).mapToInt(rowRepresentative -> rowRepresentative.getHours().get()).sum();
         }
@@ -137,7 +159,7 @@ public class CalendarMonthBean extends CalendarBean {
             int rowNum = 1;
             while (startDate.isBefore(viewEndDate)) {
                 Row row = excelService.getSheet().createRow(rowNum++);
-                Integer workHours = getWorkHours(Date.from(startDate.toLocalDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()), employee);
+                Integer workHours = getWorkHours(startDate.toLocalDate(), employee.getId());
                 row.createCell(cellNum).setCellValue(workHours);
             }
             startDate = startDate.plusDays(1);

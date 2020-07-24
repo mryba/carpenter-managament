@@ -87,20 +87,24 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <ui:repeat value="#{calendarMonthBean.employees}" var="e">
-                                <tr>
-                                    <th scope="col" class="calendar-row-label">
-                                        <carpenter:calendar-cell employee="#{e}"/>
-                                    </th>
-                                    <ui:repeat value="#{calendarMonthBean.dates}" var="date">
-                                        <th scope="col" class="calendar-row">
-                                            #{calendarMonthBean.getWorkHours(date, e)}
+
+                            <ui:repeat value="#{calendarMonthBean.rrMap}" var="rr">
+                                <ui:repeat value="#{rr.value.recordRowRepresentatives}"
+                                           var="rep">
+                                    <tr>
+                                        <th scope="col" class="calendar-row-label">
+                                            #{rr.key.firstName}, #{rr.key.lastName}
                                         </th>
-                                    </ui:repeat>
-                                    <th scope="col" class="calendar-sub-header">
-                                        #{calendarMonthBean.getRowCount(e.id)}
-                                    </th>
-                                </tr>
+
+                                        <th scope="col" class="calendar-row">
+                                            #{calendarMonthBean.getWorkHours(rr.key.id)}
+                                        </th>
+                                        <th scope="col" class="calendar-sub-header">
+                                            #{calendarMonthBean.getRowCount(rr.key.id)}
+                                        </th>
+
+                                    </tr>
+                                </ui:repeat>
                             </ui:repeat>
                             </tbody>
                         </table>
