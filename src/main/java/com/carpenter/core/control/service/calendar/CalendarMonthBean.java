@@ -155,7 +155,7 @@ public class CalendarMonthBean extends CalendarBean {
 
             for (RecordRowRepresentative rrr : entry.getValue().getRecordRowRepresentatives()) {
                 int celNum = 0;
-                row.createCell(celNum).setCellValue(rrr.getEmployeeDto().getFirstName() + rrr.getEmployeeDto().getLastName());
+                row.createCell(celNum).setCellValue(rrr.getEmployeeDto().getFirstName() + " " + rrr.getEmployeeDto().getLastName());
                 celNum++;
                 for (LocalDate monthlyDate : rrr.getMonthlyDates()) {
                     AtomicInteger hour = rrr.getHourMap().get(monthlyDate);

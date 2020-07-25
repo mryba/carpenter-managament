@@ -93,7 +93,7 @@
                                            var="rep">
                                     <tr>
                                         <th scope="col" class="calendar-row-label">
-                                            #{rr.key.firstName}, #{rr.key.lastName}
+                                            #{rr.key.firstName} #{rr.key.lastName}
                                         </th>
                                         <ui:repeat value="#{calendarMonthBean.monthlyDates}"
                                                    var="date">
@@ -121,6 +121,12 @@
                     </div>
                 </h:form>
             </div>
+        </div>
+        <ui:include src="/includes/add-work-time.xhtml"/>
+        <div jsf:id="closeDialogDiv">
+            <h:outputScript rendered="#{not facesContext.validationFailed}">
+                $('#add-work-time').modal('hide')
+            </h:outputScript>
         </div>
     </ui:define>
 </ui:composition>

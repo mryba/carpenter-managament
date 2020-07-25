@@ -1708,6 +1708,7 @@ body {
 .calendar-view .calendar-row {
     border-top: 1px solid #1a3823;
     border-right: 1px solid #1a3823;
+    height: 2.2em;
 }
 
 .calendar-view .calendar-row-label {
