@@ -137,12 +137,10 @@ public class CalendarMonthBean extends CalendarBean {
         LocalDateTime viewEndDate = timeManager.getViewEndDate();
 
         List<String> result = new LinkedList<>();
-        List<LocalDate> resultDate = new LinkedList<>();
         result.add("Imię i nazwisko");
         while (startDate.isBefore(viewEndDate)) {
             String day = startDate.toLocalDate().getDayOfMonth() + " " + startDate.toLocalDate().getMonth().getDisplayName(TextStyle.FULL, FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
             result.add(day);
-            resultDate.add(startDate.toLocalDate());
             startDate = startDate.plusDays(1);
         }
 
@@ -150,15 +148,24 @@ public class CalendarMonthBean extends CalendarBean {
         excelService.initSheet();
 
 
-        for (EmployeeDto employee : employeeService.getEmployees()) {
-            int cellNum = 1;
-            int rowNum = 1;
-            while (startDate.isBefore(viewEndDate)) {
-                Row row = excelService.getSheet().createRow(rowNum++);
-                Integer workHours = getWorkHours(employee.getId(), null, startDate.toLocalDate());
-                row.createCell(cellNum).setCellValue(workHours);
+        int rowNum = 1;
+        for (Map.Entry<EmployeeDto, RecordRow> entry : recordRowMap) {
+
+            Row row = excelService.getSheet().createRow(rowNum++);
+
+            for (RecordRowRepresentative rrr : entry.getValue().getRecordRowRepresentatives()) {
+                int celNum = 0;
+                row.createCell(celNum).setCellValue(rrr.getEmployeeDto().getFirstName() + rrr.getEmployeeDto().getLastName());
+                celNum++;
+                for (LocalDate monthlyDate : rrr.getMonthlyDates()) {
+                    AtomicInteger hour = rrr.getHourMap().get(monthlyDate);
+                    row.createCell(celNum).setCellValue(hour.intValue());
+                    celNum++;
+                }
             }
-            startDate = startDate.plusDays(1);
+        }
+        for (int i = 0; i < excelService.getColumns().size(); i++) {
+            excelService.getSheet().autoSizeColumn(i);
         }
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
