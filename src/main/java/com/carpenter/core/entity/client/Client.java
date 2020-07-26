@@ -5,6 +5,7 @@ import com.carpenter.core.entity.WorkingDay;
 import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.DomainObject;
 import com.carpenter.core.entity.employee.Employee;
+import com.carpenter.core.entity.invoice.Invoice;
 import lombok.*;
 
 import javax.persistence.*;
@@ -91,7 +92,11 @@ public class Client extends DomainObject {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "presentClient")
     private List<Employee> presentsEmployees;
 
+    @OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Invoice> invoices;
+
     public void addWorkingDat(WorkingDay workingDay) {
+
         if (workingDays == null) {
             workingDays = new LinkedList<>();
         }

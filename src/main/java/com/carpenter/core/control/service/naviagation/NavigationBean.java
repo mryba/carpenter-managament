@@ -34,4 +34,8 @@ public class NavigationBean {
     public String calendarMonthViewRedirect() {
         return "/secure/calendars/month-calendar.xhtml?faces-redirect=true";
     }
+
+    public String invoiceRedirect() {
+        return "/secure/invoice/invoices?faces-redirect=true";
+    }
 }

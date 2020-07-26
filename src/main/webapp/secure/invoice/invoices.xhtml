@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/secure/template.xhtml">
+
+    <ui:param name="pageTitle" value="Faktury"/>
+
+    <ui:define name="content">
+
+        <div class="wrapper">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Faktury</h2>
+
+                    <div class="controls">
+                        <h:commandLink styleClass="btn btn-primary col-primary"
+                                       target="_blank"
+                                       action="#{pdfService.renderPdf}">
+                            <f:ajax execute="@this"/>
+                            <i class="far fa-file-excel"></i>PDF
+                        </h:commandLink>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

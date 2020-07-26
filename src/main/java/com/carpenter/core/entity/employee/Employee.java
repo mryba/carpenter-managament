@@ -7,6 +7,7 @@ import com.carpenter.core.entity.client.Client;
 import com.carpenter.core.entity.dictionaries.Contract;
 import com.carpenter.core.entity.dictionaries.Gender;
 import com.carpenter.core.entity.dictionaries.Role;
+import com.carpenter.core.entity.invoice.Invoice;
 import com.carpenter.utils.ConstantsRegex;
 import com.carpenter.utils.MobilPhoneNumberAdapter;
 import lombok.*;
@@ -136,6 +137,9 @@ public class Employee extends DomainObject {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRESENT_CLIENT", referencedColumnName = "ID")
     private Client presentClient;
+
+    @OneToMany(mappedBy = "employee", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Invoice> invoices;
 
     public void addRole(Role role) {
         if (role == null) {
