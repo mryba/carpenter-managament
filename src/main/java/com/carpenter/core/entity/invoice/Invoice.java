@@ -4,17 +4,27 @@ import com.carpenter.core.entity.DomainObject;
 import com.carpenter.core.entity.client.Client;
 import com.carpenter.core.entity.dictionaries.InvoiceType;
 import com.carpenter.core.entity.employee.Employee;
+import com.carpenter.utils.ConstantsRegex;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "INVOICE")
+@Table(
+        name = "INVOICE",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "UNIQUE_INVOICE_NUMBER",
+                        columnNames = "NUMBER_OF_INVOICE")
+        }
+)
 @Access(AccessType.FIELD)
 @Getter
 @Setter
@@ -27,6 +37,11 @@ import java.util.Objects;
 public class Invoice extends DomainObject {
 
     private static final long serialVersionUID = 4447366168761136L;
+
+    @Column(name = "NUMBER_OF_INVOICE")
+    @NotNull
+    @Pattern(regexp = ConstantsRegex.INVOICE_NUMBER_PATTERN)
+    private String numberOfInvoice;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "EMPLOYEE_ID")
@@ -46,8 +61,8 @@ public class Invoice extends DomainObject {
     @Enumerated(value = EnumType.STRING)
     private InvoiceType invoiceType;
 
-    @Column(name = "DATE_OF_INVOICE")
     @Past
+    @Column(name = "DATE_OF_INVOICE")
     private Date dateOfInvoice;
 
     @Column(name = "DESCRIPTION")
