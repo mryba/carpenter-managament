@@ -2,8 +2,6 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:jsf="http://xmlns.jcp.org/jsf"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="/secure/template.xhtml">
 
     <ui:param name="pageTitle" value="Faktury"/>
@@ -16,14 +14,61 @@
                     <h2>Faktury</h2>
 
                     <div class="controls">
-                        <h:commandLink styleClass="btn btn-primary col-primary"
-                                       target="_blank"
-                                       action="#{pdfService.renderPdf}">
-                            <f:ajax execute="@this"/>
-                            <i class="far fa-file-excel"></i>PDF
-                        </h:commandLink>
+                        <h:form>
+                            <h:commandLink styleClass="btn btn-primary col-primary"
+                                           target="_blank"
+                                           action="#{pdfService.renderPdf}">
+                                <i class="far fa-file-excel"></i>PDF
+                            </h:commandLink>
+                        </h:form>
                     </div>
                 </div>
+                <h:form id="invoiceTableForm" prependId="false">
+                    <div class="table">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th class="w10">Kto wystawił</th>
+                                <th class="w10">Komu wystawił</th>
+                                <th class="w5">Numer faktury</th>
+                                <th class="w5">Data wystawienia</th>
+                                <th class="w10">Wartość Netto/Brutto</th>
+                                <th class="w5">Stawka VAT</th>
+                                <th class="w15">Opis</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <ui:repeat value="#{invoiceListBean.invoicesList}"
+                                       var="i">
+                            <tr>
+                                <td class="w10">
+                                    #{i.employeeDto.firstName} #{i.employeeDto.lastName}
+                                </td>
+                                <td class="w10">
+                                    #{i.clientDto.name}
+                                </td>
+                                <td class="w5">
+                                    0
+                                </td>
+                                <td class="w5">
+                                    #{i.dateOfInvoice}
+                                </td>
+                                <td class="w10">
+                                    #{i.netValue} / #{i.grossValue}
+                                </td>
+                                <td class="w5">
+                                    Stawka vat
+                                </td>
+                                <td class="w15">
+                                    #{i.description}
+                                </td>
+                            </tr>
+                            </ui:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </h:form>
             </div>
         </div>
     </ui:define>

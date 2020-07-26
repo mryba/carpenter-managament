@@ -12,6 +12,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @ViewScoped
@@ -27,16 +29,24 @@ public class PdfService implements Serializable {
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
-
-        externalContext.setResponseContentType("application/force-download");
         externalContext.setResponseHeader("Content-Disposition", "attachment; filename=invoice-" + ".pdf");
+
 
         try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
 
-            contentStream.setFont(PDType1Font.COURIER, 12);
             contentStream.beginText();
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+            contentStream.newLineAtOffset(100, 700);
             contentStream.showText("Hello world");
             contentStream.endText();
+
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+            contentStream.newLineAtOffset(250, 750);
+            contentStream.showText("Dupki");
+            contentStream.endText();
+
+
             contentStream.close();
 
             document.save(externalContext.getResponseOutputStream());
