@@ -2,6 +2,9 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
                 template="/secure/template.xhtml">
 
     <ui:param name="pageTitle" value="Faktury"/>
@@ -19,6 +22,15 @@
                                            target="_blank"
                                            action="#{pdfService.renderPdf}">
                                 <i class="far fa-file-excel"></i>PDF
+                            </h:commandLink>
+
+                            <h:commandLink styleClass="btn bordered col-primary"
+                                           p:data-toogle="modal"
+                                           p:data-target="#add-invoice">
+                                <f:ajax execute="@this"
+                                        render="add-invoice-form"
+                                        onevent="showLoader"/>
+                                <i class="fas fa-file-invoice-dollar"></i>Faktury
                             </h:commandLink>
                         </h:form>
                     </div>
@@ -40,36 +52,41 @@
                             <tbody>
                             <ui:repeat value="#{invoiceListBean.invoicesList}"
                                        var="i">
-                            <tr>
-                                <td class="w10">
-                                    #{i.employeeDto.firstName} #{i.employeeDto.lastName}
-                                </td>
-                                <td class="w10">
-                                    #{i.clientDto.name}
-                                </td>
-                                <td class="w5">
-                                    0
-                                </td>
-                                <td class="w5">
-                                    #{i.dateOfInvoice}
-                                </td>
-                                <td class="w10">
-                                    #{i.netValue} / #{i.grossValue}
-                                </td>
-                                <td class="w5">
-                                    Stawka vat
-                                </td>
-                                <td class="w15">
-                                    #{i.description}
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td class="w10">
+                                        #{i.employeeDto.firstName} #{i.employeeDto.lastName}
+                                    </td>
+                                    <td class="w10">
+                                        #{i.clientDto.name}
+                                    </td>
+                                    <td class="w5">
+                                        0
+                                    </td>
+                                    <td class="w5">
+                                        #{i.dateOfInvoice}
+                                    </td>
+                                    <td class="w10">
+                                        #{i.netValue} / #{i.grossValue}
+                                    </td>
+                                    <td class="w5">
+                                        Stawka vat
+                                    </td>
+                                    <td class="w15">
+                                        #{i.description}
+                                    </td>
+                                </tr>
                             </ui:repeat>
                             </tbody>
                         </table>
                     </div>
-
                 </h:form>
             </div>
+        </div>
+        <ui:include src="/includes/add-invoice.xhtml"/>
+        <div jsf:id="closeDialogDiv">
+            <h:outputScript rendered="#{not facesContext.validationFailed}">
+                $('#add-invoice').modal('hide')
+            </h:outputScript>
         </div>
     </ui:define>
 </ui:composition>

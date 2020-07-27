@@ -17,14 +17,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(
-        name = "INVOICE",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "UNIQUE_INVOICE_NUMBER",
-                        columnNames = "NUMBER_OF_INVOICE")
-        }
-)
+@Table(name = "INVOICES")
 @Access(AccessType.FIELD)
 @Getter
 @Setter
