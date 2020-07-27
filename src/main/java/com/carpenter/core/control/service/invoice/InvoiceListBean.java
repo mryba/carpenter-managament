@@ -5,6 +5,8 @@ import com.carpenter.core.control.dto.EmployeeDto;
 import com.carpenter.core.control.dto.InvoiceDto;
 import com.carpenter.core.control.service.client.ClientService;
 import com.carpenter.core.control.service.employee.EmployeeService;
+import com.carpenter.core.entity.dictionaries.PaymentType;
+import com.carpenter.core.entity.dictionaries.VatRate;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -14,6 +16,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @ViewScoped
 @Named("invoiceListBean")
@@ -130,5 +134,13 @@ public class InvoiceListBean implements Serializable {
 
     public void setAmountType(String amountType) {
         this.amountType = amountType;
+    }
+
+    public List<VatRate> getVatRates() {
+        return Stream.of(VatRate.values()).collect(Collectors.toList());
+    }
+
+    public List<PaymentType> getPaymentTypes (){
+        return Stream.of(PaymentType.values()).collect(Collectors.toList());
     }
 }
