@@ -24,14 +24,11 @@
                                 <i class="far fa-file-excel"></i>PDF
                             </h:commandLink>
 
-                            <h:commandLink styleClass="btn bordered col-primary"
-                                           p:data-toogle="modal"
-                                           p:data-target="#add-invoice">
-                                <f:ajax execute="@this"
-                                        render="add-invoice-form"
-                                        onevent="showLoader"/>
-                                <i class="fas fa-file-invoice-dollar"></i>Faktury
-                            </h:commandLink>
+                            <a href="#" class="btn bordered col-primary"
+                               data-target="#add-invoice"
+                               data-toggle="modal">
+                                <i class="fas fa-file-invoice-dollar"></i>Wystaw fakturę
+                            </a>
                         </h:form>
                     </div>
                 </div>

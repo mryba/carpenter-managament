@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Stateless
 public class InvoiceRepository implements Serializable {
@@ -18,10 +19,20 @@ public class InvoiceRepository implements Serializable {
 
     public List<Invoice> findAllInvoices() {
         try {
-           return entityManager.createNamedQuery("Invoice.findAllInvoices", Invoice.class)
+            return entityManager.createNamedQuery("Invoice.findAllInvoices", Invoice.class)
                     .getResultList();
         } catch (NoResultException e) {
             return Collections.emptyList();
+        }
+    }
+
+    public String findLastEmployeeInvoiceNumber(Long employeeId) {
+        try {
+            return entityManager.createNamedQuery("Invoice.findLastEmployeeInvoice", String.class)
+                    .setParameter("employeeId", employeeId)
+                    .getResultList().iterator().next();
+        } catch (NoSuchElementException e) {
+            return null;
         }
     }
 }

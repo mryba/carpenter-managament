@@ -16,20 +16,56 @@
         <div>
             <h:form id="add-invoice-form" prependId="false">
                 <div class="modal-content">
-                    <div class="container-resp">
-                        <div class="form-top">
-                            <label>Wystawia</label>
-                            <h:selectOneMenu id="invoice-employee"
-                                             value="#{invoiceListBean.invoiceDto.employeeDto}">
-                                <f:selectItems
-                                        value="#{invoiceListBean.employeesList}"
-                                        var="e"
-                                        itemLabel="#{e.firstName} #{e.lastName}"
-                                        itemValue="#{e}"/>
-                                <f:ajax event="change"
-                                        execute="@this"/>
-                            </h:selectOneMenu>
+                    <div class="form-top">
+                        <label>Wystawia</label>
+                        <h:selectOneMenu id="invoice-employee"
+                                         value="#{invoiceListBean.invoiceEmployeeId}">
+                            <f:selectItems
+                                    value="#{invoiceListBean.employeesList}"
+                                    var="e"
+                                    itemLabel="#{e.firstName} #{e.lastName}"
+                                    itemValue="#{e.id}"/>
+                            <f:ajax event="change"
+                                    render="invoice-number-id"
+                                    execute="@this"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <div jsf:id="invoice-number-id">
+                        <div class="form-top"
+                             jsf:rendered="#{invoiceListBean.invoiceNumber ne null}">
+                            <h:outputLabel
+                                    value="#{invoiceListBean.invoiceNumber.number} - #{invoiceListBean.invoiceNumber.year}">
+                            </h:outputLabel>
                         </div>
+                    </div>
+                    <div class="form-top">
+                        <label>Komu</label>
+                        <h:selectOneMenu id="invoice-client"
+                                         value="#{invoiceListBean.invoiceClientId}">
+                            <f:selectItems
+                                    value="#{invoiceListBean.clientList}"
+                                    var="c"
+                                    itemLabel="#{c.name}"
+                                    itemValue="#{c.id}"/>
+                            <f:ajax event="change"
+                                    execute="@this"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <div class="form-top">
+                        <label>Kwota brutto</label>
+                        <h:inputText value="#{invoiceListBean.invoiceDto.grossValue}">
+                            <f:converter converterId="javax.faces.BigDecimal"/>
+                            <f:ajax event="change"
+                                    delay="300"
+                                    listener="#{invoiceListBean.calculateGrossValue}"
+                                    render="invoice-gross-id"
+                                    execute="@this"/>
+                        </h:inputText>
+                    </div>
+                    <div class="form-top" jsf:id="invoice-gross-id">
+                        <h:outputLabel rendered="#{invoiceListBean.invoiceDto.grossValue ne null}"
+                                       value="Kwota brutto: #{invoiceListBean.invoiceDto.grossValue}"/>
+
                     </div>
                 </div>
             </h:form>

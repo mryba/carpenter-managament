@@ -25,6 +25,10 @@ import java.util.Objects;
         @NamedQuery(
                 name = "Invoice.findAllInvoices",
                 query = "SELECT i FROM Invoice i"
+        ),
+        @NamedQuery(
+                name = "Invoice.findLastEmployeeInvoice",
+                query = "SELECT i.numberOfInvoice FROM Invoice i WHERE i.employee.id =:employeeId ORDER BY i.createDate"
         )
 })
 public class Invoice extends DomainObject {
