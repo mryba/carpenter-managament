@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @ViewScoped
@@ -30,6 +31,7 @@ public class InvoiceListBean implements Serializable {
     private InvoiceDto invoiceDto;
     private Long invoiceEmployeeId;
     private Long invoiceClientId;
+    private String amountType;
 
     private List<EmployeeDto> employees;
     private List<ClientDto> clients;
@@ -99,13 +101,34 @@ public class InvoiceListBean implements Serializable {
         return clients;
     }
 
-    public void calculateGrossValue() {
+    public void calculateNetValue() {
         if (invoiceDto.getGrossValue() != null) {
-            BigDecimal grossValue = invoiceDto.getGrossValue();
-            BigDecimal netValue = grossValue.multiply(new BigDecimal(25).divide(new BigDecimal(100)));
-            invoiceDto.setGrossValue(netValue);
-        } else {
+            BigDecimal netValue = invoiceDto.getGrossValue().divide(BigDecimal.valueOf(1.23), RoundingMode.HALF_EVEN).setScale(2, RoundingMode.HALF_EVEN);
+            invoiceDto.setNetValue(netValue);
+        }else {
             invoiceDto.setNetValue(null);
         }
+    }
+
+    public void calculateGrossValue(){
+
+        if (invoiceDto.getNetValue() != null) {
+            BigDecimal grossValue = invoiceDto.getNetValue().add(invoiceDto.getNetValue().multiply(BigDecimal.valueOf(0.23))).setScale(2,RoundingMode.HALF_EVEN);
+            invoiceDto.setGrossValue(grossValue);
+        } else {
+            invoiceDto.setGrossValue(null);
+        }
+    }
+
+    public String[] getAmountTypes() {
+        return new String [] {"Netto", "Brutto"};
+    }
+
+    public String getAmountType() {
+        return amountType;
+    }
+
+    public void setAmountType(String amountType) {
+        this.amountType = amountType;
     }
 }
