@@ -52,29 +52,55 @@
                         </h:selectOneMenu>
                     </div>
                     <div class="form-top">
-                        <label>Stawka VAT</label>
-                        <h:selectOneMenu value="#{invoiceListBean.invoiceDto.vatRate}">
-
-                            <f:selectItem itemLabel="Wybierz..."
-                                          itemValue="#{null}"/>
-
-                            <f:selectItems value="#{invoiceListBean.vatRates}"
-                                           var="v"
-                                           itemLabel="#{v.name()}"
-                                           itemValue="#{v.rate}"/>
-                            <f:converter converterId="javax.faces.BigDecimal"/>
+                        <label>Rodzaj faktury</label>
+                        <h:selectOneMenu id="invoice-type"
+                                         value="#{invoiceListBean.invoiceDto.invoiceType}">
+                            <f:selectItem itemLabel="Wybierz..." itemValue="#{null}"/>
+                            <f:selectItems value="#{invoiceListBean.invoiceTypes}"
+                                           var="it"
+                                           itemLabel="#{it}"
+                                           itemValue="#{it}"/>
                             <f:ajax execute="@this"
-                                    render="invoice-vat-rate-id"
-                                    onevent="showLoader"
-                                    event="change"/>
+                                    render="invoice-vat-rate invoice-nonvat-rate"
+                                    onevent="showLoader"/>
                         </h:selectOneMenu>
+                    </div>
+                    <div jsf:id="invoice-nonvat-rate">
+                        <div class="form-top" jsf:rendered="#{invoiceListBean.invoiceDto.invoiceType eq 'NONE_VAT'}">
+                            <label>Kwota</label>
+                            <h:inputText value="#{invoiceListBean.invoiceDto.netValue}">
+                                <f:converter converterId="javax.faces.BigDecimal"/>
+                                <f:ajax event="change"
+                                        execute="@this"/>
+                            </h:inputText>
+                        </div>
+                    </div>
+                    <div jsf:id="invoice-vat-rate">
+                        <div class="form-top" jsf:rendered="#{invoiceListBean.invoiceDto.invoiceType eq 'VAT'}">
+                            <label>Stawka VAT</label>
+                            <h:selectOneMenu value="#{invoiceListBean.invoiceDto.vatRate}">
+
+                                <f:selectItem itemLabel="Wybierz..."
+                                              itemValue="#{null}"/>
+
+                                <f:selectItems value="#{invoiceListBean.vatRates}"
+                                               var="v"
+                                               itemLabel="#{v.name()}"
+                                               itemValue="#{v.rate}"/>
+                                <f:converter converterId="javax.faces.BigDecimal"/>
+                                <f:ajax execute="@this"
+                                        render="invoice-vat-rate-id"
+                                        onevent="showLoader"
+                                        event="change"/>
+                            </h:selectOneMenu>
+                        </div>
                     </div>
                     <div jsf:id="invoice-vat-rate-id">
                         <div jsf:rendered="#{invoiceListBean.invoiceDto.vatRate ne null}">
                             <div class="form-top">
                                 <label>Kwota na fakturze</label>
                                 <h:selectOneMenu id="invoice-amount-type"
-                                                 value="#{invoiceListBean.amountType}">
+                                                 value="#{invoiceListBean.invoiceDto.invoiceAmountType}">
                                     <f:selectItem itemLabel="Wybierz..."
                                                   value="#{null}"/>
                                     <f:selectItems value="#{invoiceListBean.amountTypes}"
@@ -87,27 +113,29 @@
                                 </h:selectOneMenu>
                             </div>
                             <div jsf:id="invoice-amount-netto-type-id">
-                                <div class="form-top" jsf:rendered="#{invoiceListBean.amountType eq 'Netto'}">
+                                <div class="form-top"
+                                     jsf:rendered="#{invoiceListBean.invoiceDto.invoiceAmountType eq 'NET'}">
                                     <label>Kwota netto</label>
                                     <h:inputText value="#{invoiceListBean.invoiceDto.netValue}">
                                         <f:converter converterId="javax.faces.BigDecimal"/>
                                         <f:ajax event="change"
                                                 delay="300"
                                                 listener="#{invoiceListBean.calculateGrossValue}"
-                                                render="invoice-gross-id invoice-net-id"
+                                                render="invoice-gross-id"
                                                 execute="@this"/>
                                     </h:inputText>
                                 </div>
                             </div>
                             <div jsf:id="invoice-amount-brutto-type-id">
-                                <div class="form-top" jsf:rendered="#{invoiceListBean.amountType eq 'Brutto'}">
+                                <div class="form-top"
+                                     jsf:rendered="#{invoiceListBean.invoiceDto.invoiceAmountType eq 'GROSS'}">
                                     <label>Kwota brutto</label>
                                     <h:inputText value="#{invoiceListBean.invoiceDto.grossValue}">
                                         <f:converter converterId="javax.faces.BigDecimal"/>
                                         <f:ajax event="change"
                                                 delay="300"
                                                 listener="#{invoiceListBean.calculateNetValue}"
-                                                render="invoice-net-id invoice-gross-id"
+                                                render="invoice-net-id"
                                                 execute="@this"/>
                                     </h:inputText>
                                 </div>
@@ -162,6 +190,31 @@
                                     event="change"/>
                         </h:inputTextarea>
                     </div>
+                </div>
+                <h:panelGroup id="validation-messages-container">
+                    <div class="infobox col-danger" jsf:rendered="#{not empty facesContext.messageList}">
+                        <h:messages/>
+                    </div>
+                </h:panelGroup>
+                <div class="modal-footer">
+                    <h:commandLink styleClass="btn col-danger bordered"
+                                   p:data-dismiss="modal"
+                                   p:data-toogle="modal">
+                        <f:ajax event="click"
+                                render="@form add-invoice-form"
+                                listener="#{invoiceListBean.cleanInvoice}"
+                                resetValues="true"/>
+                        <i class="fa fa-times"></i>Anuluj
+                    </h:commandLink>
+                    <h:commandLink type="submit"
+                                   styleClass="btn bordered col-primary"
+                                   p:data-dismiss="modal"
+                                   action="#{invoiceListBean.saveInvoice}">
+                        <f:ajax execute="@form"
+                                resetValues="true"
+                                render="add-invoice-form closeDialogDiv"/>
+                        <i class="fa fa-check"></i>Zapisz
+                    </h:commandLink>
                 </div>
             </h:form>
         </div>

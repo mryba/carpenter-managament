@@ -5,10 +5,13 @@ import com.carpenter.core.control.dto.EmployeeDto;
 import com.carpenter.core.control.dto.InvoiceDto;
 import com.carpenter.core.control.service.client.ClientService;
 import com.carpenter.core.control.service.employee.EmployeeService;
+import com.carpenter.core.entity.dictionaries.invoice.InvoiceAmountType;
 import com.carpenter.core.entity.dictionaries.PaymentType;
-import com.carpenter.core.entity.dictionaries.VatRate;
+import com.carpenter.core.entity.dictionaries.invoice.InvoiceType;
+import com.carpenter.core.entity.dictionaries.invoice.VatRate;
 
 import javax.annotation.PostConstruct;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -35,11 +38,20 @@ public class InvoiceListBean implements Serializable {
     private InvoiceDto invoiceDto;
     private Long invoiceEmployeeId;
     private Long invoiceClientId;
-    private String amountType;
 
     private List<EmployeeDto> employees;
     private List<ClientDto> clients;
 
+    public void cleanInvoice() {
+        invoiceDto = null;
+        invoiceEmployeeId = null;
+        invoiceClientId = null;
+    }
+
+    public void saveInvoice() {
+        InvoiceDto invoiceDto = this.invoiceDto;
+        cleanInvoice();
+    }
 
     @PostConstruct
     public void init() {
@@ -107,40 +119,41 @@ public class InvoiceListBean implements Serializable {
 
     public void calculateNetValue() {
         if (invoiceDto.getGrossValue() != null) {
-            BigDecimal netValue = invoiceDto.getGrossValue().divide(BigDecimal.valueOf(1.23), RoundingMode.HALF_EVEN).setScale(2, RoundingMode.HALF_EVEN);
-            invoiceDto.setNetValue(netValue);
-        }else {
+            if (!invoiceDto.getVatRate().equals(VatRate.ZERO.getRate())) {
+                BigDecimal vatRate = invoiceDto.getVatRate().add(BigDecimal.ONE);
+                BigDecimal netValue = invoiceDto.getGrossValue().divide(vatRate, RoundingMode.HALF_EVEN).setScale(2, RoundingMode.HALF_EVEN);
+                invoiceDto.setNetValue(netValue);
+            }
+        } else {
             invoiceDto.setNetValue(null);
         }
     }
 
-    public void calculateGrossValue(){
+    public void calculateGrossValue() {
 
         if (invoiceDto.getNetValue() != null) {
-            BigDecimal grossValue = invoiceDto.getNetValue().add(invoiceDto.getNetValue().multiply(BigDecimal.valueOf(0.23))).setScale(2,RoundingMode.HALF_EVEN);
+            BigDecimal grossValue =
+                    invoiceDto.getNetValue().add(invoiceDto.getNetValue().multiply(invoiceDto.getVatRate())).setScale(2, RoundingMode.HALF_EVEN);
             invoiceDto.setGrossValue(grossValue);
         } else {
             invoiceDto.setGrossValue(null);
         }
     }
 
-    public String[] getAmountTypes() {
-        return new String [] {"Netto", "Brutto"};
-    }
 
-    public String getAmountType() {
-        return amountType;
-    }
-
-    public void setAmountType(String amountType) {
-        this.amountType = amountType;
+    public InvoiceAmountType[] getAmountTypes() {
+        return InvoiceAmountType.values();
     }
 
     public List<VatRate> getVatRates() {
         return Stream.of(VatRate.values()).collect(Collectors.toList());
     }
 
-    public List<PaymentType> getPaymentTypes (){
+    public List<PaymentType> getPaymentTypes() {
         return Stream.of(PaymentType.values()).collect(Collectors.toList());
+    }
+
+    public InvoiceType[] getInvoiceTypes() {
+        return InvoiceType.values();
     }
 }

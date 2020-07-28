@@ -2,7 +2,8 @@ package com.carpenter.core.entity.invoice;
 
 import com.carpenter.core.entity.DomainObject;
 import com.carpenter.core.entity.client.Client;
-import com.carpenter.core.entity.dictionaries.InvoiceType;
+import com.carpenter.core.entity.dictionaries.invoice.InvoiceAmountType;
+import com.carpenter.core.entity.dictionaries.invoice.InvoiceType;
 import com.carpenter.core.entity.dictionaries.PaymentType;
 import com.carpenter.core.entity.employee.Employee;
 import com.carpenter.utils.ConstantsRegex;
@@ -48,6 +49,9 @@ public class Invoice extends DomainObject {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CLIENT_ID")
     private Client client;
+
+    @Column(name = "INVOICE_AMOUNT_TYPE")
+    private InvoiceAmountType invoiceAmountType;
 
     @Column(name = "NET_VALUE")
     private BigDecimal netValue;

@@ -1,6 +1,7 @@
 package com.carpenter.core.control.dto;
 
-import com.carpenter.core.entity.dictionaries.InvoiceType;
+import com.carpenter.core.entity.dictionaries.invoice.InvoiceAmountType;
+import com.carpenter.core.entity.dictionaries.invoice.InvoiceType;
 import com.carpenter.core.entity.dictionaries.PaymentType;
 import lombok.*;
 
@@ -28,4 +29,5 @@ public class InvoiceDto {
     private BigDecimal vatRate;
     private PaymentType paymentType;
     private LocalDate paymentDue = LocalDate.now().with(TemporalAdjusters.firstDayOfNextMonth());
+    private InvoiceAmountType invoiceAmountType;
 }

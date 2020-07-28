@@ -1,4 +1,4 @@
-package com.carpenter.core.entity.dictionaries;
+package com.carpenter.core.entity.dictionaries.invoice;
 
 import java.math.BigDecimal;
 
