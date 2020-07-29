@@ -5,10 +5,12 @@ import com.carpenter.core.control.dto.EmployeeDto;
 import com.carpenter.core.control.dto.InvoiceDto;
 import com.carpenter.core.control.service.client.ClientService;
 import com.carpenter.core.control.service.employee.EmployeeService;
+import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.entity.dictionaries.invoice.InvoiceAmountType;
 import com.carpenter.core.entity.dictionaries.PaymentType;
 import com.carpenter.core.entity.dictionaries.invoice.InvoiceType;
 import com.carpenter.core.entity.dictionaries.invoice.VatRate;
+import com.carpenter.core.entity.invoice.Invoice;
 
 import javax.annotation.PostConstruct;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -19,6 +21,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -37,6 +40,9 @@ public class InvoiceListBean implements Serializable {
     @Inject
     ClientService clientService;
 
+    @Inject
+    PrincipalBean principalBean;
+
     private InvoiceDto invoiceDto;
     private Long invoiceEmployeeId;
     private Long invoiceClientId;
@@ -52,6 +58,12 @@ public class InvoiceListBean implements Serializable {
 
     public void saveInvoice() {
         InvoiceDto invoiceDto = this.invoiceDto;
+        invoiceDto.setDateOfInvoice(new Date());
+
+        Invoice invoice = invoiceService.createInvoice(invoiceDto);
+        invoice.setCreateDate(new Date());
+        invoice.setCreateBy(principalBean.getLoggedUser().getEmail());
+
         cleanInvoice();
     }
 

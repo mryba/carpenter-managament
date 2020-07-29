@@ -18,7 +18,7 @@
             <h:form id="add-invoice-form" prependId="false">
                 <div class="modal-content">
                     <div class="form-top">
-                        <label>Wystawia</label>
+                        <label>Wystawca</label>
                         <h:selectOneMenu id="invoice-employee"
                                          value="#{invoiceListBean.invoiceEmployeeId}">
                             <f:selectItem itemLabel="Wybierz..." itemValue="#{null}"/>
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                     <div class="form-top">
-                        <label>Komu</label>
+                        <label>Nabywca</label>
                         <h:selectOneMenu id="invoice-client"
                                          value="#{invoiceListBean.invoiceClientId}">
                             <f:selectItem itemLabel="Wybierz..." itemValue="#{null}"/>

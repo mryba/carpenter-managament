@@ -18,8 +18,10 @@ public class InvoiceService implements Serializable {
     @Inject
     private InvoiceRepository invoiceRepository;
 
+    private InvoiceMapper invoiceMapper;
+
     public List<InvoiceDto> getAllInvoices() {
-        InvoiceMapper invoiceMapper = new InvoiceMapper();
+        invoiceMapper = new InvoiceMapper();
 
         List<Invoice> allInvoices = invoiceRepository.findAllInvoices();
         return allInvoices.stream().map(invoiceMapper::mapToDomain).collect(Collectors.toList());
@@ -34,5 +36,11 @@ public class InvoiceService implements Serializable {
             return in;
         }
         return null;
+    }
+
+    public Invoice createInvoice(InvoiceDto invoiceDto) {
+        invoiceMapper = new InvoiceMapper();
+        return invoiceMapper.mapFromDomain(invoiceDto);
+
     }
 }

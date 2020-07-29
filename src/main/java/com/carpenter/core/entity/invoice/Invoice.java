@@ -9,8 +9,7 @@ import com.carpenter.core.entity.dictionaries.PaymentType;
 import com.carpenter.core.entity.dictionaries.invoice.VatRate;
 import com.carpenter.core.entity.employee.Employee;
 import com.carpenter.utils.ConstantsRegex;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -25,6 +24,9 @@ import java.util.Objects;
 @Access(AccessType.FIELD)
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @NamedQueries({
         @NamedQuery(
                 name = "Invoice.findAllInvoices",
