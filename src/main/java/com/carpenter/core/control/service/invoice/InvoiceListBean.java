@@ -18,7 +18,9 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -103,10 +105,28 @@ public class InvoiceListBean implements Serializable {
         if (invoiceDto != null && invoiceDto.getEmployeeDto() != null) {
 
             Long employeeId = invoiceDto.getEmployeeDto().getId();
-
+            InvoiceNumber newInvoiceNumber;
             InvoiceNumber invoiceNumber = invoiceService.getEmployeeLastInvoiceNumber(employeeId);
+            int year = LocalDate.now().getYear();
             if (invoiceNumber != null) {
-                return invoiceNumber;
+
+                Integer invoiceLastYear = invoiceNumber.getYear();
+                if (invoiceLastYear.equals(year)) {
+
+                    Integer number = invoiceNumber.getNumber();
+                    Integer newNumber = number + 1;
+                    newInvoiceNumber = new InvoiceNumber(newNumber, year);
+                    invoiceDto.setNumberOfInvoice(newInvoiceNumber.numberOfInvoice());
+                    return newInvoiceNumber;
+                } else {
+                    newInvoiceNumber = new InvoiceNumber(1, year);
+                    invoiceDto.setNumberOfInvoice(newInvoiceNumber.numberOfInvoice());
+                    return invoiceNumber;
+                }
+            } else {
+                newInvoiceNumber = new InvoiceNumber(1, year);
+                invoiceDto.setNumberOfInvoice(newInvoiceNumber.numberOfInvoice());
+                return newInvoiceNumber;
             }
         }
         return null;
@@ -155,4 +175,5 @@ public class InvoiceListBean implements Serializable {
     public InvoiceType[] getInvoiceTypes() {
         return InvoiceType.values();
     }
+
 }

@@ -29,6 +29,11 @@
             <base-name>CommonMessages</base-name>
             <var>common_msg</var>
         </resource-bundle>
+
+        <resource-bundle>
+            <base-name>InvoiceMessages</base-name>
+            <var>invoice_msg</var>
+        </resource-bundle>
     </application>
 </faces-config>
 

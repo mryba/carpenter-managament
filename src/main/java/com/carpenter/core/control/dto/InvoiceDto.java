@@ -18,6 +18,7 @@ import java.util.Date;
 public class InvoiceDto {
 
     private Long id;
+    private String numberOfInvoice;
     private EmployeeDto employeeDto;
     private ClientDto clientDto;
     private BigDecimal netValue;

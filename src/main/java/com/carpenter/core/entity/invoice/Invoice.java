@@ -1,10 +1,12 @@
 package com.carpenter.core.entity.invoice;
 
+import com.carpenter.core.control.service.invoice.InvoiceNumber;
 import com.carpenter.core.entity.DomainObject;
 import com.carpenter.core.entity.client.Client;
 import com.carpenter.core.entity.dictionaries.invoice.InvoiceAmountType;
 import com.carpenter.core.entity.dictionaries.invoice.InvoiceType;
 import com.carpenter.core.entity.dictionaries.PaymentType;
+import com.carpenter.core.entity.dictionaries.invoice.VatRate;
 import com.carpenter.core.entity.employee.Employee;
 import com.carpenter.utils.ConstantsRegex;
 import lombok.Getter;

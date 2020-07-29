@@ -12,4 +12,8 @@ import lombok.Setter;
 public class InvoiceNumber {
     private Integer number;
     private Integer year;
+
+    public String numberOfInvoice() {
+        return number + "/" + year;
+    }
 }

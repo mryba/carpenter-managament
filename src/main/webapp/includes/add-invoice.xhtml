@@ -28,42 +28,48 @@
                                     itemLabel="#{e.firstName} #{e.lastName}"
                                     itemValue="#{e.id}"/>
                             <f:ajax event="change"
-                                    render="invoice-number-id invoice-employee-data"
-                                    execute="@this"/>
+                                    render="invoice-employee-data"
+                                    execute="@this"
+                                    onevent="showLoader"/>
                         </h:selectOneMenu>
                     </div>
                     <div class="form-top" jsf:id="invoice-employee-data">
 
                         <div class="infobox col-info" jsf:rendered="#{not empty invoiceListBean.invoiceEmployeeId}">
-                            <strong> Imię i nazwisko :   #{invoiceListBean.invoiceDto.employeeDto.firstName} #{invoiceListBean.invoiceDto.employeeDto.lastName}
+                            <p> Numer faktury:
+                                <strong>#{invoiceListBean.invoiceNumber.number}/#{invoiceListBean.invoiceNumber.year}</strong>
                                 <br/>
                                 Numer rachunku:
-                                #{invoiceListBean.invoiceDto.employeeDto.bankAccountNumber} <br/>
-                                NIP: #{invoiceListBean.invoiceDto.employeeDto.nipNumber} <br/>
-                            </strong>
+                                <strong>#{invoiceListBean.invoiceDto.employeeDto.bankAccountNumber} </strong>
 
-                        </div>
-                    </div>
-                    <div jsf:id="invoice-number-id">
-                        <div class="form-top"
-                             jsf:rendered="#{invoiceListBean.invoiceNumber ne null}">
-                            <h:outputLabel
-                                    value="#{invoiceListBean.invoiceNumber.number} - #{invoiceListBean.invoiceNumber.year}">
-                            </h:outputLabel>
+                            </p>
                         </div>
                     </div>
                     <div class="form-top">
                         <label>Komu</label>
                         <h:selectOneMenu id="invoice-client"
                                          value="#{invoiceListBean.invoiceClientId}">
+                            <f:selectItem itemLabel="Wybierz..." itemValue="#{null}"/>
                             <f:selectItems
                                     value="#{invoiceListBean.clientList}"
                                     var="c"
                                     itemLabel="#{c.name}"
                                     itemValue="#{c.id}"/>
                             <f:ajax event="change"
-                                    execute="@this"/>
+                                    render="invoice-client-data"
+                                    execute="@this"
+                                    onevent="showLoader"/>
                         </h:selectOneMenu>
+                    </div>
+                    <div class="form-top" jsf:id="invoice-client-data">
+
+                        <div class="infobox col-info" jsf:rendered="#{not empty invoiceListBean.invoiceClientId}">
+                            <p>
+                                Numer rachunku:
+                                <strong>#{invoiceListBean.invoiceDto.clientDto.bankAccountNumber} </strong>
+
+                            </p>
+                        </div>
                     </div>
                     <div class="form-top">
                         <label>Rodzaj faktury</label>
@@ -72,7 +78,7 @@
                             <f:selectItem itemLabel="Wybierz..." itemValue="#{null}"/>
                             <f:selectItems value="#{invoiceListBean.invoiceTypes}"
                                            var="it"
-                                           itemLabel="#{it}"
+                                           itemLabel="#{invoice_msg['invoice-type-'.concat(it.name())]}"
                                            itemValue="#{it}"/>
                             <f:ajax execute="@this"
                                     render="invoice-vat-rate invoice-nonvat-rate"
@@ -99,7 +105,7 @@
 
                                 <f:selectItems value="#{invoiceListBean.vatRates}"
                                                var="v"
-                                               itemLabel="#{v.name()}"
+                                               itemLabel="#{invoice_msg['invoice-vat-rate-'.concat(v.name())]}"
                                                itemValue="#{v.rate}"/>
                                 <f:converter converterId="javax.faces.BigDecimal"/>
                                 <f:ajax execute="@this"
@@ -119,7 +125,7 @@
                                                   value="#{null}"/>
                                     <f:selectItems value="#{invoiceListBean.amountTypes}"
                                                    var="it"
-                                                   itemLabel="#{it}"
+                                                   itemLabel="#{invoice_msg['invoice-amount-'.concat(it.name())]}"
                                                    itemValue="#{it}"/>
                                     <f:ajax execute="@this"
                                             render="invoice-amount-brutto-type-id invoice-amount-netto-type-id invoice-net-id invoice-gross-id"
@@ -133,10 +139,10 @@
                                     <h:inputText value="#{invoiceListBean.invoiceDto.netValue}">
                                         <f:converter converterId="javax.faces.BigDecimal"/>
                                         <f:ajax event="change"
-                                                delay="300"
+                                                execute="@this"
                                                 listener="#{invoiceListBean.calculateGrossValue}"
                                                 render="invoice-gross-id"
-                                                execute="@this"/>
+                                                onevent="showLoader()"/>
                                     </h:inputText>
                                 </div>
                             </div>
@@ -174,7 +180,7 @@
                             <f:selectItem itemLabel="Wybierz" itemValue="#{null}"/>
                             <f:selectItems value="#{invoiceListBean.paymentTypes}"
                                            var="pt"
-                                           itemLabel="#{pt}"
+                                           itemLabel="#{invoice_msg['invoice-payment-'.concat(pt.name())]}"
                                            itemValue="#{pt}">
                             </f:selectItems>
                             <f:ajax execute="@this"
