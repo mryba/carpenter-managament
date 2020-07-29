@@ -108,7 +108,7 @@
                                                    itemLabel="#{it}"
                                                    itemValue="#{it}"/>
                                     <f:ajax execute="@this"
-                                            render="invoice-amount-brutto-type-id invoice-amount-netto-type-id"
+                                            render="invoice-amount-brutto-type-id invoice-amount-netto-type-id invoice-net-id invoice-gross-id"
                                             onevent="showLoader"/>
                                 </h:selectOneMenu>
                             </div>
@@ -141,12 +141,12 @@
                                 </div>
                             </div>
                             <div class="form-top" jsf:id="invoice-net-id">
-                                <h:outputLabel rendered="#{invoiceListBean.invoiceDto.grossValue ne null}"
+                                <h:outputLabel rendered="#{invoiceListBean.invoiceDto.grossValue ne null and invoiceListBean.invoiceDto.invoiceAmountType eq 'GROSS'}"
                                                value="Kwota netto: #{invoiceListBean.invoiceDto.netValue}zł"/>
 
                             </div>
                             <div class="form-top" jsf:id="invoice-gross-id">
-                                <h:outputLabel rendered="#{invoiceListBean.invoiceDto.netValue ne null}"
+                                <h:outputLabel rendered="#{invoiceListBean.invoiceDto.netValue ne null and invoiceListBean.invoiceDto.invoiceAmountType eq 'NET'}"
                                                value="Kwota brutto: #{invoiceListBean.invoiceDto.grossValue}zł"/>
 
                             </div>
