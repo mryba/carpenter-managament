@@ -6,7 +6,8 @@
      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
      xmlns:f="http://xmlns.jcp.org/jsf/core"
      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-     xmlns:jsf="http://xmlns.jcp.org/jsf">
+     xmlns:jsf="http://xmlns.jcp.org/jsf"
+     data-backdrop="static">
 
 
     <div>
@@ -20,15 +21,28 @@
                         <label>Wystawia</label>
                         <h:selectOneMenu id="invoice-employee"
                                          value="#{invoiceListBean.invoiceEmployeeId}">
+                            <f:selectItem itemLabel="Wybierz..." itemValue="#{null}"/>
                             <f:selectItems
                                     value="#{invoiceListBean.employeesList}"
                                     var="e"
                                     itemLabel="#{e.firstName} #{e.lastName}"
                                     itemValue="#{e.id}"/>
                             <f:ajax event="change"
-                                    render="invoice-number-id"
+                                    render="invoice-number-id invoice-employee-data"
                                     execute="@this"/>
                         </h:selectOneMenu>
+                    </div>
+                    <div class="form-top" jsf:id="invoice-employee-data">
+
+                        <div class="infobox col-info" jsf:rendered="#{not empty invoiceListBean.invoiceEmployeeId}">
+                            <strong> Imię i nazwisko :   #{invoiceListBean.invoiceDto.employeeDto.firstName} #{invoiceListBean.invoiceDto.employeeDto.lastName}
+                                <br/>
+                                Numer rachunku:
+                                #{invoiceListBean.invoiceDto.employeeDto.bankAccountNumber} <br/>
+                                NIP: #{invoiceListBean.invoiceDto.employeeDto.nipNumber} <br/>
+                            </strong>
+
+                        </div>
                     </div>
                     <div jsf:id="invoice-number-id">
                         <div class="form-top"
@@ -141,13 +155,15 @@
                                 </div>
                             </div>
                             <div class="form-top" jsf:id="invoice-net-id">
-                                <h:outputLabel rendered="#{invoiceListBean.invoiceDto.grossValue ne null and invoiceListBean.invoiceDto.invoiceAmountType eq 'GROSS'}"
-                                               value="Kwota netto: #{invoiceListBean.invoiceDto.netValue}zł"/>
+                                <h:outputLabel
+                                        rendered="#{invoiceListBean.invoiceDto.grossValue ne null and invoiceListBean.invoiceDto.invoiceAmountType eq 'GROSS'}"
+                                        value="Kwota netto: #{invoiceListBean.invoiceDto.netValue}zł"/>
 
                             </div>
                             <div class="form-top" jsf:id="invoice-gross-id">
-                                <h:outputLabel rendered="#{invoiceListBean.invoiceDto.netValue ne null and invoiceListBean.invoiceDto.invoiceAmountType eq 'NET'}"
-                                               value="Kwota brutto: #{invoiceListBean.invoiceDto.grossValue}zł"/>
+                                <h:outputLabel
+                                        rendered="#{invoiceListBean.invoiceDto.netValue ne null and invoiceListBean.invoiceDto.invoiceAmountType eq 'NET'}"
+                                        value="Kwota brutto: #{invoiceListBean.invoiceDto.grossValue}zł"/>
 
                             </div>
                         </div>
