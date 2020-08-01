@@ -14,6 +14,7 @@ import org.apache.pdfbox.pdmodel.graphics.color.PDColor;
 import org.apache.pdfbox.pdmodel.graphics.color.PDDeviceRGB;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationTextMarkup;
+import org.jboss.security.xacml.jaxb.PDP;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -95,7 +96,7 @@ public class PdfService implements Serializable {
             float bottomMargin = 70;
 
 // y position is your coordinate of top left corner of the table
-            float yPosition = 550;
+            float yPosition = 600;
 
             BaseTable table = new BaseTable(yPosition, yStartNewPage, bottomMargin, tableWidth, margin, document, page, true, drawContent);
 
@@ -103,15 +104,21 @@ public class PdfService implements Serializable {
 //            Cell<PDPage> cell = headerRow.createCell(100, "Header");
 //            table.addHeaderRow(headerRow);
 
-            Row<PDPage> row = table.createRow(12);
-            row.createCell(5, "LP").setFont(PDType1Font.HELVETICA_BOLD);
-            row.createCell(20, "Nazwa");
-            row.createCell(5, "Ilosc");
-            row.createCell(7, "J.m");
-            row.createCell(15, "Wartosc netto");
-            row.createCell(5, "Vat[%]");
-            row.createCell(15, "Kwota Vat");
-            row.createCell(15, "Wartosc brutto");
+            Row<PDPage> headerRow = table.createRow(15f);
+            headerRow.createCell(5, "LP").setFont(PDType1Font.HELVETICA_BOLD);
+            headerRow.createCell(26, "Nazwa");
+            headerRow.createCell(5, "Ilosc");
+            headerRow.createCell(5, "J.m");
+            headerRow.createCell(17, "Wartosc netto");
+            headerRow.createCell(8, "Vat [%]");
+            headerRow.createCell(17, "Kwota Vat");
+            headerRow.createCell(17, "Wartosc brutto");
+
+
+            table.addHeaderRow(headerRow);
+
+            Row<PDPage> row = table.createRow(15f);
+            row.createCell(5, "99");
 
             table.draw();
 
