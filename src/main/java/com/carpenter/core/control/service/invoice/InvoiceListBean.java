@@ -3,6 +3,7 @@ package com.carpenter.core.control.service.invoice;
 import com.carpenter.core.control.dto.ClientDto;
 import com.carpenter.core.control.dto.EmployeeDto;
 import com.carpenter.core.control.dto.InvoiceDto;
+import com.carpenter.core.control.pdf.PdfService;
 import com.carpenter.core.control.service.client.ClientService;
 import com.carpenter.core.control.service.employee.EmployeeService;
 import com.carpenter.core.control.service.login.PrincipalBean;
@@ -43,6 +44,9 @@ public class InvoiceListBean implements Serializable {
     @Inject
     PrincipalBean principalBean;
 
+    @Inject
+    PdfService pdfService;
+
     private InvoiceDto invoiceDto;
     private Long invoiceEmployeeId;
     private Long invoiceClientId;
@@ -57,21 +61,16 @@ public class InvoiceListBean implements Serializable {
     }
 
     public void saveInvoice() {
-        invoiceDto.setDateOfInvoice(new Date());
-
         Invoice invoice = invoiceService.createInvoice(invoiceDto);
         invoice.setCreateDate(new Date());
         invoice.setCreateBy(principalBean.getLoggedUser().getEmail());
 
         Client client = clientService.getClientById(invoiceClientId);
         client.addInvoice(invoice);
-
         invoice.setClient(client);
 
         Employee employee = employeeService.getEmployeeById(invoiceEmployeeId);
         employee.addInvoice(invoice);
-//        employeeService.saveEmployee(employee);
-
         invoice.setEmployee(employee);
 
         invoiceService.saveNewInvoice(invoice);
@@ -104,7 +103,13 @@ public class InvoiceListBean implements Serializable {
         employees.stream()
                 .filter(e -> e.getId().equals(invoiceEmployeeId))
                 .findFirst()
-                .ifPresent(e -> invoiceDto.setEmployeeId(e.getId()));
+                .ifPresent(e -> {
+                    invoiceDto.setEmployeeId(e.getId());
+                    invoiceDto.setEmployeeFirstName(e.getFirstName());
+                    invoiceDto.setEmployeeLastName(e.getLastName());
+                    invoiceDto.setEmployeeNipNumber(e.getNipNumber());
+                    invoiceDto.setEmployeeAccountNumber(e.getBankAccountNumber());
+                });
     }
 
     public Long getInvoiceClientId() {
@@ -115,7 +120,12 @@ public class InvoiceListBean implements Serializable {
         this.invoiceClientId = invoiceClientId;
         clients.stream().filter(c -> c.getId().equals(invoiceClientId))
                 .findFirst()
-                .ifPresent(c -> invoiceDto.setClientId(c.getId()));
+                .ifPresent(c -> {
+                    invoiceDto.setClientId(c.getId());
+                    invoiceDto.setClientName(c.getName());
+                    invoiceDto.setClientAccountNumber(c.getBankAccountNumber());
+                    invoiceDto.setClientNipNumber(c.getNip());
+                });
     }
 
     public List<EmployeeDto> getEmployeesList() {
@@ -143,7 +153,7 @@ public class InvoiceListBean implements Serializable {
                 } else {
                     newInvoiceNumber = new InvoiceNumber(1, year);
                     invoiceDto.setNumberOfInvoice(newInvoiceNumber.numberOfInvoice());
-                    return invoiceNumber;
+                    return newInvoiceNumber;
                 }
             } else {
                 newInvoiceNumber = new InvoiceNumber(1, year);

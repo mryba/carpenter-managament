@@ -39,10 +39,10 @@
                             <tr>
                                 <th class="w10">Kto wystawił</th>
                                 <th class="w10">Komu wystawił</th>
-                                <th class="w10">Komu wystawił</th>
                                 <th class="w5">Numer faktury</th>
                                 <th class="w5">Data wystawienia</th>
-                                <th class="w10">Wartość Netto/Brutto</th>
+                                <th class="w5">Wartość Netto</th>
+                                <th class="w5">Wartość Brutto</th>
                                 <th class="w5">Stawka VAT</th>
                                 <th class="w15">Opis</th>
                             </tr>
@@ -52,22 +52,28 @@
                                        var="i">
                                 <tr>
                                     <td class="w10">
-                                        #{i.employeeFirstName} #{i.employeeLastName}
+                                        <h4> #{i.employeeFirstName} #{i.employeeLastName}</h4>
                                     </td>
                                     <td class="w10">
                                         #{i.clientName}
                                     </td>
                                     <td class="w5">
-                                        #{i.numberOfInvoice}
+                                        <h4> #{i.numberOfInvoice}</h4>
                                     </td>
                                     <td class="w5">
-                                        #{i.dateOfInvoice}
-                                    </td>
-                                    <td class="w10">
-                                        #{i.netValue} / #{i.grossValue}
+                                        <h:outputFormat value="{0,date,d.MM.yyyy}">
+                                            <f:param value="#{i.createDate}"/>
+                                        </h:outputFormat>
+
                                     </td>
                                     <td class="w5">
-                                        #{i.vatRate}
+                                        <h4> #{i.netValue} #{not empty i.netValue ? 'zł' : ''} </h4>
+                                    </td>
+                                    <td class="w5">
+                                        <h4>  #{i.grossValue} #{not empty i.grossValue ? 'zł' : ''}</h4>
+                                    </td>
+                                    <td class="w5">
+                                        #{invoice_msg['invoice-vat-rate-'.concat(i.of(i.vatRate))]}
                                     </td>
                                     <td class="w15">
                                         #{i.description}

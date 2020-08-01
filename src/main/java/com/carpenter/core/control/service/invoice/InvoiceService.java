@@ -30,10 +30,9 @@ public class InvoiceService implements Serializable {
     public InvoiceNumber getEmployeeLastInvoiceNumber(Long employeeId) {
         String invoiceNumber = invoiceRepository.findLastEmployeeInvoiceNumber(employeeId);
         if (invoiceNumber != null) {
-            String[] splitedInvoiceNumber = invoiceNumber.split("/");
-            InvoiceNumber in =
-                    new InvoiceNumber(Integer.valueOf(splitedInvoiceNumber[0]), Integer.valueOf(splitedInvoiceNumber[1]));
-            return in;
+            String[] spitedInvoiceNumber = invoiceNumber.split("/");
+            return new InvoiceNumber(Integer.valueOf(spitedInvoiceNumber[0]), Integer.valueOf(spitedInvoiceNumber[1]));
+
         }
         return null;
     }

@@ -32,7 +32,7 @@ import java.util.Objects;
         ),
         @NamedQuery(
                 name = "Invoice.findLastEmployeeInvoice",
-                query = "SELECT i.numberOfInvoice FROM Invoice i WHERE i.employee.id =:employeeId ORDER BY i.createDate"
+                query = "SELECT i.numberOfInvoice FROM Invoice i WHERE i.employee.id =:employeeId ORDER BY i.createDate DESC"
         )
 })
 public class Invoice extends DomainObject {
@@ -66,10 +66,6 @@ public class Invoice extends DomainObject {
     @Enumerated(value = EnumType.STRING)
     private InvoiceType invoiceType;
 
-    @Past
-    @Column(name = "DATE_OF_INVOICE")
-    private Date dateOfInvoice;
-
     @Column(name = "VAT_RATE")
     private BigDecimal vatRate;
 
@@ -95,7 +91,6 @@ public class Invoice extends DomainObject {
                 Objects.equals(netValue, invoice.netValue) &&
                 Objects.equals(grossValue, invoice.grossValue) &&
                 invoiceType == invoice.invoiceType &&
-                Objects.equals(dateOfInvoice, invoice.dateOfInvoice) &&
                 Objects.equals(vatRate, invoice.vatRate) &&
                 paymentType == invoice.paymentType &&
                 Objects.equals(paymentDue, invoice.paymentDue) &&
@@ -104,6 +99,6 @@ public class Invoice extends DomainObject {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), numberOfInvoice, employee, client, netValue, grossValue, invoiceType, dateOfInvoice, vatRate, paymentType, paymentDue, description);
+        return Objects.hash(super.hashCode(), numberOfInvoice, employee, client, netValue, grossValue, invoiceType, vatRate, paymentType, paymentDue, description);
     }
 }

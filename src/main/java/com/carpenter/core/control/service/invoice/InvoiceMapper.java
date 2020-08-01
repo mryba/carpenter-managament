@@ -15,18 +15,19 @@ public class InvoiceMapper implements Mapper<Invoice, InvoiceDto> {
 
     @Override
     public Invoice mapFromDomain(InvoiceDto invoiceDto) {
-        return Invoice.builder()
+        Invoice invoice = Invoice.builder()
                 .numberOfInvoice(invoiceDto.getNumberOfInvoice())
                 .invoiceAmountType(invoiceDto.getInvoiceAmountType() != null ? invoiceDto.getInvoiceAmountType() : InvoiceAmountType.NONE)
                 .netValue(invoiceDto.getNetValue())
                 .grossValue(invoiceDto.getGrossValue())
                 .invoiceType(invoiceDto.getInvoiceType())
-                .dateOfInvoice(invoiceDto.getDateOfInvoice())
                 .vatRate(invoiceDto.getVatRate())
                 .paymentType(invoiceDto.getPaymentType())
                 .paymentDue(Date.from(invoiceDto.getPaymentDue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()))
                 .description(invoiceDto.getDescription())
                 .build();
+        invoice.setCreateDate(invoiceDto.getCreateDate());
+        return invoice;
     }
 
     @Override
@@ -43,10 +44,11 @@ public class InvoiceMapper implements Mapper<Invoice, InvoiceDto> {
                 .clientNipNumber(invoice.getClient().getNip())
                 .clientAccountNumber(invoice.getClient().getBankAccountNumber())
                 .invoiceAmountType(invoice.getInvoiceAmountType())
+                .numberOfInvoice(invoice.getNumberOfInvoice())
                 .netValue(invoice.getNetValue())
                 .grossValue(invoice.getGrossValue())
                 .invoiceType(invoice.getInvoiceType())
-                .dateOfInvoice(invoice.getDateOfInvoice())
+                .createDate(invoice.getCreateDate())
                 .vatRate(invoice.getVatRate())
                 .paymentType(invoice.getPaymentType())
                 .paymentDue(invoice.getPaymentDue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
