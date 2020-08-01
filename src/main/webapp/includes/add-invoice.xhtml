@@ -18,9 +18,11 @@
             <h:form id="add-invoice-form" prependId="false">
                 <div class="modal-content">
                     <div class="form-top">
-                        <label>Wystawca</label>
+                        <label for="invoice-employee">Wystawca</label>
                         <h:selectOneMenu id="invoice-employee"
-                                         value="#{invoiceListBean.invoiceEmployeeId}">
+                                         value="#{invoiceListBean.invoiceEmployeeId}"
+                                         required="true"
+                                         requiredMessage="Proszę wybrać wystawcę">
                             <f:selectItem itemLabel="Wybierz..." itemValue="#{null}"/>
                             <f:selectItems
                                     value="#{invoiceListBean.employeesList}"
@@ -32,6 +34,7 @@
                                     execute="@this"
                                     onevent="showLoader"/>
                         </h:selectOneMenu>
+                        <h:message for="invoice-employee" styleClass="form-msg col-danger"/>
                     </div>
                     <div class="form-top" jsf:id="invoice-employee-data">
 
@@ -46,9 +49,11 @@
                         </div>
                     </div>
                     <div class="form-top">
-                        <label>Nabywca</label>
+                        <label for="invoice-client">Nabywca</label>
                         <h:selectOneMenu id="invoice-client"
-                                         value="#{invoiceListBean.invoiceClientId}">
+                                         value="#{invoiceListBean.invoiceClientId}"
+                                         required="true"
+                                         requiredMessage="Proszę wybrać nabywcę">
                             <f:selectItem itemLabel="Wybierz..." itemValue="#{null}"/>
                             <f:selectItems
                                     value="#{invoiceListBean.clientList}"
@@ -60,6 +65,7 @@
                                     execute="@this"
                                     onevent="showLoader"/>
                         </h:selectOneMenu>
+                        <h:message for="invoice-client" styleClass="form-msg col-danger"/>
                     </div>
                     <div class="form-top" jsf:id="invoice-client-data">
 
@@ -72,9 +78,11 @@
                         </div>
                     </div>
                     <div class="form-top">
-                        <label>Rodzaj faktury</label>
+                        <label for="invoice-type">Rodzaj faktury</label>
                         <h:selectOneMenu id="invoice-type"
-                                         value="#{invoiceListBean.invoiceDto.invoiceType}">
+                                         value="#{invoiceListBean.invoiceDto.invoiceType}"
+                                         required="true"
+                                         requiredMessage="Proszę wybrać rodzaj faktury">
                             <f:selectItem itemLabel="Wybierz..." itemValue="#{null}"/>
                             <f:selectItems value="#{invoiceListBean.invoiceTypes}"
                                            var="it"
@@ -84,21 +92,33 @@
                                     render="invoice-vat-rate invoice-nonvat-rate"
                                     onevent="showLoader"/>
                         </h:selectOneMenu>
+                        <h:message for="invoice-type" styleClass="form-msg col-danger"/>
                     </div>
                     <div jsf:id="invoice-nonvat-rate">
                         <div class="form-top" jsf:rendered="#{invoiceListBean.invoiceDto.invoiceType eq 'NONE_VAT'}">
-                            <label>Kwota</label>
-                            <h:inputText value="#{invoiceListBean.invoiceDto.netValue}">
+                            <label for="add-invoice-amount-id">Kwota</label>
+                            <h:inputText id="add-invoice-amount-id"
+                                         value="#{invoiceListBean.invoiceDto.netValue}"
+                                         required="true"
+                                         requiredMessage="Pole kwoty nie może być pustę"
+                                         converterMessage="Polę może zawierać tylko liczby"
+                                         validatorMessage="Proszę wprowadzić wartość większą od 0">
+                                <f:validateLength minimum="0" maximum="7"/>
+                                <f:validateDoubleRange minimum="0.1"/>
                                 <f:converter converterId="javax.faces.BigDecimal"/>
                                 <f:ajax event="change"
                                         execute="@this"/>
                             </h:inputText>
+                            <h:message for="add-invoice-amount-id" styleClass="form-msg col-danger"/>
                         </div>
                     </div>
                     <div jsf:id="invoice-vat-rate">
                         <div class="form-top" jsf:rendered="#{invoiceListBean.invoiceDto.invoiceType eq 'VAT'}">
-                            <label>Stawka VAT</label>
-                            <h:selectOneMenu value="#{invoiceListBean.invoiceDto.vatRate}">
+                            <label for="add-invoice-vat-rate">Stawka VAT</label>
+                            <h:selectOneMenu id="add-invoice-vat-rate"
+                                             value="#{invoiceListBean.invoiceDto.vatRate}"
+                                             required="true"
+                                             requiredMessage="Proszę wybrać stawkę VAT">
 
                                 <f:selectItem itemLabel="Wybierz..."
                                               itemValue="#{null}"/>
@@ -113,14 +133,17 @@
                                         onevent="showLoader"
                                         event="change"/>
                             </h:selectOneMenu>
+                            <h:message for="add-invoice-vat-rate" styleClass="form-msg col-danger"/>
                         </div>
                     </div>
                     <div jsf:id="invoice-vat-rate-id">
                         <div jsf:rendered="#{invoiceListBean.invoiceDto.vatRate ne null}">
                             <div class="form-top">
-                                <label>Kwota na fakturze</label>
+                                <label for="invoice-amount-type">Kwota na fakturze</label>
                                 <h:selectOneMenu id="invoice-amount-type"
-                                                 value="#{invoiceListBean.invoiceDto.invoiceAmountType}">
+                                                 value="#{invoiceListBean.invoiceDto.invoiceAmountType}"
+                                                 required="true"
+                                                 requiredMessage="Proszę wybrać rodzaj kwoty na fakturzę">
                                     <f:selectItem itemLabel="Wybierz..."
                                                   value="#{null}"/>
                                     <f:selectItems value="#{invoiceListBean.amountTypes}"
@@ -131,12 +154,20 @@
                                             render="invoice-amount-brutto-type-id invoice-amount-netto-type-id invoice-net-id invoice-gross-id"
                                             onevent="showLoader"/>
                                 </h:selectOneMenu>
+                                <h:message for="invoice-amount-type" styleClass="form-msg col-danger"/>
                             </div>
                             <div jsf:id="invoice-amount-netto-type-id">
                                 <div class="form-top"
                                      jsf:rendered="#{invoiceListBean.invoiceDto.invoiceAmountType eq 'NET'}">
-                                    <label>Kwota netto</label>
-                                    <h:inputText value="#{invoiceListBean.invoiceDto.netValue}">
+                                    <label for="invoice-net-input-id">Kwota netto</label>
+                                    <h:inputText id="invoice-net-input-id"
+                                                 value="#{invoiceListBean.invoiceDto.netValue}"
+                                                 required="true"
+                                                 requiredMessage="Pole 'KWOTA NETTO' nie może być pustę"
+                                                 converterMessage="Pole może zawierać tylko liczby"
+                                                 validatorMessage="Proszę wprowadzić wartość większą od 0">
+                                        <f:validateLength minimum="0" maximum="7"/>
+                                        <f:validateDoubleRange minimum="0.1"/>
                                         <f:converter converterId="javax.faces.BigDecimal"/>
                                         <f:ajax event="change"
                                                 execute="@this"
@@ -144,21 +175,28 @@
                                                 render="invoice-gross-id"
                                                 onevent="showLoader()"/>
                                     </h:inputText>
+                                    <h:message for="invoice-net-input-id" styleClass="form-msg col-danger"/>
                                 </div>
                             </div>
                             <div jsf:id="invoice-amount-brutto-type-id">
                                 <div class="form-top"
                                      jsf:rendered="#{invoiceListBean.invoiceDto.invoiceAmountType eq 'GROSS'}">
-                                    <label>Kwota brutto</label>
-                                    <h:inputText value="#{invoiceListBean.invoiceDto.grossValue}">
+                                    <label for="invoice-brutto-id">Kwota brutto</label>
+                                    <h:inputText id="invoice-brutto-id" value="#{invoiceListBean.invoiceDto.grossValue}"
+                                                 required="true"
+                                                 requiredMessage="Pole 'KWOTA BRUTTO' nie może być pustę"
+                                                 converterMessage="Pole może zawierać tylko liczby"
+                                                 validatorMessage="Proszę wprowadzić wartość większą od 0">
+                                        <f:validateLength minimum="0" maximum="7"/>
+                                        <f:validateDoubleRange minimum="0.1"/>
                                         <f:converter converterId="javax.faces.BigDecimal"/>
                                         <f:ajax event="change"
-                                                delay="300"
                                                 listener="#{invoiceListBean.calculateNetValue}"
                                                 render="invoice-net-id"
                                                 execute="@this"/>
                                     </h:inputText>
                                 </div>
+                                <h:message for="invoice-brutto-id" styleClass="form-msg col-danger"/>
                             </div>
                             <div class="form-top" jsf:id="invoice-net-id">
                                 <h:outputLabel
@@ -175,8 +213,11 @@
                         </div>
                     </div>
                     <div class="form-top">
-                        <label>Forma płatności</label>
-                        <h:selectOneMenu value="#{invoiceListBean.invoiceDto.paymentType}">
+                        <label for="add-invoice-payment-type-1">Forma płatności</label>
+                        <h:selectOneMenu id="add-invoice-payment-type-1"
+                                         value="#{invoiceListBean.invoiceDto.paymentType}"
+                                         required="true"
+                                         requiredMessage="Proszę wybrać 'FORME PŁATNOŚCI'">
                             <f:selectItem itemLabel="Wybierz" itemValue="#{null}"/>
                             <f:selectItems value="#{invoiceListBean.paymentTypes}"
                                            var="pt"
@@ -188,14 +229,18 @@
                                     render="invoice-payment-type-id"
                                     onevent="showLoader"/>
                         </h:selectOneMenu>
+                        <h:message for="add-invoice-payment-type-1" styleClass="form-msg col-danger"/>
                     </div>
                     <div jsf:id="invoice-payment-type-id">
                         <div class="form-top" jsf:rendered="#{invoiceListBean.invoiceDto.paymentType eq 'TRANSFER'}">
-                            <label>Termin płatności</label>
-                            <h:inputText styleClass="datepicker"
+                            <label for="add-invoice-payment-type-transfer-2">Termin płatności</label>
+                            <h:inputText id="add-invoice-payment-type-transfer-2"
+                                         styleClass="datepicker"
                                          value="#{invoiceListBean.invoiceDto.paymentDue}"
                                          converter="localDateConverter"
-                                         p:placeholder="Termin płatności">
+                                         p:placeholder="Termin płatności"
+                                         required="true"
+                                         requiredMessage="Proszę podać 'TERMIN PŁATNOŚCI'">
                                 <f:ajax event="change"
                                         delay="300"
                                         execute="@this"/>
@@ -203,14 +248,19 @@
                             <h:outputScript>
                                 $('.datepicker').flatpickr();
                             </h:outputScript>
+                            <h:message for="add-invoice-payment-type-transfer-2" styleClass="form-msg col-danger"/>
                         </div>
                     </div>
                     <div class="form-top">
-                        <label>Opis</label>
-                        <h:inputTextarea value="#{invoiceListBean.invoiceDto.description}">
+                        <label for="add-invoice-description">Opis</label>
+                        <h:inputTextarea id="add-invoice-description"
+                                         value="#{invoiceListBean.invoiceDto.description}"
+                                         required="true"
+                                         requiredMessage="Pole 'OPISU' nie może być pustę">
                             <f:ajax execute="@this"
                                     event="change"/>
                         </h:inputTextarea>
+                        <h:message for="add-invoice-description" styleClass="form-msg col-danger"/>
                     </div>
                 </div>
                 <h:panelGroup id="validation-messages-container">
@@ -230,13 +280,14 @@
                     </h:commandLink>
                     <h:commandLink type="submit"
                                    styleClass="btn bordered col-primary"
-                                   p:data-dismiss="modal"
                                    action="#{invoiceListBean.saveInvoice}">
                         <f:ajax execute="@form"
                                 resetValues="true"
-                                render="add-invoice-form closeDialogDiv"/>
+                                render="add-invoice-form closeDialogDiv"
+                                onevent="showLoader"/>
                         <i class="fa fa-check"></i>Zapisz
                     </h:commandLink>
+
                 </div>
             </h:form>
         </div>

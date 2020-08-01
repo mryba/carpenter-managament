@@ -11,6 +11,7 @@ import com.carpenter.core.entity.dictionaries.PaymentType;
 import com.carpenter.core.entity.dictionaries.invoice.InvoiceType;
 import com.carpenter.core.entity.dictionaries.invoice.VatRate;
 import com.carpenter.core.entity.invoice.Invoice;
+import lombok.Getter;
 
 import javax.annotation.PostConstruct;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -27,6 +28,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Getter
 @ViewScoped
 @Named("invoiceListBean")
 public class InvoiceListBean implements Serializable {
@@ -51,7 +53,7 @@ public class InvoiceListBean implements Serializable {
     private List<ClientDto> clients;
 
     public void cleanInvoice() {
-        invoiceDto = null;
+        invoiceDto = new InvoiceDto();
         invoiceEmployeeId = null;
         invoiceClientId = null;
     }
@@ -176,12 +178,12 @@ public class InvoiceListBean implements Serializable {
         return InvoiceAmountType.values();
     }
 
-    public List<VatRate> getVatRates() {
-        return Stream.of(VatRate.values()).collect(Collectors.toList());
+    public VatRate[] getVatRates() {
+        return VatRate.values();
     }
 
-    public List<PaymentType> getPaymentTypes() {
-        return Stream.of(PaymentType.values()).collect(Collectors.toList());
+    public PaymentType[] getPaymentTypes() {
+        return PaymentType.values();
     }
 
     public InvoiceType[] getInvoiceTypes() {
