@@ -1,11 +1,10 @@
 package com.carpenter.core.control.dto;
 
+import com.carpenter.core.entity.dictionaries.PaymentType;
 import com.carpenter.core.entity.dictionaries.invoice.InvoiceAmountType;
 import com.carpenter.core.entity.dictionaries.invoice.InvoiceType;
-import com.carpenter.core.entity.dictionaries.PaymentType;
 import com.carpenter.core.entity.dictionaries.invoice.VatRate;
 import lombok.*;
-import nl.garvelink.iban.IBAN;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
