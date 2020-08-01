@@ -30,7 +30,7 @@ public class InvoiceService implements Serializable {
     public InvoiceNumber getEmployeeLastInvoiceNumber(Long employeeId) {
         String invoiceNumber = invoiceRepository.findLastEmployeeInvoiceNumber(employeeId);
         if (invoiceNumber != null) {
-            String[] splitedInvoiceNumber = invoiceNumber.split(ConstantsRegex.INVOICE_NUMBER_PATTERN);
+            String[] splitedInvoiceNumber = invoiceNumber.split("/");
             InvoiceNumber in =
                     new InvoiceNumber(Integer.valueOf(splitedInvoiceNumber[0]), Integer.valueOf(splitedInvoiceNumber[1]));
             return in;
@@ -42,5 +42,9 @@ public class InvoiceService implements Serializable {
         invoiceMapper = new InvoiceMapper();
         return invoiceMapper.mapFromDomain(invoiceDto);
 
+    }
+
+    public void saveNewInvoice(Invoice invoice) {
+        invoiceRepository.persist(invoice);
     }
 }

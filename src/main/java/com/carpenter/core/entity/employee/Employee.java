@@ -179,6 +179,14 @@ public class Employee extends DomainObject {
         }
     }
 
+    public void addInvoice(Invoice invoice) {
+        if (invoices == null) {
+            invoices = new LinkedList<>();
+        }
+        invoices.add(invoice);
+        invoice.setEmployee(this);
+    }
+
     @Transient
     public boolean isInRole(Collection<Role> roles) {
         if (roles == null) {

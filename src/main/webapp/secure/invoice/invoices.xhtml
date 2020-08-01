@@ -39,6 +39,7 @@
                             <tr>
                                 <th class="w10">Kto wystawił</th>
                                 <th class="w10">Komu wystawił</th>
+                                <th class="w10">Komu wystawił</th>
                                 <th class="w5">Numer faktury</th>
                                 <th class="w5">Data wystawienia</th>
                                 <th class="w10">Wartość Netto/Brutto</th>
@@ -51,13 +52,13 @@
                                        var="i">
                                 <tr>
                                     <td class="w10">
-                                        #{i.employeeDto.firstName} #{i.employeeDto.lastName}
+                                        #{i.employeeFirstName} #{i.employeeLastName}
                                     </td>
                                     <td class="w10">
-                                        #{i.clientDto.name}
+                                        #{i.clientName}
                                     </td>
                                     <td class="w5">
-                                        0
+                                        #{i.numberOfInvoice}
                                     </td>
                                     <td class="w5">
                                         #{i.dateOfInvoice}
@@ -66,7 +67,7 @@
                                         #{i.netValue} / #{i.grossValue}
                                     </td>
                                     <td class="w5">
-                                        Stawka vat
+                                        #{i.vatRate}
                                     </td>
                                     <td class="w15">
                                         #{i.description}

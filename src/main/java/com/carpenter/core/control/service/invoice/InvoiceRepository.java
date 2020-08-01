@@ -35,5 +35,9 @@ public class InvoiceRepository implements Serializable {
             return null;
         }
     }
+
+    public void persist(Invoice invoice) {
+        entityManager.persist(invoice);
+    }
 }
 

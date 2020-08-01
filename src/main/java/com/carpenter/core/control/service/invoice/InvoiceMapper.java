@@ -3,6 +3,7 @@ package com.carpenter.core.control.service.invoice;
 import com.carpenter.core.control.dto.InvoiceDto;
 import com.carpenter.core.control.service.client.ClientMapper;
 import com.carpenter.core.control.service.employee.EmployeeMapper;
+import com.carpenter.core.entity.dictionaries.invoice.InvoiceAmountType;
 import com.carpenter.core.entity.invoice.Invoice;
 import com.carpenter.utils.Mapper;
 
@@ -14,14 +15,9 @@ public class InvoiceMapper implements Mapper<Invoice, InvoiceDto> {
 
     @Override
     public Invoice mapFromDomain(InvoiceDto invoiceDto) {
-        EmployeeMapper employeeMapper = new EmployeeMapper();
-        ClientMapper clientMapper = new ClientMapper();
-
         return Invoice.builder()
                 .numberOfInvoice(invoiceDto.getNumberOfInvoice())
-                .employee(employeeMapper.mapFromDomain(invoiceDto.getEmployeeDto()))
-                .client(clientMapper.mapFromDomain(invoiceDto.getClientDto()))
-                .invoiceAmountType(invoiceDto.getInvoiceAmountType())
+                .invoiceAmountType(invoiceDto.getInvoiceAmountType() != null ? invoiceDto.getInvoiceAmountType() : InvoiceAmountType.NONE)
                 .netValue(invoiceDto.getNetValue())
                 .grossValue(invoiceDto.getGrossValue())
                 .invoiceType(invoiceDto.getInvoiceType())
@@ -35,12 +31,17 @@ public class InvoiceMapper implements Mapper<Invoice, InvoiceDto> {
 
     @Override
     public InvoiceDto mapToDomain(Invoice invoice) {
-        EmployeeMapper employeeMapper = new EmployeeMapper();
-        ClientMapper clientMapper = new ClientMapper();
         return InvoiceDto.builder()
                 .id(invoice.getId())
-                .employeeDto(employeeMapper.mapToDomain(invoice.getEmployee()))
-                .clientDto(clientMapper.mapToDomain(invoice.getClient()))
+                .employeeId(invoice.getEmployee().getId())
+                .employeeFirstName(invoice.getEmployee().getFirstName())
+                .employeeLastName(invoice.getEmployee().getLastName())
+                .employeeNipNumber(invoice.getEmployee().getNipNumber())
+                .employeeAccountNumber(invoice.getEmployee().getBankAccountNumber())
+                .clientId(invoice.getClient().getId())
+                .clientName(invoice.getClient().getName())
+                .clientNipNumber(invoice.getClient().getNip())
+                .clientAccountNumber(invoice.getClient().getBankAccountNumber())
                 .invoiceAmountType(invoice.getInvoiceAmountType())
                 .netValue(invoice.getNetValue())
                 .grossValue(invoice.getGrossValue())

@@ -59,11 +59,17 @@ public class EmployeeRepository implements Serializable {
                     .setParameter("employeeId", employeeId)
                     .getResultList().iterator().next();
 
-             employee = entityManager.createQuery(
+            employee = entityManager.createQuery(
                     "SELECT e FROM Employee e LEFT JOIN FETCH e.workingDays WHERE e.id=:employeeId", Employee.class)
                     .setParameter("employeeId", employeeId)
                     .getResultList().iterator().next();
-             return employee;
+
+            employee = entityManager.createQuery(
+                    "SELECT e FROM Employee e LEFT JOIN FETCH e.invoices WHERE e.id=:employeeId", Employee.class)
+                    .setParameter("employeeId", employeeId)
+                    .getResultList().iterator().next();
+
+            return employee;
         } catch (NonUniqueResultException e) {
             return null;
         }

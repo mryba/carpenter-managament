@@ -29,11 +29,7 @@ import java.util.*;
                         "WHERE c.nip =:nip"),
         @NamedQuery(
                 name = "Client.findAll",
-                query = "SELECT c FROM Client c"),
-        @NamedQuery(
-                name = "Client.findById",
-                query = "SELECT c FROM Client c JOIN FETCH c.workingDays WHERE c.id =:id"
-        )
+                query = "SELECT c FROM Client c")
 })
 @NamedEntityGraphs({
         @NamedEntityGraph(
@@ -102,6 +98,14 @@ public class Client extends DomainObject {
         }
         workingDays.add(workingDay);
         workingDay.setClient(this);
+    }
+
+    public void addInvoice(Invoice invoice) {
+        if (invoices == null) {
+            invoices = new LinkedList<>();
+        }
+        invoices.add(invoice);
+        invoice.setClient(this);
     }
 
 

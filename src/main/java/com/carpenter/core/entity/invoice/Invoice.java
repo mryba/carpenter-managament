@@ -1,12 +1,10 @@
 package com.carpenter.core.entity.invoice;
 
-import com.carpenter.core.control.service.invoice.InvoiceNumber;
 import com.carpenter.core.entity.DomainObject;
 import com.carpenter.core.entity.client.Client;
+import com.carpenter.core.entity.dictionaries.PaymentType;
 import com.carpenter.core.entity.dictionaries.invoice.InvoiceAmountType;
 import com.carpenter.core.entity.dictionaries.invoice.InvoiceType;
-import com.carpenter.core.entity.dictionaries.PaymentType;
-import com.carpenter.core.entity.dictionaries.invoice.VatRate;
 import com.carpenter.core.entity.employee.Employee;
 import com.carpenter.utils.ConstantsRegex;
 import lombok.*;
@@ -30,7 +28,7 @@ import java.util.Objects;
 @NamedQueries({
         @NamedQuery(
                 name = "Invoice.findAllInvoices",
-                query = "SELECT i FROM Invoice i"
+                query = "SELECT i FROM Invoice i LEFT JOIN FETCH i.employee LEFT JOIN FETCH i.client"
         ),
         @NamedQuery(
                 name = "Invoice.findLastEmployeeInvoice",
@@ -55,6 +53,7 @@ public class Invoice extends DomainObject {
     private Client client;
 
     @Column(name = "INVOICE_AMOUNT_TYPE")
+    @Enumerated(value = EnumType.STRING)
     private InvoiceAmountType invoiceAmountType;
 
     @Column(name = "NET_VALUE")
@@ -78,7 +77,6 @@ public class Invoice extends DomainObject {
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;
 
-    @Past
     @Column(name = "PAYMENT_DUE")
     private Date paymentDue;
 

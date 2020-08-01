@@ -28,7 +28,9 @@ public class EmployeeMapper implements Mapper<Employee, EmployeeDto> {
                 .birthDate(employeeDto.getBirthDate())
                 .build();
 
-
+        if (employeeDto.getId() != null) {
+            employee.setId(employeeDto.getId());
+        }
         employee.addRole(Role.EMPLOYER);
         employee.addAddress(mapAddressToDomain(employeeDto));
         return employee;

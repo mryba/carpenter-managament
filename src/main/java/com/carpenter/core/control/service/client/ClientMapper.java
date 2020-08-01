@@ -8,7 +8,7 @@ public class ClientMapper implements Mapper<Client, ClientDto> {
 
     @Override
     public Client mapFromDomain(ClientDto clientDto) {
-        return Client.builder()
+        Client client = Client.builder()
                 .name(clientDto.getName())
                 .nip(clientDto.getNip())
                 .email(clientDto.getEmail())
@@ -22,6 +22,12 @@ public class ClientMapper implements Mapper<Client, ClientDto> {
                 .streetNumber(clientDto.getStreetNumber())
                 .houseNumber(clientDto.getHouseNumber())
                 .build();
+
+        if (clientDto.getId() != null) {
+            client.setId(clientDto.getId());
+        }
+        return client;
+
     }
 
     @Override

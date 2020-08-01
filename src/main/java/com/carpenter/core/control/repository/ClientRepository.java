@@ -4,10 +4,7 @@ import com.carpenter.core.entity.client.Client;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityGraph;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -46,9 +43,14 @@ public class ClientRepository implements Serializable {
 
     public Client getClientById(Long id) {
         try {
-            return entityManager.createNamedQuery("Client.findById", Client.class)
+            Client client = entityManager.createQuery("SELECT c FROM Client c LEFT JOIN FETCH c.workingDays WHERE c.id =:id", Client.class)
                     .setParameter("id", id)
                     .getResultList().iterator().next();
+
+            client = entityManager.createQuery("SELECT c FROM Client c LEFT JOIN FETCH c.invoices WHERE c.id =:id", Client.class)
+                    .setParameter("id", id)
+                    .getResultList().iterator().next();
+            return client;
         } catch (NoResultException e) {
             return null;
         }

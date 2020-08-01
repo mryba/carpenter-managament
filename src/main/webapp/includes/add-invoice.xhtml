@@ -11,9 +11,14 @@
 
 
     <div>
-        <a class="modal-close" data-dismiss="modal">
+        <h:commandLink styleClass="modal-close"
+                       p:data-dismiss="modal"
+                       actionListener="#{invoiceListBean.cleanInvoice}">
             <i class="fa fa-times"></i>
-        </a>
+            <f:ajax execute="@this"
+                    render="@form add-invoice-form"
+                    resetValues="true"/>
+        </h:commandLink>
         <div>
             <h:form id="add-invoice-form" prependId="false">
                 <div class="modal-content">
@@ -40,11 +45,11 @@
 
                         <div class="infobox col-info" jsf:rendered="#{not empty invoiceListBean.invoiceEmployeeId}">
                             <p> Numer faktury:
-                                <strong>#{invoiceListBean.invoiceNumber.number}/#{invoiceListBean.invoiceNumber.year}</strong>
-                                <br/>
+                                <strong>#{invoiceListBean.invoiceNumber.number}/#{invoiceListBean.invoiceNumber.year}</strong><br/>
+                                NIP:
+                                <strong>#{invoiceListBean.invoiceDto.employeeNipNumber}</strong><br/>
                                 Numer rachunku:
-                                <strong>#{invoiceListBean.invoiceDto.employeeDto.bankAccountNumber} </strong>
-
+                                <strong>#{invoiceListBean.invoiceDto.employeeAccountNumber}</strong>
                             </p>
                         </div>
                     </div>
@@ -71,9 +76,10 @@
 
                         <div class="infobox col-info" jsf:rendered="#{not empty invoiceListBean.invoiceClientId}">
                             <p>
+                                NIP:
+                                <strong>#{invoiceListBean.invoiceDto.clientNipNumber}</strong> <br/>
                                 Numer rachunku:
-                                <strong>#{invoiceListBean.invoiceDto.clientDto.bankAccountNumber} </strong>
-
+                                <strong>#{invoiceListBean.invoiceDto.clientAccountNumber} </strong>
                             </p>
                         </div>
                     </div>

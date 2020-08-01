@@ -19,8 +19,18 @@ public class InvoiceDto {
 
     private Long id;
     private String numberOfInvoice;
-    private EmployeeDto employeeDto;
-    private ClientDto clientDto;
+
+    private Long employeeId;
+    private String employeeFirstName;
+    private String employeeLastName;
+    private String employeeNipNumber;
+    private String employeeAccountNumber;
+
+    private Long clientId;
+    private String clientName;
+    private String clientNipNumber;
+    private String clientAccountNumber;
+
     private BigDecimal netValue;
     private BigDecimal grossValue;
     private InvoiceType invoiceType;
