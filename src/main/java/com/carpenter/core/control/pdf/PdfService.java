@@ -1,38 +1,36 @@
 package com.carpenter.core.control.pdf;
 
 import be.quodlibet.boxable.BaseTable;
-import be.quodlibet.boxable.Cell;
 import be.quodlibet.boxable.Row;
-import be.quodlibet.boxable.datatable.DataTable;
+import com.carpenter.core.control.dto.InvoiceDto;
+import com.carpenter.core.control.service.invoice.InvoiceTranslate;
+import com.ibm.icu.text.NumberFormat;
+import com.ibm.icu.text.RuleBasedNumberFormat;
+import com.ibm.icu.util.ULocale;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.graphics.color.PDColor;
-import org.apache.pdfbox.pdmodel.graphics.color.PDDeviceRGB;
-import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
-import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationTextMarkup;
-import org.jboss.security.xacml.jaxb.PDP;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import java.awt.*;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.*;
 
 @Slf4j
 @ViewScoped
 @Named("pdfService")
 public class PdfService implements Serializable {
 
-    public void renderPdf() {
+    private InvoiceTranslate invoiceTranslate;
+
+    private PDFont font;
+
+    public void renderPdf(InvoiceDto invoiceDto) {
 
         PDDocument document = new PDDocument();
 
@@ -46,11 +44,17 @@ public class PdfService implements Serializable {
         //Download
 //        externalContext.setResponseHeader("Content-Disposition", "attachment; filename=invoice-" + ".pdf");
 
-
+        InputStream inputStream = null;
         try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
 
+
+            inputStream = getClass().getResourceAsStream("/ttf/liberation-sans/LiberationSans-Regular.ttf");
+
+            font = PDType0Font.load(document, inputStream);
+
+
             contentStream.beginText();
-            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
+            contentStream.setFont(font, 24);
             contentStream.newLineAtOffset(50, 740);
             contentStream.showText("Faktura:");
             contentStream.endText();
@@ -58,27 +62,27 @@ public class PdfService implements Serializable {
             drawLine(contentStream, page, 60);
 
             contentStream.beginText();
-            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
+            contentStream.setFont(font, 16);
             contentStream.newLineAtOffset(150, 740);
-            contentStream.showText("NUMER FAKTURY");
+            contentStream.showText(invoiceDto.getNumberOfInvoice());
             contentStream.endText();
 
             contentStream.beginText();
-            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+            contentStream.setFont(font, 12);
             contentStream.newLineAtOffset(50, 700);
-            contentStream.showText("Wystawiajacy:");
+            contentStream.showText("Wystawiający:");
             contentStream.endText();
 
             //Employee
-            initText(contentStream, 50, 680, "Adres:");
-            initText(contentStream, 50, 660, "NIP:");
-            initText(contentStream, 50, 640, "Telefon:");
+            initText(contentStream, 50, 680, "Adres: ");
+            initText(contentStream, 50, 660, "NIP: " + invoiceDto.getEmployeeNipNumber());
+            initText(contentStream, 50, 640, "Telefon: ");
 
             //Client
-            initText(contentStream, 350, 700, "Nabywca:");
-            initText(contentStream, 350, 680, "Adres:");
-            initText(contentStream, 350, 660, "NIP:");
-            initText(contentStream, 350, 640, "Telefon:");
+            initText(contentStream, 350, 700, "Nabywca: " + invoiceDto.getClientName());
+            initText(contentStream, 350, 680, "Adres: ");
+            initText(contentStream, 350, 660, "NIP: " + invoiceDto.getClientNipNumber());
+            initText(contentStream, 350, 640, "Telefon: ");
 
             drawLine(contentStream, page, 160);
 
@@ -99,47 +103,54 @@ public class PdfService implements Serializable {
             float yPosition = 600;
 
             BaseTable table = new BaseTable(yPosition, yStartNewPage, bottomMargin, tableWidth, margin, document, page, true, drawContent);
-
 //            Row<PDPage> headerRow = table.createRow(15f);
 //            Cell<PDPage> cell = headerRow.createCell(100, "Header");
 //            table.addHeaderRow(headerRow);
 
             Row<PDPage> headerRow = table.createRow(15f);
-            headerRow.createCell(5, "LP").setFont(PDType1Font.HELVETICA_BOLD);
-            headerRow.createCell(26, "Nazwa");
-            headerRow.createCell(5, "Ilosc");
+            headerRow.createCell(5, "LP");
+            headerRow.createCell(26, "Nazwa").setFont(font);
+            headerRow.createCell(5, "Ilość").setFont(font);
             headerRow.createCell(5, "J.m");
-            headerRow.createCell(17, "Wartosc netto");
+            headerRow.createCell(17, "Wartość netto").setFont(font);
             headerRow.createCell(8, "Vat [%]");
             headerRow.createCell(17, "Kwota Vat");
-            headerRow.createCell(17, "Wartosc brutto");
+            headerRow.createCell(17, "Wartość brutto").setFont(font);
 
 
             table.addHeaderRow(headerRow);
 
             Row<PDPage> row = table.createRow(15f);
-            row.createCell(5, "99");
+            row.createCell(5, "1");
+            row.createCell(26, invoiceDto.getDescription());
+            row.createCell(5, "1");
+            row.createCell(5, "szt.");
+            row.createCell(17, invoiceDto.getNetValue().toPlainString() + " zł").setFont(font);
+            row.createCell(8, invoiceDto.of(invoiceDto.getVatRate()).name());
+            row.createCell(17, (invoiceDto.getGrossValue().subtract(invoiceDto.getNetValue())).toPlainString() + " zł").setFont(font);
+            row.createCell(17, invoiceDto.getGrossValue().toPlainString() + " zł").setFont(font);
 
             table.draw();
 
-//            List<List> data = new ArrayList();
-//            data.add(new ArrayList<>(
-//                    Arrays.asList("Column One", "Column Two", "Column Three", "Column Four", "Column Five")));
-//            for (int i = 1; i <= 10; i++) {
-//                data.add(new ArrayList<>(
-//                        Arrays.asList("Row " + i + " Col One", "Row " + i + " Col Two", "Row " + i + " Col Three", "Row " + i + " Col Four", "Row " + i + " Col Five")));
-//            }
-//            BaseTable dataTable = new BaseTable(yStart, yStartNewPage, bottomMargin, tableWidth, margin, document, page, true, true);
-//            DataTable t = new DataTable(dataTable, page);
-//            t.addListToTable(data, DataTable.HASHEADER);
-//
-//            dataTable.draw();
+            String[] splitedNumber = invoiceDto.getGrossValue().toPlainString().split("\\.");
+            String decimal = splitedNumber[0];
+            int decimalNumber = Integer.parseInt(decimal);
 
+            String afterPeriod = splitedNumber[1];
+
+            ULocale locale = new ULocale("Pl");
+
+            NumberFormat format = new RuleBasedNumberFormat(locale, RuleBasedNumberFormat.SPELLOUT);
+            String result = format.format(decimalNumber);
+
+            initText(contentStream, 50, 500, "Słownie: " + result + " zł " + " i " + afterPeriod + "/100");
 
             contentStream.close();
 
+
             document.save(externalContext.getResponseOutputStream());
             document.close();
+            inputStream.close();
         } catch (IOException e) {
             log.error("Error kurwa", e);
         } finally {
@@ -160,7 +171,7 @@ public class PdfService implements Serializable {
 
     private void initText(PDPageContentStream contentStream, int x, int y, String text) throws IOException {
         contentStream.beginText();
-        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+        contentStream.setFont(font, 12);
         contentStream.newLineAtOffset(x, y);
         contentStream.showText(text);
         contentStream.endText();

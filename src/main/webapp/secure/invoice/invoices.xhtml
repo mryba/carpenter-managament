@@ -45,6 +45,7 @@
                                 <th class="w5">Wartość Brutto</th>
                                 <th class="w5">Stawka VAT</th>
                                 <th class="w15">Opis</th>
+                                <th class="w5">PDF</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -77,6 +78,13 @@
                                     </td>
                                     <td class="w15">
                                         #{i.description}
+                                    </td>
+                                    <td class="w5">
+                                        <h:commandLink styleClass="btn btn-primary col-primary"
+                                                       target="_blank"
+                                                       action="#{pdfService.renderPdf(i)}">
+                                            <i class="far fa-file-excel"></i>PDF
+                                        </h:commandLink>
                                     </td>
                                 </tr>
                             </ui:repeat>
