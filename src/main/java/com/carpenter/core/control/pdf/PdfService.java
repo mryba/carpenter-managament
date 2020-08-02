@@ -3,7 +3,6 @@ package com.carpenter.core.control.pdf;
 import be.quodlibet.boxable.BaseTable;
 import be.quodlibet.boxable.Row;
 import com.carpenter.core.control.dto.InvoiceDto;
-import com.carpenter.core.control.service.invoice.InvoiceTranslate;
 import com.ibm.icu.text.NumberFormat;
 import com.ibm.icu.text.RuleBasedNumberFormat;
 import com.ibm.icu.util.ULocale;
@@ -13,20 +12,18 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.*;
+import java.time.ZoneId;
 
 @Slf4j
 @ViewScoped
 @Named("pdfService")
 public class PdfService implements Serializable {
-
-    private InvoiceTranslate invoiceTranslate;
 
     private PDFont font;
 
@@ -47,33 +44,22 @@ public class PdfService implements Serializable {
         InputStream inputStream = null;
         try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
 
-
             inputStream = getClass().getResourceAsStream("/ttf/liberation-sans/LiberationSans-Regular.ttf");
-
             font = PDType0Font.load(document, inputStream);
-
 
             contentStream.beginText();
             contentStream.setFont(font, 24);
             contentStream.newLineAtOffset(50, 740);
-            contentStream.showText("Faktura:");
+            contentStream.showText("Faktura VAT");
             contentStream.endText();
+
+            initText(contentStream, 350, 760, "Numer: " + invoiceDto.getNumberOfInvoice());
+            initText(contentStream, 350, 740, "Data wystawienia faktury: " + invoiceDto.getCreateDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString());
 
             drawLine(contentStream, page, 60);
 
-            contentStream.beginText();
-            contentStream.setFont(font, 16);
-            contentStream.newLineAtOffset(150, 740);
-            contentStream.showText(invoiceDto.getNumberOfInvoice());
-            contentStream.endText();
-
-            contentStream.beginText();
-            contentStream.setFont(font, 12);
-            contentStream.newLineAtOffset(50, 700);
-            contentStream.showText("Wystawiający:");
-            contentStream.endText();
-
             //Employee
+            initText(contentStream, 50, 700, "Sprzedawca: " + invoiceDto.getEmployeeFirstName() + " " + invoiceDto.getEmployeeLastName());
             initText(contentStream, 50, 680, "Adres: ");
             initText(contentStream, 50, 660, "NIP: " + invoiceDto.getEmployeeNipNumber());
             initText(contentStream, 50, 640, "Telefon: ");
@@ -132,6 +118,8 @@ public class PdfService implements Serializable {
 
             table.draw();
 
+            drawLine(contentStream, page, 260);
+
             String[] splitedNumber = invoiceDto.getGrossValue().toPlainString().split("\\.");
             String decimal = splitedNumber[0];
             int decimalNumber = Integer.parseInt(decimal);
@@ -143,7 +131,11 @@ public class PdfService implements Serializable {
             NumberFormat format = new RuleBasedNumberFormat(locale, RuleBasedNumberFormat.SPELLOUT);
             String result = format.format(decimalNumber);
 
-            initText(contentStream, 50, 500, "Słownie: " + result + " zł " + " i " + afterPeriod + "/100");
+            initText(contentStream, 50, 500, "Słownie: ");
+            initText(contentStream, 100, 500, result + " zł" + " i " + afterPeriod + "/100");
+
+            initText(contentStream, 50, 450, "Termin zapłaty: " + invoiceDto.getPaymentDue().toString());
+            initText(contentStream, 50, 400, "Nr. konta bankowego: " + invoiceDto.getEmployeeAccountNumber());
 
             contentStream.close();
 
