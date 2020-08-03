@@ -12,12 +12,16 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.ZoneId;
 
 @Slf4j
@@ -45,6 +49,11 @@ public class PdfService implements Serializable {
         try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
 
             inputStream = getClass().getResourceAsStream("/ttf/liberation-sans/LiberationSans-Regular.ttf");
+
+            String path = getClass().getResource("builder.svg").getPath();
+
+
+            PDImageXObject pdImage = PDImageXObject.createFromFile(path, document);
             font = PDType0Font.load(document, inputStream);
 
             contentStream.beginText();
@@ -54,7 +63,8 @@ public class PdfService implements Serializable {
             contentStream.endText();
 
             initText(contentStream, 350, 760, "Numer: " + invoiceDto.getNumberOfInvoice());
-            initText(contentStream, 350, 740, "Data wystawienia faktury: " + invoiceDto.getCreateDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString());
+            initText(contentStream, 350, 740, "Miejsce i data wystawienia:");
+            initText(contentStream, 350, 760, invoiceDto.getPlaceAndDateOfInsert());
 
             drawLine(contentStream, page, 60);
 
@@ -108,7 +118,7 @@ public class PdfService implements Serializable {
 
             Row<PDPage> row = table.createRow(15f);
             row.createCell(5, "1");
-            row.createCell(26, invoiceDto.getDescription());
+            row.createCell(26, invoiceDto.getDescription()).setFont(font);
             row.createCell(5, "1");
             row.createCell(5, "szt.");
             row.createCell(17, invoiceDto.getNetValue().toPlainString() + " zł").setFont(font);

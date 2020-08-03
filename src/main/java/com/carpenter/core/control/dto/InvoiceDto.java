@@ -8,6 +8,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.stream.Stream;
@@ -38,6 +39,7 @@ public class InvoiceDto {
     private InvoiceType invoiceType;
     private Date createDate;
     private String description;
+    private String placeOfCreation;
 
     private BigDecimal vatRate;
     private PaymentType paymentType;
@@ -46,5 +48,9 @@ public class InvoiceDto {
 
     public VatRate of(BigDecimal vatRate) {
         return Stream.of(VatRate.values()).filter(vr -> vr.getRate().equals(vatRate)).findFirst().orElse(VatRate.ZERO);
+    }
+
+    public String getPlaceAndDateOfInsert() {
+        return this.placeOfCreation + " " + this.createDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
     }
 }

@@ -79,6 +79,9 @@ public class Invoice extends DomainObject {
     @Column(name = "DESCRIPTION")
     private String description;
 
+    @Column(name = "PLACE_OF_CREATION")
+    private String placeOfCreation;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
