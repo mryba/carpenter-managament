@@ -84,6 +84,16 @@
                         </div>
                     </div>
                     <div class="form-top">
+                        <label for="invoice-place">Miejsce wystawienia</label>
+                        <h:inputText id="invoice-place"
+                                     value="#{invoiceListBean.invoiceDto.placeOfCreation}"
+                                     required="true"
+                                     requiredMessage="Proszę podać miejsce wystawienia">
+                            <f:ajax execute="@this"/>
+                        </h:inputText>
+                        <h:message for="invoice-place" styleClass="form-msg col-danger"/>
+                    </div>
+                    <div class="form-top">
                         <label for="invoice-type">Rodzaj faktury</label>
                         <h:selectOneMenu id="invoice-type"
                                          value="#{invoiceListBean.invoiceDto.invoiceType}"
@@ -279,7 +289,7 @@
                                    p:data-dismiss="modal"
                                    p:data-toogle="modal">
                         <f:ajax event="click"
-                                render="@form add-invoice-form"
+                                render="@form add-invoice-form invoiceTableForm"
                                 listener="#{invoiceListBean.cleanInvoice}"
                                 resetValues="true"/>
                         <i class="fa fa-times"></i>Anuluj
@@ -289,7 +299,7 @@
                                    action="#{invoiceListBean.saveInvoice}">
                         <f:ajax execute="@form"
                                 resetValues="true"
-                                render="add-invoice-form closeDialogDiv"
+                                render="add-invoice-form closeDialogDiv invoiceTableForm"
                                 onevent="showLoader"/>
                         <i class="fa fa-check"></i>Zapisz
                     </h:commandLink>
