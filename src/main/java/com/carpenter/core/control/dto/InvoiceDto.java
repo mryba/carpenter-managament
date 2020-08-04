@@ -33,24 +33,25 @@ public class InvoiceDto {
     private String clientName;
     private String clientNipNumber;
     private String clientAccountNumber;
+    private String clientPhoneNumber;
 
     private BigDecimal netValue;
     private BigDecimal grossValue;
     private InvoiceType invoiceType;
     private Date createDate;
     private String description;
-    private String placeOfCreation;
 
     private BigDecimal vatRate;
     private PaymentType paymentType;
     private LocalDate paymentDue = LocalDate.now().with(TemporalAdjusters.firstDayOfNextMonth());
     private InvoiceAmountType invoiceAmountType;
+    private String placeOfCreation;
 
     public VatRate of(BigDecimal vatRate) {
         return Stream.of(VatRate.values()).filter(vr -> vr.getRate().equals(vatRate)).findFirst().orElse(VatRate.ZERO);
     }
 
-    public String getPlaceAndDateOfInsert() {
-        return this.placeOfCreation + " " + this.createDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
+    public String getPlaceOfCreationWithDate() {
+        return placeOfCreation + " " + createDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
     }
 }

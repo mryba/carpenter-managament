@@ -55,6 +55,7 @@ public class InvoiceMapper implements Mapper<Invoice, InvoiceDto> {
                 .paymentDue(invoice.getPaymentDue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
                 .description(invoice.getDescription())
                 .placeOfCreation(invoice.getPlaceOfCreation())
+                .clientPhoneNumber(invoice.getClient().getPhoneNumber())
                 .build();
     }
 }
