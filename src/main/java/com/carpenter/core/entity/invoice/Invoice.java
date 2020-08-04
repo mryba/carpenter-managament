@@ -28,11 +28,27 @@ import java.util.Objects;
 @NamedQueries({
         @NamedQuery(
                 name = "Invoice.findAllInvoices",
-                query = "SELECT i FROM Invoice i LEFT JOIN FETCH i.employee LEFT JOIN FETCH i.client"
+                query = "SELECT i FROM Invoice i"
         ),
         @NamedQuery(
                 name = "Invoice.findLastEmployeeInvoice",
                 query = "SELECT i.numberOfInvoice FROM Invoice i WHERE i.employee.id =:employeeId ORDER BY i.createDate DESC"
+        )
+})
+@NamedEntityGraphs({
+        @NamedEntityGraph(
+                name = "Invoice.findAllInvoices",
+                attributeNodes = {
+                        @NamedAttributeNode(value = "client"),
+                        @NamedAttributeNode(value = "employee", subgraph = "subgraph.employee")
+                },
+                subgraphs = {
+                        @NamedSubgraph(
+                                name = "subgraph.employee",
+                                attributeNodes = {
+                                        @NamedAttributeNode(value = "addresses")
+                                })
+                }
         )
 })
 public class Invoice extends DomainObject {

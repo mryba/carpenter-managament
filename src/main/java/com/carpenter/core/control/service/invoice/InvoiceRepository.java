@@ -3,6 +3,7 @@ package com.carpenter.core.control.service.invoice;
 import com.carpenter.core.entity.invoice.Invoice;
 
 import javax.ejb.Stateless;
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -10,6 +11,8 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import static com.carpenter.utils.ConstantsRegex.FETCH_GRAPH;
 
 @Stateless
 public class InvoiceRepository implements Serializable {
@@ -19,7 +22,9 @@ public class InvoiceRepository implements Serializable {
 
     public List<Invoice> findAllInvoices() {
         try {
+            EntityGraph<?> graph = entityManager.getEntityGraph("Invoice.findAllInvoices");
             return entityManager.createNamedQuery("Invoice.findAllInvoices", Invoice.class)
+                    .setHint(FETCH_GRAPH, graph)
                     .getResultList();
         } catch (NoResultException e) {
             return Collections.emptyList();

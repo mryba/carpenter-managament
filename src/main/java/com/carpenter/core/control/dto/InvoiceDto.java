@@ -22,19 +22,8 @@ public class InvoiceDto {
 
     private Long id;
     private String numberOfInvoice;
-
-    private Long employeeId;
-    private String employeeFirstName;
-    private String employeeLastName;
-    private String employeeNipNumber;
-    private String employeeAccountNumber;
-
-    private Long clientId;
-    private String clientName;
-    private String clientNipNumber;
-    private String clientAccountNumber;
-    private String clientPhoneNumber;
-
+    private EmployeeDto employeeDto;
+    private ClientDto clientDto;
     private BigDecimal netValue;
     private BigDecimal grossValue;
     private InvoiceType invoiceType;
@@ -53,5 +42,13 @@ public class InvoiceDto {
 
     public String getPlaceOfCreationWithDate() {
         return placeOfCreation + " " + createDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
+    }
+
+    public String getEmployeeFullAddress() {
+        return this.employeeDto.getCity() + ", " + this.employeeDto.getStreet() + " " + this.employeeDto.getStreetNumber() + "/" + this.employeeDto.getHouseNumber();
+    }
+
+    public String getClientFullAddress() {
+        return "ul. " + this.clientDto.getStreet() + " " + this.clientDto.getStreetNumber() + "/" + this.clientDto.getHouseNumber();
     }
 }

@@ -80,26 +80,30 @@ public class PdfService implements Serializable {
 
             //Employee
             initText(contentStream, font, 50, 630, "Sprzedawca:");
-            initText(contentStream, boldFont, 125, 630, invoiceDto.getEmployeeFirstName() + " " + invoiceDto.getEmployeeLastName());
+            initText(contentStream, boldFont, 125, 630, invoiceDto.getEmployeeDto().getFirstName() + " " + invoiceDto.getEmployeeDto().getLastName());
 
             initText(contentStream, font, 50, 610, "Adres: ");
+            initText(contentStream, boldFont, 90, 610, invoiceDto.getEmployeeFullAddress());
 
             initText(contentStream, font, 50, 590, "NIP:");
-            initText(contentStream, boldFont, 80, 590, invoiceDto.getEmployeeNipNumber());
+            initText(contentStream, boldFont, 80, 590, invoiceDto.getEmployeeDto().getNipNumber());
 
             initText(contentStream, font, 50, 570, "Telefon: ");
 
             //Client
             initText(contentStream, font, 400, 630, "Nabywca:");
-            initText(contentStream, boldFont, 460, 630, invoiceDto.getClientName());
+            initText(contentStream, boldFont, 460, 630, invoiceDto.getClientDto().getName());
 
-            initText(contentStream, font, 400, 610, "Adres: ");
+            initText(contentStream, font, 400, 610, "Miasto: ");
+            initText(contentStream, boldFont, 440, 610, invoiceDto.getClientDto().getCity());
 
-            initText(contentStream, font, 400, 590, "NIP:");
-            initText(contentStream, boldFont, 430, 590, invoiceDto.getClientNipNumber());
+            initText(contentStream, boldFont, 440, 590, invoiceDto.getClientFullAddress());
 
-            initText(contentStream, font, 400, 570, "Telefon:");
-            initText(contentStream, boldFont, 450, 570, invoiceDto.getClientNipNumber());
+            initText(contentStream, font, 400, 570, "NIP:");
+            initText(contentStream, boldFont, 440, 570, invoiceDto.getClientDto().getNip());
+
+            initText(contentStream, font, 400, 550, "Telefon:");
+            initText(contentStream, boldFont, 450, 550, invoiceDto.getClientDto().getPhoneNumber());
             drawLine(contentStream, page, 240);
 
 
@@ -170,7 +174,7 @@ public class PdfService implements Serializable {
             initText(contentStream, font, 50, 400, "Termin zapłaty:");
             initText(contentStream, boldFont, 135, 400, invoiceDto.getPaymentDue().toString());
 
-            initText(contentStream, font, 50, 380, "Nr. konta bankowego: " + invoiceDto.getEmployeeAccountNumber());
+            initText(contentStream, font, 50, 380, "Nr. konta bankowego: " + invoiceDto.getEmployeeDto().getBankAccountNumber());
 
             contentStream.close();
 

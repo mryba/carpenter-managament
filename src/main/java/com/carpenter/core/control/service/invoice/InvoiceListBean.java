@@ -104,11 +104,16 @@ public class InvoiceListBean implements Serializable {
                 .filter(e -> e.getId().equals(invoiceEmployeeId))
                 .findFirst()
                 .ifPresent(e -> {
-                    invoiceDto.setEmployeeId(e.getId());
-                    invoiceDto.setEmployeeFirstName(e.getFirstName());
-                    invoiceDto.setEmployeeLastName(e.getLastName());
-                    invoiceDto.setEmployeeNipNumber(e.getNipNumber());
-                    invoiceDto.setEmployeeAccountNumber(e.getBankAccountNumber());
+                    invoiceDto.setEmployeeDto(new EmployeeDto());
+                    invoiceDto.getEmployeeDto().setId(e.getId());
+                    invoiceDto.getEmployeeDto().setFirstName(e.getFirstName());
+                    invoiceDto.getEmployeeDto().setLastName(e.getLastName());
+                    invoiceDto.getEmployeeDto().setNipNumber(e.getNipNumber());
+                    invoiceDto.getEmployeeDto().setBankAccountNumber(e.getBankAccountNumber());
+                    invoiceDto.getEmployeeDto().setCity(e.getCity());
+                    invoiceDto.getEmployeeDto().setStreet(e.getStreet());
+                    invoiceDto.getEmployeeDto().setStreetNumber(e.getStreetNumber());
+                    invoiceDto.getEmployeeDto().setHouseNumber(e.getHouseNumber());
                 });
     }
 
@@ -121,10 +126,15 @@ public class InvoiceListBean implements Serializable {
         clients.stream().filter(c -> c.getId().equals(invoiceClientId))
                 .findFirst()
                 .ifPresent(c -> {
-                    invoiceDto.setClientId(c.getId());
-                    invoiceDto.setClientName(c.getName());
-                    invoiceDto.setClientAccountNumber(c.getBankAccountNumber());
-                    invoiceDto.setClientNipNumber(c.getNip());
+                    invoiceDto.setClientDto(new ClientDto());
+                    invoiceDto.getClientDto().setId(c.getId());
+                    invoiceDto.getClientDto().setName(c.getName());
+                    invoiceDto.getClientDto().setBankAccountNumber(c.getBankAccountNumber());
+                    invoiceDto.getClientDto().setNip(c.getNip());
+                    invoiceDto.getClientDto().setCity(c.getCity());
+                    invoiceDto.getClientDto().setStreet(c.getStreet());
+                    invoiceDto.getClientDto().setStreetNumber(c.getStreetNumber());
+                    invoiceDto.getClientDto().setHouseNumber(c.getHouseNumber());
                 });
     }
 
@@ -134,9 +144,9 @@ public class InvoiceListBean implements Serializable {
     }
 
     public InvoiceNumber getInvoiceNumber() {
-        if (invoiceDto != null && invoiceDto.getEmployeeId() != null) {
+        if (invoiceDto != null && invoiceDto.getEmployeeDto().getId() != null) {
 
-            Long employeeId = invoiceDto.getEmployeeId();
+            Long employeeId = invoiceDto.getEmployeeDto().getId();
             InvoiceNumber newInvoiceNumber;
             InvoiceNumber invoiceNumber = invoiceService.getEmployeeLastInvoiceNumber(employeeId);
             int year = LocalDate.now().getYear();
