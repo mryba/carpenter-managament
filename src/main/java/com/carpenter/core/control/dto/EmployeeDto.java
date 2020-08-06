@@ -17,7 +17,6 @@ public class EmployeeDto {
     private Long id;
     private String firstName;
     private String lastName;
-    @Size(max = 12, min = 12, message = "Hasło powinno zawierać 9 cyfr")
     private String phone;
     private String email;
     private String password;

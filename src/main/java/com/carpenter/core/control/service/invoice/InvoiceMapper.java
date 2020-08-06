@@ -11,6 +11,7 @@ import com.carpenter.core.entity.employee.Address;
 import com.carpenter.core.entity.invoice.Invoice;
 import com.carpenter.utils.Mapper;
 
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.client.ClientBuilder;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -45,11 +46,15 @@ public class InvoiceMapper implements Mapper<Invoice, InvoiceDto> {
                 .lastName(invoice.getEmployee().getLastName())
                 .nipNumber(invoice.getEmployee().getNipNumber())
                 .bankAccountNumber(invoice.getEmployee().getBankAccountNumber())
-                .city(invoice.getEmployee().getAddresses().stream().map(Address::getCity).findAny().orElse(""))
-                .street(invoice.getEmployee().getAddresses().stream().map(Address::getStreet).findAny().orElse(""))
-                .streetNumber(invoice.getEmployee().getAddresses().stream().map(Address::getStreetNumber).findAny().orElse(""))
-                .houseNumber(invoice.getEmployee().getAddresses().stream().map(Address::getHouseNumber).findAny().orElse(""))
+                .phone(invoice.getEmployee().getPhoneNumber())
                 .build();
+
+        if (invoice.getEmployee().getAddresses() != null && !invoice.getEmployee().getAddresses().isEmpty()) {
+            employeeDto.setCity(invoice.getEmployee().getAddresses().stream().map(Address::getCity).findFirst().orElseThrow(() -> new NotFoundException("No city")));
+            employeeDto.setStreet(invoice.getEmployee().getAddresses().stream().map(Address::getStreet).findFirst().orElseThrow(() -> new NotFoundException("No Street")));
+            employeeDto.setStreetNumber(invoice.getEmployee().getAddresses().stream().map(Address::getStreetNumber).findFirst().orElseThrow(() -> new NotFoundException("No Street number found")));
+            employeeDto.setHouseNumber(invoice.getEmployee().getAddresses().stream().map(Address::getHouseNumber).findFirst().orElseThrow(() -> new NotFoundException("No house number found")));
+        }
 
         ClientDto clientDto = ClientDto.builder()
                 .id(invoice.getClient().getId())
