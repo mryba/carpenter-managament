@@ -75,7 +75,7 @@ public class PdfService implements Serializable {
             contentStream.showText("Podkarpaccy Ciesle");
             contentStream.endText();
 
-            contentStream.drawImage(pdImage, 50, 700, image.getWidth()/5.0f, image.getHeight()/5    .0f);
+            contentStream.drawImage(pdImage, 50, 700, image.getWidth()/5.0f, image.getHeight()/5.0f);
 
             contentStream.beginText();
             contentStream.setFont(font, 24);
