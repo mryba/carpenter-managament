@@ -14,6 +14,7 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.graphics.PDXObject;
+import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import javax.faces.context.ExternalContext;
@@ -60,18 +61,21 @@ public class PdfService implements Serializable {
 
 
 //            File imageFile = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("images/builder.png")).getPath());
-//            PDImageXObject pdImage = PDImageXObject.createFromFile(imageFile.getPath(), document);
+//            BufferedImage image = ImageIO.read(getClass().getResource("/images/builder.png"));
+            BufferedImage image = ImageIO.read(getClass().getResource("/images/constructor.png"));
+            PDImageXObject pdImage = LosslessFactory.createFromImage(document, image);
+
 
             font = PDType0Font.load(document, fontStream);
             boldFont = PDType0Font.load(document, boldFontStream);
 
             contentStream.beginText();
             contentStream.setFont(boldFont, 28);
-            contentStream.newLineAtOffset(50, 755);
+            contentStream.newLineAtOffset(150, 755);
             contentStream.showText("Podkarpaccy Ciesle");
             contentStream.endText();
 
-            contentStream.drawImage(pdImage, 20f, 20f);
+            contentStream.drawImage(pdImage, 50, 700, image.getWidth()/5.0f, image.getHeight()/5    .0f);
 
             contentStream.beginText();
             contentStream.setFont(font, 24);
