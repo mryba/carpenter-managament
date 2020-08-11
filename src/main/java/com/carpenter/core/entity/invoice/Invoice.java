@@ -110,7 +110,6 @@ public class Invoice extends DomainObject {
                 Objects.equals(netValue, invoice.netValue) &&
                 Objects.equals(grossValue, invoice.grossValue) &&
                 invoiceType == invoice.invoiceType &&
-                Objects.equals(vatRate, invoice.vatRate) &&
                 paymentType == invoice.paymentType &&
                 Objects.equals(paymentDue, invoice.paymentDue) &&
                 Objects.equals(description, invoice.description);

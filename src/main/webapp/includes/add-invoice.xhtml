@@ -47,9 +47,9 @@
                             <p> Numer faktury:
                                 <strong>#{invoiceListBean.invoiceNumber.number}/#{invoiceListBean.invoiceNumber.year}</strong><br/>
                                 NIP:
-                                <strong>#{invoiceListBean.invoiceDto.employeeNipNumber}</strong><br/>
+                                <strong>#{invoiceListBean.invoiceDto.employeeDto.nipNumber}</strong><br/>
                                 Numer rachunku:
-                                <strong>#{invoiceListBean.invoiceDto.employeeAccountNumber}</strong>
+                                <strong>#{invoiceListBean.invoiceDto.employeeDto.bankAccountNumber}</strong>
                             </p>
                         </div>
                     </div>
@@ -77,9 +77,9 @@
                         <div class="infobox col-info" jsf:rendered="#{not empty invoiceListBean.invoiceClientId}">
                             <p>
                                 NIP:
-                                <strong>#{invoiceListBean.invoiceDto.clientNipNumber}</strong> <br/>
+                                <strong>#{invoiceListBean.invoiceDto.clientDto.nip}</strong> <br/>
                                 Numer rachunku:
-                                <strong>#{invoiceListBean.invoiceDto.clientAccountNumber} </strong>
+                                <strong>#{invoiceListBean.invoiceDto.clientDto.bankAccountNumber} </strong>
                             </p>
                         </div>
                     </div>
