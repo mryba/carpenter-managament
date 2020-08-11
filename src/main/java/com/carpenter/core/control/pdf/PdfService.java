@@ -193,7 +193,6 @@ public class PdfService implements Serializable {
 
             initText(contentStream, font, 125, 60, "Podpis sprzedawcy");
 
-
             contentStream.moveTo(355, 80);
             contentStream.lineTo(500, 80);
             contentStream.setLineDashPattern(new float[]{3}, 0);
@@ -207,7 +206,7 @@ public class PdfService implements Serializable {
             fontStream.close();
             boldFontStream.close();
         } catch (IOException e) {
-            log.error("Error kurwa", e);
+            log.error("Error rendering invoice pdf", e);
         } finally {
             facesContext.responseComplete();
         }
