@@ -59,39 +59,21 @@ public class PdfService implements Serializable {
             fontStream = getClass().getResourceAsStream("/ttf/liberation-sans/LiberationSans-Regular.ttf");
             boldFontStream = getClass().getResourceAsStream("/ttf/liberation-sans/LiberationSans-Bold.ttf");
 
-
-//            File imageFile = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("images/builder.png")).getPath());
-//            BufferedImage image = ImageIO.read(getClass().getResource("/images/builder.png"));
-            BufferedImage image = ImageIO.read(getClass().getResource("/images/constructor.png"));
-            PDImageXObject pdImage = LosslessFactory.createFromImage(document, image);
-
-
             font = PDType0Font.load(document, fontStream);
             boldFont = PDType0Font.load(document, boldFontStream);
 
             contentStream.beginText();
-            contentStream.setFont(boldFont, 22);
-            contentStream.newLineAtOffset(110, 730);
-            contentStream.showText("Podkarpaccy Ciesle");
-            contentStream.endText();
-
-            contentStream.drawImage(pdImage, 40, 710, image.getWidth()/8.0f, image.getHeight()/8.0f);
-
-            contentStream.beginText();
-            contentStream.setFont(font, 24);
-            contentStream.newLineAtOffset(380, 730);
+            contentStream.setFont(boldFont, 30);
+            contentStream.newLineAtOffset(210, 730);
             contentStream.showText("Faktura VAT");
             contentStream.endText();
 
-            initText(contentStream, font, 400, 690, "Numer:");
-            initText(contentStream, boldFont, 445, 690, invoiceDto.getNumberOfInvoice());
+            initText(contentStream, font, 400, 730, "nr FV:");
+            initText(contentStream, boldFont, 445, 730, invoiceDto.getNumberOfInvoice());
 
-            initText(contentStream, font, 400, 670, "Miejsce:");
-            initText(contentStream, boldFont, 450, 670, invoiceDto.getPlaceOfCreation());
+            initText(contentStream, font, 50, 750, "Wystawiono dnia: ");
+            initText(contentStream, boldFont, 70, 750, invoiceDto.getCreateDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString() + ", " + invoiceDto.getPlaceOfCreation());
 
-
-            initText(contentStream, font, 400, 650, "Data wystawienia:");
-            initText(contentStream, boldFont, 500, 650, invoiceDto.getCreateDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString());
 
             drawLine(contentStream, page, 180);
 
