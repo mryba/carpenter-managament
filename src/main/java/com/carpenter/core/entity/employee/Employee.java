@@ -47,6 +47,15 @@ import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
                         name = "Employee.findAllActiveEmployee",
                         query = "SELECT e FROM Employee e " +
                                 "WHERE e.accountActive IS NOT NULL "
+                ),
+                @NamedQuery(
+                        name = "Employee.findAllSelfEmploymentEmployees",
+                        query = "SELECT e FROM Employee e " +
+                                "LEFT JOIN FETCH e.company " +
+                                "LEFT JOIN FETCH e.addresses " +
+                                "WHERE e.deleteDate IS NULL " +
+                                "AND e.accountActive IS NOT NULL " +
+                                "AND e.contract = 'SELF_EMPLOYMENT'"
                 )
         }
 )
