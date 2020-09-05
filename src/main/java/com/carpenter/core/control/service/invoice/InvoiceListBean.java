@@ -139,7 +139,7 @@ public class InvoiceListBean implements Serializable {
     }
 
     public List<EmployeeDto> getEmployeesList() {
-        employees = employeeService.getEmployees(employeeService.getAllActiveSelfEmploymentEmployees());
+        employees = employeeService.getAllActiveEmployees(employeeService.getAllActiveSelfEmploymentEmployees());
         return employees;
     }
 

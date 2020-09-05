@@ -1,5 +1,6 @@
 package com.carpenter.core.entity.employee;
 
+import com.carpenter.core.entity.EmployeeGroup;
 import com.carpenter.core.entity.WorkingDay;
 import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.DomainObject;
@@ -140,6 +141,10 @@ public class Employee extends DomainObject {
 
     @OneToMany(mappedBy = "employee", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Invoice> invoices;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "EMPLOYEE_GROUP_ID", referencedColumnName = "ID")
+    private EmployeeGroup employeeGroup;
 
     public void addRole(Role role) {
         if (role == null) {

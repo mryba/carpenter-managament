@@ -1925,3 +1925,78 @@ body {
         border-right: 1px solid;
     }
 }
+.ms-parent {
+    vertical-align: top;
+}
+
+.ms-choice {
+    height: 2.5em;
+    color: #0b2533;
+}
+.ms-choice > div {
+    top: 7px;
+    right: 7px;
+}
+.ms-choice > span {
+    position: static;
+    padding: 0 20px 0 0;
+}
+
+.ms-drop {
+    background-color: #fcfcfc;
+    border-color: #d1d1d1;
+    color: #0b2533;
+    z-index: 5;
+    overflow-y: auto;
+    display: none;
+}
+.ms-drop ul {
+    padding: 0;
+}
+.ms-drop ul > li {
+    display: block;
+    font-size: 0.85em;
+    margin-bottom: 0;
+    padding: 0;
+    border: 0;
+    color: #0b2533;
+}
+.ms-drop ul > li label {
+    padding: 0.7em;
+    border-top: 1px solid #d1d1d1;
+    border-bottom: 1px solid #d1d1d1;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    margin-top: -1px;
+}
+.ms-drop ul > li label input[type=checkbox], .ms-drop ul > li label label input[type=radio] {
+    margin-right: 10px;
+}
+.ms-drop ul > li:first-child label {
+    border-top: 0;
+    margin-top: 0;
+}
+.ms-drop ul > li.selected {
+    background: #cee0f1;
+}
+.ms-drop ul > li.selected label {
+    font-weight: bold;
+}
+.ms-drop .ms-no-results {
+    padding: 0.5em !important;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.ms-search {
+    padding: 10px;
+    border-bottom: 1px solid #d1d1d1;
+}
+.ms-search input, .ms-search input:focus {
+    background: #fcfcfc url("#{resource['img/multiple-select.png']}") no-repeat 100% -18px;
+    background-position: calc(100% - 8px) -18px;
+    min-height: 0;
+    font-size: 0.8em;
+}

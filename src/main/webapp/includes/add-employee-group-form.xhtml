@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<div id="add-employee-group" class="modal modal-small fade"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://xmlns.jcp.org/jsf/html"
+     xmlns:f="http://xmlns.jcp.org/jsf/core"
+     xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+     xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+
+    <div>
+        <a class="modal-close" data-dismiss="modal"> <i class="fa fa-times"></i> </a>
+        <div>
+            <h:form id="add-employee-group-form" prependId="false">
+
+
+                <div class="modal-content">
+                    <div class="form-top">
+                        <label for="employee-group-name">Nazwa grupy</label>
+                        <h:inputText id="employee-group-name"
+                                     value="#{employeeGroupBean.employeeGroup.groupName}"
+                                     required="true"
+                                     requiredMessage="Podaj nazwę grupy">
+                            <f:ajax execute="@this"/>
+                        </h:inputText>
+                        <h:message for="employee-group-name" styleClass="form-msg col-danger"/>
+                    </div>
+
+                    <div class="form-top">
+                        <label>Wybierz pracowników</label>
+                        <h:selectManyListbox id="employee-group-employees"
+                                             styleClass="employee-group"
+                                             value="#{employeeGroupBean.employeeGroupIds}">
+                            <f:selectItems value="#{employeeGroupBean.allActiveEmployees}"
+                                           var="employee"
+                                           itemLabel="#{employee.firstName} #{employee.lastName}"
+                                           itemValue="#{employee.id}"/>
+                            <f:converter converterId="javax.faces.Long"/>
+                            <f:ajax execute="@this" event="change"/>
+                        </h:selectManyListbox>
+                        <h:outputScript>
+                            $('.employee-group').multipleSelect({
+                                filter: true,
+                                selectAll: true
+                            });
+                        </h:outputScript>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <h:commandLink styleClass="btn col-danger bordered"
+                                   p:data-dismiss="modal"
+                                   p:data-toogle="modal">
+                        <f:ajax event="click"
+                                render="@form add-invoice-form invoiceTableForm"
+                                resetValues="true"/>
+                        <i class="fa fa-times"></i>Anuluj
+                    </h:commandLink>
+                    <h:commandLink type="submit"
+                                   styleClass="btn bordered col-primary">
+                        <f:ajax execute="@form"
+                                resetValues="true"
+                                render="add-invoice-form closeDialogDiv invoiceTableForm"
+                                onevent="showLoader"/>
+                        <i class="fa fa-check"></i>Zapisz
+                    </h:commandLink>
+                </div>
+
+            </h:form>
+        </div>
+    </div>
+</div>

@@ -49,7 +49,7 @@ public abstract class CalendarBean implements Serializable {
     }
     public List<EmployeeDto> getEmployees() {
         employeeDtos.clear();
-        employeeDtos.addAll(employeeService.getEmployees());
+        employeeDtos.addAll(employeeService.getAllActiveEmployees());
         return employeeDtos;
     }
 }

@@ -60,7 +60,7 @@ public class WorkTimeBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        employees = employeeService.getEmployees();
+        employees = employeeService.getAllActiveEmployees();
         clients = clientService.getClientsList();
         for (EmployeeDto employee : employees) {
             employeesHours.put(employee, groupHours);

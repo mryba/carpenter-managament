@@ -5,6 +5,8 @@ import com.carpenter.core.control.dto.CompanyDto;
 import com.carpenter.core.control.dto.EmployeeDto;
 import com.carpenter.core.control.service.client.ClientService;
 import com.carpenter.core.control.service.company.CompanyService;
+import com.carpenter.core.control.service.employeegroup.EmployeeGroupBean;
+import com.carpenter.core.control.service.employeegroup.EmployeeGroupService;
 import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.control.utils.logger.Logged;
 import com.carpenter.core.entity.Company;
@@ -50,6 +52,9 @@ public class EmployeeListBean implements Serializable {
 
     @Inject
     ClientService clientService;
+
+    @Inject
+    EmployeeGroupBean employeeGroupBean;
 
     @Getter
     @Setter
@@ -197,5 +202,4 @@ public class EmployeeListBean implements Serializable {
             employeeDto.setContract("WITHOUT_A_CONTRACT");
         }
     }
-
 }

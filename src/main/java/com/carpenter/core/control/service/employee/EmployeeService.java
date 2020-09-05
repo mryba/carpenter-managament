@@ -53,7 +53,7 @@ public class EmployeeService implements Serializable {
         return employeeRepository.findAllSelfEmployment();
     }
 
-    public List<EmployeeDto> getEmployees(List<Employee> employees) {
+    public List<EmployeeDto> getAllActiveEmployees(List<Employee> employees) {
         List<EmployeeDto> employeesList = new LinkedList<>();
         employeeMapper = new EmployeeMapper();
         for (Employee employee : employees) {
@@ -63,7 +63,7 @@ public class EmployeeService implements Serializable {
         return employeesList;
     }
 
-    public List<EmployeeDto> getEmployees() {
+    public List<EmployeeDto> getAllActiveEmployees() {
         List<EmployeeDto> employees = new LinkedList<>();
         employeeMapper = new EmployeeMapper();
         List<Employee> allSelfEmployment = employeeRepository.findAllSelfEmployment();
