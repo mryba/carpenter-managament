@@ -2,15 +2,18 @@ package com.carpenter.core.control.repository;
 
 import com.carpenter.core.entity.employee.Employee;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.jpa.QueryHints;
 
 import javax.ejb.Stateless;
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
+import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import static com.carpenter.utils.ConstantsRegex.FETCH_GRAPH;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Stateless
@@ -54,21 +57,30 @@ public class EmployeeRepository implements Serializable {
 
     public Employee findEmployeeBeId(Long employeeId) {
         try {
+            final String EMPLOYEE_ID = "employeeId";
             Employee employee = entityManager.createQuery(
                     "SELECT e FROM Employee e LEFT JOIN FETCH e.addresses WHERE e.id =:employeeId", Employee.class)
-                    .setParameter("employeeId", employeeId)
+                    .setParameter(EMPLOYEE_ID, employeeId)
+                    .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
                     .getResultList().iterator().next();
 
             employee = entityManager.createQuery(
                     "SELECT e FROM Employee e LEFT JOIN FETCH e.workingDays WHERE e.id=:employeeId", Employee.class)
-                    .setParameter("employeeId", employeeId)
+                    .setParameter(EMPLOYEE_ID, employee.getId())
+                    .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
                     .getResultList().iterator().next();
 
             employee = entityManager.createQuery(
                     "SELECT e FROM Employee e LEFT JOIN FETCH e.invoices WHERE e.id=:employeeId", Employee.class)
-                    .setParameter("employeeId", employeeId)
+                    .setParameter(EMPLOYEE_ID, employee.getId())
+                    .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
                     .getResultList().iterator().next();
 
+            employee = entityManager.createQuery(
+                    "SELECT e FROM Employee e LEFT JOIN FETCH e.company WHERE e.id =:employeeId", Employee.class)
+                    .setParameter(EMPLOYEE_ID, employee.getId())
+                    .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
+                    .getResultList().iterator().next();
             return employee;
         } catch (NonUniqueResultException e) {
             return null;
@@ -79,6 +91,32 @@ public class EmployeeRepository implements Serializable {
         try {
             return entityManager.createNamedQuery("Employee.findAllActiveEmployee", Employee.class)
                     .getResultList();
+        } catch (NoResultException e) {
+            return Collections.emptyList();
+        }
+    }
+
+    public List<Employee> findAllSelfEmployment() {
+        try {
+            List<Employee> employees = entityManager.createQuery("SELECT e FROM Employee e LEFT JOIN FETCH e.addresses WHERE e.deletedBy IS NULL AND e.deleteDate is NULL AND e.contract ='SELF_EMPLOYMENT' AND e.accountActive = TRUE", Employee.class)
+                    .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
+                    .getResultList();
+            List<Long> employeeIds = employees.stream().map(Employee::getId).collect(Collectors.toList());
+
+
+            employees = entityManager.createQuery("SELECT e FROM Employee e LEFT JOIN FETCH e.workingDays WHERE e.id IN :employees", Employee.class)
+                    .setParameter("employees", employeeIds)
+                    .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
+                    .getResultList();
+
+            employeeIds = employees.stream().map(Employee::getId).collect(Collectors.toList());
+
+            employees = entityManager.createQuery("SELECT e FROM Employee e LEFT JOIN FETCH e.company WHERE e.id IN :employees", Employee.class)
+                    .setParameter("employees", employeeIds)
+                    .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
+                    .getResultList();
+
+            return employees;
         } catch (NoResultException e) {
             return Collections.emptyList();
         }

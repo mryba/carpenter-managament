@@ -47,7 +47,7 @@ import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
                         name = "Employee.findAllActiveEmployee",
                         query = "SELECT e FROM Employee e " +
                                 "WHERE e.accountActive IS NOT NULL "
-                )
+                ),
         }
 )
 @NamedEntityGraphs({
@@ -116,7 +116,7 @@ public class Employee extends DomainObject {
     @XmlTransient
     private Gender gender;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
     @JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "ID")
     @XmlTransient
     private List<Address> addresses;
@@ -131,7 +131,7 @@ public class Employee extends DomainObject {
     @Column(name = "ACCOUNT_ACTIVE")
     private Boolean accountActive;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+    @OneToMany(mappedBy = "employee")
     private List<WorkingDay> workingDays;
 
     @ManyToOne(fetch = FetchType.LAZY)

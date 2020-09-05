@@ -72,11 +72,13 @@
                     </div>
 
                     <div class="form-top">
-                        <label>Data urodzenia</label>
+                        <label for="birthDate">Data urodzenia</label>
                         <h:inputText id="birthDate"
                                      styleClass="datepicker"
                                      value="#{employeeListBean.employeeDto.birthDate}"
-                                     p:placeholder="Data urodzenia">
+                                     p:placeholder="Data urodzenia"
+                                     required="true"
+                                     requiredMessage="Proszę wybrać datę urodzenia">
                             <f:convertDateTime pattern="yyyy-MM-dd"/>
 
                             <f:ajax event="change"
@@ -86,6 +88,7 @@
                         <h:outputScript>
                             $(".datepicker").flatpickr();
                         </h:outputScript>
+                        <h:message for="birthDate" styleClass="form-msg col-danger"/>
                     </div>
                     <div class="form-top" jsf:id="employee-email-id">
                         <label for="add-employee-email">Email</label>
@@ -161,7 +164,7 @@
                         </div>
                     </div>
 
-                    <div class="form-top">
+                    <div class="form-top" jsf:id="contract-id">
                         <label>Umowa</label>
                         <h:selectOneMenu id="add-employee-contract"
                                          value="#{employeeListBean.employeeDto.contract}">
@@ -172,7 +175,9 @@
 
                             <f:ajax event="change"
                                     execute="@this"
-                                    render="@this employee-nip-id"/>
+                                    render="@this employee-nip-id add-employee-add-address-id add-address-label-id"
+                                    listener="#{employeeListBean.unableAddress}"
+                                    onevent="showLoader"/>
                         </h:selectOneMenu>
 
                         <div jsf:id="employee-nip-id">
@@ -204,13 +209,15 @@
                         </h:selectOneMenu>
                     </div>
 
-                    <div class="form-top">
+                    <div class="form-top" jsf:id="add-address-label-id">
                         <label for="add-address-checkbox">Dodaj adres</label>
                         <h:selectBooleanCheckbox id="add-address-checkbox"
                                                  value="#{employeeListBean.addAddress}">
                             <f:ajax event="change"
                                     execute="@this"
-                                    render="add-employee-add-address-id"/>
+                                    render="add-employee-add-address-id contract-id"
+                                    listener="#{employeeListBean.resetContract}"
+                                    onevent="showLoader"/>
                         </h:selectBooleanCheckbox>
                         <i class="far fa-address-card"></i>
                     </div>
@@ -219,13 +226,16 @@
                     <div jsf:id="add-employee-add-address-id">
                         <div jsf:rendered="#{employeeListBean.addAddress}">
                             <div class="form-top">
-                                <label>Miasto / Wieś</label>
+                                <label for="add-employee-city">Miasto / Wieś</label>
                                 <input type="text"
                                        jsf:id="add-employee-city"
-                                       jsf:value="#{employeeListBean.employeeDto.city}">
+                                       jsf:value="#{employeeListBean.employeeDto.city}"
+                                       jsf:required="true"
+                                       jsf:requiredMessage="Polę Miasto / Wieś nie może być pustę">
                                     <f:ajax event="change"
                                             execute="@this"/>
                                 </input>
+                                <h:message for="add-employee-city" styleClass="form-msg col-danger"/>
                             </div>
 
                             <div class="form-top"
@@ -233,10 +243,13 @@
                                 <label for="add-employee-postal-code">Kod pocztowy</label>
                                 <input type="text"
                                        jsf:id="add-employee-postal-code"
-                                       jsf:value="#{employeeListBean.employeeDto.postalCode}">
+                                       jsf:value="#{employeeListBean.employeeDto.postalCode}"
+                                       jsf:required="true"
+                                       jsf:requiredMessage="Pole kodu pocztowego nie może być pustę">
                                     <f:ajax event="change"
                                             execute="@this"/>
                                 </input>
+                                <h:message for="add-employee-postal-code" styleClass="form-msg col-danger"/>
                             </div>
 
                             <div class="form-top"
@@ -269,22 +282,33 @@
                                 <label for="add-employee-house-number">Numer domu / mieszkania</label>
                                 <input type="text"
                                        jsf:id="add-employee-house-number"
-                                       jsf:value="#{employeeListBean.employeeDto.houseNumber}">
+                                       jsf:value="#{employeeListBean.employeeDto.houseNumber}"
+                                       jsf:required="true"
+                                       jsf:requiredMessage="Pole numer domu / mieszkania nie może być pustę">
                                     <f:ajax event="change"
                                             execute="@this"/>
                                 </input>
+                                <h:message for="add-employee-house-number" styleClass="form-msg col-danger"/>
                             </div>
 
                             <div class="form-top"
                                  jsf:rendered="#{employeeListBean.addAddress}">
-                                <label>Kraj</label>
-                                <h:selectOneMenu>
+                                <label for="country-name">Kraj</label>
+                                <h:selectOneMenu id="country-name"
+                                                 value="#{employeeListBean.employeeDto.country}"
+                                                 required="true"
+                                                 requiredMessage="Proszę wybrać kraj">
+                                    <f:selectItem itemLabel="Wybierz..." itemValue="#{null}"/>
                                     <f:selectItems value="#{employeeListBean.countries}"
                                                    var="country"
                                                    itemLabel="#{employee_msg['country_'.concat(country.name())]}"
                                                    itemValue="#{country.name()}">
                                     </f:selectItems>
+                                    <f:ajax execute="@this"
+                                            event="change"
+                                            onevent="showLoader"/>
                                 </h:selectOneMenu>
+                                <h:message for="country-name" styleClass="form-msg col-danger"/>
                             </div>
                         </div>
                     </div>

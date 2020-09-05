@@ -55,7 +55,8 @@ public class EmployeeService implements Serializable {
     public List<EmployeeDto> getEmployees() {
         List<EmployeeDto> employees = new LinkedList<>();
         employeeMapper = new EmployeeMapper();
-        for (Employee employee : getEmployersList()) {
+        List<Employee> allSelfEmployment = employeeRepository.findAllSelfEmployment();
+        for (Employee employee : allSelfEmployment) {
             EmployeeDto employeeDto = employeeMapper.mapToDomain(employee);
             employees.add(employeeDto);
 

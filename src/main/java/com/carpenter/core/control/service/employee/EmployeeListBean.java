@@ -18,6 +18,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.annotation.PostConstruct;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -181,4 +182,20 @@ public class EmployeeListBean implements Serializable {
         clients.addAll(clientService.getAllAvailableClients());
         return clients;
     }
+
+
+    public void unableAddress() {
+        if (employeeDto.getContract().equals("SELF_EMPLOYMENT")) {
+            setAddAddress(true);
+        } else {
+            setAddAddress(false);
+        }
+    }
+
+    public void resetContract(){
+        if (!isAddAddress) {
+            employeeDto.setContract("WITHOUT_A_CONTRACT");
+        }
+    }
+
 }
