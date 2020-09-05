@@ -16,14 +16,13 @@ import java.util.Objects;
 @Access(AccessType.FIELD)
 public class EmployeeGroup extends DomainObject {
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeGroup" ,cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+    private static final long serialVersionUID = -4220277435589526222L;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeGroup", cascade = CascadeType.ALL)
     private List<Employee> employees;
 
     @Column(name = "NAME")
     private String groupName;
-
-    @Column(name = "ACTIVE")
-    private Boolean active;
 
     public void addEmployee(Employee employee) {
         if (employees == null) {
@@ -33,7 +32,7 @@ public class EmployeeGroup extends DomainObject {
         employee.setEmployeeGroup(this);
     }
 
-    public void remoteEmployee(Employee employee) {
+    public void removeEmployee(Employee employee) {
         if (employees != null) {
             employees.remove(employee);
             employee.setEmployeeGroup(null);
@@ -46,12 +45,11 @@ public class EmployeeGroup extends DomainObject {
         if (!(o instanceof EmployeeGroup)) return false;
         if (!super.equals(o)) return false;
         EmployeeGroup that = (EmployeeGroup) o;
-        return Objects.equals(employees, that.employees) &&
-                Objects.equals(active, that.active);
+        return Objects.equals(employees, that.employees);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), employees, active);
+        return Objects.hash(super.hashCode(), employees);
     }
 }

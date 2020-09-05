@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/secure/template.xhtml">
+
+    <ui:param name="pageTitle" value="Grupy"/>
+
+    <ui:define name="content">
+
+        <div class="wrapper">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Grupy pracowników</h2>
+
+                    <div class="controls">
+                        <h:form>
+                            <a href="#" class="btn bordered col-primary"
+                               data-toggle="modal"
+                               data-target="#add-employee-group">
+                                <i class="fas fa-users"></i> Dodaj grupę pracowników
+                            </a>
+                        </h:form>
+                    </div>
+                </div>
+                <h:form id="employee-group-form" prependId="false">
+
+                    <div class="table">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th class="w10 left">Grupa</th>
+                                <th class="w10 left">Data stworzenia</th>
+                                <th class="w10 left">Pracownik</th>
+                                <th class="w5">Edycja</th>
+                                <th class="w5">Usuń</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <ui:repeat value="#{employeeGroupBean.employeeGroups}" var="eg">
+                                <ui:repeat value="#{eg.employees}" var="e">
+                                    <tr>
+                                        <td class="w10 left">
+                                            #{eg.groupName}
+                                        </td>
+                                        <td class="w10 left">
+                                            #{eg.createDate}
+                                        </td>
+                                        <td class="w10 left">
+                                            <h4>#{e.lastName} #{e.firstName}</h4>
+                                        </td>
+                                        <td class="w5">
+                                            <h:commandLink action="#{employeeGroupBean.setEditedEmployeeGroup(eg.id)}"
+                                                           styleClass="btn btn-sm btn-icon col-primary"
+                                                           p:data-toogle="modal"
+                                                           p:data-target="#edit-employee-group">
+                                                <i class="fas fa-cogs"></i>
+                                                <f:ajax execute="@this"
+                                                        render="edit-employee-group-form"
+                                                        onevent="showLoader"/>
+                                            </h:commandLink>
+                                        </td>
+
+                                        <td class="w5">
+                                            <h:commandLink action="#{employeeGroupBean.deleteGroup(eg.id)}"
+                                                           styleClass="btn btn-sm btn-icon col-primary"
+                                                           p:data-toogle="modal"
+                                                           p:data-target="#delete-employee-group">
+                                                <i class="fas fa-trash"></i>
+                                                <f:ajax execute="@this"
+                                                        render=":delete-employee-form"
+                                                        resetValues="true"/>
+                                            </h:commandLink>
+                                        </td>
+                                    </tr>
+                                </ui:repeat>
+                            </ui:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+                </h:form>
+            </div>
+
+            <ui:include src="/includes/add-employee-group-form.xhtml"/>
+<!--            <ui:include src="/includes/delete-employee-group.xhtml"/>-->
+
+            <div jsf:id="closeDialogDiv">
+                <h:outputScript rendered="#{not facesContext.validationFailed}">
+                    $('#add-employee-group').modal('hide')
+                </h:outputScript>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

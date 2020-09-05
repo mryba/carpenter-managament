@@ -121,4 +121,31 @@ public class EmployeeRepository implements Serializable {
             return Collections.emptyList();
         }
     }
+
+    public List<Employee> findAllEmployeeByIds(List<Long> ids) {
+        try {
+            List<Employee> employees = entityManager.createQuery("SELECT e FROM Employee e LEFT JOIN FETCH e.addresses WHERE e.id IN :ids ", Employee.class)
+                    .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
+                    .setParameter("ids", ids)
+                    .getResultList();
+            List<Long> employeeIds = employees.stream().map(Employee::getId).collect(Collectors.toList());
+
+
+            employees = entityManager.createQuery("SELECT e FROM Employee e LEFT JOIN FETCH e.workingDays WHERE e.id IN :employees", Employee.class)
+                    .setParameter("employees", employeeIds)
+                    .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
+                    .getResultList();
+
+            employeeIds = employees.stream().map(Employee::getId).collect(Collectors.toList());
+
+            employees = entityManager.createQuery("SELECT e FROM Employee e LEFT JOIN FETCH e.company WHERE e.id IN :employees", Employee.class)
+                    .setParameter("employees", employeeIds)
+                    .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
+                    .getResultList();
+
+            return employees;
+        } catch (NoResultException e) {
+            return Collections.emptyList();
+        }
+    }
 }

@@ -30,7 +30,7 @@
                         <label>Wybierz pracowników</label>
                         <h:selectManyListbox id="employee-group-employees"
                                              styleClass="employee-group"
-                                             value="#{employeeGroupBean.employeeGroupIds}">
+                                             value="#{employeeGroupBean.employeeIds}">
                             <f:selectItems value="#{employeeGroupBean.allActiveEmployees}"
                                            var="employee"
                                            itemLabel="#{employee.firstName} #{employee.lastName}"
@@ -57,6 +57,7 @@
                         <i class="fa fa-times"></i>Anuluj
                     </h:commandLink>
                     <h:commandLink type="submit"
+                                   action="#{employeeGroupBean.save}"
                                    styleClass="btn bordered col-primary">
                         <f:ajax execute="@form"
                                 resetValues="true"

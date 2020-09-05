@@ -56,12 +56,18 @@
                     </h:commandLink>
 
                     <h:commandLink
+                            action="#{navigationBean.employeeGroupRedirect}">
+                        <f:ajax onevent="showLoader"/>
+                        <i class="fas fa-users"></i>Grupy
+                    </h:commandLink>
+
+                    <h:commandLink
                             action="#{navigationBean.clientsRedirect}">
                         <i class="fas fa-user-tie"></i>Klienci
                     </h:commandLink>
 
                     <h:commandLink
-                    action="#{navigationBean.invoiceRedirect}">
+                            action="#{navigationBean.invoiceRedirect}">
                         <i class="fas fa-file-invoice-dollar"></i>Faktury
                     </h:commandLink>
 

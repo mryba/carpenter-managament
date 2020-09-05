@@ -73,4 +73,8 @@ public class EmployeeService implements Serializable {
         }
         return employees;
     }
+
+    public List<Employee> getAllEmployeesByIds(List<Long> employeeIds) {
+        return employeeRepository.findAllEmployeeByIds(employeeIds);
+    }
 }
