@@ -51,9 +51,14 @@ public class InvoiceMapper implements Mapper<Invoice, InvoiceDto> {
 
         if (invoice.getEmployee().getAddresses() != null && !invoice.getEmployee().getAddresses().isEmpty()) {
             employeeDto.setCity(invoice.getEmployee().getAddresses().stream().map(Address::getCity).findFirst().orElseThrow(() -> new NotFoundException("No city")));
-            employeeDto.setStreet(invoice.getEmployee().getAddresses().stream().map(Address::getStreet).findFirst().orElseThrow(() -> new NotFoundException("No Street")));
-            employeeDto.setStreetNumber(invoice.getEmployee().getAddresses().stream().map(Address::getStreetNumber).findFirst().orElseThrow(() -> new NotFoundException("No Street number found")));
+            invoice.getEmployee().getAddresses().stream().map(Address::getCountry).findAny().ifPresent(employeeDto::setCountry);
             employeeDto.setHouseNumber(invoice.getEmployee().getAddresses().stream().map(Address::getHouseNumber).findFirst().orElseThrow(() -> new NotFoundException("No house number found")));
+            employeeDto.setPostalCode(invoice.getEmployee().getAddresses().stream().map(Address::getPostalCode).findFirst().orElseThrow(() -> new NotFoundException("No postal code")));
+
+            if (invoice.getEmployee().getAddresses().stream().anyMatch(a -> a.getStreet() != null && a.getStreetNumber() != null)) {
+                employeeDto.setStreet(invoice.getEmployee().getAddresses().stream().map(Address::getStreet).findFirst().orElseThrow(() -> new NotFoundException("No Street")));
+                employeeDto.setStreetNumber(invoice.getEmployee().getAddresses().stream().map(Address::getStreetNumber).findFirst().orElseThrow(() -> new NotFoundException("No Street number found")));
+            }
         }
 
         ClientDto clientDto = ClientDto.builder()
@@ -66,6 +71,7 @@ public class InvoiceMapper implements Mapper<Invoice, InvoiceDto> {
                 .street(invoice.getClient().getStreet())
                 .streetNumber(invoice.getClient().getStreetNumber())
                 .houseNumber(invoice.getClient().getHouseNumber())
+                .postalCode(invoice.getClient().getPostalCode())
                 .build();
         return InvoiceDto.builder()
                 .id(invoice.getId())

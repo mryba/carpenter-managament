@@ -187,10 +187,21 @@
                                        jsf:id="add-employee-nip"
                                        jsf:value="#{employeeListBean.employeeDto.nipNumber}">
                                     <f:ajax event="change"
-                                            execute="@this"
-                                            render="@form :employerTableForm"/>
+                                            execute="@this"/>
                                 </input>
                             </div>
+                        </div>
+                        <div jsf:id="employee-bank-acount-id">
+                            <label for="add-employee-bank-account">Numer rachunku bankowego</label>
+                            <input type="text"
+                                   jsf:id="add-employee-bank-account"
+                                   jsf:required="true"
+                                   jsf:requiredMessage="Proszę podać numer rachunku"
+                                   jsf:value="#{employeeListBean.employeeDto.bankAccountNumber}">
+                                <f:ajax execute="@this"
+                                        event="change"/>
+                            </input>
+                            <h:message for="add-employee-bank-account" styleClass="form-msg col-danger"/>
                         </div>
                     </div>
                     <div class="form-top">

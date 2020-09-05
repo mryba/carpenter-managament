@@ -45,6 +45,9 @@ public class InvoiceDto {
     }
 
     public String getEmployeeFullAddress() {
+        if (employeeDto.getStreet() == null && employeeDto.getStreetNumber() == null) {
+            return employeeDto.getCity() + " " + employeeDto.getHouseNumber();
+        }
         return this.employeeDto.getCity() + ", " + this.employeeDto.getStreet() + " " + this.employeeDto.getStreetNumber() + "/" + this.employeeDto.getHouseNumber();
     }
 

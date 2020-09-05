@@ -88,7 +88,7 @@ public class PdfService implements Serializable {
             initText(contentStream, boldFont, 125, 610, invoiceDto.getEmployeeDto().getFirstName() + " " + invoiceDto.getEmployeeDto().getLastName());
 
             initText(contentStream, font, 50, 590, "Adres: ");
-            initText(contentStream, boldFont, 90, 590, invoiceDto.getEmployeeDto().getPostalCode() + ", " + invoiceDto.getEmployeeDto().getCity());
+            initText(contentStream, boldFont, 90, 590, invoiceDto.getEmployeeDto().getPostalCode() + " " + invoiceDto.getEmployeeDto().getCity() + ",");
 
             initText(contentStream, boldFont, 90, 570, invoiceDto.getEmployeeFullAddress());
 
@@ -103,7 +103,7 @@ public class PdfService implements Serializable {
             initText(contentStream, boldFont, 460, 610, invoiceDto.getClientDto().getName());
 
             initText(contentStream, font, 400, 590, "Adres: ");
-            initText(contentStream, boldFont, 445, 590, invoiceDto.getClientDto().getPostalCode() + ", " + invoiceDto.getClientDto().getCity());
+            initText(contentStream, boldFont, 445, 590, invoiceDto.getClientDto().getPostalCode() + ", " + invoiceDto.getClientDto().getCity() + ",");
 
             initText(contentStream, boldFont, 445, 570, invoiceDto.getClientFullAddress());
 

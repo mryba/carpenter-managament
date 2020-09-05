@@ -50,7 +50,7 @@ public class EmployeeService implements Serializable {
     }
 
     public List<Employee> getAllActiveSelfEmploymentEmployees(){
-        return employeeRepository.findAllSelfEmploymentEmployees();
+        return employeeRepository.findAllSelfEmployment();
     }
 
     public List<EmployeeDto> getEmployees(List<Employee> employees) {

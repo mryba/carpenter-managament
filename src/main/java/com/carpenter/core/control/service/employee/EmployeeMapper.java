@@ -1,7 +1,6 @@
 package com.carpenter.core.control.service.employee;
 
 import com.carpenter.core.control.dto.EmployeeDto;
-import com.carpenter.core.control.service.client.ClientMapper;
 import com.carpenter.core.entity.dictionaries.Contract;
 import com.carpenter.core.entity.dictionaries.Gender;
 import com.carpenter.core.entity.dictionaries.Role;
