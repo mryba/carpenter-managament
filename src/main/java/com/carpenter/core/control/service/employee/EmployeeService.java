@@ -6,7 +6,7 @@ import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.entity.employee.Employee;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.enterprise.context.SessionScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,16 +14,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Slf4j
-@SessionScoped
+@Stateless
 public class EmployeeService implements Serializable {
 
     private static final long serialVersionUID = 5285699775473333310L;
 
     @Inject
-    EmployeeRepository employeeRepository;
-
-    @Inject
-    PrincipalBean principalBean;
+    private EmployeeRepository employeeRepository;
 
     private EmployeeMapper employeeMapper;
 
@@ -31,7 +28,7 @@ public class EmployeeService implements Serializable {
         return employeeRepository.findAllEmployees();
     }
 
-    public Employee createEmployee(EmployeeDto employeeDto) {
+    public Employee createEmployee(EmployeeDto employeeDto, PrincipalBean principalBean) {
         employeeMapper = new EmployeeMapper();
         Employee employee = employeeMapper.mapFromDomain(employeeDto);
         employee.setCreateBy(principalBean.getLoggedUser().getEmail());
@@ -52,6 +49,20 @@ public class EmployeeService implements Serializable {
         return employeeRepository.findEmployeeBeId(employeeId);
     }
 
+    public List<Employee> getAllActiveSelfEmploymentEmployees(){
+        return employeeRepository.findAllSelfEmploymentEmployees();
+    }
+
+    public List<EmployeeDto> getEmployees(List<Employee> employees) {
+        List<EmployeeDto> employeesList = new LinkedList<>();
+        employeeMapper = new EmployeeMapper();
+        for (Employee employee : employees) {
+            EmployeeDto employeeDto = employeeMapper.mapToDomain(employee);
+            employeesList.add(employeeDto);
+        }
+        return employeesList;
+    }
+
     public List<EmployeeDto> getEmployees() {
         List<EmployeeDto> employees = new LinkedList<>();
         employeeMapper = new EmployeeMapper();
@@ -59,7 +70,6 @@ public class EmployeeService implements Serializable {
         for (Employee employee : allSelfEmployment) {
             EmployeeDto employeeDto = employeeMapper.mapToDomain(employee);
             employees.add(employeeDto);
-
         }
         return employees;
     }
