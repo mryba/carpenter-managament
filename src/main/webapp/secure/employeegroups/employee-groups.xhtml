@@ -55,7 +55,7 @@
                                         <td class="w5">
                                             <h:commandLink action="#{employeeGroupBean.setEditedEmployeeGroup(eg.id)}"
                                                            styleClass="btn btn-sm btn-icon col-primary"
-                                                           p:data-toogle="modal"
+                                                           p:data-toggle="modal"
                                                            p:data-target="#edit-employee-group">
                                                 <i class="fas fa-cogs"></i>
                                                 <f:ajax execute="@this"
@@ -65,13 +65,12 @@
                                         </td>
 
                                         <td class="w5">
-                                            <h:commandLink action="#{employeeGroupBean.deleteGroup(eg.id)}"
-                                                           styleClass="btn btn-sm btn-icon col-primary"
-                                                           p:data-toogle="modal"
+                                            <h:commandLink styleClass="btn btn-sm btn-icon col-primary"
+                                                           p:data-toggle="modal"
                                                            p:data-target="#delete-employee-group">
                                                 <i class="fas fa-trash"></i>
                                                 <f:ajax execute="@this"
-                                                        render=":delete-employee-form"
+                                                        listener="#{employeeGroupBean.setEditedEmployeeGroup(eg.id)}"
                                                         resetValues="true"/>
                                             </h:commandLink>
                                         </td>
@@ -85,11 +84,12 @@
             </div>
 
             <ui:include src="/includes/add-employee-group-form.xhtml"/>
-<!--            <ui:include src="/includes/delete-employee-group.xhtml"/>-->
+            <ui:include src="/includes/delete-employee-group.xhtml"/>
 
             <div jsf:id="closeDialogDiv">
                 <h:outputScript rendered="#{not facesContext.validationFailed}">
                     $('#add-employee-group').modal('hide')
+                    $('#delete-employee-group').modal('hide')
                 </h:outputScript>
             </div>
         </div>

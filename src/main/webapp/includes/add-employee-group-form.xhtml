@@ -52,7 +52,7 @@
                                    p:data-dismiss="modal"
                                    p:data-toogle="modal">
                         <f:ajax event="click"
-                                render="@form add-invoice-form invoiceTableForm"
+                                render="@form employee-group-form"
                                 resetValues="true"/>
                         <i class="fa fa-times"></i>Anuluj
                     </h:commandLink>
@@ -61,7 +61,7 @@
                                    styleClass="btn bordered col-primary">
                         <f:ajax execute="@form"
                                 resetValues="true"
-                                render="add-invoice-form closeDialogDiv invoiceTableForm"
+                                render="employee-group-form closeDialogDiv"
                                 onevent="showLoader"/>
                         <i class="fa fa-check"></i>Zapisz
                     </h:commandLink>

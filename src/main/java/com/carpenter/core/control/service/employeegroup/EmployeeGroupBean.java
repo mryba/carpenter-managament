@@ -61,17 +61,15 @@ public class EmployeeGroupBean implements Serializable {
     }
 
     @Transactional
-    public void deleteGroup(Long employeeGroupId) {
+    public void deleteGroup() {
         if (employeeGroups != null && !employeeGroups.isEmpty()) {
-            EmployeeGroup eg = employeeGroups.stream().filter(e -> e.getId().equals(employeeGroupId)).findFirst().orElse(null);
-
-            if (eg !=null && eg.getEmployees() != null) {
-                for (Employee employee : eg.getEmployees()) {
+            if (employeeGroup != null && employeeGroup.getEmployees() != null) {
+                for (Employee employee : employeeGroup.getEmployees()) {
                     employee.setEmployeeGroup(null);
                     employeeService.saveEmployee(employee);
                 }
-                eg.setEmployees(null);
-                employeeGroupService.deleteGroup(eg);
+                employeeGroup.setEmployees(null);
+                employeeGroupService.deleteGroup(employeeGroup);
             }
         }
     }
