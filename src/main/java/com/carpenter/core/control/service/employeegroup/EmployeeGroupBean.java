@@ -13,9 +13,11 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 @Getter
@@ -58,13 +60,18 @@ public class EmployeeGroupBean implements Serializable {
         }
     }
 
+    @Transactional
     public void deleteGroup(Long employeeGroupId) {
         if (employeeGroups != null && !employeeGroups.isEmpty()) {
-            employeeGroup = employeeGroups.stream().filter(e -> e.getId().equals(employeeGroupId)).findFirst().orElse(null);
+            EmployeeGroup eg = employeeGroups.stream().filter(e -> e.getId().equals(employeeGroupId)).findFirst().orElse(null);
 
-            for (Employee employee : employeeGroup.getEmployees()) {
-                employeeGroup.removeEmployee(employee);
-                employeeGroupService.deleteGroup(employeeGroup);
+            if (eg !=null && eg.getEmployees() != null) {
+                for (Employee employee : eg.getEmployees()) {
+                    employee.setEmployeeGroup(null);
+                    employeeService.saveEmployee(employee);
+                }
+                eg.setEmployees(null);
+                employeeGroupService.deleteGroup(eg);
             }
         }
     }

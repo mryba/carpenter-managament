@@ -18,7 +18,7 @@ public class EmployeeGroup extends DomainObject {
 
     private static final long serialVersionUID = -4220277435589526222L;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeGroup", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeGroup", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Employee> employees;
 
     @Column(name = "NAME")
@@ -34,8 +34,8 @@ public class EmployeeGroup extends DomainObject {
 
     public void removeEmployee(Employee employee) {
         if (employees != null) {
-            employees.remove(employee);
             employee.setEmployeeGroup(null);
+            employees.remove(employee);
         }
     }
 
