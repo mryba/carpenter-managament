@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -76,5 +77,16 @@ public class EmployeeService implements Serializable {
 
     public List<Employee> getAllEmployeesByIds(List<Long> employeeIds) {
         return employeeRepository.findAllEmployeeByIds(employeeIds);
+    }
+
+    public List<EmployeeDto> getAllActiveAndWithoutGroupEmployees(){
+        List<EmployeeDto> employees = new ArrayList<>();
+        employeeMapper = new EmployeeMapper();
+        List<Employee> notSignedEmployees = employeeRepository.findAllActiveAndWithoutGroupEmployees();
+        for (Employee notSignedEmployee : notSignedEmployees) {
+            EmployeeDto employeeDto = employeeMapper.mapToDomain(notSignedEmployee);
+            employees.add(employeeDto);
+        }
+        return employees;
     }
 }

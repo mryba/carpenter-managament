@@ -7,7 +7,6 @@
      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
      xmlns:jsf="http://xmlns.jcp.org/jsf">
 
-
     <div>
         <a class="modal-close" data-dismiss="modal"> <i class="fa fa-times"></i> </a>
         <div>
@@ -24,6 +23,23 @@
                             <f:ajax execute="@this"/>
                         </h:inputText>
                         <h:message for="employee-group-name" styleClass="form-msg col-danger"/>
+                    </div>
+
+                    <div class="form-top">
+                        <label for="employee-group-client">Klient</label>
+                        <h:selectOneMenu id="employee-group-client"
+                                         value="#{employeeGroupBean.clientId}"
+                                         required="true"
+                                         requiredMessage="Proszę wybrać klienta">
+                            <f:selectItem itemLabel="Wybierz..." itemValue="#{null}"/>
+                            <f:selectItems value="#{employeeGroupBean.availableClients}"
+                                           var="c"
+                                           itemLabel="#{c.name}"
+                                           itemValue="#{c.id}"/>
+                            <f:converter converterId="javax.faces.Long"/>
+                            <f:ajax execute="@this"
+                                    event="change"/>
+                        </h:selectOneMenu>
                     </div>
 
                     <div class="form-top">
@@ -59,9 +75,9 @@
                     <h:commandLink type="submit"
                                    action="#{employeeGroupBean.save}"
                                    styleClass="btn bordered col-primary">
-                        <f:ajax execute="@form"
+                        <f:ajax execute="this"
                                 resetValues="true"
-                                render="employee-group-form closeDialogDiv"
+                                render=":employee-group-form employee-group-table-id closeDialogDiv"
                                 onevent="showLoader"/>
                         <i class="fa fa-check"></i>Zapisz
                     </h:commandLink>

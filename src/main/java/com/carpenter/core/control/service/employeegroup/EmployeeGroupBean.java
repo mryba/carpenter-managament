@@ -1,9 +1,12 @@
 package com.carpenter.core.control.service.employeegroup;
 
+import com.carpenter.core.control.dto.ClientDto;
 import com.carpenter.core.control.dto.EmployeeDto;
+import com.carpenter.core.control.service.client.ClientService;
 import com.carpenter.core.control.service.employee.EmployeeService;
 import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.entity.EmployeeGroup;
+import com.carpenter.core.entity.client.Client;
 import com.carpenter.core.entity.employee.Employee;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +33,7 @@ public class EmployeeGroupBean implements Serializable {
     private static final long serialVersionUID = -7314112007094597293L;
 
     private EmployeeGroup employeeGroup;
+    private Long clientId;
 
     private List<Long> employeeIds;
     private List<EmployeeGroup> employeeGroups;
@@ -43,6 +47,9 @@ public class EmployeeGroupBean implements Serializable {
     @Inject
     PrincipalBean principalBean;
 
+    @Inject
+    private ClientService clientService;
+
     @PostConstruct
     public void init() {
         employeeGroup = new EmployeeGroup();
@@ -51,7 +58,7 @@ public class EmployeeGroupBean implements Serializable {
     }
 
     public List<EmployeeDto> getAllActiveEmployees() {
-        return employeeService.getAllActiveEmployees();
+        return employeeService.getAllActiveAndWithoutGroupEmployees();
     }
 
     public void setEditedEmployeeGroup(Long employeeGroupId) {
@@ -76,9 +83,16 @@ public class EmployeeGroupBean implements Serializable {
 
     public void save() {
         List<Employee> employees = employeeService.getAllEmployeesByIds(employeeIds);
+        Client client = clientService.getClientById(clientId);
         employees.forEach(e -> employeeGroup.addEmployee(e));
         employeeGroup.setCreateBy(principalBean.getLoggedUser().getEmail());
         employeeGroup.setCreateDate(new Date());
+        employeeGroup.setPresentClient(client);
         employeeGroupService.saveGroup(employeeGroup);
     }
+
+    public List<ClientDto> getAvailableClients() {
+        return clientService.getAllAvailableClients();
+    }
+
 }

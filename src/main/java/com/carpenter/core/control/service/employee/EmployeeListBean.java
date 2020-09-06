@@ -74,11 +74,6 @@ public class EmployeeListBean implements Serializable {
     public void saveEmployee() {
         Employee employee = employeeService.createEmployee(employeeDto, principalBean);
 
-        ClientDto clientDto = clients.stream().filter(c -> employeeDto.getPresentClient().equals(c.getId())).findFirst().orElse(null);
-        if (clientDto != null) {
-            Client client = clientService.mapClientToDomain(clientDto);
-            employee.setPresentClient(client);
-        }
         Company company = getCompanyBasedOnLoggedUser();
         employee.setCompany(company);
 

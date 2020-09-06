@@ -1,5 +1,6 @@
 package com.carpenter.core.entity;
 
+import com.carpenter.core.entity.client.Client;
 import com.carpenter.core.entity.employee.Employee;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,10 @@ public class EmployeeGroup extends DomainObject {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "employeeGroup", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Employee> employees;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PRESENT_CLIENT", referencedColumnName = "ID")
+    private Client presentClient;
 
     @Column(name = "NAME")
     private String groupName;

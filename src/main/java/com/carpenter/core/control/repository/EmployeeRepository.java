@@ -148,4 +148,32 @@ public class EmployeeRepository implements Serializable {
             return Collections.emptyList();
         }
     }
+
+    public List<Employee> findAllActiveAndWithoutGroupEmployees() {
+        try {
+            List<Employee> employees = entityManager.createQuery(
+                    "SELECT e FROM Employee e LEFT JOIN FETCH e.addresses WHERE e.deletedBy IS NULL AND e.deleteDate is NULL AND e.contract ='SELF_EMPLOYMENT' AND e.accountActive = TRUE AND e.employeeGroup IS NULL ", Employee.class)
+                    .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
+                    .getResultList();
+            List<Long> employeeIds = employees.stream().map(Employee::getId).collect(Collectors.toList());
+
+            if (!employeeIds.isEmpty()) {
+                employees = entityManager.createQuery("SELECT e FROM Employee e LEFT JOIN FETCH e.workingDays WHERE e.id IN :employees", Employee.class)
+                        .setParameter("employees", employeeIds)
+                        .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
+                        .getResultList();
+            }
+            employeeIds = employees.stream().map(Employee::getId).collect(Collectors.toList());
+
+            if (!employeeIds.isEmpty()) {
+                employees = entityManager.createQuery("SELECT e FROM Employee e LEFT JOIN FETCH e.company WHERE e.id IN :employees", Employee.class)
+                        .setParameter("employees", employeeIds)
+                        .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
+                        .getResultList();
+            }
+            return employees;
+        } catch (NoResultException e) {
+            return Collections.emptyList();
+        }
+    }
 }

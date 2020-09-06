@@ -135,10 +135,6 @@ public class Employee extends DomainObject {
     @OneToMany(mappedBy = "employee")
     private List<WorkingDay> workingDays;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRESENT_CLIENT", referencedColumnName = "ID")
-    private Client presentClient;
-
     @OneToMany(mappedBy = "employee", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Invoice> invoices;
 
@@ -229,12 +225,11 @@ public class Employee extends DomainObject {
                 Objects.equals(addresses, employee.addresses) &&
                 Objects.equals(phoneNumber, employee.phoneNumber) &&
                 Objects.equals(accountActive, employee.accountActive) &&
-                Objects.equals(workingDays, employee.workingDays) &&
-                Objects.equals(presentClient, employee.presentClient);
+                Objects.equals(workingDays, employee.workingDays);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), company, email, password, roles, nipNumber, contract, bankAccountNumber, firstName, lastName, birthDate, gender, addresses, phoneNumber, accountActive, workingDays, presentClient);
+        return Objects.hash(super.hashCode(), company, email, password, roles, nipNumber, contract, bankAccountNumber, firstName, lastName, birthDate, gender, addresses, phoneNumber, accountActive, workingDays);
     }
 }

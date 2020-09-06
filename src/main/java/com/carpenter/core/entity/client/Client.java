@@ -1,9 +1,6 @@
 package com.carpenter.core.entity.client;
 
-import com.carpenter.core.entity.Offer;
-import com.carpenter.core.entity.WorkingDay;
-import com.carpenter.core.entity.Company;
-import com.carpenter.core.entity.DomainObject;
+import com.carpenter.core.entity.*;
 import com.carpenter.core.entity.employee.Employee;
 import com.carpenter.core.entity.invoice.Invoice;
 import lombok.*;
@@ -86,7 +83,7 @@ public class Client extends DomainObject {
     private List<WorkingDay> workingDays;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "presentClient")
-    private List<Employee> presentsEmployees;
+    private List<EmployeeGroup> presentsEmployees;
 
     @OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Invoice> invoices;
