@@ -23,18 +23,21 @@
                 <div class="modal-content">
                     <div class="container-resp">
                         <div class="form-top col1-4">
-                            <label>Klient</label>
+                            <label>Grupa</label>
                             <h:selectOneMenu id="add-work-time-client"
                                              converter="javax.faces.Long"
-                                             value="#{workTimeBean.clientId}">
+                                             value="#{workTimeBean.workTimeListener.employeeGroupId}">
+                                <f:selectItem itemLabel="Bez grupy" itemValue="#{null}"/>
                                 <f:selectItems
-                                        value="#{workTimeBean.clients}"
+                                        value="#{workTimeBean.employeeGroups}"
                                         var="c"
                                         itemValue="#{c.id}"
-                                        itemLabel="#{c.name}"/>
+                                        itemLabel="#{c.groupName}, (#{c.presentClient.name})"/>
 
                                 <f:ajax event="change"
-                                        execute="@this"/>
+                                        render="add-work-table-id"
+                                        execute="@this"
+                                        onevent="showLoader"/>
 
                             </h:selectOneMenu>
                         </div>
@@ -79,35 +82,34 @@
                         <table>
                             <thead>
                             <tr>
-                                <th class="w10 left">Firma</th>
                                 <th class="w10 left">Nazwisko i Imię</th>
                                 <th class="w5 left">Godziny</th>
-                                <th class="w5 left">Dodaj ilość godzin</th>
+                                <th class="w10 left">Dodaj ilość godzin</th>
                             </tr>
                             </thead>
                             <tbody>
                             <ui:repeat value="#{workTimeBean.employees}" var="e">
                                 <tr class="#{workTimeBean.errorMessage[e] ? 'checked' : ''}">
                                     <td class="w10 left">
-                                        #{e.companyName}
-                                    </td>
-                                    <td class="w10 left">
-                                        <h4>#{e.lastName} #{e.firstName}</h4>
+                                        <h3>#{e.lastName} #{e.firstName}</h3>
                                     </td>
                                     <td class="w5">
-                                        #{workTimeBean.getEmployeeHoursIfExists(e)}
+                                        <h3>  #{workTimeBean.getEmployeeHoursIfExists(e)}</h3>
                                     </td>
-                                    <td class="w5">
-                                        <div class="">
-                                            <h:commandLink action="#{workTimeBean.minusHour(e)}">
+                                    <td class="w10">
+                                        <div>
+                                            <h:commandLink action="#{workTimeBean.minusHour(e)}"
+                                                           styleClass="btn btn-sm btn-icon col-danger">
                                                 <f:ajax execute="@this"
                                                         render="add-work-table-id"/>
                                                 <i class="fas fa-minus"></i>
                                             </h:commandLink>
 
-                                            #{workTimeBean.employeeHour(e)}
-
-                                            <h:commandLink action="#{workTimeBean.plusHour(e)}">
+                                            <div class="work-day-add-minus">
+                                                #{workTimeBean.employeeHour(e)}
+                                            </div>
+                                            <h:commandLink action="#{workTimeBean.plusHour(e)}"
+                                                           styleClass="btn btn-sm btn-icon col-primary">
                                                 <f:ajax execute="@this"
                                                         render="add-work-table-id"/>
                                                 <i class="fas fa-plus"></i>

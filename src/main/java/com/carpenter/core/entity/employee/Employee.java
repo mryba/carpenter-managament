@@ -205,6 +205,11 @@ public class Employee extends DomainObject {
         return this.roles.contains(role);
     }
 
+    @Transient
+    public boolean isPowerUser(){
+       return !isInRole(Role.ADMINISTRATOR.name());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -30,6 +30,8 @@ import java.util.Objects;
 })
 public class WorkingDay extends DomainObject {
 
+    private static final long serialVersionUID = 745535782216732366L;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "EMPLOYEE_ID")
     private Employee employee;

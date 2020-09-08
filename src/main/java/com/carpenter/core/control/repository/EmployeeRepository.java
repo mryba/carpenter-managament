@@ -1,5 +1,6 @@
 package com.carpenter.core.control.repository;
 
+import com.carpenter.core.entity.EmployeeGroup;
 import com.carpenter.core.entity.employee.Employee;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.jpa.QueryHints;
@@ -152,7 +153,36 @@ public class EmployeeRepository implements Serializable {
     public List<Employee> findAllActiveAndWithoutGroupEmployees() {
         try {
             List<Employee> employees = entityManager.createQuery(
-                    "SELECT e FROM Employee e LEFT JOIN FETCH e.addresses WHERE e.deletedBy IS NULL AND e.deleteDate is NULL AND e.contract ='SELF_EMPLOYMENT' AND e.accountActive = TRUE AND e.employeeGroup IS NULL ", Employee.class)
+                    "SELECT e FROM Employee e LEFT JOIN FETCH e.addresses WHERE e.deletedBy IS NULL AND e.deleteDate is NULL AND e.accountActive = TRUE AND e.employeeGroup IS NULL ", Employee.class)
+                    .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
+                    .getResultList();
+            List<Long> employeeIds = employees.stream().map(Employee::getId).collect(Collectors.toList());
+
+            if (!employeeIds.isEmpty()) {
+                employees = entityManager.createQuery("SELECT e FROM Employee e LEFT JOIN FETCH e.workingDays WHERE e.id IN :employees", Employee.class)
+                        .setParameter("employees", employeeIds)
+                        .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
+                        .getResultList();
+            }
+            employeeIds = employees.stream().map(Employee::getId).collect(Collectors.toList());
+
+            if (!employeeIds.isEmpty()) {
+                employees = entityManager.createQuery("SELECT e FROM Employee e LEFT JOIN FETCH e.company WHERE e.id IN :employees", Employee.class)
+                        .setParameter("employees", employeeIds)
+                        .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
+                        .getResultList();
+            }
+            return employees;
+        } catch (NoResultException e) {
+            return Collections.emptyList();
+        }
+    }
+
+    public Collection<Employee> findAllActiveEmployeesByEmployeeGroup(EmployeeGroup employeeGroup) {
+        try {
+            List<Employee> employees = entityManager.createQuery(
+                    "SELECT e FROM Employee e LEFT JOIN FETCH e.addresses WHERE e.deletedBy IS NULL AND e.deleteDate is NULL AND e.accountActive = TRUE AND e.employeeGroup IS NOT NULL AND e.employeeGroup =:employeeGroup", Employee.class)
+                    .setParameter("employeeGroup", employeeGroup)
                     .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
                     .getResultList();
             List<Long> employeeIds = employees.stream().map(Employee::getId).collect(Collectors.toList());

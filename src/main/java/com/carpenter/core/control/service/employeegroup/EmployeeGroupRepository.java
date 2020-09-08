@@ -24,7 +24,7 @@ public class EmployeeGroupRepository implements Serializable {
 
     public List<EmployeeGroup> findAllEmployeeGroups() {
         try {
-            return entityManager.createQuery("SELECT DISTINCT eg FROM EmployeeGroup eg LEFT JOIN FETCH eg.employees WHERE eg.deleteDate IS NULL AND eg.deletedBy IS NULL", EmployeeGroup.class)
+            return entityManager.createQuery("SELECT DISTINCT eg FROM EmployeeGroup eg LEFT JOIN FETCH eg.employees LEFT JOIN FETCH eg.presentClient WHERE eg.deleteDate IS NULL AND eg.deletedBy IS NULL", EmployeeGroup.class)
                     .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
                     .getResultList();
         } catch (NoResultException e) {

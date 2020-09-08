@@ -9,8 +9,8 @@ body {
     margin: 0 auto;
 }
 
-.domain-wrapper{
-    width:100%;
+.domain-wrapper {
+    width: 100%;
     max-width: 600px;
     padding: 0 1em;
     margin: 0 auto;
@@ -394,27 +394,33 @@ Login page
     padding: 3em;
     margin: auto;
 }
+
 .login-page .form-login .logo {
     position: absolute;
     top: 0;
     right: 0;
     width: 170px;
 }
+
 .login-page .form-login > form {
     width: 400px;
 }
+
 .login-page .form-login > form .crm-logo {
     margin-bottom: 1.5em;
     padding-bottom: 1.5em;
     border-bottom: 1px solid #d1d1d1;
 }
+
 .login-page .form-login > form .crm-logo img {
     width: 100px;
 }
+
 .login-page .form-login > form .btn {
     font-size: 0.9em;
     margin-top: 0.6em;
 }
+
 .login-page .form-login .version-number {
     position: absolute;
     bottom: 1em;
@@ -422,6 +428,7 @@ Login page
     right: 1em;
     color: #7e7e7e;
 }
+
 @media (max-width: 800px) {
     .login-page .image {
         display: none;
@@ -1682,7 +1689,7 @@ body {
     font-size: 1.1em;
 }
 
-.calendar-view .calendar-header-month{
+.calendar-view .calendar-header-month {
     font-size: 0.7em;
 }
 
@@ -1893,31 +1900,37 @@ body {
     display: -webkit-box;
     display: flex;
 }
+
 .btn-group > a, .btn-group button {
     margin: 0;
     border-radius: 0;
 }
+
 .btn-group > a:not(:first-child), .btn-group button:not(:first-child) {
     border-left: 0;
 }
+
 .btn-group > a:first-child, .btn-group button:first-child {
     border-bottom-left-radius: 1.2em;
     border-top-left-radius: 1.2em;
     -webkit-border-bottom-left-radius: 1.2em;
     -webkit-border-top-left-radius: 1.2em;
 }
+
 .btn-group > a:last-child, .btn-group button:last-child {
     border-bottom-right-radius: 1.2em;
     border-top-right-radius: 1.2em;
     -webkit-border-bottom-right-radius: 1.2em;
     -webkit-border-top-right-radius: 1.2em;
 }
+
 @media (max-width: 580px) {
     .btn-group.resp {
         flex-wrap: wrap;
         -webkit-box-pack: center;
         justify-content: center;
     }
+
     .btn-group.resp > a, .btn-group.resp button {
         border-radius: 1.2em;
         margin: 0.25em;
@@ -1925,6 +1938,7 @@ body {
         border-right: 1px solid;
     }
 }
+
 .ms-parent {
     vertical-align: top;
 }
@@ -1933,10 +1947,12 @@ body {
     height: 2.5em;
     color: #0b2533;
 }
+
 .ms-choice > div {
     top: 7px;
     right: 7px;
 }
+
 .ms-choice > span {
     position: static;
     padding: 0 20px 0 0;
@@ -1950,9 +1966,11 @@ body {
     overflow-y: auto;
     display: none;
 }
+
 .ms-drop ul {
     padding: 0;
 }
+
 .ms-drop ul > li {
     display: block;
     font-size: 0.85em;
@@ -1961,6 +1979,7 @@ body {
     border: 0;
     color: #0b2533;
 }
+
 .ms-drop ul > li label {
     padding: 0.7em;
     border-top: 1px solid #d1d1d1;
@@ -1971,19 +1990,24 @@ body {
     align-items: center;
     margin-top: -1px;
 }
+
 .ms-drop ul > li label input[type=checkbox], .ms-drop ul > li label label input[type=radio] {
     margin-right: 10px;
 }
+
 .ms-drop ul > li:first-child label {
     border-top: 0;
     margin-top: 0;
 }
+
 .ms-drop ul > li.selected {
     background: #cee0f1;
 }
+
 .ms-drop ul > li.selected label {
     font-weight: bold;
 }
+
 .ms-drop .ms-no-results {
     padding: 0.5em !important;
     text-align: center;
@@ -1994,9 +2018,17 @@ body {
     padding: 10px;
     border-bottom: 1px solid #d1d1d1;
 }
+
 .ms-search input, .ms-search input:focus {
     background: #fcfcfc url("#{resource['img/multiple-select.png']}") no-repeat 100% -18px;
     background-position: calc(100% - 8px) -18px;
     min-height: 0;
     font-size: 0.8em;
+}
+
+.work-day-add-minus {
+    display: inline-block;
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 0.3em
 }
