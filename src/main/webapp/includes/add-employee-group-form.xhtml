@@ -64,14 +64,6 @@
                 </div>
 
                 <div class="modal-footer">
-                    <h:commandLink styleClass="btn col-danger bordered"
-                                   p:data-dismiss="modal"
-                                   p:data-toogle="modal">
-                        <f:ajax event="click"
-                                render="@form employee-group-form"
-                                resetValues="true"/>
-                        <i class="fa fa-times"></i>Anuluj
-                    </h:commandLink>
                     <h:commandLink type="submit"
                                    action="#{employeeGroupBean.save}"
                                    styleClass="btn bordered col-primary">
@@ -80,6 +72,14 @@
                                 render=":employee-group-form employee-group-table-id closeDialogDiv"
                                 onevent="showLoader"/>
                         <i class="fa fa-check"></i>Zapisz
+                    </h:commandLink>
+                    <h:commandLink styleClass="btn col-danger bordered"
+                                   p:data-dismiss="modal"
+                                   p:data-toogle="modal">
+                        <f:ajax event="click"
+                                render="@form employee-group-form"
+                                resetValues="true"/>
+                        <i class="fa fa-times"></i>Anuluj
                     </h:commandLink>
                 </div>
 
