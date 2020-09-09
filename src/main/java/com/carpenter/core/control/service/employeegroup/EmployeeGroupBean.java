@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -33,6 +34,7 @@ public class EmployeeGroupBean implements Serializable {
 
     private EmployeeGroup employeeGroup;
     private Long clientId;
+    private Long employeeId;
 
     private List<Long> employeeIds;
     private List<EmployeeGroup> employeeGroups;
@@ -56,7 +58,7 @@ public class EmployeeGroupBean implements Serializable {
         employeeGroups = employeeGroupService.getAllEmployeeGroups();
     }
 
-    public List<EmployeeDto> getAllActiveEmployees() {
+    public List<EmployeeDto> getAllActiveEmployeesWithoutGroup() {
         return employeeService.getAllActiveAndWithoutGroupEmployees();
     }
 
@@ -64,6 +66,10 @@ public class EmployeeGroupBean implements Serializable {
         if (employeeGroups != null && !employeeGroups.isEmpty()) {
             employeeGroup = employeeGroups.stream().filter(eg -> eg.getId().equals(employeeGroupId)).findFirst().orElse(null);
         }
+    }
+
+    public void setEmployeeToDelete(Long employeeToDelete) {
+        this.employeeId = employeeToDelete;
     }
 
     @Transactional
@@ -80,6 +86,18 @@ public class EmployeeGroupBean implements Serializable {
         }
     }
 
+    public void deleteEmployeeFromGroup() {
+        if (employeeGroups != null && !employeeGroups.isEmpty()) {
+            if (employeeGroup != null && employeeGroup.getEmployees() != null) {
+                Employee employee = employeeGroup.getEmployees().stream().filter(e -> e.getId().equals(employeeId)).findFirst().orElse(null);
+                if (employee != null) {
+                    employee.setEmployeeGroup(null);
+                    employeeGroup.getEmployees().remove(employee);
+                }
+            }
+        }
+    }
+
     public void save() {
         List<Employee> employees = employeeService.getAllEmployeesByIds(employeeIds);
         Client client = clientService.getClientById(clientId);
@@ -90,11 +108,24 @@ public class EmployeeGroupBean implements Serializable {
         employeeGroupService.saveGroup(employeeGroup);
     }
 
+    public void saveEditedGroup() {
+        List<Employee> employees;
+        if (!employeeIds.isEmpty()) {
+            employees = employeeService.getAllEmployeesByIds(employeeIds);
+        } else {
+            employeeIds = employeeGroup.getEmployees().stream().map(Employee::getId).collect(Collectors.toList());
+            employees = employeeService.getAllEmployeesByIds(employeeIds);
+        }
+
+        employees.forEach(e -> employeeGroup.removeEmployee(e));
+        employeeGroupService.saveGroup(employeeGroup);
+    }
+
     public List<ClientDto> getAvailableClients() {
         return clientService.getAllAvailableClients();
     }
 
-    public void clear(){
+    public void clear() {
         employeeGroup = new EmployeeGroup();
         clientId = null;
         employeeIds.clear();

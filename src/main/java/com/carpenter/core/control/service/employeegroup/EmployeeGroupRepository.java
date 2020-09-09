@@ -21,7 +21,6 @@ public class EmployeeGroupRepository implements Serializable {
     @PersistenceContext
     private EntityManager entityManager;
 
-
     public List<EmployeeGroup> findAllEmployeeGroups() {
         try {
             return entityManager.createQuery("SELECT DISTINCT eg FROM EmployeeGroup eg LEFT JOIN FETCH eg.employees LEFT JOIN FETCH eg.presentClient WHERE eg.deleteDate IS NULL AND eg.deletedBy IS NULL", EmployeeGroup.class)

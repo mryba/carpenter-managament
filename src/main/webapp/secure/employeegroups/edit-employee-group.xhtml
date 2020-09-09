@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<div id="edit-employee-group" class="modal modal-small fade"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://xmlns.jcp.org/jsf/html"
+     xmlns:f="http://xmlns.jcp.org/jsf/core"
+     xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+     xmlns:jsf="http://xmlns.jcp.org/jsf"
+     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+     data-backdrop="static">
+
+    <div>
+        <a class="modal-close"
+           data-dismiss="modal"
+           jsf:actionListener="#{employeeGroupBean.clear}">
+            <f:ajax execute="@this"
+                    render="edit-employee-group-form"/>
+            <i class="fa fa-times"></i>
+        </a>
+        <div>
+            <h:form id="edit-employee-group-form" prependId="false">
+
+                <div class="modal-content">
+                    <div class="form-top">
+                        <label>Wybierz pracowników</label>
+                        <h:selectManyListbox id="edit-employee-group-employees"
+                                             styleClass="employee-group"
+                                             value="#{employeeGroupBean.employeeIds}">
+                            <f:selectItems value="#{employeeGroupBean.allActiveEmployeesWithoutGroup}"
+                                           var="employee"
+                                           itemLabel="#{employee.firstName} #{employee.lastName}"
+                                           itemValue="#{employee.id}"/>
+                            <f:converter converterId="javax.faces.Long"/>
+                            <f:ajax execute="@this" event="change"/>
+                        </h:selectManyListbox>
+                        <h:outputScript>
+                            $('.employee-group').multipleSelect({
+                                filter: true,
+                                selectAll: true
+                            });
+                        </h:outputScript>
+                    </div>
+                    <div class="table" jsf:id="edit-employee-group-table-id">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th class="w10">Pracownik</th>
+                                <th class="w5">Usuń</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <ui:repeat value="#{employeeGroupBean.employeeGroup.employees}" var="e">
+                                <tr>
+                                    <td class="w10">
+                                        #{e.firstName} #{e.lastName}
+                                    </td>
+                                    <td class="w5">
+                                        <h:commandLink styleClass="btn btn-sm btn-icon col-danger"
+                                                       action="#{employeeGroupBean.deleteEmployeeFromGroup}">
+                                            <i class="fas fa-trash"></i>
+                                            <f:ajax execute="@this"
+                                                    listener="#{employeeGroupBean.setEmployeeToDelete(e.id)}"
+                                                    render="@form edit-employee-group-form"
+                                                    resetValues="true"/>
+                                        </h:commandLink>
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <h:commandLink styleClass="btn col-danger bordered"
+                                   p:data-dismiss="modal"
+                                   p:data-toogle="modal">
+                        <f:ajax execute="@form"
+                                resetValues="true"
+                                render="@form employee-group-form"
+                                listener="#{employeeGroupBean.clear}"
+                                onevent="showLoader"/>
+                        <i class="fa fa-times"></i>Anuluj
+                    </h:commandLink>
+                    <h:commandLink type="submit"
+                                   action="#{employeeGroupBean.saveEditedGroup}"
+                                   styleClass="btn bordered col-primary">
+                        <f:ajax execute="@form"
+                                resetValues="true"
+                                render="employee-group-form edit-employee-group-form closeDialogDiv"
+                                onevent="showLoader"/>
+                        <i class="fa fa-check"></i>Zapisz
+                    </h:commandLink>
+                </div>
+            </h:form>
+        </div>
+    </div>
+</div>

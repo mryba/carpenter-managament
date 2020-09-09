@@ -54,7 +54,7 @@
                         <h:selectManyListbox id="employee-group-employees"
                                              styleClass="employee-group"
                                              value="#{employeeGroupBean.employeeIds}">
-                            <f:selectItems value="#{employeeGroupBean.allActiveEmployees}"
+                            <f:selectItems value="#{employeeGroupBean.allActiveEmployeesWithoutGroup}"
                                            var="employee"
                                            itemLabel="#{employee.firstName} #{employee.lastName}"
                                            itemValue="#{employee.id}"/>

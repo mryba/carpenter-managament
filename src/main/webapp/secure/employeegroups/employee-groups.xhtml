@@ -87,8 +87,9 @@
                 </h:form>
             </div>
 
-            <ui:include src="/includes/add-employee-group-form.xhtml"/>
-            <ui:include src="/includes/delete-employee-group.xhtml"/>
+            <ui:include src="/secure/employeegroups/add-employee-group-form.xhtml"/>
+            <ui:include src="/secure/employeegroups/delete-employee-group.xhtml"/>
+            <ui:include src="/secure/employeegroups/edit-employee-group.xhtml"/>
 
             <div jsf:id="closeDialogDiv">
                 <h:outputScript rendered="#{not facesContext.validationFailed}">
