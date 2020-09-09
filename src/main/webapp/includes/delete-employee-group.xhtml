@@ -18,13 +18,6 @@
 
                 <div>
                     <div class="modal-footer">
-                        <h:commandLink styleClass="btn bordered col-danger">
-                            <f:ajax event="click"
-                                    render=":employee-group-form closeDialogDiv"
-                                    resetValues="true"
-                                    onevent="showLoader"/>
-                            <i class="fa fa-times"></i>Anuluj
-                        </h:commandLink>
                         <h:commandLink action="#{employeeGroupBean.deleteGroup}"
                                        styleClass="btn bordered col-primary ">
                             <f:ajax execute="@this"
@@ -32,6 +25,13 @@
                                     resetValues="true"
                                     onevent="showLoader"/>
                             <i class="fas fa-trash"></i> Usuń
+                        </h:commandLink>
+                        <h:commandLink styleClass="btn bordered col-danger">
+                            <f:ajax event="click"
+                                    render=":employee-group-form closeDialogDiv"
+                                    resetValues="true"
+                                    onevent="showLoader"/>
+                            <i class="fa fa-times"></i>Anuluj
                         </h:commandLink>
                     </div>
                 </div>

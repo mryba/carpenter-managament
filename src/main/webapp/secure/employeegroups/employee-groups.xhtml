@@ -32,50 +32,54 @@
                         <table>
                             <thead>
                             <tr>
-                                <th class="w10 left">Grupa</th>
-                                <th class="w10 left">Data stworzenia</th>
-                                <th class="w10 left">Pracownik</th>
+                                <th class="w10">Grupa</th>
+                                <th class="w10">Data stworzenia</th>
+                                <th class="w10">Pracownik</th>
                                 <th class="w5">Edycja</th>
                                 <th class="w5">Usuń</th>
                             </tr>
                             </thead>
                             <tbody>
                             <ui:repeat value="#{employeeGroupBean.employeeGroups}" var="eg">
-                                <ui:repeat value="#{eg.employees}" var="e">
-                                    <tr>
-                                        <td class="w10 left">
-                                            #{eg.groupName}
-                                        </td>
-                                        <td class="w10 left">
-                                            #{eg.createDate}
-                                        </td>
-                                        <td class="w10 left">
-                                            <h4>#{e.lastName} #{e.firstName}</h4>
-                                        </td>
-                                        <td class="w5">
-                                            <h:commandLink action="#{employeeGroupBean.setEditedEmployeeGroup(eg.id)}"
-                                                           styleClass="btn btn-sm btn-icon col-primary"
-                                                           p:data-toggle="modal"
-                                                           p:data-target="#edit-employee-group">
-                                                <i class="fas fa-cogs"></i>
-                                                <f:ajax execute="@this"
-                                                        render="edit-employee-group-form"
-                                                        onevent="showLoader"/>
-                                            </h:commandLink>
-                                        </td>
+                                <tr>
+                                    <td class="w10">
+                                        <h4>  #{eg.groupName}</h4>
+                                    </td>
+                                    <td class="w10">
+                                        <h:outputFormat value="{0,date,d.MM.yyyy}">
+                                            <f:param value="#{eg.createDate}"/>
+                                        </h:outputFormat>
+                                    </td>
+                                    <td class="w10">
+                                        <ui:repeat value="#{eg.employees}" var="e">
 
-                                        <td class="w5">
-                                            <h:commandLink styleClass="btn btn-sm btn-icon col-danger"
-                                                           p:data-toggle="modal"
-                                                           p:data-target="#delete-employee-group">
-                                                <i class="fas fa-trash"></i>
-                                                <f:ajax execute="@this"
-                                                        listener="#{employeeGroupBean.setEditedEmployeeGroup(eg.id)}"
-                                                        resetValues="true"/>
-                                            </h:commandLink>
-                                        </td>
-                                    </tr>
-                                </ui:repeat>
+                                            <ul>#{e.lastName} #{e.firstName}</ul>
+
+                                        </ui:repeat>
+                                    </td>
+                                    <td class="w5">
+                                        <h:commandLink action="#{employeeGroupBean.setEditedEmployeeGroup(eg.id)}"
+                                                       styleClass="btn btn-sm btn-icon col-primary"
+                                                       p:data-toggle="modal"
+                                                       p:data-target="#edit-employee-group">
+                                            <i class="fas fa-cogs"></i>
+                                            <f:ajax execute="@this"
+                                                    render="edit-employee-group-form"
+                                                    onevent="showLoader"/>
+                                        </h:commandLink>
+                                    </td>
+
+                                    <td class="w5">
+                                        <h:commandLink styleClass="btn btn-sm btn-icon col-danger"
+                                                       p:data-toggle="modal"
+                                                       p:data-target="#delete-employee-group">
+                                            <i class="fas fa-trash"></i>
+                                            <f:ajax execute="@this"
+                                                    listener="#{employeeGroupBean.setEditedEmployeeGroup(eg.id)}"
+                                                    resetValues="true"/>
+                                        </h:commandLink>
+                                    </td>
+                                </tr>
                             </ui:repeat>
                             </tbody>
                         </table>

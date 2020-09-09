@@ -20,7 +20,6 @@ import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 @Getter
@@ -95,4 +94,9 @@ public class EmployeeGroupBean implements Serializable {
         return clientService.getAllAvailableClients();
     }
 
+    public void clear(){
+        employeeGroup = new EmployeeGroup();
+        clientId = null;
+        employeeIds.clear();
+    }
 }

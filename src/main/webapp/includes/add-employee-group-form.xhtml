@@ -5,13 +5,19 @@
      xmlns:h="http://xmlns.jcp.org/jsf/html"
      xmlns:f="http://xmlns.jcp.org/jsf/core"
      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-     xmlns:jsf="http://xmlns.jcp.org/jsf">
+     xmlns:jsf="http://xmlns.jcp.org/jsf"
+     data-backdrop="static">
 
     <div>
-        <a class="modal-close" data-dismiss="modal"> <i class="fa fa-times"></i> </a>
+        <a class="modal-close"
+           data-dismiss="modal"
+           jsf:actionListener="#{employeeGroupBean.clear}">
+            <f:ajax execute="@this"
+                    render="add-employee-group-form"/>
+            <i class="fa fa-times"></i>
+        </a>
         <div>
             <h:form id="add-employee-group-form" prependId="false">
-
 
                 <div class="modal-content">
                     <div class="form-top">
@@ -40,6 +46,7 @@
                             <f:ajax execute="@this"
                                     event="change"/>
                         </h:selectOneMenu>
+                        <h:message for="employee-group-client" styleClass="form-msg col-danger"/>
                     </div>
 
                     <div class="form-top">
@@ -62,27 +69,32 @@
                         </h:outputScript>
                     </div>
                 </div>
-
+                <h:panelGroup id="validation-messages-container">
+                    <div class="infobox col-danger" jsf:rendered="#{not empty facesContext.messageList}">
+                        <h:messages/>
+                    </div>
+                </h:panelGroup>
                 <div class="modal-footer">
-                    <h:commandLink type="submit"
-                                   action="#{employeeGroupBean.save}"
-                                   styleClass="btn bordered col-primary">
-                        <f:ajax execute="this"
-                                resetValues="true"
-                                render=":employee-group-form employee-group-table-id closeDialogDiv"
-                                onevent="showLoader"/>
-                        <i class="fa fa-check"></i>Zapisz
-                    </h:commandLink>
                     <h:commandLink styleClass="btn col-danger bordered"
                                    p:data-dismiss="modal"
                                    p:data-toogle="modal">
-                        <f:ajax event="click"
+                        <f:ajax execute="@form"
+                                resetValues="true"
                                 render="@form employee-group-form"
-                                resetValues="true"/>
+                                listener="#{employeeGroupBean.clear}"
+                                onevent="showLoader"/>
                         <i class="fa fa-times"></i>Anuluj
                     </h:commandLink>
+                    <h:commandLink type="submit"
+                                   action="#{employeeGroupBean.save}"
+                                   styleClass="btn bordered col-primary">
+                        <f:ajax execute="@form"
+                                resetValues="true"
+                                render="employee-group-form add-employee-group-form closeDialogDiv"
+                                onevent="showLoader"/>
+                        <i class="fa fa-check"></i>Zapisz
+                    </h:commandLink>
                 </div>
-
             </h:form>
         </div>
     </div>

@@ -24,12 +24,6 @@
                                jsf:id="call-add-new-employee">
                                 <i class="fas fa-user-circle"></i> Dodaj pracownika
                             </a>
-
-                            <a href="#" class="btn bordered col-primary"
-                               data-toggle="modal"
-                               data-target="#add-employee-group">
-                                <i class="fas fa-users"></i> Dodaj grupę pracowników
-                            </a>
                         </h:form>
                     </div>
                 </div>
@@ -94,7 +88,6 @@
 
             </div>
             <ui:include src="/includes/add-employee-form.xhtml"/>
-            <ui:include src="/includes/add-employee-group-form.xhtml"/>
             <div jsf:id="closeDialogDiv">
                 <h:outputScript rendered="#{not facesContext.validationFailed}">
                     $('#add-employee').modal('hide')
