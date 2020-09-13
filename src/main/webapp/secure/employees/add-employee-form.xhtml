@@ -5,9 +5,8 @@
      xmlns:h="http://xmlns.jcp.org/jsf/html"
      xmlns:f="http://xmlns.jcp.org/jsf/core"
      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-     xmlns:jsf="http://xmlns.jcp.org/jsf">
-
-
+     xmlns:jsf="http://xmlns.jcp.org/jsf"
+     data-backdrop="static">
     <div>
         <a class="modal-close" data-dismiss="modal"> <i class="fa fa-times"></i> </a>
         <div>
@@ -179,47 +178,40 @@
                                     listener="#{employeeListBean.unableAddress}"
                                     onevent="showLoader"/>
                         </h:selectOneMenu>
+                    </div>
 
-                        <div jsf:id="employee-nip-id">
-                            <div class="form-top" jsf:rendered="#{employeeListBean.selfEmploymentOfContract}">
-                                <label for="add-employee-nip">NIP</label>
-                                <input type="text"
-                                       jsf:id="add-employee-nip"
-                                       jsf:value="#{employeeListBean.employeeDto.nipNumber}">
-                                    <f:ajax event="change"
-                                            execute="@this"/>
-                                </input>
-                            </div>
+                    <div jsf:id="employee-nip-id">
+                        <div class="form-top" jsf:rendered="#{employeeListBean.selfEmploymentOfContract}">
+                            <label for="add-employee-nip">NIP</label>
+                            <h:inputText type="text"
+                                         id="add-employee-nip"
+                                         required="true"
+                                         requiredMessage="Pole NIP wymagane"
+                                         validatorMessage="Długość numeru NIP to 10 cyfr"
+                                         value="#{employeeListBean.employeeDto.nipNumber}">
+                                <f:validateLength minimum="10" maximum="10"/>
+                                <f:ajax event="change"
+                                        execute="@this"/>
+                            </h:inputText>
+                            <h:message for="add-employee-nip" styleClass="form-msg col-danger"/>
                         </div>
-                        <div jsf:id="employee-bank-acount-id">
+                    </div>
+                    <div jsf:id="employee-bank-acount-id">
+                        <div class="form-top">
                             <label for="add-employee-bank-account">Numer rachunku bankowego</label>
                             <input type="text"
                                    jsf:id="add-employee-bank-account"
                                    jsf:required="true"
                                    jsf:requiredMessage="Proszę podać numer rachunku"
+                                   jsf:validatorMessage="Długość numeru bankowego to 26 cyfr"
                                    jsf:value="#{employeeListBean.employeeDto.bankAccountNumber}">
+                                <f:validateLength minimum="26" maximum="26"/>
                                 <f:ajax execute="@this"
                                         event="change"/>
                             </input>
                             <h:message for="add-employee-bank-account" styleClass="form-msg col-danger"/>
                         </div>
                     </div>
-                    <div class="form-top">
-                        <label>Klient</label>
-                        <h:selectOneMenu id="add-employee-present-client"
-                                         value="#{employeeListBean.employeeDto.presentClient}">
-                            <f:selectItems value="#{employeeListBean.availableClients}"
-                                           var="client"
-                                           itemLabel="#{client.name}"
-                                           itemValue="#{client.id}"/>
-
-                            <f:ajax event="change"
-                                    execute="@this"
-                                    render="@this"/>
-
-                        </h:selectOneMenu>
-                    </div>
-
                     <div class="form-top" jsf:id="add-address-label-id">
                         <label for="add-address-checkbox">Dodaj adres</label>
                         <h:selectBooleanCheckbox id="add-address-checkbox"

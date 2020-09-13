@@ -50,17 +50,9 @@ public class EmployeeListBean implements Serializable {
     @Inject
     EmployeeValidation employeeValidation;
 
-    @Inject
-    ClientService clientService;
-
-    @Inject
-    EmployeeGroupBean employeeGroupBean;
-
     @Getter
     @Setter
     private EmployeeDto employeeDto;
-
-    private List<ClientDto> clients = new LinkedList<>();
 
     private boolean isAddAddress;
     private boolean isAccountCreate;
@@ -176,13 +168,6 @@ public class EmployeeListBean implements Serializable {
         this.hasLoggedUserAdminOrManagerRole = principalBean.getLoggedUser().isInRole(Arrays.asList(Role.MANAGER, Role.ADMINISTRATOR));
         return hasLoggedUserAdminOrManagerRole;
     }
-
-    public List<ClientDto> getAvailableClients() {
-        clients.clear();
-        clients.addAll(clientService.getAllAvailableClients());
-        return clients;
-    }
-
 
     public void unableAddress() {
         if (employeeDto.getContract().equals("SELF_EMPLOYMENT")) {

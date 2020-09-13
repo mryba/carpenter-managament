@@ -74,26 +74,23 @@ public class EmployeeGroupBean implements Serializable {
 
     @Transactional
     public void deleteGroup() {
-        if (employeeGroups != null && !employeeGroups.isEmpty()) {
-            if (employeeGroup != null && employeeGroup.getEmployees() != null) {
-                for (Employee employee : employeeGroup.getEmployees()) {
-                    employee.setEmployeeGroup(null);
-                    employeeService.saveEmployee(employee);
-                }
-                employeeGroup.setEmployees(null);
-                employeeGroupService.deleteGroup(employeeGroup);
+        if (employeeGroups != null && !employeeGroups.isEmpty() && employeeGroup != null && employeeGroup.getEmployees() != null) {
+            for (Employee employee : employeeGroup.getEmployees()) {
+                employee.setEmployeeGroup(null);
+                employeeService.saveEmployee(employee);
             }
+            employeeGroup.setEmployees(null);
+            employeeGroupService.deleteGroup(employeeGroup);
         }
     }
 
     public void deleteEmployeeFromGroup() {
-        if (employeeGroups != null && !employeeGroups.isEmpty()) {
-            if (employeeGroup != null && employeeGroup.getEmployees() != null) {
-                Employee employee = employeeGroup.getEmployees().stream().filter(e -> e.getId().equals(employeeId)).findFirst().orElse(null);
-                if (employee != null) {
-                    employee.setEmployeeGroup(null);
-                    employeeGroup.getEmployees().remove(employee);
-                }
+        if (employeeGroups != null && !employeeGroups.isEmpty() && employeeGroup != null && employeeGroup.getEmployees() != null) {
+            Employee employee = employeeGroup.getEmployees().stream().filter(e -> e.getId().equals(employeeId)).findFirst().orElse(null);
+            if (employee != null) {
+                employee.setEmployeeGroup(null);
+                employeeGroup.getEmployees().remove(employee);
+                employeeService.saveEmployee(employee);
             }
         }
     }
@@ -117,7 +114,7 @@ public class EmployeeGroupBean implements Serializable {
             employees = employeeService.getAllEmployeesByIds(employeeIds);
         }
 
-        employees.forEach(e -> employeeGroup.removeEmployee(e));
+        employees.forEach(e -> employeeGroup.addEmployee(e));
         employeeGroupService.saveGroup(employeeGroup);
     }
 

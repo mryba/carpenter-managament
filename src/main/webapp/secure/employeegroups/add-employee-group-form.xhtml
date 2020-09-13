@@ -18,7 +18,6 @@
         </a>
         <div>
             <h:form id="add-employee-group-form" prependId="false">
-
                 <div class="modal-content">
                     <div class="form-top">
                         <label for="employee-group-name">Nazwa grupy</label>
@@ -78,7 +77,7 @@
                     <h:commandLink styleClass="btn col-danger bordered"
                                    p:data-dismiss="modal"
                                    p:data-toogle="modal">
-                        <f:ajax execute="@form"
+                        <f:ajax execute="@this"
                                 resetValues="true"
                                 render="@form employee-group-form"
                                 listener="#{employeeGroupBean.clear}"
@@ -89,8 +88,7 @@
                                    action="#{employeeGroupBean.save}"
                                    styleClass="btn bordered col-primary">
                         <f:ajax execute="@form"
-                                resetValues="true"
-                                render="employee-group-form add-employee-group-form closeDialogDiv"
+                                render="@form employee-group-form closeDialogDiv"
                                 onevent="showLoader"/>
                         <i class="fa fa-check"></i>Zapisz
                     </h:commandLink>

@@ -22,7 +22,7 @@
 
                 <div class="modal-content">
                     <div class="form-top">
-                        <label>Wybierz pracowników</label>
+                        <label>Dodaj pracowników</label>
                         <h:selectManyListbox id="edit-employee-group-employees"
                                              styleClass="employee-group"
                                              value="#{employeeGroupBean.employeeIds}">
@@ -31,7 +31,9 @@
                                            itemLabel="#{employee.firstName} #{employee.lastName}"
                                            itemValue="#{employee.id}"/>
                             <f:converter converterId="javax.faces.Long"/>
-                            <f:ajax execute="@this" event="change"/>
+                            <f:ajax execute="@this"
+                                    event="change"
+                                    render="edit-group-save-button"/>
                         </h:selectManyListbox>
                         <h:outputScript>
                             $('.employee-group').multipleSelect({
@@ -80,17 +82,20 @@
                                 render="@form employee-group-form"
                                 listener="#{employeeGroupBean.clear}"
                                 onevent="showLoader"/>
-                        <i class="fa fa-times"></i>Anuluj
+                        <i class="fa fa-times"></i>Zamknij
                     </h:commandLink>
-                    <h:commandLink type="submit"
-                                   action="#{employeeGroupBean.saveEditedGroup}"
-                                   styleClass="btn bordered col-primary">
-                        <f:ajax execute="@form"
-                                resetValues="true"
-                                render="employee-group-form edit-employee-group-form closeDialogDiv"
-                                onevent="showLoader"/>
-                        <i class="fa fa-check"></i>Zapisz
-                    </h:commandLink>
+                    <div jsf:id="edit-group-save-button">
+                        <h:commandLink type="submit"
+                                       action="#{employeeGroupBean.saveEditedGroup}"
+                                       rendered="#{not empty employeeGroupBean.employeeIds}"
+                                       styleClass="btn bordered col-primary">
+                            <f:ajax execute="@form"
+                                    resetValues="true"
+                                    render="employee-group-form edit-employee-group-form closeDialogDiv"
+                                    onevent="showLoader"/>
+                            <i class="fa fa-check"></i>Zapisz
+                        </h:commandLink>
+                    </div>
                 </div>
             </h:form>
         </div>

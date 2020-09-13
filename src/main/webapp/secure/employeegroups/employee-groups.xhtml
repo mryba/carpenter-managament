@@ -18,11 +18,15 @@
 
                     <div class="controls">
                         <h:form>
-                            <a href="#" class="btn bordered col-primary"
-                               data-toggle="modal"
-                               data-target="#add-employee-group">
+                            <h:commandLink
+                                    styleClass="btn bordered col-primary"
+                                    p:data-toggle="modal"
+                                    p:data-target="#add-employee-group">
+                                <f:ajax execute="@this"
+                                        render="add-employee-group-form"
+                                        onevent="showLoader"/>
                                 <i class="fas fa-users"></i> Dodaj grupę pracowników
-                            </a>
+                            </h:commandLink>
                         </h:form>
                     </div>
                 </div>
