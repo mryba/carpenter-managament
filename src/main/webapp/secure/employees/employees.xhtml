@@ -4,6 +4,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:jsf="http://xmlns.jcp.org/jsf"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
                 template="/secure/template.xhtml">
 
     <ui:param name="pageTitle" value="Pracownicy"/>
@@ -72,12 +73,15 @@
                                         #{e.bankAccountNumber}
                                     </td>
                                     <td class="w5">
-                                        <h:link outcome="/secure/employees/employee"
-                                                styleClass="btn col-primary">
-                                            <f:param name="employeeId" value="#{e.id}"/>
-                                            <f:ajax onevent="showLoader"/>
-                                            <i class="fa fa-caret-right"></i>
-                                        </h:link>
+                                        <h:commandLink action="#{employeeBean.setEmployee(e.id)}"
+                                                       styleClass="btn btn-icon col-primary"
+                                                       p:data-toggle="modal"
+                                                       p:data-target="#edit-employee">
+                                            <f:ajax execute="@this"
+                                                    render="edit-employee-form"
+                                                    onevent="showLoader"/>
+                                            <i class="fas fa-cogs"></i>
+                                        </h:commandLink>
                                     </td>
                                 </tr>
                             </ui:repeat>
@@ -88,6 +92,7 @@
 
             </div>
             <ui:include src="/secure/employees/add-employee-form.xhtml"/>
+            <ui:include src="/secure/employees/edit-employee.xhtml"/>
             <div jsf:id="closeDialogDiv">
                 <h:outputScript rendered="#{not facesContext.validationFailed}">
                     $('#add-employee').modal('hide')

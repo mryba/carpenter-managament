@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<div id="edit-employee" class="modal modal-small fade"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://xmlns.jcp.org/jsf/html"
+     xmlns:f="http://xmlns.jcp.org/jsf/core"
+     xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+     xmlns:jsf="http://xmlns.jcp.org/jsf"
+     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+     data-backdrop="static">
+
+    <div>
+        <a class="modal-close"
+           data-dismiss="modal"
+           jsf:actionListener="#{employeeBean.clear}">
+            <f:ajax execute="@this"
+                    render="edit-employee-form"/>
+            <i class="fa fa-times"></i>
+        </a>
+        <div>
+            <h:form id="edit-employee-form" prependId="false">
+                <div class="modal-content">
+                    <div class="form-top center">
+                        <h2>#{employeeBean.employeeDto.firstName} #{employeeBean.employeeDto.lastName}</h2>
+                    </div>
+                    <div class="form-top">
+                        <label for="edit-employee-email">Email</label>
+                        <input type="text"
+                               jsf:id="edit-employee-email"
+                               jsf:value="#{employeeBean.employeeDto.email}"
+                               jsf:validator="#{employeeValidation.validateEmail}">
+                            <f:ajax event="blur"
+                                    execute="@this"
+                                    render="employee-email-id"/>
+                        </input>
+                        <h:message for="edit-employee-email" styleClass="form-msg col-danger"/>
+                    </div>
+                    <div class="form-top">
+                        <label for="edit-employee-phone">Telefon</label>
+                        <div class="form-phone">
+                            <input type="text"
+                                   jsf:id="edit-employee-phone"
+                                   jsf:value="#{employeeBean.employeeDto.phone}"
+                                   jsf:validator="#{employeeValidation.validatePhone}"
+                                   jsf:converter="country-code-converter">
+                                <f:ajax event="blur"
+                                        execute="@this"/>
+                            </input>
+                            <div class="country-label">
+                                <h:graphicImage value="#{resource['carpenter:img/pl-flag.png']}"/> +48
+                            </div>
+                            <h:message for="edit-employee-phone" styleClass="form-msg col-danger"/>
+                        </div>
+                    </div>
+
+                    <div class="form-top">
+                        <label for="edit-employee-contract">Umowa</label>
+                        <h:selectOneMenu id="edit-employee-contract"
+                                         value="#{employeeBean.employeeDto.contract}">
+                            <f:selectItems value="#{employeeListBean.availableContracts}"
+                                           var="cont"
+                                           itemLabel="#{employee_msg['contract_'.concat(cont.name())]}"
+                                           itemValue="#{cont.name()}"/>
+
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="@this edit-employee-nip-id edit-employee-address edit-address-label-id"
+                                    onevent="showLoader"/>
+                        </h:selectOneMenu>
+                    </div>
+
+                    <div jsf:id="edit-employee-nip-id">
+                        <div class="form-top" jsf:rendered="#{employeeBean.employeeDto.contract eq'SELF_EMPLOYMENT'}">
+                            <label for="edit-employee-nip">NIP</label>
+                            <h:inputText type="text"
+                                         id="edit-employee-nip"
+                                         required="true"
+                                         requiredMessage="Pole NIP wymagane"
+                                         validatorMessage="Długość numeru NIP to 10 cyfr"
+                                         value="#{employeeBean.employeeDto.nipNumber}">
+                                <f:validateLength minimum="10" maximum="10"/>
+                                <f:ajax event="change"
+                                        execute="@this"/>
+                            </h:inputText>
+                            <h:message for="edit-employee-nip" styleClass="form-msg col-danger"/>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-top">
+                            <label for="edit-employee-bank-account">Numer rachunku bankowego</label>
+                            <input type="text"
+                                   jsf:id="edit-employee-bank-account"
+                                   jsf:required="true"
+                                   jsf:requiredMessage="Proszę podać numer rachunku"
+                                   jsf:validatorMessage="Długość numeru bankowego to 26 cyfr"
+                                   jsf:value="#{employeeBean.employeeDto.bankAccountNumber}">
+                                <f:validateLength minimum="26" maximum="26"/>
+                                <f:ajax execute="@this"
+                                        event="change"/>
+                            </input>
+                            <h:message for="edit-employee-bank-account" styleClass="form-msg col-danger"/>
+                        </div>
+                    </div>
+                    <div class="form-top" jsf:id="edit-address-label-id">
+                        <label for="edit-address-checkbox">Dodaj adres</label>
+                        <h:selectBooleanCheckbox id="edit-address-checkbox"
+                                                 value="#{employeeBean.addAddress}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="edit-employee-address"
+                                    listener="#{employeeBean.resetContract}"
+                                    onevent="showLoader"/>
+                        </h:selectBooleanCheckbox>
+                        <i class="far fa-address-card"></i>
+                    </div>
+                    <div jsf:id="edit-employee-address">
+                        <div class="form-top" jsf:rendered="#{employeeBean.addAddress}">
+                            <label for="edit-employee-city">Miasto / Wieś</label>
+                            <input type="text"
+                                   jsf:id="edit-employee-city"
+                                   jsf:value="#{employeeBean.employeeDto.city}"
+                                   jsf:required="true"
+                                   jsf:requiredMessage="Polę Miasto / Wieś nie może być pustę">
+                                <f:ajax event="change"
+                                        execute="@this"/>
+                            </input>
+                            <h:message for="edit-employee-city" styleClass="form-msg col-danger"/>
+                        </div>
+
+                        <div class="form-top" jsf:rendered="#{employeeBean.addAddress}">
+                            <label for="edit-employee-postal-code">Kod pocztowy</label>
+                            <input type="text"
+                                   jsf:id="edit-employee-postal-code"
+                                   jsf:value="#{employeeBean.employeeDto.postalCode}"
+                                   jsf:required="true"
+                                   jsf:requiredMessage="Pole kodu pocztowego nie może być pustę">
+                                <f:ajax event="change"
+                                        execute="@this"/>
+                            </input>
+                            <h:message for="edit-employee-postal-code" styleClass="form-msg col-danger"/>
+                        </div>
+
+                        <div class="form-top" jsf:rendered="#{employeeBean.addAddress}">
+                            <label for="edit-employee-street">Ulica</label>
+                            <input type="text"
+                                   jsf:id="edit-employee-street"
+                                   jsf:value="#{employeeBean.employeeDto.street}">
+                                <f:ajax event="keyup"
+                                        delay="300"
+                                        execute="@this"
+                                        render="add-employee-street-number-id"/>
+                            </input>
+
+                            <div>
+                                <div class="form-top" jsf:rendered="#{employeeBean.addAddress}">
+                                    <label for="edit-employee-street-number">Numer ulicy</label>
+                                    <input type="text"
+                                           jsf:id="edit-employee-street-number"
+                                           jsf:value="#{employeeBean.employeeDto.streetNumber}">
+                                        <f:ajax event="change"
+                                                execute="@this"/>
+                                    </input>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-top" jsf:rendered="#{employeeBean.addAddress}">
+                            <label for="edit-employee-house-number">Numer domu / mieszkania</label>
+                            <input type="text"
+                                   jsf:id="edit-employee-house-number"
+                                   jsf:value="#{employeeBean.employeeDto.houseNumber}"
+                                   jsf:required="true"
+                                   jsf:requiredMessage="Pole numer domu / mieszkania nie może być pustę">
+                                <f:ajax event="change"
+                                        execute="@this"/>
+                            </input>
+                            <h:message for="edit-employee-house-number" styleClass="form-msg col-danger"/>
+                        </div>
+
+                        <div class="form-top" jsf:rendered="#{employeeBean.addAddress}">
+                            <label for="edit-country-name">Kraj</label>
+                            <h:selectOneMenu id="edit-country-name"
+                                             value="#{employeeBean.employeeDto.country}"
+                                             required="true"
+                                             requiredMessage="Proszę wybrać kraj">
+                                <f:selectItems value="#{employeeBean.countries}"
+                                               var="country"
+                                               itemLabel="#{employee_msg['country_'.concat(country.name())]}"
+                                               itemValue="#{country.name()}">
+                                </f:selectItems>
+                                <f:ajax execute="@this"
+                                        event="change"
+                                        onevent="showLoader"/>
+                            </h:selectOneMenu>
+                            <h:message for="edit-country-name" styleClass="form-msg col-danger"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <h:commandLink styleClass="btn col-danger bordered"
+                                   p:data-dismiss="modal"
+                                   p:data-toogle="modal">
+                        <f:ajax execute="@form"
+                                resetValues="true"
+                                render="@form employee-form"
+                                listener="#{employeeBean.clear}"
+                                onevent="showLoader"/>
+                        <i class="fa fa-times"></i>Zamknij
+                    </h:commandLink>
+                    <div jsf:id="edit-group-save-button">
+                        <h:commandLink type="submit"
+                                       action="#{employeeBean.saveEditedEmployee}"
+                                       styleClass="btn bordered col-primary">
+                            <f:ajax execute="@form"
+                                    resetValues="true"
+                                    render="employee-form edit-employee-form closeDialogDiv"
+                                    onevent="showLoader"/>
+                            <i class="fa fa-check"></i>Zapisz
+                        </h:commandLink>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </div>
+</div>

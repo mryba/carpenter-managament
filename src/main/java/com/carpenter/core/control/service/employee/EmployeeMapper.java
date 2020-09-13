@@ -55,7 +55,7 @@ public class EmployeeMapper implements Mapper<Employee, EmployeeDto> {
                 .lastName(employee.getLastName())
                 .gender(employee.getGender().name())
                 .phone(employee.getPhoneNumber() != null ? employee.getPhoneNumber() : "")
-                .activeAccount(employee.getAccountActive())
+                .activeAccount(Boolean.TRUE.equals(employee.getAccountActive()))
                 .build();
 
         if (employee.getAddresses() != null && !employee.getAddresses().isEmpty()) {
