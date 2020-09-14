@@ -140,11 +140,11 @@
                                     <f:ajax event="keyup"
                                             delay="300"
                                             execute="@this"
-                                            render="add-employee-street-number-id"/>
+                                            render="edit-employee-street-number-id"/>
                                 </input>
 
-                                <div>
-                                    <div class="form-top">
+                                <div jsf:id="edit-employee-street-number-id">
+                                    <div class="form-top" jsf:rendered="#{employeeBean.streetNumberActive}">
                                         <label for="edit-employee-street-number">Numer ulicy</label>
                                         <input type="text"
                                                jsf:id="edit-employee-street-number"
@@ -196,7 +196,7 @@
                                    p:data-toogle="modal">
                         <f:ajax execute="@form"
                                 resetValues="true"
-                                render="@form employee-form"
+                                render="@form employerTableForm"
                                 listener="#{employeeBean.clear}"
                                 onevent="showLoader"/>
                         <i class="fa fa-times"></i>Zamknij
@@ -207,7 +207,7 @@
                                        styleClass="btn bordered col-primary">
                             <f:ajax execute="@form"
                                     resetValues="true"
-                                    render="employee-form edit-employee-form closeDialogDiv"
+                                    render="employerTableForm edit-employee-form closeDialogDiv"
                                     onevent="showLoader"/>
                             <i class="fa fa-check"></i>Zapisz
                         </h:commandLink>

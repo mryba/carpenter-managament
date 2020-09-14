@@ -1,6 +1,7 @@
 package com.carpenter.core.control.service.employee;
 
 import com.carpenter.core.control.repository.AddressRepository;
+import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.entity.dictionaries.Contract;
 import com.carpenter.core.entity.dictionaries.Countries;
 import com.carpenter.core.entity.employee.Address;
@@ -12,6 +13,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -31,6 +33,8 @@ public class EmployeeBean implements Serializable {
     @Inject
     AddressRepository addressRepository;
 
+    @Inject
+    PrincipalBean principalBean;
 
     @PostConstruct
     public void init() {
@@ -45,7 +49,7 @@ public class EmployeeBean implements Serializable {
         try {
             return editedAddress = editedEmployee.getAddresses().iterator().next();
         } catch (NoSuchElementException e) {
-            log.error("Brak adresu");
+            log.info("PracowniK: {}, - brak adresu", editedEmployee.getEmail());
             return editedAddress;
         }
     }
@@ -77,11 +81,15 @@ public class EmployeeBean implements Serializable {
         if (!isAddAddress) {
             addressRepository.removerAddress(getEditedEmployeeAddress());
             editedEmployee.setAddresses(null);
-        }
-        if (editedAddress != null) {
+        } else {
+            if (editedAddress.getCreateDate() ==null && editedAddress.getCreateBy() ==null) {
+                editedAddress.setCreateDate(new Date());
+                editedAddress.setCreateBy(principalBean.getLoggedUser().getEmail());
+            }
             editedEmployee.addAddress(editedAddress);
         }
         employeeService.saveEmployee(editedEmployee);
+        clear();
     }
 
     public Countries[] getCountries() {
@@ -108,5 +116,9 @@ public class EmployeeBean implements Serializable {
         if (!isAddAddress) {
             editedEmployee.setContract(Contract.WITHOUT_A_CONTRACT);
         }
+    }
+
+    public boolean isStreetNumberActive() {
+        return isAddAddress && editedAddress.getStreet() != null && !editedAddress.getStreet().isEmpty();
     }
 }
