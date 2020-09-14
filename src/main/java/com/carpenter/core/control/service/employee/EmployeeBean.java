@@ -21,7 +21,6 @@ public class EmployeeBean implements Serializable {
 
     private static final long serialVersionUID = 5412921022733891332L;
 
-    private Long employeeId;
     private boolean isAddAddress;
     private Employee editedEmployee;
     private Address editedAddress = new Address();
@@ -34,7 +33,7 @@ public class EmployeeBean implements Serializable {
 
 
     @PostConstruct
-    public void init(){
+    public void init() {
         editedAddress = new Address();
     }
 
@@ -44,12 +43,17 @@ public class EmployeeBean implements Serializable {
 
     public Address getEditedEmployeeAddress() {
         try {
-            return editedEmployee.getAddresses().iterator().next();
+            return editedAddress = editedEmployee.getAddresses().iterator().next();
         } catch (NoSuchElementException e) {
             log.error("Brak adresu");
-            setAddAddress(false);
+            return editedAddress;
         }
-        return null;
+    }
+
+    public void setEmployee(Long employeeId) {
+        editedEmployee = employeeService.getEmployeeById(employeeId);
+        isAddAddress = editedEmployee != null && editedEmployee.getAddresses() != null && editedEmployee.getAddresses().iterator().hasNext();
+        getEditedEmployeeAddress();
     }
 
     public Address getEditedAddress() {
@@ -60,16 +64,10 @@ public class EmployeeBean implements Serializable {
         this.editedAddress = editedAddress;
     }
 
-    public void setEmployee(Long employeeId) {
-        this.employeeId = employeeId;
-        editedEmployee = employeeService.getEmployeeById(employeeId);
-        isAddAddress = editedEmployee != null && editedEmployee.getAddresses() != null && editedEmployee.getAddresses().iterator().hasNext();
-    }
-
     public void clear() {
-        employeeId = null;
         editedEmployee = null;
-        editedAddress = null;
+        editedAddress = new Address();
+        isAddAddress = false;
     }
 
     public void saveEditedEmployee() {
@@ -111,5 +109,4 @@ public class EmployeeBean implements Serializable {
             editedEmployee.setContract(Contract.WITHOUT_A_CONTRACT);
         }
     }
-
 }

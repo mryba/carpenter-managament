@@ -14,6 +14,7 @@
            data-dismiss="modal"
            jsf:actionListener="#{employeeBean.clear}">
             <f:ajax execute="@this"
+                    resetValues="true"
                     render="edit-employee-form"/>
             <i class="fa fa-times"></i>
         </a>
@@ -59,7 +60,8 @@
                     </div>
 
                     <div jsf:id="edit-employee-nip-id">
-                        <div class="form-top" jsf:rendered="#{employeeBean.editedEmployee.contract eq'SELF_EMPLOYMENT'}">
+                        <div class="form-top"
+                             jsf:rendered="#{employeeBean.editedEmployee.contract eq'SELF_EMPLOYMENT'}">
                             <label for="edit-employee-nip">NIP</label>
                             <h:inputText type="text"
                                          id="edit-employee-nip"
@@ -103,85 +105,87 @@
                         <i class="far fa-address-card"></i>
                     </div>
                     <div jsf:id="edit-employee-address">
-                        <div class="form-top" jsf:rendered="#{employeeBean.addAddress}">
-                            <label for="edit-employee-city">Miasto / Wieś</label>
-                            <input type="text"
-                                   jsf:id="edit-employee-city"
-                                   jsf:value="#{employeeBean.editedAddress.city}"
-                                   jsf:required="true"
-                                   jsf:requiredMessage="Polę Miasto / Wieś nie może być pustę">
-                                <f:ajax event="change"
-                                        execute="@this"/>
-                            </input>
-                            <h:message for="edit-employee-city" styleClass="form-msg col-danger"/>
-                        </div>
+                        <div jsf:rendered="#{employeeBean.addAddress}">
+                            <div class="form-top">
+                                <label for="edit-employee-city">Miasto / Wieś</label>
+                                <input type="text"
+                                       jsf:id="edit-employee-city"
+                                       jsf:value="#{employeeBean.editedAddress.city}"
+                                       jsf:required="true"
+                                       jsf:requiredMessage="Polę Miasto / Wieś nie może być pustę">
+                                    <f:ajax event="change"
+                                            execute="@this"/>
+                                </input>
+                                <h:message for="edit-employee-city" styleClass="form-msg col-danger"/>
+                            </div>
 
-                        <div class="form-top" jsf:rendered="#{employeeBean.addAddress}">
-                            <label for="edit-employee-postal-code">Kod pocztowy</label>
-                            <input type="text"
-                                   jsf:id="edit-employee-postal-code"
-                                   jsf:value="#{employeeBean.editedAddress.postalCode}"
-                                   jsf:required="true"
-                                   jsf:requiredMessage="Pole kodu pocztowego nie może być pustę">
-                                <f:ajax event="change"
-                                        execute="@this"/>
-                            </input>
-                            <h:message for="edit-employee-postal-code" styleClass="form-msg col-danger"/>
-                        </div>
+                            <div class="form-top">
+                                <label for="edit-employee-postal-code">Kod pocztowy</label>
+                                <input type="text"
+                                       jsf:id="edit-employee-postal-code"
+                                       jsf:value="#{employeeBean.editedAddress.postalCode}"
+                                       jsf:required="true"
+                                       jsf:requiredMessage="Pole kodu pocztowego nie może być pustę">
+                                    <f:ajax event="change"
+                                            execute="@this"/>
+                                </input>
+                                <h:message for="edit-employee-postal-code" styleClass="form-msg col-danger"/>
+                            </div>
 
-                        <div class="form-top" jsf:rendered="#{employeeBean.addAddress}">
-                            <label for="edit-employee-street">Ulica</label>
-                            <input type="text"
-                                   jsf:id="edit-employee-street"
-                                   jsf:value="#{employeeBean.editedAddress.street}">
-                                <f:ajax event="keyup"
-                                        delay="300"
-                                        execute="@this"
-                                        render="add-employee-street-number-id"/>
-                            </input>
+                            <div class="form-top">
+                                <label for="edit-employee-street">Ulica</label>
+                                <input type="text"
+                                       jsf:id="edit-employee-street"
+                                       jsf:value="#{employeeBean.editedAddress.street}">
+                                    <f:ajax event="keyup"
+                                            delay="300"
+                                            execute="@this"
+                                            render="add-employee-street-number-id"/>
+                                </input>
 
-                            <div>
-                                <div class="form-top" jsf:rendered="#{employeeBean.addAddress}">
-                                    <label for="edit-employee-street-number">Numer ulicy</label>
-                                    <input type="text"
-                                           jsf:id="edit-employee-street-number"
-                                           jsf:value="#{employeeBean.editedAddress.streetNumber}">
-                                        <f:ajax event="change"
-                                                execute="@this"/>
-                                    </input>
+                                <div>
+                                    <div class="form-top">
+                                        <label for="edit-employee-street-number">Numer ulicy</label>
+                                        <input type="text"
+                                               jsf:id="edit-employee-street-number"
+                                               jsf:value="#{employeeBean.editedAddress.streetNumber}">
+                                            <f:ajax event="change"
+                                                    execute="@this"/>
+                                        </input>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="form-top" jsf:rendered="#{employeeBean.addAddress}">
-                            <label for="edit-employee-house-number">Numer domu / mieszkania</label>
-                            <input type="text"
-                                   jsf:id="edit-employee-house-number"
-                                   jsf:value="#{employeeBean.editedAddress.houseNumber}"
-                                   jsf:required="true"
-                                   jsf:requiredMessage="Pole numer domu / mieszkania nie może być pustę">
-                                <f:ajax event="change"
-                                        execute="@this"/>
-                            </input>
-                            <h:message for="edit-employee-house-number" styleClass="form-msg col-danger"/>
-                        </div>
+                            <div class="form-top">
+                                <label for="edit-employee-house-number">Numer domu / mieszkania</label>
+                                <input type="text"
+                                       jsf:id="edit-employee-house-number"
+                                       jsf:value="#{employeeBean.editedAddress.houseNumber}"
+                                       jsf:required="true"
+                                       jsf:requiredMessage="Pole numer domu / mieszkania nie może być pustę">
+                                    <f:ajax event="change"
+                                            execute="@this"/>
+                                </input>
+                                <h:message for="edit-employee-house-number" styleClass="form-msg col-danger"/>
+                            </div>
 
-                        <div class="form-top" jsf:rendered="#{employeeBean.addAddress}">
-                            <label for="edit-country-name">Kraj</label>
-                            <h:selectOneMenu id="edit-country-name"
-                                             value="#{employeeBean.editedAddress.country}"
-                                             required="true"
-                                             requiredMessage="Proszę wybrać kraj">
-                                <f:selectItems value="#{employeeBean.countries}"
-                                               var="country"
-                                               itemLabel="#{employee_msg['country_'.concat(country.name())]}"
-                                               itemValue="#{country.name()}">
-                                </f:selectItems>
-                                <f:ajax execute="@this"
-                                        event="change"
-                                        onevent="showLoader"/>
-                            </h:selectOneMenu>
-                            <h:message for="edit-country-name" styleClass="form-msg col-danger"/>
+                            <div class="form-top">
+                                <label for="edit-country-name">Kraj</label>
+                                <h:selectOneMenu id="edit-country-name"
+                                                 value="#{employeeBean.editedAddress.country}"
+                                                 required="true"
+                                                 requiredMessage="Proszę wybrać kraj">
+                                    <f:selectItems value="#{employeeBean.countries}"
+                                                   var="country"
+                                                   itemLabel="#{employee_msg['country_'.concat(country.name())]}"
+                                                   itemValue="#{country.name()}">
+                                    </f:selectItems>
+                                    <f:ajax execute="@this"
+                                            event="change"
+                                            onevent="showLoader"/>
+                                </h:selectOneMenu>
+                                <h:message for="edit-country-name" styleClass="form-msg col-danger"/>
+                            </div>
                         </div>
                     </div>
                 </div>
