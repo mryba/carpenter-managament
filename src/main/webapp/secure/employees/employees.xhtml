@@ -48,6 +48,7 @@
                                 <th class="w5"><i class="fas fa-info"></i></th>
                                 <th class="w5"><i class="fas fa-cogs"></i></th>
                                 <th class="w5"><i class="fas fa-user-cog"></i></th>
+                                <th class="w5"><i class="fas fa-trash"></i></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -112,6 +113,17 @@
                                             <i class="fas fa-user-plus" title="Wyłącz - pracownika"></i>
                                         </h:commandLink>
                                     </td>
+                                    <td class="w5">
+                                        <h:commandLink action="#{employeeBean.setEmployee(e.id)}"
+                                                       styleClass="btn btn-icon col-primary"
+                                                       p:data-toggle="modal"
+                                                       p:data-target="#delete-employee">
+                                            <f:ajax execute="@this"
+                                                    render="delete-employee-form"
+                                                    onevent="showLoader"/>
+                                            <i class="fas fa-trash" title="Wyłącz - pracownika"></i>
+                                        </h:commandLink>
+                                    </td>
                                 </tr>
                             </ui:repeat>
                             </tbody>
@@ -124,12 +136,14 @@
             <ui:include src="/secure/employees/edit-employee.xhtml"/>
             <ui:include src="/secure/employees/flip-employee-status.xhtml"/>
             <ui:include src="/secure/employees/info-employee.xhtml"/>
+            <ui:include src="/secure/employees/delete-employee.xhtml"/>
             <div jsf:id="closeDialogDiv">
                 <h:outputScript rendered="#{not facesContext.validationFailed}">
                     $('#add-employee').modal('hide')
                     $('#edit-employee').modal('hide')
                     $('#flip-employee-status').modal('hide')
                     $('#info-employee').modal('hide')
+                    $('#delete-employee').modal('hide')
                 </h:outputScript>
             </div>
         </div>

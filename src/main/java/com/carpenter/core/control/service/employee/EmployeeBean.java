@@ -9,6 +9,10 @@ import com.carpenter.core.entity.employee.Employee;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -26,6 +30,7 @@ public class EmployeeBean implements Serializable {
     private boolean isAddAddress;
     private Employee editedEmployee;
     private Address editedAddress = new Address();
+    private String deletedEmployeeLastName;
 
     @Inject
     EmployeeService employeeService;
@@ -82,7 +87,7 @@ public class EmployeeBean implements Serializable {
             addressRepository.removerAddress(getEditedEmployeeAddress());
             editedEmployee.setAddresses(null);
         } else {
-            if (editedAddress.getCreateDate() ==null && editedAddress.getCreateBy() ==null) {
+            if (editedAddress.getCreateDate() == null && editedAddress.getCreateBy() == null) {
                 editedAddress.setCreateDate(new Date());
                 editedAddress.setCreateBy(principalBean.getLoggedUser().getEmail());
             }
@@ -125,9 +130,45 @@ public class EmployeeBean implements Serializable {
     public void switchEmployeeStatus() {
         if (Boolean.TRUE.equals(editedEmployee.getAccountActive())) {
             editedEmployee.setAccountActive(Boolean.FALSE);
-        }else {
+        } else {
             editedEmployee.setAccountActive(Boolean.TRUE);
         }
         employeeService.saveEmployee(editedEmployee);
+    }
+
+    public void deleteEmployee() {
+        editedEmployee.setDeleteDate(new Date());
+        editedEmployee.setDeletedBy(principalBean.getLoggedUser().getEmail());
+        editedEmployee.setAccountActive(Boolean.FALSE);
+        editedEmployee.setEmail(editedEmployee.getEmail() + "deleted");
+        editedEmployee.setPassword("Deleted account");
+
+        employeeService.saveEmployee(editedEmployee);
+    }
+
+    public void validateDeletedLastName(FacesContext facesContext, UIComponent component, Object value) {
+        if (value == null || value.toString().isEmpty()) {
+            throw new ValidatorException(
+                    new FacesMessage(
+                            "Pole nie może być pustę"
+                    )
+            );
+        }
+        if (!value.toString().equals(editedEmployee.getLastName())) {
+            throw new ValidatorException(
+                    new FacesMessage(
+                            "Wpisane nazwisko się nie zgadza",
+                            "Wpisane nazwisko się nie zgadza"
+                    )
+            );
+        }
+    }
+
+    public String getDeletedEmployeeLastName() {
+        return deletedEmployeeLastName;
+    }
+
+    public void setDeletedEmployeeLastName(String deletedEmployeeLastName) {
+        this.deletedEmployeeLastName = deletedEmployeeLastName;
     }
 }
