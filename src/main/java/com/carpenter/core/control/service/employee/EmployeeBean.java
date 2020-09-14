@@ -121,4 +121,13 @@ public class EmployeeBean implements Serializable {
     public boolean isStreetNumberActive() {
         return isAddAddress && editedAddress.getStreet() != null && !editedAddress.getStreet().isEmpty();
     }
+
+    public void switchEmployeeStatus() {
+        if (Boolean.TRUE.equals(editedEmployee.getAccountActive())) {
+            editedEmployee.setAccountActive(Boolean.FALSE);
+        }else {
+            editedEmployee.setAccountActive(Boolean.TRUE);
+        }
+        employeeService.saveEmployee(editedEmployee);
+    }
 }

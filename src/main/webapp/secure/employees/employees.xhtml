@@ -42,46 +42,74 @@
                         <table>
                             <thead>
                             <tr>
-                                <th class="w10 left">Firma</th>
                                 <th class="w10 left">Nazwisko i Imię</th>
-                                <th class="w10 left">E-mail / Telefon</th>
-                                <th class="w10 left">NIP</th>
                                 <th class="w10 left">Umowa</th>
-                                <th class="w10 left">Numer konta Bankowego</th>
-                                <th class="w5"><i class="fas fa-user"></i></th>
+                                <th class="w5 left">Status</th>
+                                <th class="w5"><i class="fas fa-info"></i></th>
+                                <th class="w5"><i class="fas fa-cogs"></i></th>
+                                <th class="w5"><i class="fas fa-user-cog"></i></th>
                             </tr>
                             </thead>
                             <tbody>
                             <ui:repeat value="#{employeeListBean.employersList}" var="e">
                                 <tr>
                                     <td class="w10 left">
-                                        #{e.company.name}
-                                    </td>
-                                    <td class="w10 left">
                                         <h4>#{e.lastName} #{e.firstName}</h4>
                                     </td>
-                                    <td class="w10 left">
-                                        #{e.email} / #{e.phoneNumber}
-                                    </td>
-                                    <td class="w10 left">
-                                        #{e.nipNumber}
-                                    </td>
+
                                     <td class="w10 left">
                                         #{employee_msg['contract_'.concat(e.contract.name())]}
                                     </td>
-                                    <td class="w10 left">
-                                        #{e.bankAccountNumber}
+                                    <td class="w5 left">
+                                        <div jsf:rendered="#{e.accountActive}">
+                                            <h4>Aktywny</h4>
+                                        </div>
+                                        <div jsf:rendered="#{not e.accountActive}">
+                                            <h4>Nieaktywny</h4>
+                                        </div>
                                     </td>
                                     <td class="w5">
                                         <h:commandLink action="#{employeeBean.setEmployee(e.id)}"
                                                        styleClass="btn btn-icon col-primary"
                                                        p:data-toggle="modal"
-                                                       p:title="Edytuj"
+                                                       p:data-target="#info-employee">
+                                            <f:ajax execute="@this"
+                                                    render="info-employee-form"
+                                                    onevent="showLoader"/>
+                                            <i class="fas fa-info" title="Informacje"></i>
+                                        </h:commandLink>
+                                    </td>
+                                    <td class="w5">
+                                        <h:commandLink action="#{employeeBean.setEmployee(e.id)}"
+                                                       styleClass="btn btn-icon col-primary"
+                                                       p:data-toggle="modal"
                                                        p:data-target="#edit-employee">
                                             <f:ajax execute="@this"
                                                     render="edit-employee-form"
                                                     onevent="showLoader"/>
-                                            <i class="fas fa-cogs"></i>
+                                            <i class="fas fa-cogs" title="Edytuj"></i>
+                                        </h:commandLink>
+                                    </td>
+                                    <td class="w5" jsf:rendered="#{e.accountActive}">
+                                        <h:commandLink action="#{employeeBean.setEmployee(e.id)}"
+                                                       styleClass="btn btn-icon col-danger"
+                                                       p:data-toggle="modal"
+                                                       p:data-target="#flip-employee-status">
+                                            <f:ajax execute="@this"
+                                                    render="flip-emplyee-status-form"
+                                                    onevent="showLoader"/>
+                                            <i class="fas fa-user-slash" title="Włącz - pracownika"></i>
+                                        </h:commandLink>
+                                    </td>
+                                    <td class="w5" jsf:rendered="#{not e.accountActive}">
+                                        <h:commandLink action="#{employeeBean.setEmployee(e.id)}"
+                                                       styleClass="btn btn-icon col-primary"
+                                                       p:data-toggle="modal"
+                                                       p:data-target="#flip-employee-status">
+                                            <f:ajax execute="@this"
+                                                    render="flip-emplyee-status-form"
+                                                    onevent="showLoader"/>
+                                            <i class="fas fa-user-plus" title="Wyłącz - pracownika"></i>
                                         </h:commandLink>
                                     </td>
                                 </tr>
@@ -94,10 +122,14 @@
             </div>
             <ui:include src="/secure/employees/add-employee-form.xhtml"/>
             <ui:include src="/secure/employees/edit-employee.xhtml"/>
+            <ui:include src="/secure/employees/flip-employee-status.xhtml"/>
+            <ui:include src="/secure/employees/info-employee.xhtml"/>
             <div jsf:id="closeDialogDiv">
                 <h:outputScript rendered="#{not facesContext.validationFailed}">
                     $('#add-employee').modal('hide')
                     $('#edit-employee').modal('hide')
+                    $('#flip-employee-status').modal('hide')
+                    $('#info-employee').modal('hide')
                 </h:outputScript>
             </div>
         </div>
