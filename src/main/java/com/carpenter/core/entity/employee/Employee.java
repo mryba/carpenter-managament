@@ -117,7 +117,7 @@ public class Employee extends DomainObject {
     @XmlTransient
     private Gender gender;
 
-    @OneToMany(cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "ID")
     @XmlTransient
     private List<Address> addresses;

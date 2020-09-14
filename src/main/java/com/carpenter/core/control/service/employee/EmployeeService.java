@@ -35,6 +35,11 @@ public class EmployeeService implements Serializable {
         return employee;
     }
 
+    public Employee updateEmployee(EmployeeDto employeeDto) {
+        employeeMapper = new EmployeeMapper();
+        return employeeMapper.mapFromDomain(employeeDto);
+    }
+
     public void saveEmployee(Employee employee) {
         employeeRepository.saveEmployee(employee);
     }

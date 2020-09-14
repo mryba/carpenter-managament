@@ -1,16 +1,20 @@
 package com.carpenter.core.control.service.employee;
 
-import com.carpenter.core.control.dto.EmployeeDto;
+import com.carpenter.core.control.repository.AddressRepository;
+import com.carpenter.core.entity.dictionaries.Contract;
 import com.carpenter.core.entity.dictionaries.Countries;
+import com.carpenter.core.entity.employee.Address;
 import com.carpenter.core.entity.employee.Employee;
-import org.omnifaces.cdi.Param;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.NoSuchElementException;
 
+@Slf4j
 @ViewScoped
 @Named("employeeBean")
 public class EmployeeBean implements Serializable {
@@ -19,36 +23,67 @@ public class EmployeeBean implements Serializable {
 
     private Long employeeId;
     private boolean isAddAddress;
-    private EmployeeDto employeeDto;
-    private EmployeeMapper employeeMapper;
+    private Employee editedEmployee;
+    private Address editedAddress = new Address();
 
     @Inject
     EmployeeService employeeService;
 
-    @PostConstruct
-    public void init() {
-        employeeMapper = new EmployeeMapper();
+    @Inject
+    AddressRepository addressRepository;
 
+
+    @PostConstruct
+    public void init(){
+        editedAddress = new Address();
     }
 
-    public EmployeeDto getEmployeeDto() {
-        return employeeDto;
+    public Employee getEditedEmployee() {
+        return editedEmployee;
+    }
+
+    public Address getEditedEmployeeAddress() {
+        try {
+            return editedEmployee.getAddresses().iterator().next();
+        } catch (NoSuchElementException e) {
+            log.error("Brak adresu");
+            setAddAddress(false);
+        }
+        return null;
+    }
+
+    public Address getEditedAddress() {
+        return editedAddress;
+    }
+
+    public void setEditedAddress(Address editedAddress) {
+        this.editedAddress = editedAddress;
     }
 
     public void setEmployee(Long employeeId) {
         this.employeeId = employeeId;
-        Employee employee = employeeService.getEmployeeById(employeeId);
-        employeeDto = employeeMapper.mapToDomain(employee);
-        isAddAddress = employeeDto != null && employeeDto.getCountry() != null && employeeDto.getCity() != null;
+        editedEmployee = employeeService.getEmployeeById(employeeId);
+        isAddAddress = editedEmployee != null && editedEmployee.getAddresses() != null && editedEmployee.getAddresses().iterator().hasNext();
     }
 
     public void clear() {
         employeeId = null;
-        employeeDto = null;
+        editedEmployee = null;
+        editedAddress = null;
     }
 
     public void saveEditedEmployee() {
-
+        if (editedEmployee.getContract() != Contract.SELF_EMPLOYMENT) {
+            editedEmployee.setNipNumber(null);
+        }
+        if (!isAddAddress) {
+            addressRepository.removerAddress(getEditedEmployeeAddress());
+            editedEmployee.setAddresses(null);
+        }
+        if (editedAddress != null) {
+            editedEmployee.addAddress(editedAddress);
+        }
+        employeeService.saveEmployee(editedEmployee);
     }
 
     public Countries[] getCountries() {
@@ -64,16 +99,17 @@ public class EmployeeBean implements Serializable {
     }
 
     public void unableAddress() {
-        if (employeeDto.getContract().equals("SELF_EMPLOYMENT")) {
+        if (editedEmployee.getContract() == Contract.SELF_EMPLOYMENT) {
             setAddAddress(true);
         } else {
             setAddAddress(false);
         }
     }
 
-    public void resetContract(){
+    public void resetContract() {
         if (!isAddAddress) {
-            employeeDto.setContract("WITHOUT_A_CONTRACT");
+            editedEmployee.setContract(Contract.WITHOUT_A_CONTRACT);
         }
     }
+
 }

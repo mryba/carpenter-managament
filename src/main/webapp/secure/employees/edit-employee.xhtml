@@ -21,26 +21,14 @@
             <h:form id="edit-employee-form" prependId="false">
                 <div class="modal-content">
                     <div class="form-top center">
-                        <h2>#{employeeBean.employeeDto.firstName} #{employeeBean.employeeDto.lastName}</h2>
-                    </div>
-                    <div class="form-top">
-                        <label for="edit-employee-email">Email</label>
-                        <input type="text"
-                               jsf:id="edit-employee-email"
-                               jsf:value="#{employeeBean.employeeDto.email}"
-                               jsf:validator="#{employeeValidation.validateEmail}">
-                            <f:ajax event="blur"
-                                    execute="@this"
-                                    render="employee-email-id"/>
-                        </input>
-                        <h:message for="edit-employee-email" styleClass="form-msg col-danger"/>
+                        <h2>#{employeeBean.editedEmployee.firstName} #{employeeBean.editedEmployee.lastName}</h2>
                     </div>
                     <div class="form-top">
                         <label for="edit-employee-phone">Telefon</label>
                         <div class="form-phone">
                             <input type="text"
                                    jsf:id="edit-employee-phone"
-                                   jsf:value="#{employeeBean.employeeDto.phone}"
+                                   jsf:value="#{employeeBean.editedEmployee.phoneNumber}"
                                    jsf:validator="#{employeeValidation.validatePhone}"
                                    jsf:converter="country-code-converter">
                                 <f:ajax event="blur"
@@ -53,10 +41,10 @@
                         </div>
                     </div>
 
-                    <div class="form-top">
+                    <div class="form-top" jsf:id="edit-employee-contract-id">
                         <label for="edit-employee-contract">Umowa</label>
                         <h:selectOneMenu id="edit-employee-contract"
-                                         value="#{employeeBean.employeeDto.contract}">
+                                         value="#{employeeBean.editedEmployee.contract}">
                             <f:selectItems value="#{employeeListBean.availableContracts}"
                                            var="cont"
                                            itemLabel="#{employee_msg['contract_'.concat(cont.name())]}"
@@ -65,19 +53,20 @@
                             <f:ajax event="change"
                                     execute="@this"
                                     render="@this edit-employee-nip-id edit-employee-address edit-address-label-id"
+                                    listener="#{employeeBean.unableAddress}"
                                     onevent="showLoader"/>
                         </h:selectOneMenu>
                     </div>
 
                     <div jsf:id="edit-employee-nip-id">
-                        <div class="form-top" jsf:rendered="#{employeeBean.employeeDto.contract eq'SELF_EMPLOYMENT'}">
+                        <div class="form-top" jsf:rendered="#{employeeBean.editedEmployee.contract eq'SELF_EMPLOYMENT'}">
                             <label for="edit-employee-nip">NIP</label>
                             <h:inputText type="text"
                                          id="edit-employee-nip"
                                          required="true"
                                          requiredMessage="Pole NIP wymagane"
                                          validatorMessage="Długość numeru NIP to 10 cyfr"
-                                         value="#{employeeBean.employeeDto.nipNumber}">
+                                         value="#{employeeBean.editedEmployee.nipNumber}">
                                 <f:validateLength minimum="10" maximum="10"/>
                                 <f:ajax event="change"
                                         execute="@this"/>
@@ -93,7 +82,7 @@
                                    jsf:required="true"
                                    jsf:requiredMessage="Proszę podać numer rachunku"
                                    jsf:validatorMessage="Długość numeru bankowego to 26 cyfr"
-                                   jsf:value="#{employeeBean.employeeDto.bankAccountNumber}">
+                                   jsf:value="#{employeeBean.editedEmployee.bankAccountNumber}">
                                 <f:validateLength minimum="26" maximum="26"/>
                                 <f:ajax execute="@this"
                                         event="change"/>
@@ -107,7 +96,7 @@
                                                  value="#{employeeBean.addAddress}">
                             <f:ajax event="change"
                                     execute="@this"
-                                    render="edit-employee-address"
+                                    render="edit-employee-address edit-employee-contract-id edit-employee-nip-id"
                                     listener="#{employeeBean.resetContract}"
                                     onevent="showLoader"/>
                         </h:selectBooleanCheckbox>
@@ -118,7 +107,7 @@
                             <label for="edit-employee-city">Miasto / Wieś</label>
                             <input type="text"
                                    jsf:id="edit-employee-city"
-                                   jsf:value="#{employeeBean.employeeDto.city}"
+                                   jsf:value="#{employeeBean.editedAddress.city}"
                                    jsf:required="true"
                                    jsf:requiredMessage="Polę Miasto / Wieś nie może być pustę">
                                 <f:ajax event="change"
@@ -131,7 +120,7 @@
                             <label for="edit-employee-postal-code">Kod pocztowy</label>
                             <input type="text"
                                    jsf:id="edit-employee-postal-code"
-                                   jsf:value="#{employeeBean.employeeDto.postalCode}"
+                                   jsf:value="#{employeeBean.editedAddress.postalCode}"
                                    jsf:required="true"
                                    jsf:requiredMessage="Pole kodu pocztowego nie może być pustę">
                                 <f:ajax event="change"
@@ -144,7 +133,7 @@
                             <label for="edit-employee-street">Ulica</label>
                             <input type="text"
                                    jsf:id="edit-employee-street"
-                                   jsf:value="#{employeeBean.employeeDto.street}">
+                                   jsf:value="#{employeeBean.editedAddress.street}">
                                 <f:ajax event="keyup"
                                         delay="300"
                                         execute="@this"
@@ -156,7 +145,7 @@
                                     <label for="edit-employee-street-number">Numer ulicy</label>
                                     <input type="text"
                                            jsf:id="edit-employee-street-number"
-                                           jsf:value="#{employeeBean.employeeDto.streetNumber}">
+                                           jsf:value="#{employeeBean.editedAddress.streetNumber}">
                                         <f:ajax event="change"
                                                 execute="@this"/>
                                     </input>
@@ -168,7 +157,7 @@
                             <label for="edit-employee-house-number">Numer domu / mieszkania</label>
                             <input type="text"
                                    jsf:id="edit-employee-house-number"
-                                   jsf:value="#{employeeBean.employeeDto.houseNumber}"
+                                   jsf:value="#{employeeBean.editedAddress.houseNumber}"
                                    jsf:required="true"
                                    jsf:requiredMessage="Pole numer domu / mieszkania nie może być pustę">
                                 <f:ajax event="change"
@@ -180,7 +169,7 @@
                         <div class="form-top" jsf:rendered="#{employeeBean.addAddress}">
                             <label for="edit-country-name">Kraj</label>
                             <h:selectOneMenu id="edit-country-name"
-                                             value="#{employeeBean.employeeDto.country}"
+                                             value="#{employeeBean.editedAddress.country}"
                                              required="true"
                                              requiredMessage="Proszę wybrać kraj">
                                 <f:selectItems value="#{employeeBean.countries}"
