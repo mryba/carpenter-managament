@@ -26,16 +26,16 @@
                         Status: <strong>#{employeeBean.editedEmployee.accountActive ? "Aktywny" : "Nieaktywny"}</strong><br/>
                         Grupa: <strong>#{employeeBean.editedEmployee.employeeGroup.groupName}</strong><br/>
                         Nip: <strong>#{employeeBean.editedEmployee.nipNumber} </strong><br/>
-                        Umowa: <strong>#{employeeBean.editedEmployee.contract}</strong><br/>
+                        Umowa: <strong>#{employee_msg['contract_'.concat(employeeBean.editedEmployee.contract.name())]}</strong><br/>
                         Numer rachunku: <strong>#{employeeBean.editedEmployee.bankAccountNumber}</strong><br/>
                         Data urodzenia: <strong>#{employeeBean.editedEmployee.birthDate}</strong><br/>
                         <hr></hr>
-                        #{employeeBean.editedAddress.city},
+                      <strong>  #{employeeBean.editedAddress.city}</strong>,
                         #{employeeBean.editedAddress.postalCode}<br/>
-                        #{employeeBean.editedAddress.street},
-                        #{employeeBean.editedAddress.streetNumber},
+                        #{employeeBean.editedAddress.street}
+                        #{employeeBean.editedAddress.streetNumber}
                         #{employeeBean.editedAddress.houseNumber}<br/>
-                        #{employeeBean.editedAddress.country}
+                        <strong>#{employee_msg['country_'.concat(employeeBean.editedAddress.country)]}</strong>
                     </div>
                     <div class="modal-footer">
                         <h:commandLink styleClass="btn bordered col-primary">

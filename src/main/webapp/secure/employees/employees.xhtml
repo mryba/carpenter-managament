@@ -77,7 +77,7 @@
                                             <f:ajax execute="@this"
                                                     render="info-employee-form"
                                                     onevent="showLoader"/>
-                                            <i class="fas fa-info" title="Informacje"></i>
+                                            <i class="fas fa-info-circle" title="Informacje"></i>
                                         </h:commandLink>
                                     </td>
                                     <td class="w5">
@@ -115,13 +115,13 @@
                                     </td>
                                     <td class="w5">
                                         <h:commandLink action="#{employeeBean.setEmployee(e.id)}"
-                                                       styleClass="btn btn-icon col-primary"
+                                                       styleClass="btn btn-icon col-danger"
                                                        p:data-toggle="modal"
                                                        p:data-target="#delete-employee">
                                             <f:ajax execute="@this"
                                                     render="delete-employee-form"
                                                     onevent="showLoader"/>
-                                            <i class="fas fa-trash" title="Wyłącz - pracownika"></i>
+                                            <i class="fas fa-trash" title="Usuń pracownika"></i>
                                         </h:commandLink>
                                     </td>
                                 </tr>
