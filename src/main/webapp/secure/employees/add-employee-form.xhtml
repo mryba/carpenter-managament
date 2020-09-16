@@ -150,9 +150,12 @@
                             <input type="text"
                                    jsf:id="add-employee-phone"
                                    jsf:value="#{employeeListBean.employeeDto.phone}"
-                                   jsf:validator="#{employeeValidation.validatePhone}"
+                                   jsf:required="true"
+                                   jsf:requiredMessage="Proszę podać numer telefonu"
+                                   jsf:validatorMessage="Długość numeru telefonu to 9 cyfr"
                                    jsf:converter="country-code-converter">
-                                <f:ajax event="blur"
+                                <f:validateLength minimum="12" maximum="12"/>
+                                <f:ajax event="change"
                                         execute="@this"
                                         render="add-employee-phone-group"/>
                             </input>
@@ -247,8 +250,7 @@
                                 <input type="text"
                                        jsf:id="add-employee-postal-code"
                                        jsf:value="#{employeeListBean.employeeDto.postalCode}"
-                                       jsf:required="true"
-                                       jsf:requiredMessage="Pole kodu pocztowego nie może być pustę">
+                                       jsf:validator="#{employeeValidation.validatePostalCode}">
                                     <f:ajax event="change"
                                             execute="@this"/>
                                 </input>

@@ -2,15 +2,17 @@ package com.carpenter.core.control.service.client;
 
 import com.carpenter.core.control.dto.ClientDto;
 import com.carpenter.core.control.repository.ClientRepository;
+import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.entity.client.Client;
 
+import javax.ejb.Stateless;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-@SessionScoped
+@Stateless
 public class ClientService implements Serializable {
 
     public static final long serialVersionUID = 4381746910120923L;

@@ -22,4 +22,11 @@ public class ClientDto {
     private String webSite;
     private String streetNumber;
     private String houseNumber;
+
+    public void setStreet(String street) {
+        this.street = street;
+        if (this.street == null || !this.street.isEmpty()) {
+            this.streetNumber = null;
+        }
+    }
 }

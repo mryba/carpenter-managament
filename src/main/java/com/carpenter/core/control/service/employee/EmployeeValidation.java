@@ -1,5 +1,6 @@
 package com.carpenter.core.control.service.employee;
 
+import com.carpenter.utils.ConstantsRegex;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -65,12 +66,34 @@ public class EmployeeValidation implements Serializable {
         validateEmptyField(facesContext, component, value, "employee.email.notNull");
 
         String email = (String) value;
+        if (!email.matches(ConstantsRegex.EMAIL_PATTERN)) {
+            throw new ValidatorException(
+                    new FacesMessage(
+                            resourceBundle.getString("employee.email.syntax"),
+                            resourceBundle.getString("employee.email.syntax"
+                            ))
+            );
+        }
         boolean isEmployeeWithThatEmailExists = employeeService.getEmployeeByEmail(email);
         if (isEmployeeWithThatEmailExists) {
             throw new ValidatorException(
                     new FacesMessage(
                             resourceBundle.getString("employee.email.exists"),
                             resourceBundle.getString("employee.email.exists")
+                    )
+            );
+        }
+    }
+
+
+    public void validatePostalCode(FacesContext facesContext, UIComponent component, Object value) {
+        validateEmptyField(facesContext, component, value, "com.carpenter.notNull");
+        String postalCode = (String) value;
+        if (!(postalCode).matches(ConstantsRegex.POSTAL_CODE_PATTERN)) {
+            throw new ValidatorException(
+                    new FacesMessage(
+                            resourceBundle.getString("employee.postal.code"),
+                            resourceBundle.getString("employee.postal.code")
                     )
             );
         }

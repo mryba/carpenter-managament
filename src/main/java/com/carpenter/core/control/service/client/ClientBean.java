@@ -1,11 +1,7 @@
 package com.carpenter.core.control.service.client;
 
 import com.carpenter.core.control.dto.ClientDto;
-import com.carpenter.core.control.dto.CompanyDto;
-import com.carpenter.core.control.service.company.CompanyService;
 import com.carpenter.core.control.service.login.PrincipalBean;
-import com.carpenter.core.control.service.offer.OfferService;
-import com.carpenter.core.entity.Offer;
 import com.carpenter.core.entity.client.Client;
 import com.carpenter.core.entity.dictionaries.Countries;
 import lombok.Getter;
@@ -40,20 +36,6 @@ public class ClientBean implements Serializable {
     private ClientMapper clientMapper;
     private boolean includeAddress;
 
-    public void setClient(Long clientId) {
-        ClientDto client = clients.stream().filter(c -> c.getId().equals(clientId)).findFirst().orElse(null);
-        if (client != null) {
-            this.clientDto = client;
-        }
-    }
-
-    public boolean isIncludeAddress() {
-        return includeAddress;
-    }
-
-    public void setIncludeAddress(boolean includeAddress) {
-        this.includeAddress = includeAddress;
-    }
 
     @PostConstruct
     public void init() {
@@ -69,25 +51,63 @@ public class ClientBean implements Serializable {
          return clients;
     }
 
+    public void setClient(Long clientId) {
+        ClientDto client = clients.stream().filter(c -> c.getId().equals(clientId)).findFirst().orElse(null);
+        if (client != null) {
+            this.clientDto = client;
+            if (this.clientDto.getCity() != null) {
+                includeAddress = true;
+            }
+        }
+    }
+
+    public boolean isIncludeAddress() {
+        return includeAddress;
+    }
+
+    public void setIncludeAddress(boolean includeAddress) {
+        this.includeAddress = includeAddress;
+    }
+
+    public boolean isStreetAvailable() {
+        return includeAddress && clientDto != null && clientDto.getStreet() != null && !clientDto.getStreet().isEmpty();
+    }
+
     public void saveClient() {
         Client client = clientService.createClient(clientDto);
         client.setCreateBy(principalBean.getLoggedUser().getEmail());
         client.setCreateDate(new Date());
+        client.setCompany(principalBean.getLoggedUser().getCompany());
 
+        clientService.save(client);
+    }
+
+    public void saveEditedClient(){
+        if (!includeAddress) {
+            clearClientAddress();
+        }
+        Client client = clientService.createClient(clientDto);
+        if (client.getCompany() == null) {
+            client.setCompany(principalBean.getLoggedUser().getCompany());
+        }
         clientService.save(client);
     }
 
     public void clearClientForm() {
         clientDto.setName(null);
-        clientDto.setCity(null);
-        clientDto.setPostalCode(null);
-        clientDto.setStreet(null);
-        clientDto.setCountry(null);
         clientDto.setBankAccountNumber(null);
         clientDto.setNip(null);
         clientDto.setEmail(null);
         clientDto.setPhoneNumber(null);
         clientDto.setWebSite(null);
+        clearClientAddress();
+    }
+
+    public void clearClientAddress(){
+        clientDto.setCity(null);
+        clientDto.setPostalCode(null);
+        clientDto.setStreet(null);
+        clientDto.setCountry(null);
         clientDto.setStreetNumber(null);
         clientDto.setHouseNumber(null);
     }

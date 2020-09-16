@@ -30,9 +30,12 @@
                             <input type="text"
                                    jsf:id="edit-employee-phone"
                                    jsf:value="#{employeeBean.editedEmployee.phoneNumber}"
-                                   jsf:validator="#{employeeValidation.validatePhone}"
+                                   jsf:required="true"
+                                   jsf:requiredMessage="Proszę podać numer telefonu"
+                                   jsf:validatorMessage="Długość numeru telefonu to 9 cyfr"
                                    jsf:converter="country-code-converter">
-                                <f:ajax event="blur"
+                                <f:validateLength minimum="12" maximum="12"/>
+                                <f:ajax event="change"
                                         execute="@this"/>
                             </input>
                             <div class="country-label">
@@ -124,8 +127,7 @@
                                 <input type="text"
                                        jsf:id="edit-employee-postal-code"
                                        jsf:value="#{employeeBean.editedAddress.postalCode}"
-                                       jsf:required="true"
-                                       jsf:requiredMessage="Pole kodu pocztowego nie może być pustę">
+                                       jsf:validator="#{employeeValidation.validatePostalCode}">
                                     <f:ajax event="change"
                                             execute="@this"/>
                                 </input>

@@ -40,11 +40,14 @@
                     </div>
 
                     <div class="form-top" jsf:id="client-email">
-                        <label for="add-client-email">e-mail</label>
+                        <label for="add-client-email">Email</label>
                         <input type="text"
                                jsf:id="add-client-email"
                                jsf:value="#{clientBean.clientDto.email}"
-                               jsf:validator="#{clientValidation.validateEmail}">
+                               jsf:required="true"
+                               jsf:requiredMessage="Proszę podać adres email"
+                               jsf:validatorMessage="Błędny adres email">
+                            <f:validateRegex pattern="([^.@]+)(\.[^.@]+)*@([^.@]+\.)+([^.@]+)"/>
                             <f:ajax event="change"
                                     execute="@this"
                                     render="client-email"/>
@@ -79,12 +82,17 @@
                         <label for="add-client-bank-account-number">Numer rachunku bankowego</label>
                         <input type="text"
                                jsf:id="add-client-bank-account-number"
+                               jsf:required="true"
+                               jsf:requiredMessage="Proszę podać numer rachunku"
                                jsf:value="#{clientBean.clientDto.bankAccountNumber}"
-                               jsf:validator="#{clientValidation.validateBankAccountNumber}">
+                               jsf:validatorMessage="Długość numeru bankowego to 26 cyfr">
+                            <f:validateLength minimum="26" maximum="26"/>
+
                             <f:ajax event="change"
                                     execute="@this"
                                     render="client-bank-account-number"/>
                         </input>
+                        <h:message for="add-client-bank-account-number" styleClass="form-msg col-danger"/>
                     </div>
 
                     <div class="form-top">
@@ -105,7 +113,10 @@
                                 <label>Kraj</label>
                                 <h:selectOneMenu id="client-country"
                                                  value="#{clientBean.clientDto.country}">
-                                    <f:selectItems value="#{clientBean.countries}">
+                                    <f:selectItems value="#{clientBean.countries}"
+                                                   var="c"
+                                                   itemLabel="#{employee_msg['country_'.concat(c.name())]}"
+                                                   itemValue="#{c.name()}">
                                     </f:selectItems>
                                 </h:selectOneMenu>
                             </div>
@@ -124,7 +135,8 @@
                                 <label for="add-client-postal-code">Kod pocztowy</label>
                                 <input type="text"
                                        jsf:id="add-client-postal-code"
-                                       jsf:value="#{clientBean.clientDto.postalCode}">
+                                       jsf:value="#{clientBean.clientDto.postalCode}"
+                                       jsf:validator="#{clientValidation.validatePostalCode}">
                                     <f:ajax event="change"
                                             execute="@this"/>
                                 </input>
@@ -135,21 +147,26 @@
                                 <input type="text"
                                        jsf:id="add-client-street"
                                        jsf:value="#{clientBean.clientDto.street}">
-                                    <f:ajax event="change"
+                                    <f:ajax event="keyup"
+                                            delay="300"
+                                            render="client-street-number"
                                             execute="@this"/>
                                 </input>
                             </div>
 
-                            <div class="form-top" jsf:id="client-street-number">
-                                <label for="add-client-street-number">Nr</label>
-                                <input type="text"
-                                       jsf:id="add-client-street-number"
-                                       jsf:value="#{clientBean.clientDto.streetNumber}">
-                                    <f:ajax event="change"
-                                            execute="@this"/>
-                                </input>
+                            <div jsf:id="client-street-number">
+                                <div class="form-top" jsf:rendered="#{clientBean.streetAvailable}">
+                                    <label for="add-client-street-number">Nr</label>
+                                    <input type="text"
+                                           jsf:id="add-client-street-number"
+                                           jsf:value="#{clientBean.clientDto.streetNumber}">
+                                        <f:ajax event="keyup"
+                                                delay="300"
+                                                render="client-house-number"
+                                                execute="@this"/>
+                                    </input>
+                                </div>
                             </div>
-
                             <div class="form-top" jsf:id="client-house-number">
                                 <label for="add-client-house-number">Numer lokalu</label>
                                 <input type="text"

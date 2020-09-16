@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<div id="edit-client" class="modal modal-small fade"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://xmlns.jcp.org/jsf/html"
+     xmlns:f="http://xmlns.jcp.org/jsf/core"
+     xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+     xmlns:jsf="http://xmlns.jcp.org/jsf"
+     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+     data-backdrop="static">
+
+    <div>
+        <a class="modal-close"
+           data-dismiss="modal"
+           jsf:actionListener="#{clientBean.clearClientForm}">
+            <f:ajax execute="@this"
+                    resetValues="true"
+                    render="edit-client-form"/>
+            <i class="fa fa-times"></i>
+        </a>
+        <div>
+            <h:form id="edit-client-form" prependId="false">
+                <div class="modal-content">
+                    <div class="form-top center">
+                        <h2>#{clientBean.clientDto.name}</h2>
+                    </div>
+                    <div class="form-top" jsf:id="client-email-id">
+                        <label for="edit-client-email">Email</label>
+                        <input type="text"
+                               jsf:id="edit-client-email"
+                               jsf:required="true"
+                               jsf:requiredMessage="Proszę podać adres email"
+                               jsf:validatorMessage="Błędny adres email"
+                               jsf:value="#{clientBean.clientDto.email}">
+                            <f:validateRegex pattern="([^.@]+)(\.[^.@]+)*@([^.@]+\.)+([^.@]+)"/>
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="client-email-id"/>
+                        </input>
+                        <h:message for="edit-client-email" styleClass="form-msg col-danger"/>
+                    </div>
+
+                    <div class="form-top" jsf:id="client-phone-number-id">
+                        <label for="edit-client-phone-number">Numer telefonu</label>
+                        <div class="form-phone">
+                            <input type="text"
+                                   jsf:id="edit-client-phone-number"
+                                   jsf:value="#{clientBean.clientDto.phoneNumber}"
+                                   jsf:required="true"
+                                   jsf:requiredMessage="Proszę podać numer telefonu"
+                                   jsf:validatorMessage="Długość numeru telefonu to 9 cyfr"
+                                   jsf:converter="country-code-converter">
+                                <f:validateLength minimum="12" maximum="12"/>
+                                <f:ajax event="change"
+                                        execute="@this"
+                                        render="client-phone-number-id"/>
+                            </input>
+                            <div class="country-label">
+                                <h:graphicImage value="#{resource['carpenter:img/pl-flag.png']}"/> +48
+                            </div>
+                            <h:message for="edit-client-phone-number" styleClass="form-msg col-danger"/>
+                        </div>
+                    </div>
+
+                    <div class="form-top" jsf:id="client-web-site-id">
+                        <label for="edit-client-web-site">Strona WWW</label>
+                        <input type="text"
+                               jsf:id="edit-client-web-site"
+                               jsf:value="#{clientBean.clientDto.webSite}">
+                            <f:ajax event="change"
+                                    execute="@this"/>
+                        </input>
+                    </div>
+
+                    <div class="form-top" jsf:id="client-bank-account-number-id">
+                        <label for="edit-client-bank-account-number">Numer rachunku bankowego</label>
+                        <input type="text"
+                               jsf:id="edit-client-bank-account-number"
+                               jsf:value="#{clientBean.clientDto.bankAccountNumber}"
+                               jsf:required="true"
+                               jsf:requiredMessage="Proszę podać numer rachunku"
+                               jsf:validatorMessage="Długość numeru bankowego to 26 cyfr">
+                            <f:validateLength minimum="26" maximum="26"/>
+
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="client-bank-account-number-id"/>
+                        </input>
+                        <h:message for="edit-client-bank-account-number" styleClass="form-msg col-danger"/>
+                    </div>
+
+                    <div class="form-top">
+                        <label for="edit-address-checkbox">Dodaj dane korespondencyjne</label>
+                        <h:selectBooleanCheckbox id="edit-address-checkbox"
+                                                 value="#{clientBean.includeAddress}">
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="client-edit-address-id"/>
+                        </h:selectBooleanCheckbox>
+                        <i class="far fa-address-card"></i>
+                    </div>
+
+                    <div jsf:id="client-edit-address-id">
+                        <div jsf:rendered="#{clientBean.includeAddress}">
+
+                            <div class="form-top">
+                                <label for="edit-client-country">Kraj</label>
+                                <h:selectOneMenu id="edit-client-country"
+                                                 value="#{clientBean.clientDto.country}"
+                                                 required="true"
+                                                 requiredMessage="Proszę wybrac kraj">
+                                    <f:selectItems value="#{clientBean.countries}"
+                                                   var="c"
+                                                   itemLabel="#{employee_msg['country_'.concat(c.name())]}"
+                                                   itemValue="#{c.name()}">
+                                    </f:selectItems>
+                                    <f:ajax execute="@this"
+                                            event="change"
+                                            onevent="showLoader"/>
+                                </h:selectOneMenu>
+                                <h:message for="edit-client-country" styleClass="form-msg col-danger"/>
+                            </div>
+
+                            <div class="form-top" jsf:id="edit-client-city-id">
+                                <label for="edit-client-city">Miasto</label>
+                                <input type="text"
+                                       jsf:id="edit-client-city"
+                                       jsf:value="#{clientBean.clientDto.city}"
+                                       jsf:required="true"
+                                       jsf:requiredMessage="Proszę wpisać miasto / miejscowość">
+                                    <f:ajax event="change"
+                                            execute="@this"/>
+                                </input>
+                                <h:message for="edit-client-city" styleClass="form-msg col-danger"/>
+                            </div>
+
+                            <div class="form-top" jsf:id="edit-client-postal-code-id">
+                                <label for="edit-client-postal-code">Kod pocztowy</label>
+                                <input type="text"
+                                       jsf:id="edit-client-postal-code"
+                                       jsf:value="#{clientBean.clientDto.postalCode}"
+                                       jsf:validator="#{clientValidation.validatePostalCode}">
+                                    <f:ajax event="change"
+                                            execute="@this"/>
+                                </input>
+                                <h:message for="edit-client-postal-code" styleClass="form-msg col-danger"/>
+                            </div>
+
+                            <div class="form-top" jsf:id="edit-client-street-id">
+                                <label for="edit-client-street">Ulica</label>
+                                <input type="text"
+                                       jsf:id="edit-client-street"
+                                       jsf:value="#{clientBean.clientDto.street}">
+                                    <f:ajax event="keyup"
+                                            delay="300"
+                                            execute="@this"
+                                            render="edit-client-street-number-id"/>
+                                </input>
+                            </div>
+
+                            <div jsf:id="edit-client-street-number-id">
+                                <div class="form-top" jsf:rendered="#{clientBean.streetAvailable}">
+                                    <label for="edit-client-street-number">Nr</label>
+                                    <input type="text"
+                                           jsf:id="edit-client-street-number"
+                                           jsf:value="#{clientBean.clientDto.streetNumber}">
+                                        <f:ajax event="change"
+                                                execute="@this"/>
+                                    </input>
+                                </div>
+                            </div>
+                            <div class="form-top" jsf:id="edit-client-house-number-id">
+                                <label for="edit-client-house-number">Numer lokalu</label>
+                                <input type="text"
+                                       jsf:id="edit-client-house-number"
+                                       jsf:value="#{clientBean.clientDto.houseNumber}">
+                                    <f:ajax event="change"
+                                            execute="@this"/>
+                                </input>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <h:commandLink styleClass="btn col-danger bordered"
+                                   p:data-dismiss="modal"
+                                   p:data-toogle="modal">
+                        <f:ajax execute="@form"
+                                resetValues="true"
+                                render="@form clientsTableForm"
+                                listener="#{clientBean.clearClientForm}"
+                                onevent="showLoader"/>
+                        <i class="fa fa-times"></i>Zamknij
+                    </h:commandLink>
+                    <div jsf:id="edit-group-save-button">
+                        <h:commandLink type="submit"
+                                       action="#{clientBean.saveEditedClient}"
+                                       styleClass="btn bordered col-primary">
+                            <f:ajax execute="@form"
+                                    resetValues="true"
+                                    render="clientsTableForm edit-client-form closeDialogDiv"
+                                    onevent="showLoader"/>
+                            <i class="fa fa-check"></i>Zapisz
+                        </h:commandLink>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+    </div>
+</div>

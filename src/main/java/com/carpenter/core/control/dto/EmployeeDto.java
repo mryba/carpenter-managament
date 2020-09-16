@@ -41,4 +41,10 @@ public class EmployeeDto {
 
     private Date birthDate;
 
+    public void setStreet(String street) {
+        this.street = street;
+        if (street == null || !street.isEmpty()) {
+            this.streetNumber = null;
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.carpenter.core.control.service.client;
 
+import com.carpenter.utils.ConstantsRegex;
 import com.carpenter.utils.InputValidator;
 
 import javax.faces.application.FacesMessage;
@@ -21,6 +22,19 @@ public class ClientValidation implements Serializable {
 
     @Inject
     ClientService clientService;
+
+    public void validatePostalCode(FacesContext facesContext, UIComponent component, Object value) {
+        validateEmptyField( value, "com.carpenter.notNull");
+        String postalCode = (String) value;
+        if (!(postalCode).matches(ConstantsRegex.POSTAL_CODE_PATTERN)) {
+            throw new ValidatorException(
+                    new FacesMessage(
+                            resourceBundle.getString("employee.postal.code"),
+                            resourceBundle.getString("employee.postal.code")
+                    )
+            );
+        }
+    }
 
     public void validateName(FacesContext facesContext, UIComponent component, Object value) {
         validateEmptyField(value, "client.name.notNull");

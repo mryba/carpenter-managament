@@ -39,6 +39,7 @@
                                 <th class="w10 left">NIP</th>
                                 <th class="w10 left">Numer konta Bankowego</th>
                                 <th class="w5"><i class="fas fa-info"></i></th>
+                                <th class="w5"><i class="fas fa-cogs"></i></th>
 
                             </tr>
                             </thead>
@@ -68,6 +69,17 @@
                                             <i class="fas fa-info-circle" title="Informacje"></i>
                                         </h:commandLink>
                                     </td>
+                                    <td class="w5">
+                                        <h:commandLink action="#{clientBean.setClient(c.id)}"
+                                                       styleClass="btn btn-icon col-primary"
+                                                       p:data-toggle="modal"
+                                                       p:data-target="#edit-client">
+                                            <f:ajax execute="@this"
+                                                    render="edit-client-form"
+                                                    onevent="showLoader"/>
+                                            <i class="fas fa-cogs" title="Edytuj"></i>
+                                        </h:commandLink>
+                                    </td>
                                 </tr>
                             </ui:repeat>
                             </tbody>
@@ -78,11 +90,13 @@
 
             <ui:include src="/secure/clients/add-client-form.xhtml"/>
             <ui:include src="/secure/clients/info-client.xhtml"/>
+            <ui:include src="/secure/clients/edit-client.xhtml"/>
 
             <div jsf:id="closeDialogDiv">
                 <h:outputScript rendered="#{not facesContext.validationFailed}">
                     $('#add-client').modal('hide')
                     $('#info-client').modal('hide')
+                    $('#edit-client').modal('hide')
                 </h:outputScript>
             </div>
         </div>
