@@ -27,9 +27,7 @@ public class ClientRepository implements Serializable {
 
     public List<Client> getAllClients() {
         try {
-            EntityGraph<?> graph = entityManager.getEntityGraph("Client.workingDays");
             return entityManager.createNamedQuery("Client.findAll", Client.class)
-                    .setHint(FETCH_GRAPH, graph)
                     .getResultList();
         } catch (NoResultException e) {
             log.error("No clients found!");
@@ -43,14 +41,9 @@ public class ClientRepository implements Serializable {
 
     public Client getClientById(Long id) {
         try {
-            Client client = entityManager.createQuery("SELECT c FROM Client c LEFT JOIN FETCH c.workingDays WHERE c.id =:id", Client.class)
+            return  entityManager.createQuery("SELECT c FROM Client c LEFT JOIN FETCH c.invoices WHERE c.id =:id", Client.class)
                     .setParameter("id", id)
                     .getResultList().iterator().next();
-
-            client = entityManager.createQuery("SELECT c FROM Client c LEFT JOIN FETCH c.invoices WHERE c.id =:id", Client.class)
-                    .setParameter("id", id)
-                    .getResultList().iterator().next();
-            return client;
         } catch (NoResultException e) {
             return null;
         }

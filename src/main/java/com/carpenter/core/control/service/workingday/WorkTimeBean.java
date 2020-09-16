@@ -96,7 +96,6 @@ public class WorkTimeBean implements Serializable {
         return Stream.of(Day.values()).collect(Collectors.toList());
     }
 
-
     public LocalDate getDateTime() {
         return dateTime;
     }
@@ -125,14 +124,16 @@ public class WorkTimeBean implements Serializable {
     public void plusHour(EmployeeDto employee) {
         Integer hour = employeesHours.get(employee);
         if (hour < 24) {
-            employeesHours.put(employee, hour + 1);
+            groupHours = hour + 1;
+            employeesHours.put(employee, groupHours);
         }
     }
 
     public void minusHour(EmployeeDto employee) {
         Integer hour = employeesHours.get(employee);
         if (hour > 0) {
-            employeesHours.put(employee, hour - 1);
+            groupHours = hour -1;
+            employeesHours.put(employee, groupHours);
         }
     }
 
@@ -171,7 +172,6 @@ public class WorkTimeBean implements Serializable {
                 if (employeeGroup != null && employeeGroup.getPresentClient() != null) {
                     Client client = clientService.getClientById(employeeGroup.getPresentClient().getId());
                     employeeGroup.setPresentClient(client);
-                    employeeGroup.getPresentClient().addWorkingDat(workingDay);
                 }
                 workingDayService.saveWorkingDay(workingDay);
             }

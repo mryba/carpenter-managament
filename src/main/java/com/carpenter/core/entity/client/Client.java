@@ -28,12 +28,6 @@ import java.util.*;
                 name = "Client.findAll",
                 query = "SELECT c FROM Client c")
 })
-@NamedEntityGraphs({
-        @NamedEntityGraph(
-                name = "Client.workingDays",
-                attributeNodes = @NamedAttributeNode("workingDays")
-        )
-})
 @Access(AccessType.FIELD)
 public class Client extends DomainObject {
 
@@ -79,23 +73,11 @@ public class Client extends DomainObject {
     @JoinColumn(name = "COMPANY_ID", referencedColumnName = "ID")
     private Company company;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
-    private List<WorkingDay> workingDays;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "presentClient")
     private List<EmployeeGroup> presentsEmployees;
 
     @OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Invoice> invoices;
-
-    public void addWorkingDat(WorkingDay workingDay) {
-
-        if (workingDays == null) {
-            workingDays = new LinkedList<>();
-        }
-        workingDays.add(workingDay);
-        workingDay.setClient(this);
-    }
 
     public void addInvoice(Invoice invoice) {
         if (invoices == null) {
@@ -125,12 +107,11 @@ public class Client extends DomainObject {
                 Objects.equals(streetNumber, client.streetNumber) &&
                 Objects.equals(houseNumber, client.houseNumber) &&
                 Objects.equals(company, client.company) &&
-                Objects.equals(workingDays, client.workingDays) &&
                 Objects.equals(presentsEmployees, client.presentsEmployees);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, city, postalCode, street, country, bankAccountNumber, nip, email, phoneNumber, webSite, streetNumber, houseNumber, company, workingDays, presentsEmployees);
+        return Objects.hash(super.hashCode(), name, city, postalCode, street, country, bankAccountNumber, nip, email, phoneNumber, webSite, streetNumber, houseNumber, company, presentsEmployees);
     }
 }

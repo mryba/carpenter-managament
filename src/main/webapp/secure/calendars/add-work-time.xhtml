@@ -48,7 +48,6 @@
                                          styleClass="datepicker"
                                          label="#{workTimeBean.dateTime}"
                                          value="#{workTimeBean.dateTime}"
-                                         validator="#{workTimeBean.validateDate}"
                                          converter="localDateConverter">
 
                                 <f:ajax event="change"
@@ -72,7 +71,7 @@
                                                itemValue="#{d.number}"/>
                                 <f:ajax event="change"
                                         execute="@this"
-                                        render="add-work-table-id"
+                                        render="add-work-table-id word-day-add-minus-id"
                                         onevent="showLoader"/>
                             </h:selectOneMenu>
 
@@ -105,7 +104,7 @@
                                                 <i class="fas fa-minus"></i>
                                             </h:commandLink>
 
-                                            <div class="work-day-add-minus">
+                                            <div jsf:id="word-day-add-minus-id" class="work-day-add-minus">
                                                 #{workTimeBean.employeeHour(e)}
                                             </div>
                                             <h:commandLink action="#{workTimeBean.plusHour(e)}"
@@ -119,11 +118,6 @@
                                 </tr>
                             </ui:repeat>
                             </tbody>
-                            <h:panelGroup id="validation-messages-container">
-                                <div class="infobox col-danger" jsf:rendered="#{not empty facesContext.messageList}">
-                                    <h:messages/>
-                                </div>
-                            </h:panelGroup>
                         </table>
                     </div>
                     <div class="modal-footer">
@@ -139,7 +133,6 @@
 
                         <button type="submit"
                                 class="btn bordered col-primary"
-                                data-dismiss="modal"
                                 jsf:action="#{workTimeBean.saveTime}">
                             <i class="fa fa-check"></i>Zapisz
                             <f:ajax execute="@form"
