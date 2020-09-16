@@ -26,11 +26,16 @@
                         Status: <strong>#{employeeBean.editedEmployee.accountActive ? "Aktywny" : "Nieaktywny"}</strong><br/>
                         Grupa: <strong>#{employeeBean.editedEmployee.employeeGroup.groupName}</strong><br/>
                         Nip: <strong>#{employeeBean.editedEmployee.nipNumber} </strong><br/>
-                        Umowa: <strong>#{employee_msg['contract_'.concat(employeeBean.editedEmployee.contract.name())]}</strong><br/>
+                        Umowa:
+                        <strong>#{employee_msg['contract_'.concat(employeeBean.editedEmployee.contract.name())]}</strong><br/>
                         Numer rachunku: <strong>#{employeeBean.editedEmployee.bankAccountNumber}</strong><br/>
                         Data urodzenia: <strong>#{employeeBean.editedEmployee.birthDate}</strong><br/>
+                        Data urodzenia:
+                        <h:outputFormat value="{0,date,d.MM.yyyy}">
+                            <f:param value="#{employeeBean.editedEmployee.birthDate}"/>
+                        </h:outputFormat> <br/>
                         <hr></hr>
-                      <strong>  #{employeeBean.editedAddress.city}</strong>,
+                        <strong>  #{employeeBean.editedAddress.city}</strong>,
                         #{employeeBean.editedAddress.postalCode}<br/>
                         #{employeeBean.editedAddress.street}
                         #{employeeBean.editedAddress.streetNumber}

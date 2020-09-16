@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Getter
+@Setter
 @Named("clientBean")
 @ViewScoped
 public class ClientBean implements Serializable {
@@ -30,23 +32,20 @@ public class ClientBean implements Serializable {
     ClientService clientService;
 
     @Inject
-    CompanyService companyService;
-
-    @Inject
     PrincipalBean principalBean;
 
-    @Getter
-    @Setter
+    private List<ClientDto> clients;
+
     private ClientDto clientDto;
-
-    private CompanyDto companyDto;
-
     private ClientMapper clientMapper;
-
-    private List<CompanyDto> allActiveCompanies;
-
     private boolean includeAddress;
-    private Long offerId;
+
+    public void setClient(Long clientId) {
+        ClientDto client = clients.stream().filter(c -> c.getId().equals(clientId)).findFirst().orElse(null);
+        if (client != null) {
+            this.clientDto = client;
+        }
+    }
 
     public boolean isIncludeAddress() {
         return includeAddress;
@@ -59,15 +58,15 @@ public class ClientBean implements Serializable {
     @PostConstruct
     public void init() {
         clientDto = new ClientDto();
-        allActiveCompanies = companyService.getAllActiveCompanies();
     }
 
     public List<ClientDto> getClientList() {
         clientMapper = new ClientMapper();
-        return clientService.getClientsList()
+         clients = clientService.getClientsList()
                 .stream()
                 .map(client -> clientMapper.mapToDomain(client))
                 .collect(Collectors.toList());
+         return clients;
     }
 
     public void saveClient() {
@@ -97,28 +96,4 @@ public class ClientBean implements Serializable {
         return Countries.values();
     }
 
-    public List<CompanyDto> getAllActiveCompanies() {
-        return allActiveCompanies;
-    }
-
-    public CompanyDto getCompanyDto() {
-        return companyDto;
-    }
-
-    public void setCompanyDto(CompanyDto companyDto) {
-        this.companyDto = companyDto;
-    }
-
-    public void savePresentClient() {
-        ClientDto clientDto = this.clientDto;
-    }
-
-
-    public Long getOfferId() {
-        return offerId;
-    }
-
-    public void setOfferId(Long offerId) {
-        this.offerId = offerId;
-    }
 }
