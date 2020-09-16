@@ -142,6 +142,7 @@ public class WorkTimeBean implements Serializable {
         dateTime = LocalDate.now().minusDays(1);
         employeesHours.clear();
         groupHours = Day.EIGHT.getNumber();
+
         for (EmployeeDto employee : employees) {
             employeesHours.put(employee, groupHours);
         }
@@ -190,11 +191,6 @@ public class WorkTimeBean implements Serializable {
                     errorMessage.put(employee, Boolean.TRUE);
                 }
             }
-        if (!errorMessage.isEmpty()) {
-            throw new ValidatorException(
-                    new FacesMessage("LOOOL", "LOOOL2")
-            );
-        }
     }
 
 }

@@ -48,6 +48,7 @@
                                          styleClass="datepicker"
                                          label="#{workTimeBean.dateTime}"
                                          value="#{workTimeBean.dateTime}"
+                                         validator="#{workTimeBean.validateDate}"
                                          converter="localDateConverter">
 
                                 <f:ajax event="change"
@@ -78,6 +79,12 @@
                         </div>
                     </div>
                     <div class="table" jsf:id="add-work-table-id">
+                        <h:panelGroup id="validation-messages-container">
+                            <div class="infobox col-info" jsf:rendered="#{not empty workTimeBean.errorMessage}">
+                                Zaznaczoni pracownicy maja już w danym dni wprowadzoną ilość godzin, zmiana spowoduje nadpisanie.
+                            </div>
+                        </h:panelGroup>
+
                         <table>
                             <thead>
                             <tr>
