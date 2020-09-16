@@ -40,6 +40,7 @@
                                 <th class="w10 left">Numer konta Bankowego</th>
                                 <th class="w5"><i class="fas fa-info"></i></th>
                                 <th class="w5"><i class="fas fa-cogs"></i></th>
+                                <th class="w5"><i class="fas fa-trash"></i></th>
 
                             </tr>
                             </thead>
@@ -80,6 +81,17 @@
                                             <i class="fas fa-cogs" title="Edytuj"></i>
                                         </h:commandLink>
                                     </td>
+                                    <td class="w5">
+                                        <h:commandLink action="#{clientBean.setClient(c.id)}"
+                                                       styleClass="btn btn-icon col-danger"
+                                                       p:data-toggle="modal"
+                                                       p:data-target="#delete-client">
+                                            <f:ajax execute="@this"
+                                                    render="delete-client-form"
+                                                    onevent="showLoader"/>
+                                            <i class="fas fa-trash" title="Usuń klienta"></i>
+                                        </h:commandLink>
+                                    </td>
                                 </tr>
                             </ui:repeat>
                             </tbody>
@@ -91,12 +103,14 @@
             <ui:include src="/secure/clients/add-client-form.xhtml"/>
             <ui:include src="/secure/clients/info-client.xhtml"/>
             <ui:include src="/secure/clients/edit-client.xhtml"/>
+            <ui:include src="/secure/clients/delete-client.xhtml"/>
 
             <div jsf:id="closeDialogDiv">
                 <h:outputScript rendered="#{not facesContext.validationFailed}">
                     $('#add-client').modal('hide')
                     $('#info-client').modal('hide')
                     $('#edit-client').modal('hide')
+                    $('#delete-client').modal('hide')
                 </h:outputScript>
             </div>
         </div>

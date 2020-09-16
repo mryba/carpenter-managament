@@ -8,6 +8,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -35,6 +39,7 @@ public class ClientBean implements Serializable {
     private ClientDto clientDto;
     private ClientMapper clientMapper;
     private boolean includeAddress;
+    private String deletedClientName;
 
 
     @PostConstruct
@@ -93,6 +98,14 @@ public class ClientBean implements Serializable {
         clientService.save(client);
     }
 
+
+    public void deleteClient() {
+        Client client = clientService.createClient(clientDto);
+        client.setDeleteDate(new Date());
+        client.setDeletedBy(principalBean.getLoggedUser().getEmail());
+        clientService.save(client);
+    }
+
     public void clearClientForm() {
         clientDto.setName(null);
         clientDto.setBankAccountNumber(null);
@@ -116,4 +129,24 @@ public class ClientBean implements Serializable {
         return Countries.values();
     }
 
+
+    public void validateDeletedClientName(FacesContext facesContext, UIComponent component, Object value) {
+        if (value == null || value.toString().isEmpty()) {
+            throw new ValidatorException(
+                    new FacesMessage(
+                            "Pole nie może być pustę"
+                    )
+            );
+        }
+        if (!value.toString().equals(clientDto.getName())) {
+            throw new ValidatorException(
+                    new FacesMessage(
+                            "Wpisana nazwa klienta się nie zgadza",
+                            "Wpisana nazwa klienta się nie zgadza"
+                    )
+            );
+        }
+    }
+
 }
+
