@@ -4,7 +4,6 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:jsf="http://xmlns.jcp.org/jsf"
-                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
                 template="/secure/template.xhtml">
 
     <ui:param name="pageTitle" value="Faktury"/>
@@ -18,12 +17,6 @@
 
                     <div class="controls">
                         <h:form>
-                            <h:commandLink styleClass="btn btn-primary col-primary"
-                                           target="_blank"
-                                           action="#{pdfService.renderPdf}">
-                                <i class="far fa-file-excel"></i>PDF
-                            </h:commandLink>
-
                             <a href="#" class="btn bordered col-primary"
                                data-target="#add-invoice"
                                data-toggle="modal">

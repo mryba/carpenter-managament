@@ -40,7 +40,6 @@ public class WorkTimeScheduler implements Serializable {
 
     private WorkTimeSetting workTimeSetting;
 
-    @PostConstruct
     @Schedule(minute = "30", hour = "23", persistent = false)
     public void initWorkingDay() {
         this.workTimeSetting = workTimeSettingsRepository.findWorkTimeSettings();

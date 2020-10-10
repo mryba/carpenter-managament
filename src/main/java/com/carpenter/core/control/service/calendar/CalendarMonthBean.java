@@ -19,6 +19,7 @@ import java.time.format.TextStyle;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Named("calendarMonthBean")
@@ -68,7 +69,7 @@ public class CalendarMonthBean extends CalendarBean {
     }
 
     public void initSheet() {
-        Map<EmployeeDto, RecordRow> map = new ConcurrentHashMap<>();
+        Map<EmployeeDto, RecordRow> map = new LinkedHashMap<>();
 
         List<EmployeeDto> employeeDtos = getEmployees();
         for (EmployeeDto employee : employeeDtos) {

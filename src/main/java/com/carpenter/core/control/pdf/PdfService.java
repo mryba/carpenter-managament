@@ -10,28 +10,25 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
-import org.apache.pdfbox.pdmodel.graphics.PDXObject;
-import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.imageio.ImageIO;
 import javax.inject.Named;
-import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
 import java.time.ZoneId;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 @Slf4j
 @ViewScoped
 @Named("pdfService")
 public class PdfService implements Serializable {
+
+    private static final long serialVersionUID = 4980456513235126840L;
 
     private PDFont font;
     private PDFont boldFont;
@@ -76,7 +73,7 @@ public class PdfService implements Serializable {
             contentStream.endText();
 
             initText(contentStream, font, 400, 770, "Data wystawienia:");
-            initText(contentStream, boldFont, 505, 770, invoiceDto.getCreateDate().toString());
+            initText(contentStream, boldFont, 505, 770, invoiceDto.getCreateDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString());
 
             initText(contentStream, font, 400, 750, "Miejsce wystawienia:");
             initText(contentStream, boldFont, 522, 750, invoiceDto.getPlaceOfCreation());

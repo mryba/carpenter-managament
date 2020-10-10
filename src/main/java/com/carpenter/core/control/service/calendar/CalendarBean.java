@@ -10,8 +10,10 @@ import lombok.Setter;
 
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -47,9 +49,10 @@ public abstract class CalendarBean implements Serializable {
     public void moveBackward() {
         timeManager.moveBackward();
     }
+
     public List<EmployeeDto> getEmployees() {
         employeeDtos.clear();
         employeeDtos.addAll(employeeService.getAllActiveEmployees());
-        return employeeDtos;
+        return employeeDtos.stream().sorted(Comparator.comparing(EmployeeDto::getLastName)).collect(Collectors.toList());
     }
 }
