@@ -166,14 +166,9 @@ public class WorkTimeBean implements Serializable {
 
                 Employee employee = employeeService.getEmployeeById(employeeDto.getId());
 
-                EmployeeGroup employeeGroup = employeeGroups.stream().filter(eg -> eg.getId().equals(workTimeListener.getEmployeeGroupId())).findFirst().orElse(null);
-
                 workingDay.setHours(employeesHours.get(employeeDto));
                 employee.addWorkingDay(workingDay);
-                if (employeeGroup != null && employeeGroup.getPresentClient() != null) {
-                    Client client = clientService.getClientById(employeeGroup.getPresentClient().getId());
-                    employeeGroup.setPresentClient(client);
-                }
+
                 workingDayService.saveWorkingDay(workingDay);
             }
         }

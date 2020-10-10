@@ -47,7 +47,9 @@ import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
                 @NamedQuery(
                         name = "Employee.findAllActiveEmployee",
                         query = "SELECT e FROM Employee e " +
-                                "WHERE e.accountActive IS NOT NULL "
+                                "WHERE e.deleteDate IS NULL " +
+                                "AND e.deletedBy IS NULL " +
+                                "AND e.accountActive IS NOT NULL "
                 ),
         }
 )

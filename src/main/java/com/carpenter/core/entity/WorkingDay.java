@@ -1,14 +1,10 @@
 package com.carpenter.core.entity;
 
-import com.carpenter.core.entity.client.Client;
 import com.carpenter.core.entity.employee.Employee;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.Past;
 import java.util.Date;
 import java.util.Objects;
 
@@ -36,10 +32,6 @@ public class WorkingDay extends DomainObject {
     @JoinColumn(name = "EMPLOYEE_ID")
     private Employee employee;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CLIENT_ID", referencedColumnName = "ID")
-    private Client client;
-
     @Column(name = "HOURS")
     private Integer hours;
 
@@ -56,7 +48,6 @@ public class WorkingDay extends DomainObject {
         if (!(o instanceof WorkingDay)) return false;
         WorkingDay that = (WorkingDay) o;
         return Objects.equals(employee, that.employee) &&
-                Objects.equals(client, that.client) &&
                 Objects.equals(hours, that.hours) &&
                 Objects.equals(day, that.day) &&
                 Objects.equals(editDate, that.editDate);
@@ -64,6 +55,6 @@ public class WorkingDay extends DomainObject {
 
     @Override
     public int hashCode() {
-        return Objects.hash(employee, client, hours, day, editDate);
+        return Objects.hash(employee, hours, day, editDate);
     }
 }

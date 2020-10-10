@@ -1,6 +1,5 @@
 package com.carpenter.core.control.service.workingday;
 
-import com.carpenter.core.control.repository.ClientRepository;
 import com.carpenter.core.control.repository.EmployeeRepository;
 import com.carpenter.core.entity.WorkingDay;
 import com.carpenter.core.entity.employee.Employee;
@@ -30,9 +29,6 @@ public class WorkingDayScheduler implements Serializable {
 
     @Inject
     EmployeeRepository employeeRepository;
-
-    @Inject
-    ClientRepository clientRepository;
 
     @Schedule(minute = "30", hour = "23", persistent = false)
     public void initWorkingDay() {
@@ -72,7 +68,6 @@ public class WorkingDayScheduler implements Serializable {
         workingDay.setCreateBy("SYSTEM");
         workingDay.setDay(Date.from(yesterday.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
         workingDay.setEmployee(employee);
-//            workingDay.setClient(); //Todo add to Client column that will be target the present client work or seperate this on group.
         workingDayRepository.saveWorkingDay(workingDay);
     }
 }
