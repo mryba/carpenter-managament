@@ -57,4 +57,12 @@ public class MonthCalendarExcelService {
         dateCellStyle.setDataFormat(creationHelper.createDataFormat().getFormat("dd-MM-yyyy"));
     }
 
+    public CellStyle cellBoldStyle(){
+        Font font = workbook.createFont();
+        font.setBold(true);
+        CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setFont(font);
+        return cellStyle;
+    }
+
 }

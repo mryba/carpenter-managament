@@ -4,6 +4,7 @@ import com.carpenter.core.control.dto.EmployeeDto;
 import com.carpenter.core.control.excel.service.MonthCalendarExcelService;
 import com.carpenter.core.entity.WorkingDay;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.ss.usermodel.Row;
 
 import javax.annotation.PostConstruct;
@@ -11,12 +12,14 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import java.awt.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -138,12 +141,13 @@ public class CalendarMonthBean extends CalendarBean {
         LocalDateTime viewEndDate = timeManager.getViewEndDate();
 
         List<String> result = new LinkedList<>();
-        result.add("Imię i nazwisko");
+        result.add("Nazwisko i imię");
         while (startDate.isBefore(viewEndDate)) {
-            String day = startDate.toLocalDate().getDayOfMonth() + " " + startDate.toLocalDate().getMonth().getDisplayName(TextStyle.FULL, FacesContext.getCurrentInstance().getExternalContext().getRequestLocale());
+            String day = startDate.toLocalDate().toString();
             result.add(day);
             startDate = startDate.plusDays(1);
         }
+        result.add("SUMA");
 
         MonthCalendarExcelService excelService = new MonthCalendarExcelService(result);
         excelService.initSheet();
@@ -156,13 +160,16 @@ public class CalendarMonthBean extends CalendarBean {
 
             for (RecordRowRepresentative rrr : entry.getValue().getRecordRowRepresentatives()) {
                 int celNum = 0;
-                row.createCell(celNum).setCellValue(rrr.getEmployeeDto().getFirstName() + " " + rrr.getEmployeeDto().getLastName());
+                row.createCell(celNum).setCellValue(rrr.getEmployeeDto().getLastName() + " " + rrr.getEmployeeDto().getFirstName());
                 celNum++;
                 for (LocalDate monthlyDate : rrr.getMonthlyDates()) {
                     AtomicInteger hour = rrr.getHourMap().get(monthlyDate);
                     row.createCell(celNum).setCellValue(hour.intValue());
                     celNum++;
                 }
+                row.createCell(celNum).setCellValue(getRowCount(rrr));
+                row.getCell(celNum).setCellStyle(excelService.cellBoldStyle());
+
             }
         }
         for (int i = 0; i < excelService.getColumns().size(); i++) {
