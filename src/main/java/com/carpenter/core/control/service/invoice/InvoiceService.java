@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @SessionScoped
 public class InvoiceService implements Serializable {
 
+    private static final long serialVersionUID = 4917576989653605758L;
     @Inject
     private InvoiceRepository invoiceRepository;
 

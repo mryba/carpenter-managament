@@ -62,8 +62,9 @@
                                         <h4> #{i.numberOfInvoice}</h4>
                                     </td>
                                     <td class="w5">
+
                                         <h:outputFormat value="{0,date,d.MM.yyyy}">
-                                            <f:param value="#{i.createDate}"/>
+                                            <f:param value="#{i.dateOfCreationAsDate}"/>
                                         </h:outputFormat>
 
                                     </td>

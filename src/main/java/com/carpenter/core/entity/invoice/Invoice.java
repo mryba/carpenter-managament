@@ -60,6 +60,10 @@ public class Invoice extends DomainObject {
     @Pattern(regexp = ConstantsRegex.INVOICE_NUMBER_PATTERN)
     private String numberOfInvoice;
 
+    @Column(name = "DATE_OF_CREATION")
+    @NotNull
+    private Date dateOfCreation;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "EMPLOYEE_ID")
     private Employee employee;
@@ -105,18 +109,22 @@ public class Invoice extends DomainObject {
         if (!super.equals(o)) return false;
         Invoice invoice = (Invoice) o;
         return Objects.equals(numberOfInvoice, invoice.numberOfInvoice) &&
+                Objects.equals(dateOfCreation, invoice.dateOfCreation) &&
                 Objects.equals(employee, invoice.employee) &&
                 Objects.equals(client, invoice.client) &&
+                invoiceAmountType == invoice.invoiceAmountType &&
                 Objects.equals(netValue, invoice.netValue) &&
                 Objects.equals(grossValue, invoice.grossValue) &&
                 invoiceType == invoice.invoiceType &&
+                Objects.equals(vatRate, invoice.vatRate) &&
                 paymentType == invoice.paymentType &&
                 Objects.equals(paymentDue, invoice.paymentDue) &&
-                Objects.equals(description, invoice.description);
+                Objects.equals(description, invoice.description) &&
+                Objects.equals(placeOfCreation, invoice.placeOfCreation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), numberOfInvoice, employee, client, netValue, grossValue, invoiceType, vatRate, paymentType, paymentDue, description);
+        return Objects.hash(super.hashCode(), numberOfInvoice, dateOfCreation, employee, client, invoiceAmountType, netValue, grossValue, invoiceType, vatRate, paymentType, paymentDue, description, placeOfCreation);
     }
 }

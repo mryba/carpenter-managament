@@ -29,6 +29,7 @@ public class InvoiceDto {
     private InvoiceType invoiceType;
     private Date createDate;
     private String description;
+    private LocalDate dateOfCreation;
 
     private BigDecimal vatRate;
     private PaymentType paymentType;
@@ -40,10 +41,6 @@ public class InvoiceDto {
         return Stream.of(VatRate.values()).filter(vr -> vr.getRate().equals(vatRate)).findFirst().orElse(VatRate.ZERO);
     }
 
-    public String getPlaceOfCreationWithDate() {
-        return placeOfCreation + " " + createDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
-    }
-
     public String getEmployeeFullAddress() {
         if (employeeDto.getStreet() == null && employeeDto.getStreetNumber() == null) {
             return employeeDto.getCity() + " " + employeeDto.getHouseNumber();
@@ -53,5 +50,9 @@ public class InvoiceDto {
 
     public String getClientFullAddress() {
         return "ul. " + this.clientDto.getStreet() + " " + this.clientDto.getStreetNumber() + "/" + this.clientDto.getHouseNumber();
+    }
+
+    public Date getDateOfCreationAsDate(){
+        return Date.from(this.dateOfCreation.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
 }

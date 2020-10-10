@@ -78,7 +78,7 @@ public class EmployeeRepository implements Serializable {
                     .getResultList().iterator().next();
 
             employee = entityManager.createQuery(
-                    "SELECT e FROM Employee e LEFT JOIN FETCH e.company WHERE e.id =:employeeId", Employee.class)
+                    "SELECT e FROM Employee e LEFT JOIN FETCH e.company LEFT JOIN FETCH e.employeeGroup WHERE e.id =:employeeId", Employee.class)
                     .setParameter(EMPLOYEE_ID, employee.getId())
                     .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
                     .getResultList().iterator().next();

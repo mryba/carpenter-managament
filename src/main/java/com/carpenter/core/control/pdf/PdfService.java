@@ -76,7 +76,7 @@ public class PdfService implements Serializable {
             contentStream.endText();
 
             initText(contentStream, font, 400, 770, "Data wystawienia:");
-            initText(contentStream, boldFont, 505, 770, invoiceDto.getCreateDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString());
+            initText(contentStream, boldFont, 505, 770, invoiceDto.getCreateDate().toString());
 
             initText(contentStream, font, 400, 750, "Miejsce wystawienia:");
             initText(contentStream, boldFont, 522, 750, invoiceDto.getPlaceOfCreation());

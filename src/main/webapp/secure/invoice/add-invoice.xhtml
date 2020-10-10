@@ -54,6 +54,24 @@
                         </div>
                     </div>
                     <div class="form-top">
+                        <label for="invoice-date-of-create">Data wystawienia</label>
+                        <h:inputText id="invoice-date-of-create"
+                                     styleClass="datepicker"
+                                     value="#{invoiceListBean.invoiceDto.dateOfCreation}"
+                                     converter="localDateConverter"
+                                     p:placeholder="Data wystawienia"
+                                     required="true"
+                                     requiredMessage="Proszę podać 'Date wystawienia faktury'">
+                            <f:ajax event="change"
+                                    delay="300"
+                                    execute="@this"/>
+                        </h:inputText>
+                        <h:outputScript>
+                            $('.datepicker').flatpickr();
+                        </h:outputScript>
+                        <h:message for="invoice-date-of-create" styleClass="form-msg col-danger"/>
+                    </div>
+                    <div class="form-top">
                         <label for="invoice-client">Nabywca</label>
                         <h:selectOneMenu id="invoice-client"
                                          value="#{invoiceListBean.invoiceClientId}"

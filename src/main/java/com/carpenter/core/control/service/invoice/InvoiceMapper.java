@@ -34,6 +34,7 @@ public class InvoiceMapper implements Mapper<Invoice, InvoiceDto> {
                 .placeOfCreation(invoiceDto.getPlaceOfCreation())
                 .build();
         invoice.setCreateDate(invoiceDto.getCreateDate());
+        invoice.setDateOfCreation(Date.from(invoiceDto.getDateOfCreation().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
         return invoice;
     }
 
@@ -83,6 +84,7 @@ public class InvoiceMapper implements Mapper<Invoice, InvoiceDto> {
                 .grossValue(invoice.getGrossValue())
                 .invoiceType(invoice.getInvoiceType())
                 .createDate(invoice.getCreateDate())
+                .dateOfCreation(invoice.getDateOfCreation().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
                 .vatRate(invoice.getVatRate())
                 .paymentType(invoice.getPaymentType())
                 .paymentDue(invoice.getPaymentDue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
