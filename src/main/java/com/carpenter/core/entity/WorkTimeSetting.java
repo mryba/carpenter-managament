@@ -10,7 +10,7 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "WORK_TIME_SETTINGS")
-public class WorkTime {
+public class WorkTimeSetting {
 
     private static final long serialVersionUID = 4437366168761136L;
 
@@ -23,13 +23,13 @@ public class WorkTime {
     private Integer staticHour;
 
     @Column(name = "ACTIVE")
-    private Integer mechanismActive;
+    private Boolean mechanismActive;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        WorkTime workTime = (WorkTime) o;
+        WorkTimeSetting workTime = (WorkTimeSetting) o;
         return Objects.equals(id, workTime.id) &&
                 Objects.equals(staticHour, workTime.staticHour) &&
                 Objects.equals(mechanismActive, workTime.mechanismActive);

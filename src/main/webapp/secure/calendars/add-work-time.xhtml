@@ -6,8 +6,8 @@
      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
      xmlns:f="http://xmlns.jcp.org/jsf/core"
      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-     xmlns:jsf="http://xmlns.jcp.org/jsf">
-
+     xmlns:jsf="http://xmlns.jcp.org/jsf"
+     data-backdrop="static">
 
     <div>
         <a class="modal-close"
@@ -22,7 +22,7 @@
 
                 <div class="modal-content">
                     <div class="container-resp">
-                        <div class="form-top col1-4">
+                        <div class="form-top col1-5">
                             <label>Grupa</label>
                             <h:selectOneMenu id="add-work-time-client"
                                              converter="javax.faces.Long"
@@ -42,7 +42,7 @@
                             </h:selectOneMenu>
                         </div>
 
-                        <div class="form-top col1-3">
+                        <div class="form-top col1-5">
                             <label>Dzień pracy</label>
                             <h:inputText id="add-work-time-date"
                                          styleClass="datepicker"
@@ -62,7 +62,7 @@
                                 $(".datepicker").flatpickr();
                             </h:outputScript>
                         </div>
-                        <div class="form-top col1-4">
+                        <div class="form-top col1-5">
                             <label>Ilość godzin</label>
                             <h:selectOneMenu id="add-work-time-time"
                                              value="#{workTimeBean.groupHours}">
@@ -76,6 +76,31 @@
                                         onevent="showLoader"/>
                             </h:selectOneMenu>
 
+                        </div>
+                        <div class="form-top col1-5">
+                            <label for="scheduler-on-off">Automat</label>
+                            <h:selectBooleanCheckbox id="scheduler-on-off"
+                                                     value="#{workingTimeSettingsBean.schedulerActive}">
+                                <f:ajax event="change"
+                                        execute="@this"
+                                        render="client-edit-address-id"/>
+                            </h:selectBooleanCheckbox>
+                            <i class="fas fa-robot"></i>
+                        </div>
+
+                        <div class="form-top col1-5">
+                            <label for="set-work-time-hour">Stała ilość godzin</label>
+                            <h:selectOneMenu id="set-work-time-hour"
+                                             value="#{workingTimeSettingsBean.staticHours}">
+                                <f:selectItems value="#{workTimeBean.hour}"
+                                               var="d"
+                                               itemLabel="#{common_msg['day_'.concat(d.name())]}"
+                                               itemValue="#{d.number}"/>
+                                <f:ajax event="change"
+                                        execute="@this"
+                                        render="add-work-table-id word-day-add-minus-id"
+                                        onevent="showLoader"/>
+                            </h:selectOneMenu>
                         </div>
                     </div>
                     <div class="table" jsf:id="add-work-table-id">
