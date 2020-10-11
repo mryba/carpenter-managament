@@ -55,7 +55,7 @@ public class CalendarMonthBean extends CalendarBean {
         LocalDateTime startDate = timeManager.getViewStartDate();
         LocalDateTime viewEndDate = timeManager.getViewEndDate();
 
-        workingWeek = workingDayService.getWorkingDaysInScope(timeManager.getStartDate(), timeManager.getEndDate());
+        workingWeek = workingDayService.getWorkingDaysInScope(timeManager.getStartDate(), timeManager.getEndDate(), principalBean);
 
         monthlyDates = new LinkedList<>();
         while (startDate.isBefore(viewEndDate)) {

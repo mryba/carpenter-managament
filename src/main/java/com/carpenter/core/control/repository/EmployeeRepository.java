@@ -228,6 +228,30 @@ public class EmployeeRepository implements Serializable {
         }
     }
 
+    public List<Employee> findAllActiveAndWithoutGroupEmployees(PrincipalBean principalBean) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
+        Root<Employee> root = query.from(Employee.class);
+
+        Predicate defaultPredicate = defaultPredicate(builder, root, principalBean);
+        Predicate predicate = builder.and(
+                builder.isNull(root.get(Employee_.deletedBy)),
+                builder.isNull(root.get(Employee_.deleteDate)),
+                builder.isTrue(root.get(Employee_.accountActive)),
+                builder.isNull(root.get(Employee_.employeeGroup))
+        );
+
+        if (defaultPredicate != null) {
+            predicate = builder.and(predicate, defaultPredicate);
+        }
+        query.where(predicate);
+        try {
+            return entityManager.createQuery(query).getResultList();
+        } catch (NoResultException e) {
+            return Collections.emptyList();
+        }
+    }
+
     public Collection<Employee> findAllActiveEmployeesByEmployeeGroup(EmployeeGroup employeeGroup) {
         try {
             List<Employee> employees = entityManager.createQuery(

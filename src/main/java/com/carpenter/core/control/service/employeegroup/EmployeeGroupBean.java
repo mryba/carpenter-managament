@@ -59,7 +59,7 @@ public class EmployeeGroupBean implements Serializable {
     }
 
     public List<EmployeeDto> getAllActiveEmployeesWithoutGroup() {
-        return employeeService.getAllActiveAndWithoutGroupEmployees();
+        return employeeService.getAllActiveAndWithoutGroupEmployees(principalBean);
     }
 
     public void setEditedEmployeeGroup(Long employeeGroupId) {

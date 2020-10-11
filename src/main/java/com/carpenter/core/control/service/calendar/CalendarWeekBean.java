@@ -35,7 +35,7 @@ public class CalendarWeekBean extends CalendarBean {
 
     public List<Date> getDates() {
         sumColumn = 0;
-        List<WorkingDay> workingWeek = workingDayService.getWorkingDaysInScope(timeManager.getStartDate(), timeManager.getEndDate());
+        List<WorkingDay> workingWeek = workingDayService.getWorkingDaysInScope(timeManager.getStartDate(), timeManager.getEndDate(), principalBean);
 
         List<Date> dates = new LinkedList<>();
         LocalDateTime startDate = timeManager.getViewStartDate();

@@ -82,7 +82,7 @@ public class WorkTimeBean implements Serializable {
         employeeGroups = employeeGroupService.getAllEmployeeGroups();
 
         EmployeeGroup employeeGroup = selectedEmployeeGroup();
-        employees = employeeService.getAllActiveEmployeesByGroup(employeeGroup);
+        employees = employeeService.getAllActiveEmployeesByGroup(employeeGroup, principalBean);
         for (EmployeeDto employee : employees) {
             employeesHours.put(employee, groupHours);
         }

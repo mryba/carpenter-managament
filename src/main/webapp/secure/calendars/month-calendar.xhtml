@@ -22,7 +22,7 @@
                                 styleClass="btn bordered col-primary"
                                 p:data-toggle="modal"
                                 p:data-target="#add-work-time"
-                                rendered="#{principalBean.loggedUser.isInRole('ADMINISTRATOR')}">
+                                rendered="#{principalBean.loggedUser.adminOrManager}">
                             <f:ajax execute="@this"
                                     resetValues="true"
                                     render="add-work-time-form"

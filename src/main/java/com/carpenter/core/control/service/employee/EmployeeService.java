@@ -78,13 +78,13 @@ public class EmployeeService implements Serializable {
         return employees;
     }
 
-    public List<EmployeeDto> getAllActiveEmployeesByGroup(EmployeeGroup employeeGroup) {
+    public List<EmployeeDto> getAllActiveEmployeesByGroup(EmployeeGroup employeeGroup, PrincipalBean principalBean) {
         List<EmployeeDto> employeesDto = new LinkedList<>();
         Collection<Employee> employees;
         employeeMapper = new EmployeeMapper();
 
         if (employeeGroup == null) {
-            employees = employeeRepository.findAllActiveAndWithoutGroupEmployees();
+            employees = employeeRepository.findAllActiveAndWithoutGroupEmployees(principalBean);
         } else {
             employees = employeeRepository.findAllActiveEmployeesByEmployeeGroup(employeeGroup);
 
@@ -100,10 +100,10 @@ public class EmployeeService implements Serializable {
         return employeeRepository.findAllEmployeeByIds(employeeIds);
     }
 
-    public List<EmployeeDto> getAllActiveAndWithoutGroupEmployees() {
+    public List<EmployeeDto> getAllActiveAndWithoutGroupEmployees(PrincipalBean principalBean) {
         List<EmployeeDto> employees = new ArrayList<>();
         employeeMapper = new EmployeeMapper();
-        List<Employee> notSignedEmployees = employeeRepository.findAllActiveAndWithoutGroupEmployees();
+        List<Employee> notSignedEmployees = employeeRepository.findAllActiveAndWithoutGroupEmployees(principalBean);
         for (Employee notSignedEmployee : notSignedEmployees) {
             EmployeeDto employeeDto = employeeMapper.mapToDomain(notSignedEmployee);
             employees.add(employeeDto);
