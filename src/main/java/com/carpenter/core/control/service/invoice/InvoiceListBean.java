@@ -93,7 +93,7 @@ public class InvoiceListBean implements Serializable {
     }
 
     public List<InvoiceDto> getInvoicesList() {
-        return invoiceService.getAllInvoices();
+        return invoiceService.getAllInvoices(principalBean);
     }
 
     public Long getInvoiceEmployeeId() {

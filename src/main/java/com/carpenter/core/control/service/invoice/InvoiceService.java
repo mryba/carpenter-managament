@@ -1,6 +1,7 @@
 package com.carpenter.core.control.service.invoice;
 
 import com.carpenter.core.control.dto.InvoiceDto;
+import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.entity.invoice.Invoice;
 import com.carpenter.utils.ConstantsRegex;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +22,10 @@ public class InvoiceService implements Serializable {
 
     private InvoiceMapper invoiceMapper;
 
-    public List<InvoiceDto> getAllInvoices() {
+    public List<InvoiceDto> getAllInvoices(PrincipalBean principalBean) {
         invoiceMapper = new InvoiceMapper();
 
-        List<Invoice> allInvoices = invoiceRepository.findAllInvoices();
+        List<Invoice> allInvoices = invoiceRepository.findAllInvoiceByRole(principalBean);
         return allInvoices.stream().map(invoiceMapper::mapToDomain).collect(Collectors.toList());
     }
 
