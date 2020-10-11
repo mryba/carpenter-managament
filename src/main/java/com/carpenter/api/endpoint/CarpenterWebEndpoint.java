@@ -1,10 +1,7 @@
 package com.carpenter.api.endpoint;
 
 import com.carpenter.api.request.CarpenterOfferRequest;
-import com.carpenter.api.response.CarpenterOfferResponse;
-import com.carpenter.core.control.mail.MailDispatchBean;
 import com.carpenter.core.control.service.offer.OfferService;
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.enterprise.context.RequestScoped;
@@ -12,10 +9,6 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 @Path("/carpenter")
 @RequestScoped

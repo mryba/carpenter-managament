@@ -3,7 +3,7 @@ package com.carpenter.core.control.service.offer;
 import com.carpenter.api.request.CarpenterOfferRequest;
 import com.carpenter.api.response.CarpenterOfferResponse;
 import com.carpenter.core.control.dto.OfferDto;
-import com.carpenter.core.control.mail.MailDispatchBean;
+import com.carpenter.core.control.mail.EmailStorageBean;
 import com.carpenter.core.control.repository.OfferRepository;
 import com.carpenter.core.control.service.company.CompanyService;
 import com.carpenter.core.entity.Company;
@@ -11,7 +11,7 @@ import com.carpenter.core.entity.Offer;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.enterprise.context.SessionScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.time.Instant;
@@ -23,14 +23,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-@SessionScoped
+@Stateless
 public class OfferService implements Serializable {
+
+    private static final long serialVersionUID = -233684878971707271L;
 
     @Inject
     private OfferRepository offerRepository;
 
     @Inject
-    private MailDispatchBean mailDispatchBean;
+    private EmailStorageBean emailStorageBean;
 
     @Inject
     private CompanyService companyService;
@@ -82,7 +84,8 @@ public class OfferService implements Serializable {
         companyService.saveCompany(company);
         log.info("Successfully saved offer");
 
-        mailDispatchBean.sandEmailToManager(OfferHtmlTemplate.offerTemplateHtml(request, workDateFrom));
+        emailStorageBean.saveEmail(OfferHtmlTemplate.offerTemplateHtml(request, workDateFrom));
+        log.info("Successfully saved email");
 
         CarpenterOfferResponse response = new CarpenterOfferResponse(Boolean.TRUE, Boolean.TRUE);
         return new Gson().toJson(response);
