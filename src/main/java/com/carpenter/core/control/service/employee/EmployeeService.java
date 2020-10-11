@@ -53,8 +53,8 @@ public class EmployeeService implements Serializable {
         return employeeRepository.findEmployeeBeId(employeeId);
     }
 
-    public List<Employee> getAllActiveSelfEmploymentEmployees() {
-        return employeeRepository.findAllSelfEmployment();
+    public List<Employee> getAllActiveSelfEmploymentEmployees(PrincipalBean principalBean) {
+        return employeeRepository.findAllSelfEmployment(principalBean);
     }
 
     public List<EmployeeDto> getAllActiveEmployees(List<Employee> employees) {

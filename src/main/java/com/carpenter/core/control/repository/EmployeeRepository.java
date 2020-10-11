@@ -4,6 +4,7 @@ import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.Company_;
 import com.carpenter.core.entity.EmployeeGroup;
+import com.carpenter.core.entity.dictionaries.Contract;
 import com.carpenter.core.entity.dictionaries.Role;
 import com.carpenter.core.entity.employee.Employee;
 import com.carpenter.core.entity.employee.Employee_;
@@ -146,28 +147,27 @@ public class EmployeeRepository implements Serializable {
         return predicate;
     }
 
+    public List<Employee> findAllSelfEmployment(PrincipalBean principalBean) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
+        Root<Employee> root = query.from(Employee.class);
+        root.fetch(Employee_.addresses);
+        root.fetch(Employee_.company);
 
-    public List<Employee> findAllSelfEmployment() {
+        Predicate defaultPredicate = defaultPredicate(builder, root, principalBean);
+        Predicate predicate = builder.and(
+                builder.isNull(root.get(Employee_.deletedBy)),
+                builder.isNull(root.get(Employee_.deleteDate)),
+                builder.equal(root.get(Employee_.contract), Contract.SELF_EMPLOYMENT),
+                builder.isTrue(root.get(Employee_.accountActive))
+        );
+
+        if (defaultPredicate != null) {
+            predicate = builder.and(predicate, defaultPredicate);
+        }
+        query.where(predicate);
         try {
-            List<Employee> employees = entityManager.createQuery("SELECT e FROM Employee e LEFT JOIN FETCH e.addresses WHERE e.deletedBy IS NULL AND e.deleteDate is NULL AND e.contract ='SELF_EMPLOYMENT' AND e.accountActive = TRUE", Employee.class)
-                    .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
-                    .getResultList();
-            List<Long> employeeIds = employees.stream().map(Employee::getId).collect(Collectors.toList());
-
-
-            employees = entityManager.createQuery("SELECT e FROM Employee e LEFT JOIN FETCH e.workingDays WHERE e.id IN :employees", Employee.class)
-                    .setParameter("employees", employeeIds)
-                    .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
-                    .getResultList();
-
-            employeeIds = employees.stream().map(Employee::getId).collect(Collectors.toList());
-
-            employees = entityManager.createQuery("SELECT e FROM Employee e LEFT JOIN FETCH e.company WHERE e.id IN :employees", Employee.class)
-                    .setParameter("employees", employeeIds)
-                    .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
-                    .getResultList();
-
-            return employees;
+            return entityManager.createQuery(query).getResultList();
         } catch (NoResultException e) {
             return Collections.emptyList();
         }

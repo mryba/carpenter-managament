@@ -32,6 +32,8 @@ import java.util.List;
 @Named("invoiceListBean")
 public class InvoiceListBean implements Serializable {
 
+    private static final long serialVersionUID = -7823117445786511544L;
+
     @Inject
     InvoiceService invoiceService;
 
@@ -139,7 +141,7 @@ public class InvoiceListBean implements Serializable {
     }
 
     public List<EmployeeDto> getEmployeesList() {
-        employees = employeeService.getAllActiveEmployees(employeeService.getAllActiveSelfEmploymentEmployees());
+        employees = employeeService.getAllActiveEmployees(employeeService.getAllActiveSelfEmploymentEmployees(principalBean));
         return employees;
     }
 
