@@ -21,7 +21,8 @@
                         <h:commandLink
                                 styleClass="btn bordered col-primary"
                                 p:data-toggle="modal"
-                                p:data-target="#add-work-time">
+                                p:data-target="#add-work-time"
+                                rendered="#{principalBean.loggedUser.isInRole('ADMINISTRATOR')}">
                             <f:ajax execute="@this"
                                     resetValues="true"
                                     render="add-work-time-form"

@@ -208,8 +208,21 @@ public class Employee extends DomainObject {
     }
 
     @Transient
-    public boolean isPowerUser(){
-       return !isInRole(Role.ADMINISTRATOR.name());
+    public boolean isAdminOrManager() {
+        if (roles == null) {
+            return false;
+        }
+       return roles.contains(Role.ADMINISTRATOR) || roles.contains(Role.MANAGER);
+    }
+
+    @Transient
+    public boolean isPowerUserOrSelfEmployment(){
+        return isAdminOrManager() || this.contract == Contract.SELF_EMPLOYMENT;
+    }
+
+    @Transient
+    public boolean isPowerUser() {
+        return !isInRole(Role.ADMINISTRATOR.name());
     }
 
     @Override

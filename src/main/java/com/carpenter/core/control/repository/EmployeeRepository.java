@@ -135,8 +135,13 @@ public class EmployeeRepository implements Serializable {
         Predicate predicate;
         if (principalBean.getLoggedUser().isInRole(Role.ADMINISTRATOR.name())) {
             predicate = null;
-        } else {
+        } else if (principalBean.getLoggedUser().isInRole(Role.MANAGER.name())) {
             predicate = builder.equal(root.get(Employee_.company).get(Company_.id), principalBean.getLoggedUser().getCompany().getId());
+        } else {
+            predicate = builder.and(
+                    builder.equal(root.get(Employee_.company).get(Company_.id), principalBean.getLoggedUser().getCompany().getId()),
+                    builder.equal(root.get(Employee_.id), principalBean.getLoggedUser().getId())
+            );
         }
         return predicate;
     }
