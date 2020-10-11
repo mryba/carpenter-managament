@@ -88,7 +88,7 @@ public class EmployeeListBean implements Serializable {
     }
 
     public List<Employee> getEmployersList() {
-        return employeeService.getEmployersList();
+        return employeeService.getEmployersList(principalBean);
     }
 
     public List<Contract> getAvailableContracts() {

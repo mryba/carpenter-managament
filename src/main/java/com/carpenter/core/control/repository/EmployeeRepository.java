@@ -41,12 +41,24 @@ public class EmployeeRepository implements Serializable {
 
     }
 
-    public List<Employee> findAllEmployees() {
+    public List<Employee> findAllEmployeesByLoggedUser(PrincipalBean principalBean) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
+        Root<Employee> root = query.from(Employee.class);
+        root.fetch(Employee_.addresses);
+
+        Predicate defaultPredicate = defaultPredicate(builder, root, principalBean);
+        Predicate predicate = builder.and(
+                builder.isNull(root.get(Employee_.deleteDate)),
+                builder.isNull(root.get(Employee_.deletedBy))
+        );
+        if (defaultPredicate != null) {
+            predicate = builder.and(predicate, defaultPredicate);
+        }
+        query.where(predicate);
         try {
-            return entityManager.createQuery("SELECT e from Employee e LEFT JOIN FETCH e.company LEFT JOIN FETCH e.addresses WHERE e.deleteDate is NULL", Employee.class)
-                    .getResultList();
+            return entityManager.createQuery(query).getResultList();
         } catch (NoResultException e) {
-            log.error("No employers found!");
             return Collections.emptyList();
         }
     }

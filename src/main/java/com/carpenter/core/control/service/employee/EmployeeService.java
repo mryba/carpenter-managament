@@ -23,8 +23,8 @@ public class EmployeeService implements Serializable {
 
     private EmployeeMapper employeeMapper;
 
-    public List<Employee> getEmployersList() {
-        return employeeRepository.findAllEmployees();
+    public List<Employee> getEmployersList(PrincipalBean principalBean) {
+        return employeeRepository.findAllEmployeesByLoggedUser(principalBean);
     }
 
     public Employee createEmployee(EmployeeDto employeeDto, PrincipalBean principalBean) {
