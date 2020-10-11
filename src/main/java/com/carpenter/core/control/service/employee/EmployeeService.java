@@ -67,10 +67,10 @@ public class EmployeeService implements Serializable {
         return employeesList;
     }
 
-    public List<EmployeeDto> getAllActiveEmployees() {
+    public List<EmployeeDto> getAllActiveEmployees(PrincipalBean principalBean) {
         List<EmployeeDto> employees = new LinkedList<>();
         employeeMapper = new EmployeeMapper();
-        Collection<Employee> allSelfEmployment = employeeRepository.findAllActiveEmployees();
+        Collection<Employee> allSelfEmployment = employeeRepository.findAllActiveEmployeesByLoggedUser(principalBean);
         for (Employee employee : allSelfEmployment) {
             EmployeeDto employeeDto = employeeMapper.mapToDomain(employee);
             employees.add(employeeDto);

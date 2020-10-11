@@ -1,7 +1,12 @@
 package com.carpenter.core.control.repository;
 
+import com.carpenter.core.control.service.login.PrincipalBean;
+import com.carpenter.core.entity.Company;
+import com.carpenter.core.entity.Company_;
 import com.carpenter.core.entity.EmployeeGroup;
+import com.carpenter.core.entity.dictionaries.Role;
 import com.carpenter.core.entity.employee.Employee;
+import com.carpenter.core.entity.employee.Employee_;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.jpa.QueryHints;
 
@@ -10,6 +15,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
@@ -96,6 +105,42 @@ public class EmployeeRepository implements Serializable {
             return Collections.emptyList();
         }
     }
+
+    public Collection<Employee> findAllActiveEmployeesByLoggedUser(PrincipalBean principalBean) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
+        Root<Employee> root = query.from(Employee.class);
+
+        Predicate defaultPredicate = defaultPredicate(builder, root, principalBean);
+        Predicate predicate = builder.and(
+                builder.isNull(root.get(Employee_.deleteDate)),
+                builder.isNull(root.get(Employee_.deletedBy)),
+                builder.isNotNull(root.get(Employee_.accountActive))
+        );
+
+        if (defaultPredicate != null) {
+            predicate = builder.and(predicate, defaultPredicate);
+        }
+
+        query.where(predicate);
+        try {
+            return entityManager.createQuery(query)
+                    .getResultList();
+        } catch (NoResultException e) {
+            return Collections.emptyList();
+        }
+    }
+
+    private Predicate defaultPredicate(CriteriaBuilder builder, Root<Employee> root, PrincipalBean principalBean) {
+        Predicate predicate;
+        if (principalBean.getLoggedUser().isInRole(Role.ADMINISTRATOR.name())) {
+            predicate = null;
+        } else {
+            predicate = builder.equal(root.get(Employee_.company).get(Company_.id), principalBean.getLoggedUser().getCompany().getId());
+        }
+        return predicate;
+    }
+
 
     public List<Employee> findAllSelfEmployment() {
         try {
