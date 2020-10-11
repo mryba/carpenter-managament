@@ -38,14 +38,12 @@ public class EmployeeRepository implements Serializable {
     public Employee getEmployeeByEmail(String email) {
         return entityManager.createNamedQuery("Employee.findEmployerByEmail", Employee.class)
                 .setParameter("email", email).getSingleResult();
-
     }
 
     public List<Employee> findAllEmployeesByLoggedUser(PrincipalBean principalBean) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Employee> query = builder.createQuery(Employee.class);
         Root<Employee> root = query.from(Employee.class);
-        root.fetch(Employee_.addresses);
 
         Predicate defaultPredicate = defaultPredicate(builder, root, principalBean);
         Predicate predicate = builder.and(
