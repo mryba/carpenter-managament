@@ -17,7 +17,7 @@
                     <h2>Klienci</h2>
 
                     <div class="controls"
-                         jsf:rendered="#{principalBean.loggedUser.isInRole('ADMINISTRATOR')}">
+                         jsf:rendered="#{principalBean.loggedUser.adminOrManager}">
                         <h:form>
                             <a href="#" class="btn bordered col-primary"
                                data-toggle="modal"

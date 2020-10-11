@@ -32,17 +32,6 @@ public class InvoiceRepository implements Serializable {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List<Invoice> findAllInvoices(PrincipalBean principalBean) {
-        try {
-            EntityGraph<?> graph = entityManager.getEntityGraph("Invoice.findAllInvoices");
-            return entityManager.createNamedQuery("Invoice.findAllInvoices", Invoice.class)
-                    .setHint(FETCH_GRAPH, graph)
-                    .getResultList();
-        } catch (NoResultException e) {
-            return Collections.emptyList();
-        }
-    }
-
     public List<Invoice> findAllInvoiceByRole(PrincipalBean principalBean) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Invoice> query = builder.createQuery(Invoice.class);

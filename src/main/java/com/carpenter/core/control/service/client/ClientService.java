@@ -30,14 +30,14 @@ public class ClientService implements Serializable {
         return clientRepository.getClientById(id);
     }
 
-    public List<Client> getClientsList() {
-        return clientRepository.getAllClients();
+    public List<Client> getClientsList(PrincipalBean principalBean) {
+        return clientRepository.getAllClientByCompany(principalBean);
     }
 
-    public List<ClientDto> getAllAvailableClients() {
+    public List<ClientDto> getAllAvailableClients(PrincipalBean principalBean) {
         List<ClientDto> toReturn = new LinkedList<>();
         clientMapper = new ClientMapper();
-        clientRepository.getAllClients().forEach(e -> toReturn.add(clientMapper.mapToDomain(e)));
+        clientRepository.getAllClientByCompany(principalBean).forEach(e -> toReturn.add(clientMapper.mapToDomain(e)));
         return toReturn;
     }
 

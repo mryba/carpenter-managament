@@ -49,7 +49,7 @@ public class ClientBean implements Serializable {
 
     public List<ClientDto> getClientList() {
         clientMapper = new ClientMapper();
-         clients = clientService.getClientsList()
+         clients = clientService.getClientsList(principalBean)
                 .stream()
                 .map(client -> clientMapper.mapToDomain(client))
                 .collect(Collectors.toList());

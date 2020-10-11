@@ -24,12 +24,11 @@ import java.util.*;
         @NamedQuery(name = "Client.findByNip",
                 query = "SELECT c FROM Client c " +
                         "WHERE c.nip =:nip"),
-        @NamedQuery(
-                name = "Client.findAll",
-                query = "SELECT c FROM Client c")
 })
 @Access(AccessType.FIELD)
 public class Client extends DomainObject {
+
+    private static final long serialVersionUID = -4967079147976217106L;
 
     @NotNull
     @Column(name = "NAME")

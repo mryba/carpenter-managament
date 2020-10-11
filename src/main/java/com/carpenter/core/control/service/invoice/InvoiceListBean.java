@@ -177,7 +177,7 @@ public class InvoiceListBean implements Serializable {
     }
 
     public List<ClientDto> getClientList() {
-        clients = clientService.getAllAvailableClients();
+        clients = clientService.getAllAvailableClients(principalBean);
         return clients;
     }
 

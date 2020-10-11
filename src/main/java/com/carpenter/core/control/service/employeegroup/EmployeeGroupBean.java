@@ -119,7 +119,7 @@ public class EmployeeGroupBean implements Serializable {
     }
 
     public List<ClientDto> getAvailableClients() {
-        return clientService.getAllAvailableClients();
+        return clientService.getAllAvailableClients(principalBean);
     }
 
     public void clear() {
