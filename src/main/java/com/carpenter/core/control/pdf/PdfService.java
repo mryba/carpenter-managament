@@ -13,6 +13,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 
+import javax.ejb.Stateless;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -24,8 +25,7 @@ import java.time.ZoneId;
 import java.util.ResourceBundle;
 
 @Slf4j
-@ViewScoped
-@Named("pdfService")
+@Stateless
 public class PdfService implements Serializable {
 
     private static final long serialVersionUID = 4980456513235126840L;

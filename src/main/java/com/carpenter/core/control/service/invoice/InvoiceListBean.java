@@ -220,4 +220,8 @@ public class InvoiceListBean implements Serializable {
         return InvoiceType.values();
     }
 
+    public void renderPdf(InvoiceDto dto){
+        pdfService.renderPdf(dto);
+    }
+
 }
