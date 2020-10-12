@@ -10,7 +10,10 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Getter
@@ -37,8 +40,9 @@ public class InvoiceDto {
     private InvoiceAmountType invoiceAmountType;
     private String placeOfCreation;
 
-    public VatRate of(BigDecimal vatRate) {
-        return Stream.of(VatRate.values()).filter(vr -> vr.getRate().equals(vatRate)).findFirst().orElse(VatRate.ZERO);
+    public String of(BigDecimal vatRate) {
+        BigDecimal minus = new BigDecimal("-1.0");
+        return vatRate.equals(minus) ? "NP" : vatRate.toPlainString() + "%";
     }
 
     public String getEmployeeFullAddress() {
@@ -52,7 +56,7 @@ public class InvoiceDto {
         return "ul. " + this.clientDto.getStreet() + " " + this.clientDto.getStreetNumber() + "/" + this.clientDto.getHouseNumber();
     }
 
-    public Date getDateOfCreationAsDate(){
+    public Date getDateOfCreationAsDate() {
         return Date.from(this.dateOfCreation.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
 }

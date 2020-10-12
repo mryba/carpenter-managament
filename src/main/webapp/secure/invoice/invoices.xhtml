@@ -68,7 +68,7 @@
                                         <h4>  #{i.grossValue} #{not empty i.grossValue ? 'zł' : ''}</h4>
                                     </td>
                                     <td class="w5">
-                                        #{invoice_msg['invoice-vat-rate-'.concat(i.of(i.vatRate))]}
+                                        #{i.of(i.vatRate)}
                                     </td>
                                     <td class="w15">
                                         #{i.description}

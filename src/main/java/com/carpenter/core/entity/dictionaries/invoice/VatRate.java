@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 public enum VatRate {
 
+    NP(BigDecimal.valueOf(-1.00)),
     ZERO(BigDecimal.ZERO),
     FIVE(BigDecimal.valueOf(0.5)),
     EIGHT(BigDecimal.valueOf(0.8)),

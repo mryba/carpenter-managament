@@ -21,6 +21,7 @@ import javax.inject.Named;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.ZoneId;
 import java.util.ResourceBundle;
 
@@ -45,9 +46,9 @@ public class PdfService implements Serializable {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
         //Open
-//        externalContext.setResponseHeader("Content-Disposition", "inline; filename=invoice-" + ".pdf");
+        externalContext.setResponseHeader("Content-Disposition", "inline; filename=invoice-" + ".pdf");
         //Download
-        externalContext.setResponseHeader("Content-Disposition", "attachment; filename=invoice-" + ".pdf");
+//        externalContext.setResponseHeader("Content-Disposition", "attachment; filename=invoice-" + ".pdf");
 
         InputStream fontStream = null;
         InputStream boldFontStream = null;
@@ -61,8 +62,13 @@ public class PdfService implements Serializable {
 
             contentStream.beginText();
             contentStream.setFont(boldFont, 30);
-            contentStream.newLineAtOffset(190, 700);
-            contentStream.showText("Faktura VAT");
+            if (invoiceDto.getVatRate() != null) {
+                contentStream.newLineAtOffset(190, 700);
+                contentStream.showText("Faktura VAT");
+            } else {
+                contentStream.newLineAtOffset(240, 700);
+                contentStream.showText("Faktura");
+            }
             contentStream.endText();
 
 
@@ -151,19 +157,28 @@ public class PdfService implements Serializable {
             row.createCell(26, invoiceDto.getDescription()).setFont(boldFont);
             row.createCell(5, "1");
             row.createCell(5, "szt.");
-            row.createCell(17, invoiceDto.getNetValue().toPlainString() + " zł").setFont(boldFont);
-            row.createCell(8, invoiceBundle.getString("invoice-vat-rate-" + invoiceDto.of(invoiceDto.getVatRate()).name())).setFont(boldFont);
-            row.createCell(17, (invoiceDto.getGrossValue().subtract(invoiceDto.getNetValue())).toPlainString() + " zł").setFont(boldFont);
-            row.createCell(17, invoiceDto.getGrossValue().toPlainString() + " zł").setFont(boldFont);
+            row.createCell(17, invoiceDto.getNetValue() != null ? invoiceDto.getNetValue().toPlainString() + " zł" : "").setFont(boldFont);
+            row.createCell(8, invoiceDto.of(invoiceDto.getVatRate())).setFont(boldFont);
+            if (invoiceDto.getGrossValue() != null && invoiceDto.getNetValue() != null) {
+                row.createCell(17, (invoiceDto.getGrossValue().subtract(invoiceDto.getNetValue())).toPlainString() + " zł").setFont(boldFont);
+            } else {
+                row.createCell(17, "").setFont(boldFont);
+
+            }
+            row.createCell(17, invoiceDto.getGrossValue() != null ? invoiceDto.getGrossValue().toPlainString() + " zł" : "").setFont(boldFont);
 
             table.draw();
 
             initText(contentStream, font, 400, 380, "Do zapłaty:");
-            initText(contentStream, boldFont, 470, 380, invoiceDto.getGrossValue().toPlainString() + " PLN");
+            initText(contentStream, boldFont, 470, 380, invoiceDto.getGrossValue() != null ? invoiceDto.getGrossValue().toPlainString() + " PLN" : invoiceDto.getNetValue().toPlainString() + " PLN");
 
             drawLine(contentStream, page, 450);
-
-            String[] splitedNumber = invoiceDto.getGrossValue().toPlainString().split("\\.");
+            String[] splitedNumber;
+            if (invoiceDto.getGrossValue() != null) {
+                splitedNumber = invoiceDto.getGrossValue().toPlainString().split("\\.");
+            } else {
+                splitedNumber = invoiceDto.getNetValue().toPlainString().split("\\.");
+            }
             String decimal = splitedNumber[0];
             int decimalNumber = Integer.parseInt(decimal);
 

@@ -183,7 +183,7 @@ public class InvoiceListBean implements Serializable {
 
     public void calculateNetValue() {
         if (invoiceDto.getGrossValue() != null) {
-            if (!invoiceDto.getVatRate().equals(VatRate.ZERO.getRate())) {
+            if (invoiceDto.getVatRate().compareTo(BigDecimal.ZERO) > 0) {
                 BigDecimal vatRate = invoiceDto.getVatRate().add(BigDecimal.ONE);
                 BigDecimal netValue = invoiceDto.getGrossValue().setScale(2, RoundingMode.HALF_EVEN).divide(vatRate, RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP);
                 invoiceDto.setNetValue(netValue);
@@ -204,8 +204,8 @@ public class InvoiceListBean implements Serializable {
     }
 
 
-    public InvoiceAmountType[] getAmountTypes() {
-        return InvoiceAmountType.values();
+    public List<InvoiceAmountType> getAmountTypes() {
+        return List.of(InvoiceAmountType.GROSS, InvoiceAmountType.NET);
     }
 
     public VatRate[] getVatRates() {
@@ -220,7 +220,7 @@ public class InvoiceListBean implements Serializable {
         return InvoiceType.values();
     }
 
-    public void renderPdf(InvoiceDto dto){
+    public void renderPdf(InvoiceDto dto) {
         pdfService.renderPdf(dto);
     }
 
