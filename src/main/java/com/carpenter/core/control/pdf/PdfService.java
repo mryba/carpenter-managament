@@ -45,9 +45,9 @@ public class PdfService implements Serializable {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
         //Open
-        externalContext.setResponseHeader("Content-Disposition", "inline; filename=invoice-" + ".pdf");
+//        externalContext.setResponseHeader("Content-Disposition", "inline; filename=invoice-" + ".pdf");
         //Download
-//        externalContext.setResponseHeader("Content-Disposition", "attachment; filename=invoice-" + ".pdf");
+        externalContext.setResponseHeader("Content-Disposition", "attachment; filename=invoice-" + ".pdf");
 
         InputStream fontStream = null;
         InputStream boldFontStream = null;
