@@ -57,4 +57,13 @@ public class OfferRepository implements Serializable {
             return null;
         }
     }
+
+    public List<Offer> getAllOffers() {
+        try {
+            return entityManager.createQuery("SELECT o FROM Offer o WHERE o.deleteDate IS NULL ORDER BY o.createDate DESC ", Offer.class)
+                    .getResultList();
+        } catch (NoResultException e) {
+            return Collections.emptyList();
+        }
+    }
 }

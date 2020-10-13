@@ -3,6 +3,7 @@ package com.carpenter.core.control.service.offer;
 import com.carpenter.core.control.dto.OfferDto;
 import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.entity.Company;
+import com.carpenter.core.entity.dictionaries.Role;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -36,7 +37,11 @@ public class OfferListBean implements Serializable {
         if (company == null) {
             return Collections.emptyList();
         }
-        offers = offerService.getOffersByCompany(company.getId());
+        if (principalBean.getLoggedUser().isInRole(Role.ADMINISTRATOR.name())) {
+            offers = offerService.getAllOffers();
+        } else {
+            offers = offerService.getOffersByCompany(company.getId());
+        }
         return offers;
     }
 

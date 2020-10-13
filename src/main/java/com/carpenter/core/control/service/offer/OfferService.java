@@ -51,6 +51,11 @@ public class OfferService implements Serializable {
                 .collect(Collectors.toList());
     }
 
+    public List<OfferDto> getAllOffers(){
+        offerMapper = new OfferMapper();
+        return offerRepository.getAllOffers().stream().map(offerMapper::mapToDomain).collect(Collectors.toList());
+    }
+
     public Offer findOfferById(Long id) {
         return offerRepository.findOfferById(id);
     }
