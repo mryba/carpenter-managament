@@ -90,97 +90,80 @@
                     </div>
 
                     <div class="form-top">
-                        <label for="edit-address-checkbox">Dodaj dane korespondencyjne</label>
-                        <h:selectBooleanCheckbox id="edit-address-checkbox"
-                                                 value="#{clientBean.includeAddress}">
-                            <f:ajax event="change"
-                                    execute="@this"
-                                    render="client-edit-address-id"/>
-                        </h:selectBooleanCheckbox>
-                        <i class="far fa-address-card"></i>
+                        <label for="edit-client-country">Kraj</label>
+                        <h:selectOneMenu id="edit-client-country"
+                                         value="#{clientBean.clientDto.country}"
+                                         required="true"
+                                         requiredMessage="Proszę wybrac kraj">
+                            <f:selectItems value="#{clientBean.countries}"
+                                           var="c"
+                                           itemLabel="#{employee_msg['country_'.concat(c.name())]}"
+                                           itemValue="#{c.name()}">
+                            </f:selectItems>
+                            <f:ajax execute="@this"
+                                    event="change"
+                                    onevent="showLoader"/>
+                        </h:selectOneMenu>
+                        <h:message for="edit-client-country" styleClass="form-msg col-danger"/>
                     </div>
 
-                    <div jsf:id="client-edit-address-id">
-                        <div jsf:rendered="#{clientBean.includeAddress}">
+                    <div class="form-top" jsf:id="edit-client-city-id">
+                        <label for="edit-client-city">Miasto</label>
+                        <input type="text"
+                               jsf:id="edit-client-city"
+                               jsf:value="#{clientBean.clientDto.city}"
+                               jsf:required="true"
+                               jsf:requiredMessage="Proszę wpisać miasto / miejscowość">
+                            <f:ajax event="change"
+                                    execute="@this"/>
+                        </input>
+                        <h:message for="edit-client-city" styleClass="form-msg col-danger"/>
+                    </div>
 
-                            <div class="form-top">
-                                <label for="edit-client-country">Kraj</label>
-                                <h:selectOneMenu id="edit-client-country"
-                                                 value="#{clientBean.clientDto.country}"
-                                                 required="true"
-                                                 requiredMessage="Proszę wybrac kraj">
-                                    <f:selectItems value="#{clientBean.countries}"
-                                                   var="c"
-                                                   itemLabel="#{employee_msg['country_'.concat(c.name())]}"
-                                                   itemValue="#{c.name()}">
-                                    </f:selectItems>
-                                    <f:ajax execute="@this"
-                                            event="change"
-                                            onevent="showLoader"/>
-                                </h:selectOneMenu>
-                                <h:message for="edit-client-country" styleClass="form-msg col-danger"/>
-                            </div>
+                    <div class="form-top" jsf:id="edit-client-postal-code-id">
+                        <label for="edit-client-postal-code">Kod pocztowy</label>
+                        <input type="text"
+                               jsf:id="edit-client-postal-code"
+                               jsf:value="#{clientBean.clientDto.postalCode}"
+                               jsf:validator="#{clientValidation.validatePostalCode}">
+                            <f:ajax event="change"
+                                    execute="@this"/>
+                        </input>
+                        <h:message for="edit-client-postal-code" styleClass="form-msg col-danger"/>
+                    </div>
 
-                            <div class="form-top" jsf:id="edit-client-city-id">
-                                <label for="edit-client-city">Miasto</label>
-                                <input type="text"
-                                       jsf:id="edit-client-city"
-                                       jsf:value="#{clientBean.clientDto.city}"
-                                       jsf:required="true"
-                                       jsf:requiredMessage="Proszę wpisać miasto / miejscowość">
-                                    <f:ajax event="change"
-                                            execute="@this"/>
-                                </input>
-                                <h:message for="edit-client-city" styleClass="form-msg col-danger"/>
-                            </div>
+                    <div class="form-top" jsf:id="edit-client-street-id">
+                        <label for="edit-client-street">Ulica</label>
+                        <input type="text"
+                               jsf:id="edit-client-street"
+                               jsf:value="#{clientBean.clientDto.street}">
+                            <f:ajax event="keyup"
+                                    delay="300"
+                                    execute="@this"
+                                    render="edit-client-street-number-id"/>
+                        </input>
+                    </div>
 
-                            <div class="form-top" jsf:id="edit-client-postal-code-id">
-                                <label for="edit-client-postal-code">Kod pocztowy</label>
-                                <input type="text"
-                                       jsf:id="edit-client-postal-code"
-                                       jsf:value="#{clientBean.clientDto.postalCode}"
-                                       jsf:validator="#{clientValidation.validatePostalCode}">
-                                    <f:ajax event="change"
-                                            execute="@this"/>
-                                </input>
-                                <h:message for="edit-client-postal-code" styleClass="form-msg col-danger"/>
-                            </div>
-
-                            <div class="form-top" jsf:id="edit-client-street-id">
-                                <label for="edit-client-street">Ulica</label>
-                                <input type="text"
-                                       jsf:id="edit-client-street"
-                                       jsf:value="#{clientBean.clientDto.street}">
-                                    <f:ajax event="keyup"
-                                            delay="300"
-                                            execute="@this"
-                                            render="edit-client-street-number-id"/>
-                                </input>
-                            </div>
-
-                            <div jsf:id="edit-client-street-number-id">
-                                <div class="form-top" jsf:rendered="#{clientBean.streetAvailable}">
-                                    <label for="edit-client-street-number">Nr</label>
-                                    <input type="text"
-                                           jsf:id="edit-client-street-number"
-                                           jsf:value="#{clientBean.clientDto.streetNumber}">
-                                        <f:ajax event="change"
-                                                execute="@this"/>
-                                    </input>
-                                </div>
-                            </div>
-                            <div class="form-top" jsf:id="edit-client-house-number-id">
-                                <label for="edit-client-house-number">Numer lokalu</label>
-                                <input type="text"
-                                       jsf:id="edit-client-house-number"
-                                       jsf:value="#{clientBean.clientDto.houseNumber}">
-                                    <f:ajax event="change"
-                                            execute="@this"/>
-                                </input>
-                            </div>
+                    <div jsf:id="edit-client-street-number-id">
+                        <div class="form-top" jsf:rendered="#{clientBean.streetAvailable}">
+                            <label for="edit-client-street-number">Nr</label>
+                            <input type="text"
+                                   jsf:id="edit-client-street-number"
+                                   jsf:value="#{clientBean.clientDto.streetNumber}">
+                                <f:ajax event="change"
+                                        execute="@this"/>
+                            </input>
                         </div>
                     </div>
-
+                    <div class="form-top" jsf:id="edit-client-house-number-id">
+                        <label for="edit-client-house-number">Numer lokalu</label>
+                        <input type="text"
+                               jsf:id="edit-client-house-number"
+                               jsf:value="#{clientBean.clientDto.houseNumber}">
+                            <f:ajax event="change"
+                                    execute="@this"/>
+                        </input>
+                    </div>
                 </div>
 
                 <div class="modal-footer">

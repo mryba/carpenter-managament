@@ -38,7 +38,6 @@ public class ClientBean implements Serializable {
 
     private ClientDto clientDto;
     private ClientMapper clientMapper;
-    private boolean includeAddress;
     private String deletedClientName;
 
 
@@ -60,22 +59,11 @@ public class ClientBean implements Serializable {
         ClientDto client = clients.stream().filter(c -> c.getId().equals(clientId)).findFirst().orElse(null);
         if (client != null) {
             this.clientDto = client;
-            if (this.clientDto.getCity() != null) {
-                includeAddress = true;
-            }
         }
     }
 
-    public boolean isIncludeAddress() {
-        return includeAddress;
-    }
-
-    public void setIncludeAddress(boolean includeAddress) {
-        this.includeAddress = includeAddress;
-    }
-
     public boolean isStreetAvailable() {
-        return includeAddress && clientDto != null && clientDto.getStreet() != null && !clientDto.getStreet().isEmpty();
+        return  clientDto != null && clientDto.getStreet() != null && !clientDto.getStreet().isEmpty();
     }
 
     public void saveClient() {
@@ -85,12 +73,10 @@ public class ClientBean implements Serializable {
         client.setCompany(principalBean.getLoggedUser().getCompany());
 
         clientService.save(client);
+        clearClientForm();
     }
 
     public void saveEditedClient(){
-        if (!includeAddress) {
-            clearClientAddress();
-        }
         Client client = clientService.createClient(clientDto);
         if (client.getCompany() == null) {
             client.setCompany(principalBean.getLoggedUser().getCompany());

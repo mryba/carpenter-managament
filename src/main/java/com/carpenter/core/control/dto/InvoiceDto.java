@@ -41,8 +41,11 @@ public class InvoiceDto {
     private String placeOfCreation;
 
     public String of(BigDecimal vatRate) {
-        BigDecimal minus = new BigDecimal("-1.0");
-        return vatRate.equals(minus) ? "NP" : vatRate.toPlainString() + "%";
+        if (vatRate != null) {
+            return Stream.of(VatRate.values()).filter(vr -> vr.getRate().compareTo(vatRate) == 0).findFirst().orElse(VatRate.NP).toString();
+        }else {
+            return VatRate.ZERO.name();
+        }
     }
 
     public String getEmployeeFullAddress() {
@@ -53,7 +56,11 @@ public class InvoiceDto {
     }
 
     public String getClientFullAddress() {
-        return "ul. " + this.clientDto.getStreet() + " " + this.clientDto.getStreetNumber() + "/" + this.clientDto.getHouseNumber();
+        if ((clientDto.getStreet() == null || clientDto.getStreet().isEmpty()) && clientDto.getStreetNumber() == null) {
+            return clientDto.getCity() + " " + clientDto.getHouseNumber();
+        }
+        return this.clientDto.getCity() + ", " + this.clientDto.getStreet() + " " + this.clientDto.getStreetNumber() + "/" + this.clientDto.getHouseNumber();
+//        return "ul. " + this.clientDto.getStreet() + " " + this.clientDto.getStreetNumber() + "/" + this.clientDto.getHouseNumber();
     }
 
     public Date getDateOfCreationAsDate() {

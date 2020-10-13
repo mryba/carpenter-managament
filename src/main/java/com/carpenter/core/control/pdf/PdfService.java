@@ -46,9 +46,10 @@ public class PdfService implements Serializable {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
         //Open
-        externalContext.setResponseHeader("Content-Disposition", "inline; filename=invoice-" + ".pdf");
+//        externalContext.setResponseHeader("Content-Disposition", "inline; filename=invoice-" + ".pdf");
         //Download
-//        externalContext.setResponseHeader("Content-Disposition", "attachment; filename=invoice-" + ".pdf");
+        externalContext.setResponseHeader("Content-Disposition", "attachment; filename=invoice-" + ".pdf");
+        externalContext.setResponseHeader("Content-Type", " application/pdf");
 
         InputStream fontStream = null;
         InputStream boldFontStream = null;
@@ -158,7 +159,7 @@ public class PdfService implements Serializable {
             row.createCell(5, "1");
             row.createCell(5, "szt.");
             row.createCell(17, invoiceDto.getNetValue() != null ? invoiceDto.getNetValue().toPlainString() + " zł" : "").setFont(boldFont);
-            row.createCell(8, invoiceDto.of(invoiceDto.getVatRate())).setFont(boldFont);
+            row.createCell(8, invoiceBundle.getString("invoice-vat-rate-" + invoiceDto.of(invoiceDto.getVatRate()))).setFont(boldFont);
             if (invoiceDto.getGrossValue() != null && invoiceDto.getNetValue() != null) {
                 row.createCell(17, (invoiceDto.getGrossValue().subtract(invoiceDto.getNetValue())).toPlainString() + " zł").setFont(boldFont);
             } else {
