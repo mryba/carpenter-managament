@@ -4,25 +4,23 @@ import com.carpenter.core.control.dto.EmployeeDto;
 import com.carpenter.core.control.excel.service.MonthCalendarExcelService;
 import com.carpenter.core.entity.WorkingDay;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.hssf.usermodel.HSSFPalette;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.*;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import java.awt.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
 import java.util.*;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Named("calendarMonthBean")
@@ -165,11 +163,46 @@ public class CalendarMonthBean extends CalendarBean {
                 for (LocalDate monthlyDate : rrr.getMonthlyDates()) {
                     AtomicInteger hour = rrr.getHourMap().get(monthlyDate);
                     row.createCell(celNum).setCellValue(hour.intValue());
+
+                    CellStyle cs = excelService.getWorkbook().createCellStyle();
+//                    cs.setBorderBottom(BorderStyle.MEDIUM);
+//                    cs.setBorderTop(BorderStyle.MEDIUM);
+//                    cs.setBorderLeft(BorderStyle.MEDIUM);
+//                    cs.setBorderRight(BorderStyle.MEDIUM);
+
+
+                    Font font = excelService.getWorkbook().createFont();
+                    font.setBold(true);
+                    cs.setFont(font);
+
+                    HSSFWorkbook hwb = new HSSFWorkbook();
+                    HSSFPalette palette = hwb.getCustomPalette();
+
+
+                    if (hour.intValue() == 0) {
+
+                        HSSFColor myColor = palette.findSimilarColor(245, 24, 0);
+                        short palIndex = myColor.getIndex();
+
+                        cs.setFillForegroundColor(palIndex);
+                        cs.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+                        row.getCell(celNum).setCellStyle(cs);
+                    } else {
+
+                        HSSFColor myColor = palette.findSimilarColor(76, 232, 9);
+                        short palIndex = myColor.getIndex();
+
+                        cs.setFillForegroundColor(palIndex);
+                        cs.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+                        row.getCell(celNum).setCellStyle(cs);
+
+                    }
                     celNum++;
                 }
                 row.createCell(celNum).setCellValue(getRowCount(rrr));
                 row.getCell(celNum).setCellStyle(excelService.cellBoldStyle());
-
             }
         }
         for (int i = 0; i < excelService.getColumns().size(); i++) {

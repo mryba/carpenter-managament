@@ -66,12 +66,14 @@
                     <h:commandLink
                             action="#{navigationBean.clientsRedirect}"
                             rendered="#{principalBean.loggedUser.adminOrManager}">
+                        <f:ajax onevent="showLoader"/>
                         <i class="fas fa-user-tie"></i>Klienci
                     </h:commandLink>
 
                     <h:commandLink
                             action="#{navigationBean.invoiceRedirect}"
                             rendered="#{principalBean.loggedUser.powerUserOrSelfEmployment}">
+                        <f:ajax onevent="showLoader"/>
                         <i class="fas fa-file-invoice-dollar"></i>Faktury
                     </h:commandLink>
 
