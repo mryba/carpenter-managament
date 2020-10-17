@@ -42,6 +42,8 @@ public class WorkTimeBean implements Serializable {
     private static final long serialVersionUID = 1084861867586822994L;
 
     private LocalDate dateTime = LocalDate.now().minusDays(1);
+
+    private boolean isBulkOperation = true;
     private Integer groupHours = Day.EIGHT.getNumber();
 
     private Map<EmployeeDto, Integer> employeesHours = new LinkedHashMap<>();
@@ -79,12 +81,28 @@ public class WorkTimeBean implements Serializable {
 
     private void refreshEmployeeGroup(@Observes(notifyObserver = Reception.IF_EXISTS) WorkTimeListener workTimeListener) {
         this.workTimeListener = workTimeListener;
+        employeesHours.clear();
         employeeGroups = employeeGroupService.getAllEmployeeGroups();
 
         EmployeeGroup employeeGroup = selectedEmployeeGroup();
         employees = employeeService.getAllActiveEmployeesByGroup(employeeGroup, principalBean);
+
         for (EmployeeDto employee : employees) {
-            employeesHours.put(employee, groupHours);
+            Integer hour = workingDayService.getEmployeeWorkTime(employee, dateTime);
+            if (hour == null) {
+                employeesHours.put(employee, groupHours);
+                isBulkOperation = true;
+            } else {
+                employeesHours.put(employee, hour);
+                isBulkOperation = false;
+                groupHours = 0;
+                if (dateTime != null) {
+                    errorMessage.put(employee, Boolean.TRUE);
+                }
+            }
+        }
+        if (isBulkOperation) {
+            errorMessage.clear();
         }
     }
 
@@ -102,6 +120,7 @@ public class WorkTimeBean implements Serializable {
 
     public void setDateTime(LocalDate dateTime) {
         this.dateTime = dateTime;
+        refreshEmployeeGroup(workTimeListener);
     }
 
     public Integer getGroupHours() {
@@ -110,6 +129,7 @@ public class WorkTimeBean implements Serializable {
 
     public void setGroupHours(Integer groupHours) {
         this.groupHours = groupHours;
+        isBulkOperation = true;
     }
 
     public Integer employeeHour(EmployeeDto employee) {
@@ -124,16 +144,18 @@ public class WorkTimeBean implements Serializable {
     public void plusHour(EmployeeDto employee) {
         Integer hour = employeesHours.get(employee);
         if (hour < 24) {
-            groupHours = hour + 1;
-            employeesHours.put(employee, groupHours);
+            employeesHours.put(employee, hour + 1);
+            isBulkOperation = false;
+            groupHours = 0;
         }
     }
 
     public void minusHour(EmployeeDto employee) {
         Integer hour = employeesHours.get(employee);
         if (hour > 0) {
-            groupHours = hour -1;
-            employeesHours.put(employee, groupHours);
+            employeesHours.put(employee, hour - 1);
+            isBulkOperation = false;
+            groupHours = 0;
         }
     }
 
@@ -142,10 +164,6 @@ public class WorkTimeBean implements Serializable {
         dateTime = LocalDate.now().minusDays(1);
         employeesHours.clear();
         groupHours = Day.EIGHT.getNumber();
-
-        for (EmployeeDto employee : employees) {
-            employeesHours.put(employee, groupHours);
-        }
     }
 
     public void saveTime() {
@@ -154,7 +172,11 @@ public class WorkTimeBean implements Serializable {
             WorkingDay workingDay = workingDayService.findIfEmployeeWorkDayIsPerform(employeeDto.getId(), dateTime);
 
             if (workingDay != null) {
-                workingDay.setHours(employeesHours.get(employeeDto));
+                if (!isBulkOperation) {
+                    workingDay.setHours(employeesHours.get(employeeDto));
+                } else {
+                    workingDay.setHours(groupHours);
+                }
                 workingDay.setEditDate(new Date());
                 workingDayService.mergeWorkingDay(workingDay);
             } else {
@@ -166,7 +188,11 @@ public class WorkTimeBean implements Serializable {
 
                 Employee employee = employeeService.getEmployeeById(employeeDto.getId());
 
-                workingDay.setHours(employeesHours.get(employeeDto));
+                if (!isBulkOperation) {
+                    workingDay.setHours(employeesHours.get(employeeDto));
+                } else {
+                    workingDay.setHours(groupHours);
+                }
                 employee.addWorkingDay(workingDay);
 
                 workingDayService.saveWorkingDay(workingDay);
@@ -188,5 +214,8 @@ public class WorkTimeBean implements Serializable {
             }
     }
 
+    public Integer getZero() {
+        return 0;
+    }
 }
 

@@ -35,14 +35,14 @@
                                         itemLabel="#{c.groupName}, (#{c.presentClient.name})"/>
 
                                 <f:ajax event="change"
-                                        render="add-work-table-id"
+                                        render="add-work-table-id amount-of-time-id add-work-time-id"
                                         execute="@this"
                                         onevent="showLoader"/>
 
                             </h:selectOneMenu>
                         </div>
 
-                        <div class="form-top col1-5">
+                        <div jsf:id="add-work-time-id" class="form-top col1-5">
                             <label>Dzień pracy</label>
                             <h:inputText id="add-work-time-date"
                                          styleClass="datepicker"
@@ -53,7 +53,7 @@
 
                                 <f:ajax event="change"
                                         delay="300"
-                                        render="add-work-table-id"
+                                        render="add-work-table-id amount-of-time-id"
                                         onevent="showLoader"
                                         execute="@this"/>
                             </h:inputText>
@@ -62,10 +62,13 @@
                                 $(".datepicker").flatpickr();
                             </h:outputScript>
                         </div>
-                        <div class="form-top col1-5">
+                        <div jsf:id="amount-of-time-id" class="form-top col1-5">
                             <label>Ilość godzin</label>
                             <h:selectOneMenu id="add-work-time-time"
-                                             value="#{workTimeBean.groupHours}">
+                                             value="#{workTimeBean.groupHours}"
+                                             required="true"
+                                             requiredMessage="Wybierz ilość godzin">
+                                <f:selectItem itemLabel="Wybierz..." itemValue="#{workTimeBean.zero}"/>
                                 <f:selectItems value="#{workTimeBean.hour}"
                                                var="d"
                                                itemLabel="#{common_msg['day_'.concat(d.name())]}"
@@ -132,7 +135,7 @@
                                             <h:commandLink action="#{workTimeBean.minusHour(e)}"
                                                            styleClass="btn btn-sm btn-icon col-danger">
                                                 <f:ajax execute="@this"
-                                                        render="add-work-table-id"/>
+                                                        render="add-work-table-id amount-of-time-id"/>
                                                 <i class="fas fa-minus"></i>
                                             </h:commandLink>
 
@@ -142,7 +145,7 @@
                                             <h:commandLink action="#{workTimeBean.plusHour(e)}"
                                                            styleClass="btn btn-sm btn-icon col-primary">
                                                 <f:ajax execute="@this"
-                                                        render="add-work-table-id"/>
+                                                        render="add-work-table-id amount-of-time-id"/>
                                                 <i class="fas fa-plus"></i>
                                             </h:commandLink>
                                         </div>
@@ -167,9 +170,9 @@
                                 class="btn bordered col-primary"
                                 jsf:action="#{workTimeBean.saveTime}">
                             <i class="fa fa-check"></i>Zapisz
-                            <f:ajax execute="@form"
+                            <f:ajax execute="@this"
                                     resetValues="true"
-                                    render="calendarForm closeDialogDiv"/>
+                                    render="add-work-table-id calendarForm closeDialogDiv"/>
                         </button>
                     </div>
                 </div>

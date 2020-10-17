@@ -1,5 +1,6 @@
 package com.carpenter.core.control.service.workingday;
 
+import com.carpenter.core.control.dto.EmployeeDto;
 import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.entity.WorkingDay;
 
@@ -35,4 +36,7 @@ public class WorkingDayService implements Serializable {
         return workingDayRepository.findEmployeeWorkDayById(id, day);
     }
 
+    public Integer getEmployeeWorkTime(EmployeeDto employee, LocalDate day) {
+        return workingDayRepository.findEmployeeHour(employee, day);
+    }
 }

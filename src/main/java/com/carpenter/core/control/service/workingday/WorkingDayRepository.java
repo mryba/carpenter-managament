@@ -1,5 +1,6 @@
 package com.carpenter.core.control.service.workingday;
 
+import com.carpenter.core.control.dto.EmployeeDto;
 import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.entity.WorkingDay;
 import com.carpenter.core.entity.WorkingDay_;
@@ -16,10 +17,7 @@ import javax.persistence.criteria.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Stateless
 public class WorkingDayRepository implements Serializable {
@@ -82,6 +80,19 @@ public class WorkingDayRepository implements Serializable {
                     .getResultList();
         } catch (NoResultException e) {
             return Collections.emptyList();
+        }
+    }
+
+    public Integer findEmployeeHour(EmployeeDto employee, LocalDate day) {
+        try {
+            Date yesterdayDate = Date.from(day.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+            return entityManager.createQuery("SELECT wd.hours FROM WorkingDay wd WHERE wd.employee.id =:employeeId AND wd.day =:day", Integer.class)
+                    .setParameter("employeeId", employee.getId())
+                    .setParameter("day", yesterdayDate)
+                    .getResultList().iterator().next();
+
+        } catch (NoSuchElementException e) {
+            return null;
         }
     }
 }
