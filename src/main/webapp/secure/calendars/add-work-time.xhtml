@@ -63,7 +63,7 @@
                             </h:outputScript>
                         </div>
                         <div jsf:id="amount-of-time-id" class="form-top col1-5">
-                            <label>Ilość godzin</label>
+                            <label>Dodaj wszystkim ilość godzin:</label>
                             <h:selectOneMenu id="add-work-time-time"
                                              value="#{workTimeBean.groupHours}"
                                              required="true"
@@ -172,7 +172,8 @@
                             <i class="fa fa-check"></i>Zapisz
                             <f:ajax execute="@this"
                                     resetValues="true"
-                                    render="add-work-table-id calendarForm closeDialogDiv"/>
+                                    render="add-work-time-form calendarForm closeDialogDiv"
+                                    onevent="showLoader"/>
                         </button>
                     </div>
                 </div>

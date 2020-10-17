@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Objects;
 
@@ -32,9 +33,11 @@ public class WorkingDay extends DomainObject {
     @JoinColumn(name = "EMPLOYEE_ID")
     private Employee employee;
 
+    @NotNull
     @Column(name = "HOURS")
     private Integer hours;
 
+    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DAY")
     private Date day;

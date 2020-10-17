@@ -130,6 +130,10 @@ public class WorkTimeBean implements Serializable {
     public void setGroupHours(Integer groupHours) {
         this.groupHours = groupHours;
         isBulkOperation = true;
+
+        for (Map.Entry<EmployeeDto, Integer> entry : employeesHours.entrySet()) {
+            entry.setValue(groupHours);
+        }
     }
 
     public Integer employeeHour(EmployeeDto employee) {
@@ -177,6 +181,9 @@ public class WorkTimeBean implements Serializable {
                 } else {
                     workingDay.setHours(groupHours);
                 }
+                if (workingDay.getHours() == null) {
+                    workingDay.setHours(0);
+                }
                 workingDay.setEditDate(new Date());
                 workingDayService.mergeWorkingDay(workingDay);
             } else {
@@ -193,12 +200,16 @@ public class WorkTimeBean implements Serializable {
                 } else {
                     workingDay.setHours(groupHours);
                 }
+                if (workingDay.getHours() == null) {
+                    workingDay.setHours(0);
+                }
                 employee.addWorkingDay(workingDay);
 
                 workingDayService.saveWorkingDay(workingDay);
             }
         }
         clear();
+        refreshEmployeeGroup(workTimeListener);
     }
 
     public void validateDate(FacesContext facesContext, UIComponent component, Object value) {
