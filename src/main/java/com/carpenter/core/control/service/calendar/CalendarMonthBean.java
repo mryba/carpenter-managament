@@ -143,9 +143,9 @@ public class CalendarMonthBean extends CalendarBean {
     public void renderExcel() {
         LocalDateTime startDate = timeManager.getViewStartDate();
         LocalDateTime viewEndDate = timeManager.getViewEndDate();
-
+        String date = getCurrentMonthName() + " " + startDate.format(DateTimeFormatter.ofPattern("yyyy"));
         List<String> result = new LinkedList<>();
-        result.add(getCurrentMonthName() + " " + startDate.format(DateTimeFormatter.ofPattern("yyyy")));
+        result.add(date);
         while (startDate.isBefore(viewEndDate)) {
             result.add(startDate.format(DateTimeFormatter.ofPattern("dd.MM")));
             startDate = startDate.plusDays(1);
@@ -153,7 +153,7 @@ public class CalendarMonthBean extends CalendarBean {
         result.add("SUMA");
 
         MonthCalendarExcelService excelService = new MonthCalendarExcelService(result);
-        excelService.initSheet();
+        excelService.initSheet(date);
 
 
         int rowNum = 1;
@@ -244,7 +244,7 @@ public class CalendarMonthBean extends CalendarBean {
         externalContext.setResponseHeader
                 (
                         "Content-Disposition",
-                        "attachment; filename=" + getCurrentMonthName() + " " + startDate.format(DateTimeFormatter.ofPattern("yyyy")) + "- wygenerowano:" + poland.format(DateTimeFormatter.ofPattern("dd.MM.yyyy-HH:mm:ss")) + ".xlsx"
+                        "attachment; filename=" + getCurrentMonthName() + "-" + startDate.format(DateTimeFormatter.ofPattern("yyyy")) + "- wygenerowano:" + poland.format(DateTimeFormatter.ofPattern("dd.MM.yyyy-HH:mm:ss")) + ".xlsx"
                 );
 
         try {

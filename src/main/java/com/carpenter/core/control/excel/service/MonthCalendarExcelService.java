@@ -30,9 +30,9 @@ public class MonthCalendarExcelService {
     CreationHelper creationHelper = workbook.getCreationHelper();
     CellStyle dateCellStyle;
 
-    public void initSheet() {
+    public void initSheet(String date) {
         // Create a Sheet
-        sheet = workbook.createSheet("Miesiąc");
+        sheet = workbook.createSheet(date);
 
         // Create a CellStyle with the font
         CellStyle headerCellStyle = workbook.createCellStyle();
@@ -50,10 +50,6 @@ public class MonthCalendarExcelService {
             cell.setCellValue(columns.get(i));
             cell.setCellStyle(headerCellStyle);
         }
-
-        // Create Cell Style for formatting Date
-//        dateCellStyle = workbook.createCellStyle();
-//        dateCellStyle.setDataFormat(creationHelper.createDataFormat().getFormat("dd-MM-yyyy"));
     }
 
     public void setFontSize(CellStyle cellStyle, short size, boolean bold) {
@@ -75,6 +71,7 @@ public class MonthCalendarExcelService {
     public void setTopBorderMedium(CellStyle cellStyle) {
         cellStyle.setBorderTop(BorderStyle.THIN);
     }
+
     public void setBottomBorderDashed(CellStyle cellStyle) {
         cellStyle.setBorderBottom(BorderStyle.DASHED);
     }
