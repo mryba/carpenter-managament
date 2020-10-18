@@ -14,10 +14,10 @@ public class InvoicesFilter implements Serializable {
     private static final long serialVersionUID = 2744206648881110854L;
 
     private Collection<Long> employeeIds;
+    private Collection<Long>clientIds;
 
     @Inject
     private Event<InvoicesFilter> event;
-
 
     public Collection<Long> getEmployeeIds() {
         return employeeIds;
@@ -25,6 +25,15 @@ public class InvoicesFilter implements Serializable {
 
     public void setEmployeeIds(Collection<Long> employeeIds) {
         this.employeeIds = employeeIds;
+        event.fire(this);
+    }
+
+    public Collection<Long> getClientIds() {
+        return clientIds;
+    }
+
+    public void setClientIds(Collection<Long> clientIds) {
+        this.clientIds = clientIds;
         event.fire(this);
     }
 }

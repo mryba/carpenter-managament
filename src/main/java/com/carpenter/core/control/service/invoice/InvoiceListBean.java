@@ -68,7 +68,7 @@ public class InvoiceListBean implements Serializable {
     public void init() {
         invoiceDto = new InvoiceDto();
         employees = employeeService.getAllActiveEmployees(employeeService.getAllActiveSelfEmploymentEmployees(principalBean));
-
+        clients = clientService.getAllAvailableClients(principalBean);
         refresh(filters);
     }
 

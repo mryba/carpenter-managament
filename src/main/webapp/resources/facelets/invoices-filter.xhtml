@@ -32,6 +32,26 @@
                         });
                     </h:outputScript>
                 </div>
+                <div class="form-top col1-4">
+                    <label>Klienci</label>
+                    <h:selectManyListbox value="#{invoicesFilter.clientIds}"
+                                         styleClass="clientFitler">
+                        <f:selectItems value="#{invoiceListBean.clients}" var="c"
+                                       itemValue="#{c.id}"
+                                       itemLabel="#{c.name} #{c.city}"/>
+                        <f:converter converterId="javax.faces.Long"/>
+                        <f:ajax event="change"
+                                execute="@this"
+                                render="invoiceTableForm"
+                                onevent="showLoader"/>
+                    </h:selectManyListbox>
+                    <h:outputScript>
+                        $('.clientFitler').multipleSelect({
+                            filter: true,
+                            selectAll: true
+                        });
+                    </h:outputScript>
+                </div>
             </div>
         </h:form>
     </div>

@@ -2,6 +2,8 @@ package com.carpenter.core.control.service.invoice;
 
 import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.entity.Company_;
+import com.carpenter.core.entity.client.Client;
+import com.carpenter.core.entity.client.Client_;
 import com.carpenter.core.entity.dictionaries.Role;
 import com.carpenter.core.entity.employee.Employee_;
 import com.carpenter.core.entity.invoice.Invoice;
@@ -59,6 +61,9 @@ public class InvoiceRepository implements Serializable {
         if (filters != null) {
             if (filters.getEmployeeIds() != null && !filters.getEmployeeIds().isEmpty()) {
                 predicate = builder.isTrue(root.get(Invoice_.employee).get(Employee_.id).in(filters.getEmployeeIds()));
+            }
+            if (filters.getClientIds() != null && !filters.getClientIds().isEmpty()) {
+                predicate = builder.and(predicate, builder.isTrue(root.get(Invoice_.client).get(Client_.id).in(filters.getClientIds())));
             }
         }
         return predicate;
