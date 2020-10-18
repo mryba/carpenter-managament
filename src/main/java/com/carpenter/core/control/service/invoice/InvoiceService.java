@@ -22,10 +22,10 @@ public class InvoiceService implements Serializable {
 
     private InvoiceMapper invoiceMapper;
 
-    public List<InvoiceDto> getAllInvoices(PrincipalBean principalBean) {
+    public List<InvoiceDto> getAllInvoices(PrincipalBean principalBean, InvoicesFilter filters) {
         invoiceMapper = new InvoiceMapper();
 
-        List<Invoice> allInvoices = invoiceRepository.findAllInvoiceByRole(principalBean);
+        List<Invoice> allInvoices = invoiceRepository.findAllInvoiceByRole(principalBean, filters);
         return allInvoices.stream().map(invoiceMapper::mapToDomain).collect(Collectors.toList());
     }
 

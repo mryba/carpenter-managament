@@ -17,6 +17,8 @@ import com.carpenter.core.entity.invoice.Invoice;
 import lombok.Getter;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.event.Observes;
+import javax.enterprise.event.Reception;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -24,6 +26,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +36,8 @@ import java.util.List;
 public class InvoiceListBean implements Serializable {
 
     private static final long serialVersionUID = -7823117445786511544L;
+
+    private List<InvoiceDto> invoices = new ArrayList<>();
 
     @Inject
     InvoiceService invoiceService;
@@ -49,12 +54,30 @@ public class InvoiceListBean implements Serializable {
     @Inject
     PdfService pdfService;
 
+    @Inject
+    InvoicesFilter filters;
+
     private InvoiceDto invoiceDto;
     private Long invoiceEmployeeId;
     private Long invoiceClientId;
 
     private List<EmployeeDto> employees;
     private List<ClientDto> clients;
+
+    @PostConstruct
+    public void init() {
+        invoiceDto = new InvoiceDto();
+        employees = employeeService.getAllActiveEmployees(employeeService.getAllActiveSelfEmploymentEmployees(principalBean));
+
+        refresh(filters);
+    }
+
+    public void refresh(@Observes(notifyObserver = Reception.IF_EXISTS) InvoicesFilter filter) {
+        this.filters = filter;
+        invoices.clear();
+        invoices = invoiceService.getAllInvoices(principalBean, filters);
+
+    }
 
     public void cleanInvoice() {
         invoiceDto = new InvoiceDto();
@@ -79,11 +102,6 @@ public class InvoiceListBean implements Serializable {
         cleanInvoice();
     }
 
-    @PostConstruct
-    public void init() {
-        invoiceDto = new InvoiceDto();
-    }
-
     public InvoiceDto getInvoiceDto() {
         return invoiceDto;
     }
@@ -93,7 +111,7 @@ public class InvoiceListBean implements Serializable {
     }
 
     public List<InvoiceDto> getInvoicesList() {
-        return invoiceService.getAllInvoices(principalBean);
+        return invoices;
     }
 
     public Long getInvoiceEmployeeId() {
@@ -141,7 +159,6 @@ public class InvoiceListBean implements Serializable {
     }
 
     public List<EmployeeDto> getEmployeesList() {
-        employees = employeeService.getAllActiveEmployees(employeeService.getAllActiveSelfEmploymentEmployees(principalBean));
         return employees;
     }
 

@@ -4,6 +4,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:co="http://xmlns.jcp.org/jsf/composite/facelets"
                 template="/secure/template.xhtml">
 
     <ui:param name="pageTitle" value="Faktury"/>
@@ -14,7 +15,6 @@
             <div class="card">
                 <div class="card-header">
                     <h2>Faktury</h2>
-
                     <div class="controls">
                         <h:form>
                             <a href="#" class="btn bordered col-primary"
@@ -25,6 +25,11 @@
                         </h:form>
                     </div>
                 </div>
+
+                <h:panelGroup layout="block" id="auditFilters">
+                    <co:invoices-filter/>
+                </h:panelGroup>
+
                 <h:form id="invoiceTableForm" prependId="false">
                     <div class="table">
                         <table>

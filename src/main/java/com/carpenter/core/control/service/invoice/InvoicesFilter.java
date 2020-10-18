@@ -1,0 +1,30 @@
+package com.carpenter.core.control.service.invoice;
+
+import javax.enterprise.event.Event;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.io.Serializable;
+import java.util.Collection;
+
+@ViewScoped
+@Named("invoicesFilter")
+public class InvoicesFilter implements Serializable {
+
+    private static final long serialVersionUID = 2744206648881110854L;
+
+    private Collection<Long> employeeIds;
+
+    @Inject
+    private Event<InvoicesFilter> event;
+
+
+    public Collection<Long> getEmployeeIds() {
+        return employeeIds;
+    }
+
+    public void setEmployeeIds(Collection<Long> employeeIds) {
+        this.employeeIds = employeeIds;
+        event.fire(this);
+    }
+}

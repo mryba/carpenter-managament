@@ -3,13 +3,11 @@ package com.carpenter.core.control.service.invoice;
 import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.entity.Company_;
 import com.carpenter.core.entity.dictionaries.Role;
-import com.carpenter.core.entity.employee.Employee;
 import com.carpenter.core.entity.employee.Employee_;
 import com.carpenter.core.entity.invoice.Invoice;
 import com.carpenter.core.entity.invoice.Invoice_;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -22,8 +20,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static com.carpenter.utils.ConstantsRegex.FETCH_GRAPH;
-
 @Stateless
 public class InvoiceRepository implements Serializable {
 
@@ -32,7 +28,7 @@ public class InvoiceRepository implements Serializable {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List<Invoice> findAllInvoiceByRole(PrincipalBean principalBean) {
+    public List<Invoice> findAllInvoiceByRole(PrincipalBean principalBean, InvoicesFilter filters) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Invoice> query = builder.createQuery(Invoice.class);
         Root<Invoice> root = query.from(Invoice.class);
@@ -40,6 +36,13 @@ public class InvoiceRepository implements Serializable {
         root.fetch(Invoice_.client);
 
         Predicate defaultPredicate = defaultPredicate(builder, root, principalBean);
+        Predicate filterPredicate = filterPredicate(builder, root, filters);
+
+
+        if (filterPredicate != null) {
+            defaultPredicate = defaultPredicate != null ? builder.and(defaultPredicate, filterPredicate) : filterPredicate;
+        }
+
         if (defaultPredicate != null) {
             query.where(defaultPredicate);
         }
@@ -49,6 +52,16 @@ public class InvoiceRepository implements Serializable {
         } catch (NoResultException e) {
             return Collections.emptyList();
         }
+    }
+
+    private Predicate filterPredicate(CriteriaBuilder builder, Root<Invoice> root, InvoicesFilter filters) {
+        Predicate predicate = null;
+        if (filters != null) {
+            if (filters.getEmployeeIds() != null && !filters.getEmployeeIds().isEmpty()) {
+                predicate = builder.isTrue(root.get(Invoice_.employee).get(Employee_.id).in(filters.getEmployeeIds()));
+            }
+        }
+        return predicate;
     }
 
     private Predicate defaultPredicate(CriteriaBuilder builder, Root<Invoice> root, PrincipalBean principalBean) {
