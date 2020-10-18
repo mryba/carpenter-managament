@@ -53,10 +53,10 @@ public class EmployeeGroupBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        employeeGroup = new EmployeeGroup();
         employeeIds = new ArrayList<>();
         employeeGroups = employeeGroupService.getAllEmployeeGroups();
     }
+
 
     public List<EmployeeDto> getAllActiveEmployeesWithoutGroup() {
         return employeeService.getAllActiveAndWithoutGroupEmployees(principalBean);
@@ -81,6 +81,8 @@ public class EmployeeGroupBean implements Serializable {
             }
             employeeGroup.setEmployees(null);
             employeeGroupService.deleteGroup(employeeGroup);
+            clear();
+            init();
         }
     }
 
@@ -91,6 +93,7 @@ public class EmployeeGroupBean implements Serializable {
                 employee.setEmployeeGroup(null);
                 employeeGroup.getEmployees().remove(employee);
                 employeeService.saveEmployee(employee);
+                init();
             }
         }
     }
@@ -103,6 +106,8 @@ public class EmployeeGroupBean implements Serializable {
         employeeGroup.setCreateDate(new Date());
         employeeGroup.setPresentClient(client);
         employeeGroupService.saveGroup(employeeGroup);
+        clear();
+        init();
     }
 
     public void saveEditedGroup() {
@@ -116,6 +121,9 @@ public class EmployeeGroupBean implements Serializable {
 
         employees.forEach(e -> employeeGroup.addEmployee(e));
         employeeGroupService.saveGroup(employeeGroup);
+        employeeGroups = employeeGroupService.getAllEmployeeGroups();
+        employeeIds.clear();
+
     }
 
     public List<ClientDto> getAvailableClients() {

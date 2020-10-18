@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +27,7 @@ public class EmployeeGroup extends DomainObject {
     @JoinColumn(name = "PRESENT_CLIENT", referencedColumnName = "ID")
     private Client presentClient;
 
+    @NotNull
     @Column(name = "NAME")
     private String groupName;
 
