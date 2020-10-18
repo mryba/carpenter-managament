@@ -6,7 +6,6 @@ import com.carpenter.core.entity.WorkingDay;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 
 import javax.annotation.PostConstruct;
@@ -18,6 +17,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -34,6 +34,8 @@ public class CalendarMonthBean extends CalendarBean {
 
     private List<Map.Entry<EmployeeDto, RecordRow>> recordRowMap;
     private Map<LocalDate, AtomicInteger> columnCount = new LinkedHashMap<>();
+    private int lastCellNumber;
+    private int sumOfColumns;
 
     @PostConstruct
     public void init() {
@@ -127,12 +129,14 @@ public class CalendarMonthBean extends CalendarBean {
     }
 
     public Integer getSumOfColumns() {
-        return columnCount.values().stream().mapToInt(AtomicInteger::intValue).sum();
+        sumOfColumns = columnCount.values().stream().mapToInt(AtomicInteger::intValue).sum();
+        return sumOfColumns;
     }
 
     public Integer getRowCount(RecordRowRepresentative rrr) {
         return rrr.getHourMap().values().stream().mapToInt(AtomicInteger::intValue).sum();
     }
+
 
     public void renderExcel() {
         LocalDateTime startDate = timeManager.getViewStartDate();
@@ -141,8 +145,7 @@ public class CalendarMonthBean extends CalendarBean {
         List<String> result = new LinkedList<>();
         result.add("Nazwisko i imię");
         while (startDate.isBefore(viewEndDate)) {
-            String day = startDate.toLocalDate().toString();
-            result.add(day);
+            result.add(startDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
             startDate = startDate.plusDays(1);
         }
         result.add("SUMA");
@@ -153,61 +156,72 @@ public class CalendarMonthBean extends CalendarBean {
 
         int rowNum = 1;
         for (Map.Entry<EmployeeDto, RecordRow> entry : recordRowMap) {
-
             Row row = excelService.getSheet().createRow(rowNum++);
 
             for (RecordRowRepresentative rrr : entry.getValue().getRecordRowRepresentatives()) {
                 int celNum = 0;
                 row.createCell(celNum).setCellValue(rrr.getEmployeeDto().getLastName() + " " + rrr.getEmployeeDto().getFirstName());
+
+                CellStyle cellStyle = excelService.getWorkbook().createCellStyle();
+                excelService.setFontSize(cellStyle, (short) 14, false);
+                excelService.setStyleColorBlue(cellStyle);
+
+                excelService.setBottomBorderDashed(cellStyle);
+                excelService.setRightBorderMedium(cellStyle);
+
+                row.getCell(celNum).setCellStyle(cellStyle);
                 celNum++;
+
                 for (LocalDate monthlyDate : rrr.getMonthlyDates()) {
                     AtomicInteger hour = rrr.getHourMap().get(monthlyDate);
                     row.createCell(celNum).setCellValue(hour.intValue());
 
                     CellStyle cs = excelService.getWorkbook().createCellStyle();
-//                    cs.setBorderBottom(BorderStyle.MEDIUM);
-//                    cs.setBorderTop(BorderStyle.MEDIUM);
-//                    cs.setBorderLeft(BorderStyle.MEDIUM);
-//                    cs.setBorderRight(BorderStyle.MEDIUM);
+                    excelService.setFontSize(cs, (short) 14, false);
 
+                    try (HSSFWorkbook hwb = new HSSFWorkbook()) {
+                        HSSFPalette palette = hwb.getCustomPalette();
 
-                    Font font = excelService.getWorkbook().createFont();
-                    font.setBold(true);
-                    cs.setFont(font);
+                        if (hour.intValue() == 0) {
+                            excelService.setStyleColorBackgroundRed(palette, cs);
+                            excelService.setBottomBorderDashed(cs);
+                            row.getCell(celNum).setCellStyle(cs);
+                        } else {
+                            excelService.setStyleColorBackGroundGreen(cs);
+                            excelService.setBottomBorderDashed(cs);
+                            row.getCell(celNum).setCellStyle(cs);
 
-                    HSSFWorkbook hwb = new HSSFWorkbook();
-                    HSSFPalette palette = hwb.getCustomPalette();
-
-
-                    if (hour.intValue() == 0) {
-
-                        HSSFColor myColor = palette.findSimilarColor(245, 24, 0);
-                        short palIndex = myColor.getIndex();
-
-                        cs.setFillForegroundColor(palIndex);
-                        cs.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-                        row.getCell(celNum).setCellStyle(cs);
-                    } else {
-
-                        HSSFColor myColor = palette.findSimilarColor(76, 232, 9);
-                        short palIndex = myColor.getIndex();
-
-                        cs.setFillForegroundColor(palIndex);
-                        cs.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-                        row.getCell(celNum).setCellStyle(cs);
-
+                        }
+                    } catch (IOException e) {
+                        log.error("Cannot get HSSFWorkBook rendering monthy excel file!");
                     }
                     celNum++;
                 }
                 row.createCell(celNum).setCellValue(getRowCount(rrr));
-                row.getCell(celNum).setCellStyle(excelService.cellBoldStyle());
+                CellStyle cs = excelService.getWorkbook().createCellStyle();
+                excelService.setLefBorderMedium(cs);
+                excelService.setBottomBorderDashed(cs);
+                excelService.setFontSize(cs, (short) 14, true);
+                excelService.setStyleColorBlue(cs);
+
+                row.getCell(celNum).setCellStyle(cs);
+                 lastCellNumber = celNum;
             }
         }
+
+        rowNum++;
+        Row lastRow = excelService.getSheet().createRow(rowNum);
+        lastRow.createCell(lastCellNumber).setCellValue(sumOfColumns);
+        CellStyle cs = excelService.getWorkbook().createCellStyle();
+        excelService.setStyleColorBackGroundGreen(cs);
+
+        lastRow.getCell(lastCellNumber).setCellStyle(cs);
+
+
         for (int i = 0; i < excelService.getColumns().size(); i++) {
             excelService.getSheet().autoSizeColumn(i);
         }
+
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
