@@ -14,11 +14,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -143,9 +145,9 @@ public class CalendarMonthBean extends CalendarBean {
         LocalDateTime viewEndDate = timeManager.getViewEndDate();
 
         List<String> result = new LinkedList<>();
-        result.add("Nazwisko i imię");
+        result.add(getCurrentMonthName() + " " + startDate.format(DateTimeFormatter.ofPattern("yyyy")));
         while (startDate.isBefore(viewEndDate)) {
-            result.add(startDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+            result.add(startDate.format(DateTimeFormatter.ofPattern("dd.MM")));
             startDate = startDate.plusDays(1);
         }
         result.add("SUMA");
@@ -163,7 +165,7 @@ public class CalendarMonthBean extends CalendarBean {
                 row.createCell(celNum).setCellValue(rrr.getEmployeeDto().getLastName() + " " + rrr.getEmployeeDto().getFirstName());
 
                 CellStyle cellStyle = excelService.getWorkbook().createCellStyle();
-                excelService.setFontSize(cellStyle, (short) 14, false);
+                excelService.setFontSize(cellStyle, (short) 14, true);
                 excelService.setStyleColorBlue(cellStyle);
 
                 excelService.setBottomBorderDashed(cellStyle);
@@ -185,10 +187,14 @@ public class CalendarMonthBean extends CalendarBean {
                         if (hour.intValue() == 0) {
                             excelService.setStyleColorBackgroundRed(palette, cs);
                             excelService.setBottomBorderDashed(cs);
+                            excelService.setRightBorderDashed(cs);
+                            excelService.centerContent(cs);
                             row.getCell(celNum).setCellStyle(cs);
                         } else {
                             excelService.setStyleColorBackGroundGreen(cs);
                             excelService.setBottomBorderDashed(cs);
+                            excelService.setRightBorderDashed(cs);
+                            excelService.centerContent(cs);
                             row.getCell(celNum).setCellStyle(cs);
 
                         }
@@ -200,23 +206,28 @@ public class CalendarMonthBean extends CalendarBean {
                 row.createCell(celNum).setCellValue(getRowCount(rrr));
                 CellStyle cs = excelService.getWorkbook().createCellStyle();
                 excelService.setLefBorderMedium(cs);
+                excelService.centerContent(cs);
                 excelService.setBottomBorderDashed(cs);
                 excelService.setFontSize(cs, (short) 14, true);
                 excelService.setStyleColorBlue(cs);
 
                 row.getCell(celNum).setCellStyle(cs);
-                 lastCellNumber = celNum;
+                lastCellNumber = celNum;
             }
         }
-
         rowNum++;
         Row lastRow = excelService.getSheet().createRow(rowNum);
+        lastRow.createCell(lastCellNumber - 1).setCellValue("SUMA");
         lastRow.createCell(lastCellNumber).setCellValue(sumOfColumns);
         CellStyle cs = excelService.getWorkbook().createCellStyle();
+        excelService.centerContent(cs);
         excelService.setStyleColorBackGroundGreen(cs);
+        excelService.setFontSize(cs, (short) 14, true);
+        excelService.setTopBorderMedium(cs);
+        excelService.setRightBorderDashed(cs);
 
         lastRow.getCell(lastCellNumber).setCellStyle(cs);
-
+        lastRow.getCell(lastCellNumber - 1).setCellStyle(cs);
 
         for (int i = 0; i < excelService.getColumns().size(); i++) {
             excelService.getSheet().autoSizeColumn(i);
@@ -226,8 +237,15 @@ public class CalendarMonthBean extends CalendarBean {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
 
+        Instant instance = Instant.ofEpochMilli(System.currentTimeMillis());
+        LocalDateTime poland = LocalDateTime.ofInstant(instance, ZoneId.of("Poland"));
+
         externalContext.setResponseContentType("application/vnd.ms-excel");
-        externalContext.setResponseHeader("Content-Disposition", "attachment; filename=raport-miesieczny-" + System.currentTimeMillis() + ".xlsx");
+        externalContext.setResponseHeader
+                (
+                        "Content-Disposition",
+                        "attachment; filename=" + getCurrentMonthName() + " " + startDate.format(DateTimeFormatter.ofPattern("yyyy")) + "- wygenerowano:" + poland.format(DateTimeFormatter.ofPattern("dd.MM.yyyy-HH:mm:ss")) + ".xlsx"
+                );
 
         try {
             excelService.getWorkbook().write(externalContext.getResponseOutputStream());

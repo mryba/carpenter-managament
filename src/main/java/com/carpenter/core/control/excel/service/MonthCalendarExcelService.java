@@ -25,7 +25,6 @@ public class MonthCalendarExcelService {
 
     public MonthCalendarExcelService(List<String> columns) {
         this.columns = columns;
-
     }
 
     CreationHelper creationHelper = workbook.getCreationHelper();
@@ -73,6 +72,9 @@ public class MonthCalendarExcelService {
         cs.setBorderRight(BorderStyle.MEDIUM);
     }
 
+    public void setTopBorderMedium(CellStyle cellStyle) {
+        cellStyle.setBorderTop(BorderStyle.THIN);
+    }
     public void setBottomBorderDashed(CellStyle cellStyle) {
         cellStyle.setBorderBottom(BorderStyle.DASHED);
     }
@@ -93,7 +95,7 @@ public class MonthCalendarExcelService {
     }
 
     public void setStyleColorBackgroundRed(HSSFPalette palette, CellStyle cs) {
-        HSSFColor myColor = palette.findSimilarColor(245, 24, 0);
+        HSSFColor myColor = palette.findSimilarColor(242, 27, 49);
         short palIndex = myColor.getIndex();
 
         cs.setFillForegroundColor(palIndex);
@@ -103,7 +105,7 @@ public class MonthCalendarExcelService {
     public void setStyleColorBackGroundGreen(CellStyle cs) {
         try (HSSFWorkbook hwb = new HSSFWorkbook()) {
             HSSFPalette customPalette = hwb.getCustomPalette();
-            HSSFColor myColor = customPalette.findSimilarColor(76, 232, 9);
+            HSSFColor myColor = customPalette.findSimilarColor(25, 209, 28);
             short palIndex = myColor.getIndex();
 
             cs.setFillForegroundColor(palIndex);
@@ -129,7 +131,7 @@ public class MonthCalendarExcelService {
     public void setStyleColorBlue(CellStyle cellStyle) {
         try (HSSFWorkbook hwb = new HSSFWorkbook()) {
             HSSFPalette customPalette = hwb.getCustomPalette();
-            HSSFColor myColor = customPalette.findSimilarColor(14, 190, 235);
+            HSSFColor myColor = customPalette.findSimilarColor(154, 204, 245);
             short palIndex = myColor.getIndex();
 
             cellStyle.setFillForegroundColor(palIndex);
@@ -139,4 +141,7 @@ public class MonthCalendarExcelService {
         }
     }
 
+    public void centerContent(CellStyle cs) {
+        cs.setAlignment(HorizontalAlignment.CENTER);
+    }
 }
