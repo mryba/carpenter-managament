@@ -7,7 +7,6 @@ import com.carpenter.core.control.service.employeegroup.EmployeeGroupService;
 import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.entity.EmployeeGroup;
 import com.carpenter.core.entity.WorkingDay;
-import com.carpenter.core.entity.client.Client;
 import com.carpenter.core.entity.dictionaries.Day;
 import com.carpenter.core.entity.employee.Employee;
 import lombok.Getter;
@@ -16,10 +15,8 @@ import lombok.Setter;
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -42,7 +39,6 @@ public class WorkTimeBean implements Serializable {
     private static final long serialVersionUID = 1084861867586822994L;
 
     private LocalDate dateTime = LocalDate.now().minusDays(1);
-
     private boolean isBulkOperation = true;
     private Integer groupHours = Day.EIGHT.getNumber();
 
@@ -82,6 +78,8 @@ public class WorkTimeBean implements Serializable {
     private void refreshEmployeeGroup(@Observes(notifyObserver = Reception.IF_EXISTS) WorkTimeListener workTimeListener) {
         this.workTimeListener = workTimeListener;
         employeesHours.clear();
+        errorMessage.clear();
+
         employeeGroups = employeeGroupService.getAllEmployeeGroups();
 
         EmployeeGroup employeeGroup = selectedEmployeeGroup();
@@ -92,12 +90,14 @@ public class WorkTimeBean implements Serializable {
             if (hour == null) {
                 employeesHours.put(employee, groupHours);
                 isBulkOperation = true;
+
             } else {
                 employeesHours.put(employee, hour);
                 isBulkOperation = false;
                 groupHours = 0;
                 if (dateTime != null) {
                     errorMessage.put(employee, Boolean.TRUE);
+
                 }
             }
         }
@@ -168,6 +168,7 @@ public class WorkTimeBean implements Serializable {
         dateTime = LocalDate.now().minusDays(1);
         employeesHours.clear();
         groupHours = Day.EIGHT.getNumber();
+        refreshEmployeeGroup(workTimeListener);
     }
 
     public void saveTime() {
