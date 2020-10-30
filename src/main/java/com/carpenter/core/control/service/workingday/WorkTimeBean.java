@@ -95,10 +95,7 @@ public class WorkTimeBean implements Serializable {
                 employeesHours.put(employee, hour);
                 isBulkOperation = false;
                 groupHours = 0;
-                if (dateTime != null) {
-                    errorMessage.put(employee, Boolean.TRUE);
-
-                }
+                errorMessage.put(employee, Boolean.TRUE);
             }
         }
         if (isBulkOperation) {
