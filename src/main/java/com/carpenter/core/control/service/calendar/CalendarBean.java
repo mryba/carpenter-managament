@@ -10,7 +10,11 @@ import lombok.Setter;
 
 import javax.inject.Inject;
 import java.io.Serializable;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,5 +58,15 @@ public abstract class CalendarBean implements Serializable {
         employeeDtos.clear();
         employeeDtos.addAll(employeeService.getAllActiveEmployees(principalBean));
         return employeeDtos.stream().sorted(Comparator.comparing(EmployeeDto::getLastName)).collect(Collectors.toList());
+    }
+
+
+    public boolean isWeekend(LocalDate date) {
+        return date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY;
+    }
+
+    public boolean isWeekend(Date date) {
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return localDate.getDayOfWeek() == DayOfWeek.SATURDAY || localDate.getDayOfWeek() == DayOfWeek.SUNDAY;
     }
 }

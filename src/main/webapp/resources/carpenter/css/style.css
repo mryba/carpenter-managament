@@ -1704,6 +1704,13 @@ body {
     border-top: 1px solid #1a3823;
 }
 
+.calendar-view .calendar-sub-header-weekend {
+    font-size: 1.1em;
+    background-color: #7d7b77;
+    color: black;
+    border-top: 1px solid #1a3823;
+}
+
 .calendar-view .calendar-sub-header-first-col {
     font-size: 1.1em;
     background-color: #32a852;
@@ -1720,6 +1727,13 @@ body {
 .calendar-view .calendar-row {
     border-top: 1px solid #1a3823;
     border-right: 1px solid #1a3823;
+    height: 2.2em;
+}
+
+.calendar-view .calendar-row-weekend {
+    border-top: 1px solid #1a3823;
+    border-right: 1px solid #1a3823;
+    background-color: #7d7b77;
     height: 2.2em;
 }
 

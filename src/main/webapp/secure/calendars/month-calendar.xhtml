@@ -110,7 +110,11 @@
                                         </th>
                                         <ui:repeat value="#{calendarMonthBean.monthlyDates}"
                                                    var="date">
-                                            <th scope="col" class="calendar-row">
+                                            <th jsf:rendered="#{calendarMonthBean.isWeekend(date)}" scope="col" class="calendar-row-weekend">
+                                                #{calendarMonthBean.getWorkHours(rr.key.id, rep, date)}
+
+                                            </th>
+                                            <th jsf:rendered="#{!calendarMonthBean.isWeekend(date)}" scope="col" class="calendar-row">
                                                 #{calendarMonthBean.getWorkHours(rr.key.id, rep, date)}
                                             </th>
                                         </ui:repeat>
