@@ -3,11 +3,14 @@ package com.carpenter.core.control.service.workingtimesetting;
 import com.carpenter.core.entity.WorkTimeSetting;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Local;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @SessionScoped
 @Named("workingTimeSettingsBean")
@@ -29,12 +32,7 @@ public class WorkTimeSettingsBean implements Serializable {
         return workTimeSetting.getMechanismActive();
     }
 
-    public void setSchedulerActive(boolean schedulerActive) {
-        workTimeSetting.setMechanismActive(schedulerActive);
-        workTimeSettingsService.updateSettings(workTimeSetting);
-    }
-
-    public Integer getStaticHours(){
+    public Integer getStaticHours() {
         return workTimeSetting.getStaticHour();
     }
 
@@ -43,4 +41,13 @@ public class WorkTimeSettingsBean implements Serializable {
         workTimeSettingsService.updateSettings(workTimeSetting);
     }
 
+    public void toggle() {
+        Boolean mechanismActive = this.workTimeSetting.getMechanismActive();
+        if (Boolean.TRUE.equals(mechanismActive)) {
+            this.workTimeSetting.setMechanismActive(Boolean.FALSE);
+        } else {
+            this.workTimeSetting.setMechanismActive(Boolean.TRUE);
+        }
+        workTimeSettingsService.updateSettings(workTimeSetting);
+    }
 }

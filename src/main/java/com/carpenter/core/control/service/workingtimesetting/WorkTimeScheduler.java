@@ -7,7 +7,6 @@ import com.carpenter.core.entity.WorkingDay;
 import com.carpenter.core.entity.employee.Employee;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -45,17 +44,17 @@ public class WorkTimeScheduler implements Serializable {
         this.workTimeSetting = workTimeSettingsRepository.findWorkTimeSettings();
         if (Boolean.TRUE.equals(workTimeSetting.getMechanismActive())) {
 
-            LocalDate yesterday = LocalDate.now().minusDays(2);
+            LocalDate today  = LocalDate.now();
 
-            if (yesterday.getDayOfWeek() == DayOfWeek.SATURDAY || yesterday.getDayOfWeek() == DayOfWeek.SUNDAY) {
-                log.info("It's day off ({} - {}) - no work date time added.", yesterday, yesterday.getDayOfWeek());
+            if (today.getDayOfWeek() == DayOfWeek.SATURDAY || today.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                log.info("It's day off ({} - {}) - no work date time added.", today, today.getDayOfWeek());
                 return;
             }
             Collection<Employee> allActiveEmployees = employeeRepository.findAllActiveEmployees();
-            Collection<WorkingDay> allYesterdayWorkingDay = workingDayRepository.findAllWorkingDayByDate(yesterday);
+            Collection<WorkingDay> allYesterdayWorkingDay = workingDayRepository.findAllWorkingDayByDate(today);
 
             if (allYesterdayWorkingDay == null || allYesterdayWorkingDay.isEmpty()) {
-                allActiveEmployees.forEach(e -> initWorkingDay(e, yesterday));
+                allActiveEmployees.forEach(e -> initWorkingDay(e, today));
                 log.info("Create working day for all active employees: {}", allActiveEmployees.stream().map(Employee::getId).collect(Collectors.toList()));
             }
 
@@ -68,7 +67,7 @@ public class WorkTimeScheduler implements Serializable {
 
                 allActiveEmployees.removeIf(toAdd::contains);
 
-                allActiveEmployees.forEach(e -> initWorkingDay(e, yesterday));
+                allActiveEmployees.forEach(e -> initWorkingDay(e, today));
                 log.info("Create working day for employees: {}", toAdd);
             }
         } else {

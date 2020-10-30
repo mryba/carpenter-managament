@@ -1206,6 +1206,11 @@ MODAL
     margin: 0.4em 0;
 }
 
+.modal-warning > div i.modal-icon-small {
+    font-size: 2.5em;
+    margin: 0.1em 0;
+}
+
 .modal-warning > div .modal-footer {
     display: -webkit-box;
     display: flex;

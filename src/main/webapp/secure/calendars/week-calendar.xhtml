@@ -29,6 +29,18 @@
                                     onevent="showLoader"/>
                             <i class="far fa-clock"></i> Dodaj czas pracy
                         </h:commandLink>
+
+                        <h:commandLink
+                                styleClass="btn bordered col-primary"
+                                p:data-toggle="modal"
+                                p:data-target="#time-automat"
+                                rendered="#{principalBean.loggedUser.adminOrManager}">
+                            <f:ajax execute="@this"
+                                    resetValues="true"
+                                    render="time-automat-form"
+                                    onevent="showLoader"/>
+                            <i class="fas fa-robot"></i> Automat
+                        </h:commandLink>
                     </div>
 
                 </div>
@@ -138,6 +150,7 @@
         </div>
 
         <ui:include src="/secure/calendars/add-work-time.xhtml"/>
+        <ui:include src="/secure/calendars/time-automat.xhtml"/>
         <div jsf:id="closeDialogDiv">
             <h:outputScript rendered="#{not facesContext.validationFailed}">
                 $('#add-work-time').modal('hide')

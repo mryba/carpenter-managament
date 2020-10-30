@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<div id="time-automat" class="modal modal-warning fade"
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:h="http://xmlns.jcp.org/jsf/html"
+     xmlns:f="http://xmlns.jcp.org/jsf/core"
+     xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+     xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <div>
+        <div>
+            <h:form id="time-automat-form" prependId="false">
+
+                <a class="modal-close" data-dismiss="modal">
+                    <i class="fa fa-times"></i> </a>
+
+                <div jsf:rendered="#{workingTimeSettingsBean.schedulerActive}">
+                    <h3>Mechanizm jest włączony</h3>
+                </div>
+                <div jsf:rendered="#{!workingTimeSettingsBean.schedulerActive}">
+                    <h3>Mechanizm jest wyłączony</h3>
+                </div>
+                <hr></hr>
+
+                <div class="container-resp">
+                    <div class="form-top col1-2">
+                        <label for="set-work-time-hour">Stała ilość godzin</label>
+                        <h:selectOneMenu id="set-work-time-hour"
+                                         value="#{workingTimeSettingsBean.staticHours}">
+                            <f:selectItems value="#{workTimeBean.hour}"
+                                           var="d"
+                                           itemLabel="#{common_msg['day_'.concat(d.name())]}"
+                                           itemValue="#{d.number}"/>
+                            <f:ajax event="change"
+                                    execute="@this"
+                                    render="add-work-table-id word-day-add-minus-id"
+                                    onevent="showLoader"/>
+                        </h:selectOneMenu>
+                    </div>
+
+                    <div class="form-top col1-2" jsf:rendered="#{!workingTimeSettingsBean.schedulerActive}">
+                        <h:commandLink action="#{workingTimeSettingsBean.toggle}"
+                                       styleClass="btn bordered col-danger ">
+                            <f:ajax execute="@this"
+                                    render=":time-automat-form closeDialogDiv"
+                                    resetValues="true"
+                                    onevent="showLoader"/>
+                            <i class="modal-icon-small fas fa-robot"></i>
+                        </h:commandLink>
+                    </div>
+
+                    <div class="form-top col1-2" jsf:rendered="#{workingTimeSettingsBean.schedulerActive}">
+                        <h:commandLink action="#{workingTimeSettingsBean.toggle}"
+                                       styleClass="btn bordered col-primary ">
+                            <f:ajax execute="@this"
+                                    render=":time-automat-form closeDialogDiv"
+                                    resetValues="true"
+                                    onevent="showLoader"/>
+                            <i class="modal-icon-small fas fa-robot"></i>
+                        </h:commandLink>
+                    </div>
+                </div>
+                <hr></hr>
+
+                <div class="infobox col-info" jsf:rendered="#{workingTimeSettingsBean.schedulerActive}">
+                    Automat uruchamia się codziennie o 23:30 - nie dodaje godzin w dni wolne od pracy (weekend).
+                </div>
+            </h:form>
+        </div>
+    </div>
+</div>

@@ -131,33 +131,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <hr></hr>
-                    <div class="container-resp">
-                        <div class="form-top col1-5">
-                            <label for="set-work-time-hour">Stała ilość godzin</label>
-                            <h:selectOneMenu id="set-work-time-hour"
-                                             value="#{workingTimeSettingsBean.staticHours}">
-                                <f:selectItems value="#{workTimeBean.hour}"
-                                               var="d"
-                                               itemLabel="#{common_msg['day_'.concat(d.name())]}"
-                                               itemValue="#{d.number}"/>
-                                <f:ajax event="change"
-                                        execute="@this"
-                                        render="add-work-table-id word-day-add-minus-id"
-                                        onevent="showLoader"/>
-                            </h:selectOneMenu>
-                        </div>
-                        <div class="form-top col1-5">
-                            <label for="scheduler-on-off">Automat</label>
-                            <h:selectBooleanCheckbox id="scheduler-on-off"
-                                                     value="#{workingTimeSettingsBean.schedulerActive}">
-                                <f:ajax event="change"
-                                        execute="@this"
-                                        render="client-edit-address-id"/>
-                            </h:selectBooleanCheckbox>
-                            <i class="fas fa-robot"></i>
-                        </div>
-                    </div>
+
                     <div class="modal-footer">
 
                         <button class="btn bordered col-danger"

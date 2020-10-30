@@ -49,7 +49,7 @@ import static com.carpenter.utils.ConstantsRegex.MSISDN_PATTERN;
                         query = "SELECT e FROM Employee e " +
                                 "WHERE e.deleteDate IS NULL " +
                                 "AND e.deletedBy IS NULL " +
-                                "AND e.accountActive IS NOT NULL "
+                                "AND e.accountActive = TRUE "
                 ),
         }
 )
