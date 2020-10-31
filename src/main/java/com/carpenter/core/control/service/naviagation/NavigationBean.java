@@ -38,4 +38,8 @@ public class NavigationBean {
     public String auditRedirect() {
         return "/secure/audit/audit-trails?faces-redirect=true";
     }
+
+    public String loggedUsersRedirect() {
+        return "/secure/audit/logged-users?faces-redirect=true";
+    }
 }

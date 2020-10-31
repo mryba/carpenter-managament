@@ -92,7 +92,7 @@
                 <h5>Twoje konto</h5>
                 <h:form prependId="false">
 
-                    <h:commandLink action="#{loginController.logout}"
+                    <h:commandLink action="#{loginController.logout(principalBean.loggedUser)}"
                                    value="Wyloguj">
                         <f:ajax onevent="showLoader"/>
                         <i class="fas fa-sign-out-alt"></i>
@@ -102,6 +102,13 @@
                             rendered="#{principalBean.loggedUser.isInRole('ADMINISTRATOR')}"
                             value="Audty logowań"
                             action="#{navigationBean.auditRedirect}">
+                        <i class="fas fa-users-cog"></i>
+                    </h:commandLink>
+
+                    <h:commandLink
+                            rendered="#{principalBean.loggedUser.isInRole('ADMINISTRATOR')}"
+                            value="Zalogowani użytkownicy"
+                            action="#{navigationBean.loggedUsersRedirect}">
                         <i class="fas fa-users-cog"></i>
                     </h:commandLink>
 

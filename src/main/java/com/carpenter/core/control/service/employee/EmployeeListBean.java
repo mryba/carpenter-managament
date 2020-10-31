@@ -1,16 +1,11 @@
 package com.carpenter.core.control.service.employee;
 
-import com.carpenter.core.control.dto.ClientDto;
 import com.carpenter.core.control.dto.CompanyDto;
 import com.carpenter.core.control.dto.EmployeeDto;
-import com.carpenter.core.control.service.client.ClientService;
 import com.carpenter.core.control.service.company.CompanyService;
-import com.carpenter.core.control.service.employeegroup.EmployeeGroupBean;
-import com.carpenter.core.control.service.employeegroup.EmployeeGroupService;
 import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.control.utils.logger.Logged;
 import com.carpenter.core.entity.Company;
-import com.carpenter.core.entity.client.Client;
 import com.carpenter.core.entity.dictionaries.Contract;
 import com.carpenter.core.entity.dictionaries.Countries;
 import com.carpenter.core.entity.dictionaries.Gender;
@@ -20,13 +15,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.annotation.PostConstruct;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

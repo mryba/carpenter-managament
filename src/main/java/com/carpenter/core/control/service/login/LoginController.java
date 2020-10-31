@@ -1,5 +1,6 @@
 package com.carpenter.core.control.service.login;
 
+import com.carpenter.core.control.service.audit.AuditLoggedUsers;
 import com.carpenter.core.control.service.audit.AuditTrailService;
 import com.carpenter.core.control.utils.logger.Logged;
 import com.carpenter.core.entity.employee.Employee;
@@ -41,6 +42,9 @@ public class LoginController implements Serializable {
 
     @Inject
     private AuditTrailService auditTrailService;
+
+    @Inject
+    private AuditLoggedUsers loggedUsers;
 
     private transient UIInput errorComponent;
 
@@ -120,6 +124,7 @@ public class LoginController implements Serializable {
             );
 
             auditTrailService.saveAudit(employee, request);
+            loggedUsers.addLoggedUserToList(employee);
 
             return originalUrl;
 
@@ -135,10 +140,11 @@ public class LoginController implements Serializable {
         return null;
     }
 
-    public String logout() {
+    public String logout(Employee loggedUser) {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 
         externalContext.invalidateSession();
+        loggedUsers.remove(loggedUser);
         return "/domain/main-page?faces-redirect=true";
     }
 }

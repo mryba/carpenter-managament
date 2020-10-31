@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:co="http://xmlns.jcp.org/jsf/composite/facelets"
+                template="/secure/template.xhtml">
+
+    <ui:param name="pageTitle" value="LoggedUsers"/>
+
+    <ui:define name="content">
+
+        <div class="wrapper">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Zalogowani użytkownicy</h2>
+                </div>
+
+                <h:form id="audit-trails-form" prependId="false">
+                    <div class="table">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th class="w5">ID</th>
+                                <th class="w10">Imię i nazwisko</th>
+                                <th class="w10">Email</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <ui:repeat value="#{auditLoggedUsers.loggedUsers}" var="e">
+                                <tr>
+                                    <td class="w5">
+                                        #{e.id}
+                                    </td>
+
+                                    <td class="w10">
+                                        <h4> #{e.firstName} #{e.lastName}</h4>
+                                    </td>
+                                    <td class="w10">
+                                        <h4>#{e.email}</h4>
+                                    </td>
+
+                                </tr>
+                            </ui:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
