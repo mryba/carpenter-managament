@@ -34,4 +34,8 @@ public class NavigationBean {
     public String invoiceRedirect() {
         return "/secure/invoice/invoices?faces-redirect=true";
     }
+
+    public String auditRedirect() {
+        return "/secure/audit/audit-trails?faces-redirect=true";
+    }
 }

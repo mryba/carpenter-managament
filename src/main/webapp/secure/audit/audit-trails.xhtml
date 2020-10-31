@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"
+                xmlns:co="http://xmlns.jcp.org/jsf/composite/facelets"
+                template="/secure/template.xhtml">
+
+    <ui:param name="pageTitle" value="AuditTrails"/>
+
+    <ui:define name="content">
+
+        <div class="wrapper">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Audyt</h2>
+                </div>
+
+                <h:panelGroup layout="block" id="auditFilters">
+                    <co:audit-trails-filter/>
+                </h:panelGroup>
+
+                <h:form id="audit-trails-form" prependId="false">
+                    <div class="table">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th class="w5">ID</th>
+                                <th class="w10">Data logowania</th>
+                                <th class="w10">Imię i nazwisko</th>
+                                <th class="w10">Email</th>
+                                <th class="w10">IP logowania</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <ui:repeat value="#{audiTrailBean.trailList}" var="a">
+                                <tr>
+                                    <td class="w5">
+                                        #{a.id}
+                                    </td>
+                                    <td class="w10">
+                                        #{a.createDate}
+                                    </td>
+                                    <td class="w10">
+                                        #{a.employee.firstName}, #{a.employee.lastName}
+                                    </td>
+                                    <td class="w10">
+                                        #{a.employee.email}
+                                    </td>
+                                    <td class="w10">
+                                        #{a.clientIp}
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

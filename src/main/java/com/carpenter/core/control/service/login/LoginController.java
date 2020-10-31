@@ -1,5 +1,6 @@
 package com.carpenter.core.control.service.login;
 
+import com.carpenter.core.control.service.audit.AuditTrailService;
 import com.carpenter.core.control.utils.logger.Logged;
 import com.carpenter.core.entity.employee.Employee;
 
@@ -37,6 +38,9 @@ public class LoginController implements Serializable {
 
     @Inject
     private LoginBean loginBean;
+
+    @Inject
+    private AuditTrailService auditTrailService;
 
     private transient UIInput errorComponent;
 
@@ -114,6 +118,8 @@ public class LoginController implements Serializable {
             externalContext.addResponseCookie("stm-session-id", request.getSession(false).getId(),
                     Collections.singletonMap("httpOnly", Boolean.TRUE)
             );
+
+            auditTrailService.saveAudit(employee, request);
 
             return originalUrl;
 

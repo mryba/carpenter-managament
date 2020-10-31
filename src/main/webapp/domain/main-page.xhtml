@@ -47,7 +47,7 @@
                         <h:inputSecret id="password"
                                        validator="#{loginValidator.validatePassword}"
                                        value="#{loginController.password}"/>
-                        <h:message for="password" styleClass="domain-form-msg danger-col"/>
+                        <h:message for="password" styleClass="form-msg col-danger"/>
                     </div>
 
                     <div class="error-message-login" jsf:rendered="#{not loginController.errorComponent.valid}">
