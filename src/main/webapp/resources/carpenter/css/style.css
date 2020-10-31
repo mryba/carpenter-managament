@@ -20,6 +20,17 @@ body {
     padding: 2em 0;
 }
 
+.login-input{
+    color: #32a852;
+    font-weight: bold;
+    font-size: 1em;
+    padding: 0.5em;
+}
+
+.login-input-form{
+    padding: 0.2em;
+}
+
 .crm-header {
     position: fixed;
     top: 0;
@@ -112,12 +123,13 @@ body {
     border-bottom: 1px solid #d1d1d1;
 }
 
-.crm-header .main-menu > a:active > i {
-    color: #2a8543
+.main-menu-active {
+    background: #ebcc34;
+
 }
 
-.crm-header .main-menu .main-menu-style:hover, .crm-header .main-menu .main-menu-style.active {
-    background: #ebcc34;
+.crm-header .main-menu > a:active > i {
+    color: #2a8543
 }
 
 .crm-header .user-panel {
@@ -526,7 +538,7 @@ Login page
 
 .login-page-body {
     padding: 0;
-    background: #e4f5e9;
+    background-image: url("#{resource['carpenter:img/concrate.jpg']}");
 }
 
 .login-page {

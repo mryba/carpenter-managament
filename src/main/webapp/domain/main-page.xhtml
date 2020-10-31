@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:o="http://omnifaces.org/ui"
@@ -29,31 +28,30 @@
 
         <div class="form-login">
             <h:form>
-                <div class="header">
-                    <h1><strong>CRM</strong></h1>
-                </div>
                 <div>
-                    <div class="form-top">
-                        <o:outputLabel for="email"
+                    <div class="form-top login-input-form">
+                        <h:outputText for="email"
+                                       styleClass="login-input"
                                        value="#{login_msg.email}"/>
-                        <h:inputText styleClass="login-input" id="email"
+                        <h:inputText id="email"
                                      validator="#{loginValidator.validateEmail}"
                                      value="#{loginController.email}"
                                      p:autofocus="autofocus"/>
-                        <h:message for="email" styleClass="domain-form-msg danger-col"/>
+                        <h:message for="email" styleClass="form-msg col-danger"/>
                     </div>
 
-                    <div class="form-top">
-                        <o:outputLabel for="password"
+                    <div class="form-top login-input-form">
+                        <h:outputText for="password"
+                                       styleClass="login-input"
                                        value="#{login_msg.password}"/>
-                        <h:inputSecret styleClass="login-input" id="password"
+                        <h:inputSecret id="password"
                                        validator="#{loginValidator.validatePassword}"
                                        value="#{loginController.password}"/>
                         <h:message for="password" styleClass="domain-form-msg danger-col"/>
                     </div>
 
                     <div class="error-message-login" jsf:rendered="#{not loginController.errorComponent.valid}">
-                        <h:message for="loginError" styleClass="domain-form-msg danger-col"/>
+                        <h:message for="loginError" styleClass="form-msg col-danger"/>
                     </div>
 
                     <h:inputHidden id="loginError" binding="#{loginController.errorComponent}"/>
@@ -61,7 +59,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button class="btn col-primary"
+                    <button class="btn col-success"
                             type="submit"
                             jsf:action="#{loginController.login}">
                         <f:ajax onevent="showLoader"/>

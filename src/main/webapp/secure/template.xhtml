@@ -47,20 +47,20 @@
                 </div>
 
                 <div class="main-menu">
-                    <h:commandLink styleClass="#{pageTitle eq 'Kalendarz' ? 'main-menu-style' : ''}"
+                    <h:commandLink styleClass="#{pageTitle eq 'Kalendarz'? 'main-menu-active':''}"
                                    action="#{navigationBean.calendarDayViewRedirect}">
                         <i class="fas fa-calendar-check"></i>Kalendarz
                         <f:ajax onevent="showLoader"/>
                     </h:commandLink>
 
-                    <h:commandLink
+                    <h:commandLink styleClass="#{pageTitle eq 'Pracownicy'? 'main-menu-active':''}"
                             action="#{navigationBean.employeesRedirect}"
                             rendered="#{principalBean.loggedUser.adminOrManager}">
                         <f:ajax onevent="showLoader"/>
                         <i class="fas fa-users"></i>Pracownicy
                     </h:commandLink>
 
-                    <h:commandLink
+                    <h:commandLink styleClass="#{pageTitle eq 'Grupy'? 'main-menu-active':''}"
                             action="#{navigationBean.employeeGroupRedirect}"
                             rendered="#{principalBean.loggedUser.adminOrManager}">
                         <f:ajax onevent="showLoader"/>
