@@ -3,7 +3,6 @@ package com.carpenter.core.control.repository;
 import com.carpenter.core.control.service.audit.AuditTrailFilters;
 import com.carpenter.core.entity.AuditTrail;
 import com.carpenter.core.entity.AuditTrail_;
-import com.carpenter.core.entity.employee.Employee;
 import com.carpenter.core.entity.employee.Employee_;
 
 import javax.ejb.Stateless;
@@ -26,7 +25,7 @@ public class AuditTrailRepository implements Serializable {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List<AuditTrail> findAuditsByFilter(AuditTrailFilters filters) {
+    public List<AuditTrail> findAuditsByFilter(AuditTrailFilters filters, int pageSize, int currentPage) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<AuditTrail> query = builder.createQuery(AuditTrail.class);
         Root<AuditTrail> root = query.from(AuditTrail.class);
@@ -39,6 +38,8 @@ public class AuditTrailRepository implements Serializable {
         query.orderBy(builder.desc(root.get(AuditTrail_.createDate)));
         try {
             return entityManager.createQuery(query)
+                    .setFirstResult((currentPage-1) * pageSize)
+                    .setMaxResults(pageSize)
                     .getResultList();
         } catch (NoResultException e) {
             return Collections.emptyList();
@@ -65,5 +66,24 @@ public class AuditTrailRepository implements Serializable {
 
     public void save(AuditTrail auditTrail) {
         entityManager.persist(auditTrail);
+    }
+
+    public Long getAuditTrailsCount(AuditTrailFilters filters) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = builder.createQuery(Long.class);
+
+        Root<AuditTrail> root = query.from(AuditTrail.class);
+        query.select(builder.count(root));
+
+        Predicate filterPredicate = getDefaultPredicate(builder, root, filters);
+        if (filterPredicate != null) {
+            query.where(filterPredicate);
+        }
+
+        try {
+            return entityManager.createQuery(query).getResultList().stream().findFirst().orElse(0L);
+        } catch (NoResultException e) {
+            return 0L;
+        }
     }
 }

@@ -20,8 +20,8 @@ public class AuditTrailService implements Serializable {
     @Inject
     private AuditTrailRepository auditTrailRepository;
 
-    public List<AuditTrail> getAllAuditsByFilter(AuditTrailFilters filters) {
-        return auditTrailRepository.findAuditsByFilter(filters);
+    public List<AuditTrail> getAllAuditsByFilter(AuditTrailFilters filters, int rowsPerPage, int currentPage) {
+        return auditTrailRepository.findAuditsByFilter(filters, rowsPerPage, currentPage);
     }
 
     public void saveAudit(Employee employee, HttpServletRequest request) {
@@ -36,5 +36,9 @@ public class AuditTrailService implements Serializable {
         auditTrail.setClientIp(ipAddress);
 
         auditTrailRepository.save(auditTrail);
+    }
+
+    public Long getAuditTrailsCount(AuditTrailFilters filters) {
+        return auditTrailRepository.getAuditTrailsCount(filters);
     }
 }

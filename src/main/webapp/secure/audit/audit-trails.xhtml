@@ -35,7 +35,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <ui:repeat value="#{audiTrailBean.trailList}" var="a">
+                            <ui:repeat value="#{audiTrailBean.items()}" var="a">
                                 <tr>
                                     <td class="w5">
                                         #{a.id}
@@ -58,6 +58,57 @@
                             </ui:repeat>
                             </tbody>
                         </table>
+                    </div>
+                    <div class="pagination" jsf:rendered="#{not empty audiTrailBean.items()}">
+
+                        <button class="btn col-primary-b btn-icon"
+                                jsf:disabled="#{audiTrailBean.pagination.firstRow == 0}"
+                                jsf:action="#{audiTrailBean.firstPage}">
+                            <i class="fas fa-angle-double-left"></i>
+                            <f:ajax event="change" execute="@this" onevent="showLoader" render="audit-trails-form"/>
+                        </button>
+
+                        <button class="btn col-primary-b btn-icon"
+                                jsf:disabled="#{audiTrailBean.pagination.firstRow == 0}"
+                                jsf:action="#{audiTrailBean.previousPage}">
+                            <i class="fas fa-angle-left"></i>
+                            <f:ajax event="change" execute="@this" onevent="showLoader" render="audit-trails-form"/>
+                        </button>
+
+                        <span class="range">#{audiTrailBean.pagination.currentPage}-#{audiTrailBean.pagination.totalPages} z #{audiTrailBean.pagination.totalRows}</span>
+
+                        <button class="btn col-primary-b btn-icon"
+                                jsf:disabled="#{audiTrailBean.pagination.firstRow + audiTrailBean.pagination.rowsPerPage >=audiTrailBean.pagination.totalRows}"
+                                jsf:action="#{audiTrailBean.nextPage}">
+                            <i class="fas fa-angle-right"></i>
+                            <f:ajax event="change" execute="@this" render="audit-trails-form" onevent="showLoader"/>
+                        </button>
+
+                        <button class="btn col-primary-b btn-icon"
+                                jsf:disabled="#{audiTrailBean.pagination.firstRow + audiTrailBean.pagination.rowsPerPage >= audiTrailBean.pagination.totalRows}"
+                                jsf:action="#{audiTrailBean.lastPage}">
+                            <i class="fas fa-angle-double-right"></i>
+                            <f:ajax event="change" execute="@this" onevent="showLoader" render="audit-trails-form"/>
+                        </button>
+                        <div class="pagination-rows">
+                            <h:selectOneMenu id="rows"
+                                             styleClass="selectPages"
+                                             value="#{audiTrailBean.pagination.rowsPerPage}">
+                                <f:selectItems value="#{audiTrailBean.iterationList}"
+                                               var="i"
+                                               noSelectionValue="true"
+                                               itemValue="#{i}"/>
+                                <f:ajax event="change" execute="@this" onevent="showLoader"
+                                        listener="#{audiTrailBean.firstPage}"
+                                        render="audit-trails-form"/>
+                            </h:selectOneMenu>
+                            <h:outputScript>
+                                $('.selectPages').multipleSelect({
+                                    single: true,
+                                    selectAll: false
+                                })
+                            </h:outputScript>
+                        </div>
                     </div>
                 </h:form>
             </div>

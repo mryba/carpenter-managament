@@ -2218,3 +2218,27 @@ body {
     font-weight: bold;
     padding: 0.3em
 }
+.pagination {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-pack: end;
+    justify-content: flex-end;
+    -webkit-box-align: center;
+    align-items: center;
+}
+.pagination .btn {
+    margin-left: 0.8em;
+}
+.pagination .btn-sm {
+    padding: 1em;
+}
+.pagination .range {
+    margin-left: 1em;
+    line-height: 1;
+    font-size: 0.9em;
+    padding-top: 0.2em;
+}
+.pagination .pagination-rows {
+    margin-left: 1em;
+    min-width: 80px;
+}
