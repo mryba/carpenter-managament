@@ -41,13 +41,15 @@
                                         #{a.id}
                                     </td>
                                     <td class="w10">
-                                        #{a.createDate}
+                                        <h:outputText value="#{a.createDate}">
+                                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss"/>
+                                        </h:outputText>
                                     </td>
                                     <td class="w10">
-                                        #{a.employee.firstName}, #{a.employee.lastName}
+                                        <h4> #{a.employee.firstName} #{a.employee.lastName}</h4>
                                     </td>
                                     <td class="w10">
-                                        #{a.employee.email}
+                                        <h4>#{a.employee.email}</h4>
                                     </td>
                                     <td class="w10">
                                         #{a.clientIp}
