@@ -15,58 +15,111 @@
                 <div class="card-header">
                     <h2>Oferty</h2>
                 </div>
-
-                <div class="table" jsf:id="offer-table-id">
-                    <table>
-                        <thead>
-                        <tr>
-                            <th class="w10 left">Typ architektury</th>
-                            <th class="w10 left">Miasto</th>
-                            <th class="w10 left">Data rozpoczęcia</th>
-                            <th class="w5 left">Firma</th>
-                            <th class="w5 left">E-mail</th>
-                            <th class="w5 left">Telefon</th>
-                            <th class="w15 left">Opis</th>
-                            <th class="w5"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <ui:repeat value="#{offerListBean.offersFromLoggedUserCompany}" var="o">
-                            <tr class="#{o.read ? 'read-offer' : 'unread-offer'}">
-                                <td class="w10 left">
-                                    <h4> #{offer_msg['architecture_type_'.concat(o.architectureType)]}</h4>
-                                </td>
-                                <td class="w10 left">
-                                    #{o.workCity}
-                                </td>
-                                <td class="w10 left">
-                                    #{o.workDateFrom}
-                                </td>
-                                <td class="w5 left">
-                                    #{o.companyName}
-                                </td>
-                                <td class="w5 left">
-                                    #{o.email}
-                                </td>
-                                <td class="w5 left">
-                                    #{o.phone}
-                                </td>
-                                <td class="w15 left">
-                                    #{o.description}
-                                </td>
-                                <td class="w5">
-                                    <h:link outcome="/secure/offers/offer"
-                                            styleClass="btn col-primary">
-                                        <f:param name="offerId" value="#{o.id}"/>
-                                        <f:ajax onevent="showLoader"/>
-                                        <i class="fa fa-caret-right"></i>
-                                    </h:link>
-                                </td>
+                <h:form id="offers-form">
+                    <div class="table" jsf:id="offer-table-id">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th class="w10 left">Typ architektury</th>
+                                <th class="w10 left">Miasto</th>
+                                <th class="w10 left">Data rozpoczęcia</th>
+                                <th class="w5 left">Firma</th>
+                                <th class="w5 left">E-mail</th>
+                                <th class="w5 left">Telefon</th>
+                                <th class="w15 left">Opis</th>
+                                <th class="w5"></th>
                             </tr>
-                        </ui:repeat>
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                            <ui:repeat value="#{offerListBean.items()}" var="o">
+                                <tr class="#{o.isRead ? 'read-offer' : 'unread-offer'}">
+                                    <td class="w10 left">
+                                        <h4> #{offer_msg['architecture_type_'.concat(o.architectureType)]}</h4>
+                                    </td>
+                                    <td class="w10 left">
+                                        #{o.workCity}
+                                    </td>
+                                    <td class="w10 left">
+                                        #{o.workDateFrom}
+                                    </td>
+                                    <td class="w5 left">
+                                        #{o.companyName}
+                                    </td>
+                                    <td class="w5 left">
+                                        #{o.email}
+                                    </td>
+                                    <td class="w5 left">
+                                        #{o.phone}
+                                    </td>
+                                    <td class="w15 left">
+                                        #{o.description}
+                                    </td>
+                                    <td class="w5">
+                                        <h:link outcome="/secure/offers/offer"
+                                                styleClass="btn col-primary">
+                                            <f:param name="offerId" value="#{o.id}"/>
+                                            <f:ajax onevent="showLoader"/>
+                                            <i class="fa fa-caret-right"></i>
+                                        </h:link>
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination" jsf:rendered="#{not empty offerListBean.items()}">
+
+                        <button class="btn col-primary-b btn-icon"
+                                jsf:disabled="#{offerListBean.pagination.firstRow == 0}"
+                                jsf:action="#{offerListBean.firstPage}">
+                            <i class="fas fa-angle-double-left"></i>
+                            <f:ajax event="change" execute="@this" onevent="showLoader" render="offers-form"/>
+                        </button>
+
+                        <button class="btn col-primary-b btn-icon"
+                                jsf:disabled="#{offerListBean.pagination.firstRow == 0}"
+                                jsf:action="#{offerListBean.previousPage}">
+                            <i class="fas fa-angle-left"></i>
+                            <f:ajax event="change" execute="@this" onevent="showLoader" render="offers-form"/>
+                        </button>
+
+                        <span class="range">#{offerListBean.pagination.currentPage}-#{offerListBean.pagination.totalPages} z #{offerListBean.pagination.totalRows}</span>
+
+                        <button class="btn col-primary-b btn-icon"
+                                jsf:disabled="#{offerListBean.pagination.firstRow + offerListBean.pagination.rowsPerPage >=offerListBean.pagination.totalRows}"
+                                jsf:action="#{offerListBean.nextPage}">
+                            <i class="fas fa-angle-right"></i>
+                            <f:ajax event="change" execute="@this" render="offers-form" onevent="showLoader"/>
+                        </button>
+
+                        <button class="btn col-primary-b btn-icon"
+                                jsf:disabled="#{offerListBean.pagination.firstRow + offerListBean.pagination.rowsPerPage >= offerListBean.pagination.totalRows}"
+                                jsf:action="#{offerListBean.lastPage}">
+                            <i class="fas fa-angle-double-right"></i>
+                            <f:ajax event="change" execute="@this" onevent="showLoader" render="offers-form"/>
+                        </button>
+                        <div class="pagination-rows">
+                            <h:selectOneMenu id="rows"
+                                             styleClass="selectPages"
+                                             value="#{offerListBean.pagination.rowsPerPage}">
+                                <f:selectItems value="#{offerListBean.iterationList}"
+                                               var="i"
+                                               noSelectionValue="true"
+                                               itemValue="#{i}"/>
+                                <f:ajax event="change" execute="@this" onevent="showLoader"
+                                        listener="#{offerListBean.firstPage}"
+                                        render="offers-form"/>
+                            </h:selectOneMenu>
+                            <h:outputScript>
+                                $('.selectPages').multipleSelect({
+                                    single: true,
+                                    selectAll: false
+                                })
+                            </h:outputScript>
+                        </div>
+                    </div>
+                </h:form>
+
             </div>
         </div>
     </ui:define>

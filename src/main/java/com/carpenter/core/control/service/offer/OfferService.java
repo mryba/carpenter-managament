@@ -6,6 +6,7 @@ import com.carpenter.core.control.dto.OfferDto;
 import com.carpenter.core.control.mail.EmailStorageBean;
 import com.carpenter.core.control.repository.OfferRepository;
 import com.carpenter.core.control.service.company.CompanyService;
+import com.carpenter.core.control.service.login.PrincipalBean;
 import com.carpenter.core.entity.Company;
 import com.carpenter.core.entity.Offer;
 import com.google.gson.Gson;
@@ -18,6 +19,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,7 +53,7 @@ public class OfferService implements Serializable {
                 .collect(Collectors.toList());
     }
 
-    public List<OfferDto> getAllOffers(){
+    public List<OfferDto> getAllOffers() {
         offerMapper = new OfferMapper();
         return offerRepository.getAllOffers().stream().map(offerMapper::mapToDomain).collect(Collectors.toList());
     }
@@ -94,5 +96,13 @@ public class OfferService implements Serializable {
 
         CarpenterOfferResponse response = new CarpenterOfferResponse(Boolean.TRUE, Boolean.TRUE);
         return new Gson().toJson(response);
+    }
+
+    public Collection<Offer> getAllOffersByFilter(PrincipalBean principalBean, int rowsPerPage, int currentPage) {
+        return offerRepository.findAllOffersByFilter(principalBean, rowsPerPage, currentPage);
+    }
+
+    public Long getOfferCount(PrincipalBean principalBean) {
+        return offerRepository.countAllOffersByFilter(principalBean);
     }
 }
