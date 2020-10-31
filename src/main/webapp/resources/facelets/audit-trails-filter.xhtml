@@ -15,21 +15,52 @@
                 <div class="form-top col1-4">
                     <label>Użytkownicy</label>
                     <h:selectManyListbox value="#{auditTrailFilters.employeeFilter}"
-                                         styleClass="employeeFilter">
+                                         styleClass="auditFilter">
                         <f:selectItems value="#{audiTrailBean.employees}" var="e"
                                        itemValue="#{e.id}"
                                        itemLabel="#{e.lastName} #{e.firstName}"/>
                         <f:converter converterId="javax.faces.Long"/>
                         <f:ajax event="change"
                                 execute="@this"
-                                render="invoiceTableForm"
+                                render="audit-trails-form"
                                 onevent="showLoader"/>
                     </h:selectManyListbox>
                     <h:outputScript>
-                        $('.employeeFilter').multipleSelect({
+                        $('.auditFilter').multipleSelect({
                             filter: true,
                             selectAll: true
                         });
+                    </h:outputScript>
+                </div>
+
+                <div class="form-top form-double-input col1-4">
+                    <label>Data logowania</label>
+                    <h:inputText styleClass="datepicker"
+                                 label="#{auditTrailFilters.dateFromFilter}"
+                                 value="#{auditTrailFilters.dateFromFilter}">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+
+                        <f:ajax event="change"
+                                delay="300"
+                                render="audit-trails-form"
+                                onevent="showLoader"
+                                execute="@this"/>
+                    </h:inputText>
+
+                    <h:inputText styleClass="datepicker"
+                                 label="#{auditTrailFilters.dateToFilter}"
+                                 value="#{auditTrailFilters.dateToFilter}">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+
+                        <f:ajax event="change"
+                                delay="300"
+                                render="audit-trails-form"
+                                onevent="showLoader"
+                                execute="@this"/>
+                    </h:inputText>
+
+                    <h:outputScript>
+                        $(".datepicker").flatpickr();
                     </h:outputScript>
                 </div>
             </div>

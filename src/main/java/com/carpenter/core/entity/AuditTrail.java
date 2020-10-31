@@ -16,7 +16,7 @@ public class AuditTrail extends DomainObject {
 
     private static final long serialVersionUID = 6015113092001426396L;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "EMPLOYEE_ID")
     private Employee employee;
 

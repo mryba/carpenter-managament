@@ -30,13 +30,16 @@ public class AuditTrailRepository implements Serializable {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<AuditTrail> query = builder.createQuery(AuditTrail.class);
         Root<AuditTrail> root = query.from(AuditTrail.class);
+        root.fetch(AuditTrail_.employee);
 
         Predicate filterPredicate = getDefaultPredicate(builder, root, filters);
         if (filterPredicate != null) {
             query.where(filterPredicate);
         }
+        query.orderBy(builder.desc(root.get(AuditTrail_.createDate)));
         try {
-            return entityManager.createQuery(query).getResultList();
+            return entityManager.createQuery(query)
+                    .getResultList();
         } catch (NoResultException e) {
             return Collections.emptyList();
         }
@@ -47,6 +50,14 @@ public class AuditTrailRepository implements Serializable {
         if (filters != null) {
             if (filters.getEmployeeFilter() != null && !filters.getEmployeeFilter().isEmpty()) {
                 predicate = builder.isTrue(root.get(AuditTrail_.employee).get(Employee_.id).in(filters.getEmployeeFilter()));
+            }
+            if (filters.getDateFromFilter() != null) {
+                Predicate dateFromPredicate = builder.greaterThanOrEqualTo(root.get(AuditTrail_.createDate), filters.getDateFromFilter());
+                predicate = predicate != null ? builder.and(predicate, dateFromPredicate) : dateFromPredicate;
+            }
+            if (filters.getDateToFilter() != null) {
+                Predicate dateToPredicate = builder.lessThanOrEqualTo(root.get(AuditTrail_.createDate), filters.getDateToFilter());
+                predicate = predicate != null ? builder.and(predicate, dateToPredicate) : dateToPredicate;
             }
         }
         return predicate;
