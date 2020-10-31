@@ -23,10 +23,6 @@ public class NavigationBean {
         return "/secure/offers/offers?faces-redirect=true";
     }
 
-    public String adminRedirect() {
-        return "/secure/admin/admin-dashboard?faces-redirect=true";
-    }
-
     public String calendarDayViewRedirect() {
         return "/secure/calendars/week-calendar.xhtml?faces-redirect=true";
     }

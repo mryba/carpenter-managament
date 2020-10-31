@@ -98,9 +98,6 @@ public class WorkTimeBean implements Serializable {
                 errorMessage.put(employee, Boolean.TRUE);
             }
         }
-        if (isBulkOperation) {
-            errorMessage.clear();
-        }
     }
 
     private EmployeeGroup selectedEmployeeGroup() {

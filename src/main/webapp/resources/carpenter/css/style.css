@@ -34,6 +34,25 @@ body {
     display: flex;
 }
 
+.crm-header .logo {
+    border-right: 1px solid #d1d1d1;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    min-width: 10px;
+    max-width: 100px;
+}
+
+.crm-header .logo .wol-logo {
+    height: 100%;
+}
+
+.crm-header .logo .system-logo {
+    height: 30%;
+    margin: 0 1em;
+}
+
 .crm-header .main-menu {
     display: -webkit-box;
     display: flex;
@@ -97,6 +116,10 @@ body {
     color: #2a8543
 }
 
+.crm-header .main-menu .main-menu-style:hover, .crm-header .main-menu .main-menu-style.active {
+    background: #ebcc34;
+}
+
 .crm-header .user-panel {
     border-left: 1px solid #d1d1d1;
     display: -webkit-box;
@@ -106,7 +129,7 @@ body {
     height: 100%;
     width: 341px;
     margin-left: auto;
-    color: #0b2533;
+    color: #0b2e00;
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
@@ -148,6 +171,138 @@ body {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+}
+
+.crm-header .user-panel .user-menu-btn {
+    display: -webkit-box;
+    display: flex;
+    height: 100%;
+    box-sizing: border-box;
+    font-size: 1.5em;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    padding: 0 0.4em;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    background-color: #1a3823;
+    color: #fff;
+    flex-shrink: 0;
+    width: 50px;
+    margin-left: auto;
+}
+
+.crm-header .user-panel .user-menu-btn:hover {
+    background: #ebcc34;
+}
+
+.crm-header .user-panel.active {
+    background: #1a3823;
+}
+
+.crm-header .user-panel.active .user-avatar {
+    background-color: #ebcc34;
+}
+
+.crm-header .user-panel.active .user-info {
+    color: #ffffff;
+}
+
+.side-panel {
+    overflow-y: auto;
+    z-index: 15;
+    height: 100%;
+    height: calc(100% - 79px);
+    position: fixed;
+    right: -340px;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    top: 79px;
+    background: #1a3823;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    width: 340px;
+    max-width: 100%;
+}
+
+.side-panel .option-group {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+}
+
+.side-panel .option-group h5 {
+    margin: 0;
+    color: #000000;
+    background: #ccc921;
+    text-transform: uppercase;
+    border-bottom: 1px solid #57550d;
+    padding: 1em 1.2em;
+    font-size: 0.8em;
+}
+
+.side-panel .option-group a, .side-panel .option-group button {
+    cursor: pointer;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    font-size: 1em;
+    color: #fff;
+    text-decoration: none;
+    border-bottom: 1px solid #0b2533;
+    padding: 1.2em 1.2em;
+}
+
+.side-panel .option-group a i, .side-panel .option-group button i {
+    font-size: inherit;
+    color: #ebcc34;
+}
+
+.side-panel .option-group a:hover, .side-panel .option-group button:hover {
+    background: #32a852;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.side-panel .version-number {
+    margin-top: auto;
+    padding: 0.8em;
+    text-align: center;
+    color: #5794cf;
+    font-size: 0.65em;
+}
+
+.side-panel.active {
+    right: 0;
+    border-top: 1px solid #0b2533;
+}
+
+@media (max-width: 1000px) {
+    .side-panel {
+        top: 59px;
+        height: calc(100% - 59px);
+    }
+}
+
+@media (max-width: 450px) {
+    .side-panel {
+        width: 300px;
+        right: -300px;
+    }
+}
+
+@media (max-width: 400px) {
+    .side-panel {
+        width: 100%;
+        right: -100%;
+    }
 }
 
 @media (max-width: 1180px) {
