@@ -45,14 +45,6 @@ public class OfferService implements Serializable {
         offerRepository.changeToRead(id);
     }
 
-    public List<OfferDto> getOffersByCompany(Long companyId) {
-        offerMapper = new OfferMapper();
-        return offerRepository.getOffersByCompany(companyId)
-                .stream()
-                .map(offerMapper::mapToDomain)
-                .collect(Collectors.toList());
-    }
-
     public List<OfferDto> getAllOffers() {
         offerMapper = new OfferMapper();
         return offerRepository.getAllOffers().stream().map(offerMapper::mapToDomain).collect(Collectors.toList());
@@ -104,5 +96,9 @@ public class OfferService implements Serializable {
 
     public Long getOfferCount(PrincipalBean principalBean) {
         return offerRepository.countAllOffersByFilter(principalBean);
+    }
+
+    public Long getAllNotReadOffersCount(PrincipalBean principalBean) {
+        return offerRepository.countNotReadOffers(principalBean);
     }
 }

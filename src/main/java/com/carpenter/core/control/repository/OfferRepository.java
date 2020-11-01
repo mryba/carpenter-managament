@@ -1,8 +1,9 @@
 package com.carpenter.core.control.repository;
 
-import com.carpenter.core.control.dto.OfferDto;
 import com.carpenter.core.control.service.login.PrincipalBean;
-import com.carpenter.core.entity.*;
+import com.carpenter.core.entity.Company_;
+import com.carpenter.core.entity.Offer;
+import com.carpenter.core.entity.Offer_;
 import com.carpenter.core.entity.dictionaries.Role;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,10 +20,13 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @Stateless
 public class OfferRepository implements Serializable {
+
+    private static final long serialVersionUID = -5034248193369492386L;
 
     @PersistenceContext
     private transient EntityManager entityManager;
@@ -85,6 +89,7 @@ public class OfferRepository implements Serializable {
         if (defaultPredicate != null) {
             query.where(defaultPredicate);
         }
+        query.orderBy(builder.desc(root.get(Offer_.createDate)));
 
         try {
             return entityManager.createQuery(query)
@@ -96,7 +101,6 @@ public class OfferRepository implements Serializable {
         }
 
     }
-
 
     public Long countAllOffersByFilter(PrincipalBean principalBean) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -117,6 +121,7 @@ public class OfferRepository implements Serializable {
         }
     }
 
+
     private Predicate getDefaultPredicate(CriteriaBuilder builder, Root<Offer> root, PrincipalBean principalBean) {
         Predicate predicate = null;
         if (principalBean.getLoggedUser().isInRole(Role.ADMINISTRATOR.name())) {
@@ -127,4 +132,24 @@ public class OfferRepository implements Serializable {
         return predicate;
     }
 
+    public Long countNotReadOffers(PrincipalBean principalBean) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = builder.createQuery(Long.class);
+
+        Root<Offer> root = query.from(Offer.class);
+        query.select(builder.count(root));
+
+        Predicate defaultPredicate = builder.isFalse(root.get(Offer_.isRead));
+        Predicate filterPredicate = getDefaultPredicate(builder, root, principalBean);
+
+        if (filterPredicate != null) {
+            defaultPredicate = defaultPredicate != null ? builder.and(defaultPredicate, filterPredicate) : filterPredicate;
+        }
+        query.where(defaultPredicate);
+        try {
+            return entityManager.createQuery(query).getResultList().iterator().next();
+        } catch (NoSuchElementException e) {
+            return 0L;
+        }
+    }
 }

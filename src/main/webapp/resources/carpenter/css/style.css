@@ -20,14 +20,14 @@ body {
     padding: 2em 0;
 }
 
-.login-input{
+.login-input {
     color: #32a852;
     font-weight: bold;
     font-size: 1em;
     padding: 0.5em;
 }
 
-.login-input-form{
+.login-input-form {
     padding: 0.2em;
 }
 
@@ -2218,6 +2218,7 @@ body {
     font-weight: bold;
     padding: 0.3em
 }
+
 .pagination {
     display: -webkit-box;
     display: flex;
@@ -2226,19 +2227,33 @@ body {
     -webkit-box-align: center;
     align-items: center;
 }
+
 .pagination .btn {
     margin-left: 0.8em;
 }
+
 .pagination .btn-sm {
     padding: 1em;
 }
+
 .pagination .range {
     margin-left: 1em;
     line-height: 1;
     font-size: 0.9em;
     padding-top: 0.2em;
 }
+
 .pagination .pagination-rows {
     margin-left: 1em;
     min-width: 80px;
+}
+
+.icon-success {
+    color: #2a8543;
+    font-size: 2.0em
+}
+
+.icon-cross {
+    color: #820023;
+    font-size: 2.0em
 }

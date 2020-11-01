@@ -14,6 +14,8 @@ import java.io.Serializable;
 @ViewScoped
 public class OfferBean implements Serializable {
 
+    private static final long serialVersionUID = -6348629792592013131L;
+
     @Inject
     @Param(name = "offerId")
     private Long offerId;

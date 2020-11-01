@@ -30,6 +30,7 @@ public class OfferListBean implements PaginationService<Offer>, Serializable {
     PrincipalBean principalBean;
 
     private Pagination<Offer> pagination = new Pagination<>(10, 10);
+    private Long newOfferCount;
 
     @PostConstruct
     public void init() {
@@ -40,14 +41,11 @@ public class OfferListBean implements PaginationService<Offer>, Serializable {
         performPagination();
         pagination.getItems().clear();
         pagination.getItems().addAll(offerService.getAllOffersByFilter(principalBean, pagination.getRowsPerPage(), pagination.getCurrentPage()));
-
+        newOfferCount = offerService.getAllNotReadOffersCount(principalBean);
     }
 
     public Long getUnreadOffersFromLoggedUserCompany() {
-        if (pagination.getItems() == null || pagination.getItems().isEmpty()) {
-            return null;
-        }
-        return pagination.getItems().stream().filter(o -> !o.getIsRead()).count();
+        return newOfferCount;
     }
 
     public void changeToRead(Long id) {

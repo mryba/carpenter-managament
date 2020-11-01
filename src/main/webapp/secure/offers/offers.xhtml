@@ -27,6 +27,7 @@
                                 <th class="w5 left">E-mail</th>
                                 <th class="w5 left">Telefon</th>
                                 <th class="w15 left">Opis</th>
+                                <th class="w10">Przeczytane</th>
                                 <th class="w5"></th>
                             </tr>
                             </thead>
@@ -54,6 +55,18 @@
                                     <td class="w15 left">
                                         #{o.description}
                                     </td>
+                                    <td class="w10" jsf:rendered="#{o.isRead}">
+                                        <div class="icon-success">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+
+                                    </td>
+                                    <td class="w10" jsf:rendered="#{!o.isRead}">
+                                        <div class="icon-cross">
+                                        <i class="far fa-times-circle"></i>
+                                        </div>
+                                    </td>
+
                                     <td class="w5">
                                         <h:link outcome="/secure/offers/offer"
                                                 styleClass="btn col-primary">
