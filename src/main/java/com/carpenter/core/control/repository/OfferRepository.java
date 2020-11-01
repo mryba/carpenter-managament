@@ -1,6 +1,7 @@
 package com.carpenter.core.control.repository;
 
 import com.carpenter.core.control.service.login.PrincipalBean;
+import com.carpenter.core.control.service.offer.OfferFilters;
 import com.carpenter.core.entity.Company_;
 import com.carpenter.core.entity.Offer;
 import com.carpenter.core.entity.Offer_;
@@ -79,12 +80,17 @@ public class OfferRepository implements Serializable {
         }
     }
 
-    public Collection<Offer> findAllOffersByFilter(PrincipalBean principalBean, int pageSize, int currentPage) {
+    public Collection<Offer> findAllOffersByFilter(OfferFilters offerFilters, PrincipalBean principalBean, int pageSize, int currentPage) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Offer> query = builder.createQuery(Offer.class);
         Root<Offer> root = query.from(Offer.class);
 
         Predicate defaultPredicate = getDefaultPredicate(builder, root, principalBean);
+        Predicate filterPredicate = getFilterPredicate(builder, root, offerFilters);
+
+        if (filterPredicate != null) {
+            defaultPredicate = defaultPredicate != null ? builder.and(defaultPredicate, filterPredicate) : filterPredicate;
+        }
 
         if (defaultPredicate != null) {
             query.where(defaultPredicate);
@@ -102,16 +108,35 @@ public class OfferRepository implements Serializable {
 
     }
 
-    public Long countAllOffersByFilter(PrincipalBean principalBean) {
+    private Predicate getFilterPredicate(CriteriaBuilder builder, Root<Offer> root, OfferFilters offerFilters) {
+        Predicate predicate=null;
+
+        if (offerFilters != null) {
+            if (offerFilters.getDateFromFilter() != null) {
+                predicate = builder.greaterThanOrEqualTo(root.get(Offer_.createDate), offerFilters.getDateFromFilter());
+            }
+            if (offerFilters.getDateToFilter() != null) {
+                Predicate dateToPredicate = builder.lessThanOrEqualTo(root.get(Offer_.createDate), offerFilters.getDateToFilter());
+                predicate = predicate != null ? builder.and(predicate, dateToPredicate) : dateToPredicate;
+            }
+        }
+        return predicate;
+    }
+
+    public Long countAllOffersByFilter(PrincipalBean principalBean, OfferFilters offerFilters) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> query = builder.createQuery(Long.class);
 
         Root<Offer> root = query.from(Offer.class);
         query.select(builder.count(root));
 
-        Predicate filterPredicate = getDefaultPredicate(builder, root, principalBean);
+        Predicate defaultPredicate = getDefaultPredicate(builder, root, principalBean);
+        Predicate filterPredicate = getFilterPredicate(builder, root, offerFilters);
         if (filterPredicate != null) {
-            query.where(filterPredicate);
+            defaultPredicate = defaultPredicate != null ? builder.and(defaultPredicate, filterPredicate) : filterPredicate;
+        }
+        if (defaultPredicate != null) {
+            query.where(defaultPredicate);
         }
 
         try {

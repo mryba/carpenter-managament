@@ -40,7 +40,6 @@ public class InvoiceRepository implements Serializable {
         Predicate defaultPredicate = defaultPredicate(builder, root, principalBean);
         Predicate filterPredicate = filterPredicate(builder, root, filters);
 
-
         if (filterPredicate != null) {
             defaultPredicate = defaultPredicate != null ? builder.and(defaultPredicate, filterPredicate) : filterPredicate;
         }
@@ -63,7 +62,16 @@ public class InvoiceRepository implements Serializable {
                 predicate = builder.isTrue(root.get(Invoice_.employee).get(Employee_.id).in(filters.getEmployeeIds()));
             }
             if (filters.getClientIds() != null && !filters.getClientIds().isEmpty()) {
-                predicate = builder.and(predicate, builder.isTrue(root.get(Invoice_.client).get(Client_.id).in(filters.getClientIds())));
+                Predicate clientPredicate = builder.isTrue(root.get(Invoice_.client).get(Client_.id).in(filters.getClientIds()));
+                predicate = predicate != null ? builder.and(predicate, clientPredicate) : clientPredicate;
+            }
+            if (filters.getDateFromFilter() != null) {
+                Predicate dateFromPredicate = builder.greaterThanOrEqualTo(root.get(Invoice_.dateOfCreation), filters.getDateFromFilter());
+                predicate = predicate != null ? builder.and(predicate, dateFromPredicate) : dateFromPredicate;
+            }
+            if (filters.getDateToFilter() != null) {
+                Predicate dateToPredicate = builder.lessThanOrEqualTo(root.get(Invoice_.dateOfCreation), filters.getDateToFilter());
+                predicate = predicate != null ? builder.and(predicate, dateToPredicate) : dateToPredicate;
             }
         }
         return predicate;

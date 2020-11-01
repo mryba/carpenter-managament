@@ -1,5 +1,7 @@
 package com.carpenter.core.control.service.invoice;
 
+import com.carpenter.core.control.service.common.Filters;
+
 import javax.enterprise.event.Event;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -9,7 +11,7 @@ import java.util.Collection;
 
 @ViewScoped
 @Named("invoicesFilter")
-public class InvoicesFilter implements Serializable {
+public class InvoicesFilter extends Filters implements Serializable {
 
     private static final long serialVersionUID = 2744206648881110854L;
 

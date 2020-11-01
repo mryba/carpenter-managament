@@ -5,6 +5,8 @@
                 xmlns:jsf="http://xmlns.jcp.org/jsf"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:co="http://xmlns.jcp.org/jsf/composite/facelets"
+
                 template="/secure/template.xhtml">
 
     <ui:param name="pageTitle" value="Oferty"/>
@@ -15,6 +17,9 @@
                 <div class="card-header">
                     <h2>Oferty</h2>
                 </div>
+                <h:panelGroup layout="block" id="offerFilters">
+                    <co:offers-filter/>
+                </h:panelGroup>
                 <h:form id="offers-form">
                     <div class="table" jsf:id="offer-table-id">
                         <table>
@@ -22,7 +27,7 @@
                             <tr>
                                 <th class="w10 left">Typ architektury</th>
                                 <th class="w10 left">Miasto</th>
-                                <th class="w10 left">Data rozpoczęcia</th>
+                                <th class="w10 left">Data utowrzenia</th>
                                 <th class="w5 left">Firma</th>
                                 <th class="w5 left">E-mail</th>
                                 <th class="w5 left">Telefon</th>
@@ -41,7 +46,9 @@
                                         #{o.workCity}
                                     </td>
                                     <td class="w10 left">
-                                        #{o.workDateFrom}
+                                        <h:outputFormat value="{0,date,d.MM.yyyy}">
+                                            <f:param value="#{o.createDate}"/>
+                                        </h:outputFormat>
                                     </td>
                                     <td class="w5 left">
                                         #{o.companyName}
@@ -63,7 +70,7 @@
                                     </td>
                                     <td class="w10" jsf:rendered="#{!o.isRead}">
                                         <div class="icon-cross">
-                                        <i class="far fa-times-circle"></i>
+                                            <i class="far fa-times-circle"></i>
                                         </div>
                                     </td>
 

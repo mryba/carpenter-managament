@@ -7,6 +7,8 @@ import com.carpenter.core.entity.Offer;
 import lombok.Getter;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.event.Observes;
+import javax.enterprise.event.Reception;
 import javax.faces.component.UICommand;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
@@ -29,18 +31,23 @@ public class OfferListBean implements PaginationService<Offer>, Serializable {
     @Inject
     PrincipalBean principalBean;
 
+    @Inject
+    OfferFilters offerFilters;
+
     private Pagination<Offer> pagination = new Pagination<>(10, 10);
     private Long newOfferCount;
 
     @PostConstruct
     public void init() {
-        refresh();
+        refresh(offerFilters);
     }
 
-    private void refresh() {
+    private void refresh(@Observes(notifyObserver = Reception.IF_EXISTS) OfferFilters filters) {
+        this.offerFilters = filters;
+
         performPagination();
         pagination.getItems().clear();
-        pagination.getItems().addAll(offerService.getAllOffersByFilter(principalBean, pagination.getRowsPerPage(), pagination.getCurrentPage()));
+        pagination.getItems().addAll(offerService.getAllOffersByFilter(offerFilters, principalBean, pagination.getRowsPerPage(), pagination.getCurrentPage()));
         newOfferCount = offerService.getAllNotReadOffersCount(principalBean);
     }
 
@@ -59,7 +66,7 @@ public class OfferListBean implements PaginationService<Offer>, Serializable {
 
     @Override
     public void performPagination() {
-        pagination.defaultPagination(Math.toIntExact(offerService.getOfferCount(principalBean)));
+        pagination.defaultPagination(Math.toIntExact(offerService.getOfferCount(principalBean, offerFilters)));
     }
 
     @Override

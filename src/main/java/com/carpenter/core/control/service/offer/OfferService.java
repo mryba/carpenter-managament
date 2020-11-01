@@ -90,12 +90,12 @@ public class OfferService implements Serializable {
         return new Gson().toJson(response);
     }
 
-    public Collection<Offer> getAllOffersByFilter(PrincipalBean principalBean, int rowsPerPage, int currentPage) {
-        return offerRepository.findAllOffersByFilter(principalBean, rowsPerPage, currentPage);
+    public Collection<Offer> getAllOffersByFilter(OfferFilters offerFilters, PrincipalBean principalBean, int rowsPerPage, int currentPage) {
+        return offerRepository.findAllOffersByFilter(offerFilters, principalBean, rowsPerPage, currentPage);
     }
 
-    public Long getOfferCount(PrincipalBean principalBean) {
-        return offerRepository.countAllOffersByFilter(principalBean);
+    public Long getOfferCount(PrincipalBean principalBean, OfferFilters offerFilters) {
+        return offerRepository.countAllOffersByFilter(principalBean, offerFilters);
     }
 
     public Long getAllNotReadOffersCount(PrincipalBean principalBean) {
