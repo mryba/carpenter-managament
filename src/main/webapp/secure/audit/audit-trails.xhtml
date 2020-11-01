@@ -12,7 +12,7 @@
 
     <ui:define name="content">
 
-        <div class="wrapper">
+        <div class="wrapper" jsf:rendered="#{principalBean.loggedUser.isInRole('ADMINISTRATOR')}">
             <div class="card">
                 <div class="card-header">
                     <h2>Audyt</h2>
