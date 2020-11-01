@@ -2147,10 +2147,12 @@ body {
 .ms-drop {
     background-color: #fcfcfc;
     border-color: #d1d1d1;
-    color: #0b2533;
+    color: #ebcc34;
     z-index: 5;
     overflow-y: auto;
     display: none;
+    position: absolute;
+    width: 17%;
 }
 
 .ms-drop ul {
