@@ -27,6 +27,7 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>5.4.8.Final</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -40,6 +41,7 @@
             <groupId>com.sun.faces</groupId>
             <artifactId>jsf-impl</artifactId>
             <version>2.2.20</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
@@ -64,6 +66,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.30</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -96,12 +99,14 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.8.6</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>2.11.1</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -120,12 +125,14 @@
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk15on</artifactId>
             <version>1.66</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.github.dhorions</groupId>
             <artifactId>boxable</artifactId>
             <version>1.5</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -133,8 +140,6 @@
             <artifactId>icu4j</artifactId>
             <version>67.1</version>
         </dependency>
-
-
     </dependencies>
 
     <build>

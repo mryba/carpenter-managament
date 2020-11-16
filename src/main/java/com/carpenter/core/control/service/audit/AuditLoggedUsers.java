@@ -19,6 +19,7 @@ public class AuditLoggedUsers implements Serializable {
     private final List<Employee> loggedUsers = new LinkedList<>();
 
     public void addLoggedUserToList(Employee employee) {
+        loggedUsers.stream().filter(e->e.getId().equals(employee.getId())).findFirst().ifPresent(loggedUsers::remove);
         loggedUsers.add(employee);
     }
 
